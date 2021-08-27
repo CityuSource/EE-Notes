@@ -1,0 +1,44 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Mon Nov 23 19:22:56 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000004
+                   .org_2       code   0x000080    program   0x00003c
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000003      
+                            0x000080    0x0000bb      
+            64 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     Here   0x0000b8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+                      N_1   0x00009e    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+                      N_2   0x0000a6    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+                      N_3   0x0000ae    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+                      N_4   0x0000b6    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+                    Start   0x000080    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    Start   0x000080    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+                      N_1   0x00009e    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+                      N_2   0x0000a6    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+                      N_3   0x0000ae    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+                      N_4   0x0000b6    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+                     Here   0x0000b8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\test.asm
+
+

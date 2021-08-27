@@ -1,0 +1,1448 @@
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[205]: Found directive in column 1. (LIST)
+                      00001 LIST P=18F4520 ;directive to define processor
+                      00002 #include <P18F4520.INC> ;CPU specific variable definitions
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ;  MPASM PIC18F4520 processor include
+                      00005 ; 
+                      00006 ;  (c) Copyright 1999-2013 Microchip Technology, All rights reserved
+                      00007 ;==========================================================================
+                      00008 
+                      01488         LIST
+                      00003 
+Warning[205]: Found directive in column 1. (CONFIG)
+01 1F 1E 83 81 0F C0 000004 CONFIG OSC = XT
+       F E0 0F 40 
+Warning[205]: Found directive in column 1. (CONFIG)
+                      00005 CONFIG WDT = OFF
+Warning[205]: Found directive in column 1. (CONFIG)
+                      00006 CONFIG LVP = OFF
+  000000F0            00007 DELAY_REG EQU 0xF0
+                      00008 
+Warning[205]: Found directive in column 1. (ORG)
+000000                00009 ORG 0x0000
+Warning[203]: Found opcode in column 1. (clrf)
+000000 6A93           00010 clrf TRISB  ;Set Port B direction output
+Warning[203]: Found opcode in column 1. (clrf)
+000002 6A95           00011 clrf TRISD  ;Set Port D direction output
+Warning[203]: Found opcode in column 1. (clrf)
+000004 6A81           00012 clrf PORTB  ;reset PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+000006 6A83           00013 clrf PORTD  ;reset PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+000008 0EF0           00014 movlw 0xf0  ;1111 0000
+Warning[203]: Found opcode in column 1. (movwf)
+00000A 6E94           00015 movwf TRISC ;Set Port C direction with 0~3:output 4~7:input
+                      00016 
+Warning[203]: Found opcode in column 1. (goto)
+00000C EF18 F000      00017 goto Big_Loop
+Warning[205]: Found directive in column 1. (ORG)
+000030                00018 ORG 0x0030
+                      00019 
+000030                00020 Big_Loop:
+Warning[203]: Found opcode in column 1. (movlw)
+000030 0E0E           00021 movlw 0x0E      ;0000 1110
+Warning[203]: Found opcode in column 1. (movwf)
+000032 6E82           00022 movwf PORTC     ;set to detect p1 to p4
+Warning[203]: Found opcode in column 1. (btfss)
+000034 A882           00023 btfss PORTC, 4  ;p1
+Warning[203]: Found opcode in column 1. (call)
+000036 EC57 F000      00024 call display_1
+Warning[203]: Found opcode in column 1. (btfss)
+00003A AA82           00025 btfss PORTC, 5  ;p2
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[203]: Found opcode in column 1. (call)
+00003C EC63 F000      00026 call display_2
+Warning[203]: Found opcode in column 1. (btfss)
+000040 AC82           00027 btfss PORTC, 6  ;p3
+Warning[203]: Found opcode in column 1. (call)
+000042 EC6F F000      00028 call display_3
+Warning[203]: Found opcode in column 1. (btfss)
+000046 AE82           00029 btfss PORTC, 7  ;p4
+Warning[203]: Found opcode in column 1. (call)
+000048 EC7B F000      00030 call display_4
+                      00031 
+Warning[203]: Found opcode in column 1. (movlw)
+00004C 0E0D           00032 movlw 0x0D      ;0000 1101
+Warning[203]: Found opcode in column 1. (movwf)
+00004E 6E82           00033 movwf PORTC     ;set to detect p5 to p8
+Warning[203]: Found opcode in column 1. (btfss)
+000050 A882           00034 btfss PORTC, 4  ;p5
+Warning[203]: Found opcode in column 1. (call)
+000052 EC87 F000      00035 call display_5
+Warning[203]: Found opcode in column 1. (btfss)
+000056 AA82           00036 btfss PORTC, 5  ;p6
+Warning[203]: Found opcode in column 1. (call)
+000058 EC93 F000      00037 call display_6
+Warning[203]: Found opcode in column 1. (btfss)
+00005C AC82           00038 btfss PORTC, 6  ;p7
+Warning[203]: Found opcode in column 1. (call)
+00005E EC9F F000      00039 call display_7
+Warning[203]: Found opcode in column 1. (btfss)
+000062 AE82           00040 btfss PORTC, 7  ;p8
+Warning[203]: Found opcode in column 1. (call)
+000064 ECAB F000      00041 call display_8
+                      00042 
+Warning[203]: Found opcode in column 1. (movlw)
+000068 0E0B           00043 movlw 0x0B      ;0000 1011
+Warning[203]: Found opcode in column 1. (movwf)
+00006A 6E82           00044 movwf PORTC     ;set to detect p9 to p12
+Warning[203]: Found opcode in column 1. (btfss)
+00006C A882           00045 btfss PORTC, 4  ;p9
+Warning[203]: Found opcode in column 1. (call)
+00006E ECB7 F000      00046 call display_9
+Warning[203]: Found opcode in column 1. (btfss)
+000072 AA82           00047 btfss PORTC, 5  ;p10
+Warning[203]: Found opcode in column 1. (call)
+000074 ECC3 F000      00048 call display_10
+Warning[203]: Found opcode in column 1. (btfss)
+000078 AC82           00049 btfss PORTC, 6  ;p11
+Warning[203]: Found opcode in column 1. (call)
+00007A ECCF F000      00050 call display_11
+Warning[203]: Found opcode in column 1. (btfss)
+00007E AE82           00051 btfss PORTC, 7  ;p12
+Warning[203]: Found opcode in column 1. (call)
+000080 ECDB F000      00052 call display_12
+                      00053 
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[203]: Found opcode in column 1. (movlw)
+000084 0E07           00054 movlw 0x07      ;0000 0111
+Warning[203]: Found opcode in column 1. (movwf)
+000086 6E82           00055 movwf PORTC     ;set to detect p13 to p16
+Warning[203]: Found opcode in column 1. (btfss)
+000088 A882           00056 btfss PORTC, 4  ;p13
+Warning[203]: Found opcode in column 1. (call)
+00008A ECE7 F000      00057 call display_13
+Warning[203]: Found opcode in column 1. (btfss)
+00008E AA82           00058 btfss PORTC, 5  ;p14
+Warning[203]: Found opcode in column 1. (call)
+000090 ECF3 F000      00059 call display_14
+Warning[203]: Found opcode in column 1. (btfss)
+000094 AC82           00060 btfss PORTC, 6  ;p15
+Warning[203]: Found opcode in column 1. (call)
+000096 ECFF F000      00061 call display_15
+Warning[203]: Found opcode in column 1. (btfss)
+00009A AE82           00062 btfss PORTC, 7  ;p16
+Warning[203]: Found opcode in column 1. (call)
+00009C EC0B F001      00063 call display_16
+Warning[203]: Found opcode in column 1. (goto)
+0000A0 EF18 F000      00064 goto Big_Loop
+                      00065 
+0000A4 0E02           00066 Delay: movlw 0x02 ; delay function with 02
+Warning[203]: Found opcode in column 1. (movwf)
+0000A6 6FF0           00067 movwf DELAY_REG
+0000A8 07F0           00068 Delay_loop: decf DELAY_REG, F
+Warning[203]: Found opcode in column 1. (bnz)
+0000AA E1FE           00069 bnz Delay_loop
+Warning[203]: Found opcode in column 1. (return)
+0000AC 0012           00070 return
+                      00071 
+0000AE                00072 display_1:
+Warning[203]: Found opcode in column 1. (movlw)
+0000AE 0E00           00073 movlw 0x00 ;Turn on LED0
+Warning[203]: Found opcode in column 1. (movwf)
+0000B0 6E81           00074 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+0000B2 6A83           00075 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+0000B4 0E06           00076 movlw 0x06 ;Display ‘1’
+Warning[203]: Found opcode in column 1. (movwf)
+0000B6 6E83           00077 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+0000B8 EC52 F000      00078 call Delay
+0000BC A882           00079 wait_up_p1: btfss PORTC, 4
+Warning[203]: Found opcode in column 1. (bra)
+0000BE D7FE           00080 bra wait_up_p1
+Warning[203]: Found opcode in column 1. (call)
+0000C0 EC52 F000      00081 call Delay
+Warning[203]: Found opcode in column 1. (return)
+0000C4 0012           00082 return
+                      00083 
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0000C6                00084 display_2:
+Warning[203]: Found opcode in column 1. (movlw)
+0000C6 0E00           00085 movlw 0x00 ;Turn on LED0
+Warning[203]: Found opcode in column 1. (movwf)
+0000C8 6E81           00086 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+0000CA 6A83           00087 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+0000CC 0E5B           00088 movlw 0x5b ;Display ‘2’
+Warning[203]: Found opcode in column 1. (movwf)
+0000CE 6E83           00089 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+0000D0 EC52 F000      00090 call Delay
+0000D4 AA82           00091 wait_up_p2: btfss PORTC, 5
+Warning[203]: Found opcode in column 1. (bra)
+0000D6 D7FE           00092 bra wait_up_p2
+Warning[203]: Found opcode in column 1. (call)
+0000D8 EC52 F000      00093 call Delay
+Warning[203]: Found opcode in column 1. (return)
+0000DC 0012           00094 return
+                      00095 
+0000DE                00096 display_3:
+Warning[203]: Found opcode in column 1. (movlw)
+0000DE 0E00           00097 movlw 0x00 ;Turn on LED0
+Warning[203]: Found opcode in column 1. (movwf)
+0000E0 6E81           00098 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+0000E2 6A83           00099 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+0000E4 0E4F           00100 movlw 0x4f ;Display ‘3’
+Warning[203]: Found opcode in column 1. (movwf)
+0000E6 6E83           00101 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+0000E8 EC52 F000      00102 call Delay
+0000EC AC82           00103 wait_up_p3: btfss PORTC, 6
+Warning[203]: Found opcode in column 1. (bra)
+0000EE D7FE           00104 bra wait_up_p3
+Warning[203]: Found opcode in column 1. (call)
+0000F0 EC52 F000      00105 call Delay
+Warning[203]: Found opcode in column 1. (return)
+0000F4 0012           00106 return
+                      00107 
+0000F6                00108 display_4:
+Warning[203]: Found opcode in column 1. (movlw)
+0000F6 0E00           00109 movlw 0x00 ;Turn on LED0
+Warning[203]: Found opcode in column 1. (movwf)
+0000F8 6E81           00110 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+0000FA 6A83           00111 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+0000FC 0E66           00112 movlw 0x66 ;Display ‘3’
+Warning[203]: Found opcode in column 1. (movwf)
+0000FE 6E83           00113 movwf PORTD
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[203]: Found opcode in column 1. (call)
+000100 EC52 F000      00114 call Delay
+000104 AE82           00115 wait_up_p4: btfss PORTC, 7
+Warning[203]: Found opcode in column 1. (bra)
+000106 D7FE           00116 bra wait_up_p4
+Warning[203]: Found opcode in column 1. (call)
+000108 EC52 F000      00117 call Delay
+Warning[203]: Found opcode in column 1. (return)
+00010C 0012           00118 return
+                      00119 
+00010E                00120 display_5:
+Warning[203]: Found opcode in column 1. (movlw)
+00010E 0E01           00121 movlw 0x01 ;Turn on LED1
+Warning[203]: Found opcode in column 1. (movwf)
+000110 6E81           00122 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+000112 6A83           00123 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+000114 0E6D           00124 movlw 0x6d ;Display ‘5’
+Warning[203]: Found opcode in column 1. (movwf)
+000116 6E83           00125 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+000118 EC52 F000      00126 call Delay
+00011C A882           00127 wait_up_p5: btfss PORTC, 4
+Warning[203]: Found opcode in column 1. (bra)
+00011E D7FE           00128 bra wait_up_p5
+Warning[203]: Found opcode in column 1. (call)
+000120 EC52 F000      00129 call Delay
+Warning[203]: Found opcode in column 1. (return)
+000124 0012           00130 return
+                      00131 
+000126                00132 display_6:
+Warning[203]: Found opcode in column 1. (movlw)
+000126 0E01           00133 movlw 0x01 ;Turn on LED1
+Warning[203]: Found opcode in column 1. (movwf)
+000128 6E81           00134 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+00012A 6A83           00135 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+00012C 0E7D           00136 movlw 0x7d ;Display ‘6’
+Warning[203]: Found opcode in column 1. (movwf)
+00012E 6E83           00137 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+000130 EC52 F000      00138 call Delay
+000134 AA82           00139 wait_up_p6: btfss PORTC, 5
+Warning[203]: Found opcode in column 1. (bra)
+000136 D7FE           00140 bra wait_up_p6
+Warning[203]: Found opcode in column 1. (call)
+000138 EC52 F000      00141 call Delay
+Warning[203]: Found opcode in column 1. (return)
+00013C 0012           00142 return
+                      00143 
+00013E                00144 display_7:
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[203]: Found opcode in column 1. (movlw)
+00013E 0E01           00145 movlw 0x01 ;Turn on LED1
+Warning[203]: Found opcode in column 1. (movwf)
+000140 6E81           00146 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+000142 6A83           00147 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+000144 0E07           00148 movlw 0x07 ;Display ‘7’
+Warning[203]: Found opcode in column 1. (movwf)
+000146 6E83           00149 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+000148 EC52 F000      00150 call Delay
+00014C AC82           00151 wait_up_p7: btfss PORTC, 6
+Warning[203]: Found opcode in column 1. (bra)
+00014E D7FE           00152 bra wait_up_p7
+Warning[203]: Found opcode in column 1. (call)
+000150 EC52 F000      00153 call Delay
+Warning[203]: Found opcode in column 1. (return)
+000154 0012           00154 return
+                      00155 
+000156                00156 display_8:
+Warning[203]: Found opcode in column 1. (movlw)
+000156 0E01           00157 movlw 0x01 ;Turn on LED1
+Warning[203]: Found opcode in column 1. (movwf)
+000158 6E81           00158 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+00015A 6A83           00159 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+00015C 0E7F           00160 movlw 0x7F ;Display ‘8’
+Warning[203]: Found opcode in column 1. (movwf)
+00015E 6E83           00161 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+000160 EC52 F000      00162 call Delay
+000164 AE82           00163 wait_up_p8: btfss PORTC, 7
+Warning[203]: Found opcode in column 1. (bra)
+000166 D7FE           00164 bra wait_up_p8
+Warning[203]: Found opcode in column 1. (call)
+000168 EC52 F000      00165 call Delay
+Warning[203]: Found opcode in column 1. (return)
+00016C 0012           00166 return
+                      00167 
+00016E                00168 display_9:
+Warning[203]: Found opcode in column 1. (movlw)
+00016E 0E02           00169 movlw 0x02 ;Turn on LED2
+Warning[203]: Found opcode in column 1. (movwf)
+000170 6E81           00170 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+000172 6A83           00171 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+000174 0E6F           00172 movlw 0x6f ;Display ‘9’
+Warning[203]: Found opcode in column 1. (movwf)
+000176 6E83           00173 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+000178 EC52 F000      00174 call Delay
+00017C A882           00175 wait_up_p9: btfss PORTC, 4
+Warning[203]: Found opcode in column 1. (bra)
+00017E D7FE           00176 bra wait_up_p9
+Warning[203]: Found opcode in column 1. (call)
+000180 EC52 F000      00177 call Delay
+Warning[203]: Found opcode in column 1. (return)
+000184 0012           00178 return
+                      00179 
+000186                00180 display_10:
+Warning[203]: Found opcode in column 1. (movlw)
+000186 0E02           00181 movlw 0x02 ;Turn on LED2
+Warning[203]: Found opcode in column 1. (movwf)
+000188 6E81           00182 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+00018A 6A83           00183 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+00018C 0E77           00184 movlw 0x77 ;Display ‘a’
+Warning[203]: Found opcode in column 1. (movwf)
+00018E 6E83           00185 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+000190 EC52 F000      00186 call Delay
+000194 AA82           00187 wait_up_p10: btfss PORTC, 5
+Warning[203]: Found opcode in column 1. (bra)
+000196 D7FE           00188 bra wait_up_p10
+Warning[203]: Found opcode in column 1. (call)
+000198 EC52 F000      00189 call Delay
+Warning[203]: Found opcode in column 1. (return)
+00019C 0012           00190 return
+                      00191 
+00019E                00192 display_11:
+Warning[203]: Found opcode in column 1. (movlw)
+00019E 0E02           00193 movlw 0x02 ;Turn on LED2
+Warning[203]: Found opcode in column 1. (movwf)
+0001A0 6E81           00194 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+0001A2 6A83           00195 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+0001A4 0E7C           00196 movlw 0x7c ;Display ‘b’
+Warning[203]: Found opcode in column 1. (movwf)
+0001A6 6E83           00197 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+0001A8 EC52 F000      00198 call Delay
+0001AC AC82           00199 wait_up_p11: btfss PORTC, 6
+Warning[203]: Found opcode in column 1. (bra)
+0001AE D7FE           00200 bra wait_up_p11
+Warning[203]: Found opcode in column 1. (call)
+0001B0 EC52 F000      00201 call Delay
+Warning[203]: Found opcode in column 1. (return)
+0001B4 0012           00202 return
+                      00203 
+0001B6                00204 display_12:
+Warning[203]: Found opcode in column 1. (movlw)
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0001B6 0E02           00205 movlw 0x02 ;Turn on LED2
+Warning[203]: Found opcode in column 1. (movwf)
+0001B8 6E81           00206 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+0001BA 6A83           00207 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+0001BC 0E39           00208 movlw 0x39 ;Display ‘c’
+Warning[203]: Found opcode in column 1. (movwf)
+0001BE 6E83           00209 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+0001C0 EC52 F000      00210 call Delay
+0001C4 AE82           00211 wait_up_p12: btfss PORTC, 7
+Warning[203]: Found opcode in column 1. (bra)
+0001C6 D7FE           00212 bra wait_up_p12
+Warning[203]: Found opcode in column 1. (call)
+0001C8 EC52 F000      00213 call Delay
+Warning[203]: Found opcode in column 1. (return)
+0001CC 0012           00214 return
+                      00215 
+0001CE                00216 display_13:
+Warning[203]: Found opcode in column 1. (movlw)
+0001CE 0E03           00217 movlw 0x03 ;Turn on LED3
+Warning[203]: Found opcode in column 1. (movwf)
+0001D0 6E81           00218 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+0001D2 6A83           00219 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+0001D4 0E5E           00220 movlw 0x5e ;Display ‘d’
+Warning[203]: Found opcode in column 1. (movwf)
+0001D6 6E83           00221 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+0001D8 EC52 F000      00222 call Delay
+0001DC A882           00223 wait_up_p13: btfss PORTC, 4
+Warning[203]: Found opcode in column 1. (bra)
+0001DE D7FE           00224 bra wait_up_p13
+Warning[203]: Found opcode in column 1. (call)
+0001E0 EC52 F000      00225 call Delay
+Warning[203]: Found opcode in column 1. (return)
+0001E4 0012           00226 return
+                      00227 
+0001E6                00228 display_14:
+Warning[203]: Found opcode in column 1. (movlw)
+0001E6 0E03           00229 movlw 0x03 ;Turn on LED3
+Warning[203]: Found opcode in column 1. (movwf)
+0001E8 6E81           00230 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+0001EA 6A83           00231 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+0001EC 0E79           00232 movlw 0x79 ;Display ‘e’
+Warning[203]: Found opcode in column 1. (movwf)
+0001EE 6E83           00233 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+0001F0 EC52 F000      00234 call Delay
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0001F4 AA82           00235 wait_up_p14: btfss PORTC, 5
+Warning[203]: Found opcode in column 1. (bra)
+0001F6 D7FE           00236 bra wait_up_p14
+Warning[203]: Found opcode in column 1. (call)
+0001F8 EC52 F000      00237 call Delay
+Warning[203]: Found opcode in column 1. (return)
+0001FC 0012           00238 return
+                      00239 
+0001FE                00240 display_15:
+Warning[203]: Found opcode in column 1. (movlw)
+0001FE 0E03           00241 movlw 0x03 ;Turn on LED3
+Warning[203]: Found opcode in column 1. (movwf)
+000200 6E81           00242 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+000202 6A83           00243 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+000204 0E71           00244 movlw 0x71 ;Display ‘f’
+Warning[203]: Found opcode in column 1. (movwf)
+000206 6E83           00245 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+000208 EC52 F000      00246 call Delay
+00020C AC82           00247 wait_up_p15: btfss PORTC, 6
+Warning[203]: Found opcode in column 1. (bra)
+00020E D7FE           00248 bra wait_up_p15
+Warning[203]: Found opcode in column 1. (call)
+000210 EC52 F000      00249 call Delay
+Warning[203]: Found opcode in column 1. (return)
+000214 0012           00250 return
+                      00251 
+000216                00252 display_16:
+Warning[203]: Found opcode in column 1. (movlw)
+000216 0E03           00253 movlw 0x03 ;Turn on LED3
+Warning[203]: Found opcode in column 1. (movwf)
+000218 6E81           00254 movwf PORTB
+Warning[203]: Found opcode in column 1. (clrf)
+00021A 6A83           00255 clrf PORTD
+Warning[203]: Found opcode in column 1. (movlw)
+00021C 0E3F           00256 movlw 0x3f ;Display ‘0’
+Warning[203]: Found opcode in column 1. (movwf)
+00021E 6E83           00257 movwf PORTD
+Warning[203]: Found opcode in column 1. (call)
+000220 EC52 F000      00258 call Delay
+000224 AE82           00259 wait_up_p16: btfss PORTC, 7
+Warning[203]: Found opcode in column 1. (bra)
+000226 D7FE           00260 bra wait_up_p16
+Warning[203]: Found opcode in column 1. (call)
+000228 EC52 F000      00261 call Delay
+Warning[203]: Found opcode in column 1. (return)
+00022C 0012           00262 return
+                      00263 
+Warning[205]: Found directive in column 1. (END)
+                      00264 END
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+A                                 00000000
+ABDEN                             00000000
+ABDOVF                            00000007
+ACCESS                            00000000
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ACQT0                             00000003
+ACQT1                             00000004
+ACQT2                             00000005
+ADCON0                            00000FC2
+ADCON1                            00000FC1
+ADCON2                            00000FC0
+ADCS0                             00000000
+ADCS1                             00000001
+ADCS2                             00000002
+ADDEN                             00000003
+ADEN                              00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADIP                              00000006
+ADMSK1                            00000001
+ADMSK2                            00000002
+ADMSK3                            00000003
+ADMSK4                            00000004
+ADMSK5                            00000005
+ADON                              00000000
+ADRES                             00000FC3
+ADRESH                            00000FC4
+ADRESL                            00000FC3
+AN0                               00000000
+AN1                               00000001
+AN10                              00000001
+AN11                              00000004
+AN12                              00000000
+AN2                               00000002
+AN3                               00000003
+AN4                               00000005
+AN5                               00000000
+AN6                               00000001
+AN7                               00000002
+AN8                               00000002
+AN9                               00000003
+BANKED                            00000001
+BAUDCON                           00000FB8
+BAUDCTL                           00000FB8
+BCLIE                             00000003
+BCLIF                             00000003
+BCLIP                             00000003
+BF                                00000000
+BGST                              00000005
+BOR                               00000000
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+BRG16                             00000003
+BRGH                              00000002
+BSR                               00000FE0
+Big_Loop                          00000030
+C                                 00000000
+C1INV                             00000004
+C1OUT_CMCON                       00000006
+C1OUT_PORTA                       00000004
+C2INV                             00000005
+C2OUT_CMCON                       00000007
+C2OUT_PORTA                       00000005
+CCP1                              00000002
+CCP1CON                           00000FBD
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1IP                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           00000FBA
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2IP                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCP2_PORTB                        00000003
+CCP2_PORTC                        00000001
+CCPR1                             00000FBE
+CCPR1H                            00000FBF
+CCPR1L                            00000FBE
+CCPR2                             00000FBB
+CCPR2H                            00000FBC
+CCPR2L                            00000FBB
+CFGS                              00000006
+CHS0                              00000002
+CHS1                              00000003
+CHS2                              00000004
+CHS3                              00000005
+CIS                               00000003
+CK                                00000006
+CKE                               00000006
+CKP                               00000004
+CLKI                              00000007
+CLKO                              00000006
+CM0                               00000000
+CM1                               00000001
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CM2                               00000002
+CMCON                             00000FB4
+CMIE                              00000006
+CMIF                              00000006
+CMIP                              00000006
+CREN                              00000004
+CS                                00000002
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            00000FB5
+CVREF                             00000002
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+CVRSS                             00000004
+D                                 00000005
+DC                                00000001
+DC1B0                             00000004
+DC1B1                             00000005
+DC2B0                             00000004
+DC2B1                             00000005
+DDRA                              TRISA
+DDRB                              TRISB
+DDRC                              TRISC
+DDRD                              TRISD
+DDRE                              TRISE
+DELAY_REG                         000000F0
+DONE                              00000001
+D_A                               00000005
+D_NOT_A                           00000005
+Delay                             000000A4
+Delay_loop                        000000A8
+ECCP1AS                           00000FB6
+ECCP1DEL                          00000FB7
+ECCPAS                            00000FB6
+ECCPAS0                           00000004
+ECCPAS1                           00000005
+ECCPAS2                           00000006
+ECCPASE                           00000007
+EEADR                             00000FA9
+EECON1                            00000FA6
+EECON2                            00000FA7
+EEDATA                            00000FA8
+EEIE                              00000004
+EEIF                              00000004
+EEIP                              00000004
+EEPGD                             00000007
+FAST                              00000001
+FERR                              00000002
+FLT0                              00000000
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+FLTS                              00000002
+FREE                              00000004
+FSR0                              00000000
+FSR0H                             00000FEA
+FSR0L                             00000FE9
+FSR1                              00000001
+FSR1H                             00000FE2
+FSR1L                             00000FE1
+FSR2                              00000002
+FSR2H                             00000FDA
+FSR2L                             00000FD9
+GCEN                              00000007
+GIE                               00000007
+GIEH                              00000007
+GIEL                              00000006
+GIE_GIEH                          00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
+HLVDCON                           00000FD2
+HLVDEN                            00000004
+HLVDIE                            00000002
+HLVDIF                            00000002
+HLVDIN                            00000005
+HLVDIP                            00000002
+HLVDL0                            00000000
+HLVDL1                            00000001
+HLVDL2                            00000002
+HLVDL3                            00000003
+IBF                               00000007
+IBOV                              00000005
+IDLEN                             00000007
+INDF0                             00000FEF
+INDF1                             00000FE7
+INDF2                             00000FDF
+INT0                              00000000
+INT0E                             00000004
+INT0F                             00000001
+INT0IE                            00000004
+INT0IF                            00000001
+INT1                              00000001
+INT1E                             00000003
+INT1F                             00000000
+INT1IE                            00000003
+INT1IF                            00000000
+INT1IP                            00000006
+INT1P                             00000006
+INT2                              00000002
+INT2E                             00000004
+INT2F                             00000001
+INT2IE                            00000004
+INT2IF                            00000001
+INT2IP                            00000007
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+INT2P                             00000007
+INTCON                            00000FF2
+INTCON2                           00000FF1
+INTCON3                           00000FF0
+INTEDG0                           00000006
+INTEDG1                           00000005
+INTEDG2                           00000004
+INTSRC                            00000007
+IOFS                              00000002
+IPEN                              00000007
+IPR1                              00000F9F
+IPR2                              00000FA2
+IRCF0                             00000004
+IRCF1                             00000005
+IRCF2                             00000006
+IRVST                             00000005
+IVRST                             00000005
+KBI0                              00000004
+KBI1                              00000005
+KBI2                              00000006
+KBI3                              00000007
+LATA                              00000F89
+LATA0                             00000000
+LATA1                             00000001
+LATA2                             00000002
+LATA3                             00000003
+LATA4                             00000004
+LATA5                             00000005
+LATA6                             00000006
+LATA7                             00000007
+LATB                              00000F8A
+LATB0                             00000000
+LATB1                             00000001
+LATB2                             00000002
+LATB3                             00000003
+LATB4                             00000004
+LATB5                             00000005
+LATB6                             00000006
+LATB7                             00000007
+LATC                              00000F8B
+LATC0                             00000000
+LATC1                             00000001
+LATC2                             00000002
+LATC3                             00000003
+LATC4                             00000004
+LATC5                             00000005
+LATC6                             00000006
+LATC7                             00000007
+LATD                              00000F8C
+LATD0                             00000000
+LATD1                             00000001
+LATD2                             00000002
+LATD3                             00000003
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+LATD4                             00000004
+LATD5                             00000005
+LATD6                             00000006
+LATD7                             00000007
+LATE                              00000F8D
+LATE0                             00000000
+LATE1                             00000001
+LATE2                             00000002
+LVDCON                            00000FD2
+LVDEN                             00000004
+LVDIE                             00000002
+LVDIF                             00000002
+LVDIN                             00000005
+LVDIP                             00000002
+LVDL0                             00000000
+LVDL1                             00000001
+LVDL2                             00000002
+LVDL3                             00000003
+LVV0                              00000000
+LVV1                              00000001
+LVV2                              00000002
+LVV3                              00000003
+MCLR                              00000003
+N                                 00000004
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BOR                           00000000
+NOT_CS                            00000002
+NOT_DONE                          00000001
+NOT_MCLR                          00000003
+NOT_PD                            00000002
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RD                            00000000
+NOT_RI                            00000004
+NOT_SS                            00000005
+NOT_T1SYNC                        00000002
+NOT_T3SYNC                        00000002
+NOT_TO                            00000003
+NOT_W                             00000002
+NOT_WR                            00000001
+NOT_WRITE                         00000002
+OBF                               00000006
+OERR                              00000001
+OSC1                              00000007
+OSC2                              00000006
+OSCCON                            00000FD3
+OSCFIE                            00000007
+OSCFIF                            00000007
+OSCFIP                            00000007
+OSCTUNE                           00000F9B
+OSTS                              00000003
+OV                                00000003
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+P                                 00000004
+P1A                               00000002
+P1B                               00000005
+P1C                               00000006
+P1D                               00000007
+P1M0                              00000006
+P1M1                              00000007
+PC                                00000FF9
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000FF9
+PCLATH                            00000FFA
+PCLATU                            00000FFB
+PD                                00000002
+PDC0                              00000000
+PDC1                              00000001
+PDC2                              00000002
+PDC3                              00000003
+PDC4                              00000004
+PDC5                              00000005
+PDC6                              00000006
+PEIE                              00000006
+PEIE_GIEL                         00000006
+PEN                               00000002
+PGC                               00000006
+PGD                               00000007
+PGM                               00000005
+PIE1                              00000F9D
+PIE2                              00000FA0
+PIR1                              00000F9E
+PIR2                              00000FA1
+PLLEN                             00000006
+PLUSW0                            00000FEB
+PLUSW1                            00000FE3
+PLUSW2                            00000FDB
+POR                               00000001
+PORTA                             00000F80
+PORTB                             00000F81
+PORTC                             00000F82
+PORTD                             00000F83
+PORTE                             00000F84
+POSTDEC0                          00000FED
+POSTDEC1                          00000FE5
+POSTDEC2                          00000FDD
+POSTINC0                          00000FEE
+POSTINC1                          00000FE6
+POSTINC2                          00000FDE
+PR2                               00000FCB
+PREINC0                           00000FEC
+PREINC1                           00000FE4
+PREINC2                           00000FDC
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PROD                              00000FF3
+PRODH                             00000FF4
+PRODL                             00000FF3
+PRSEN                             00000007
+PSA                               00000003
+PSP0                              00000000
+PSP1                              00000001
+PSP2                              00000002
+PSP3                              00000003
+PSP4                              00000004
+PSP5                              00000005
+PSP6                              00000006
+PSP7                              00000007
+PSPIE                             00000007
+PSPIF                             00000007
+PSPIP                             00000007
+PSPMODE                           00000004
+PSSAC0                            00000002
+PSSAC1                            00000003
+PSSBD0                            00000000
+PSSBD1                            00000001
+PWM1CON                           00000FB7
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RA6                               00000006
+RA7                               00000007
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RBIP                              00000000
+RBPU                              00000007
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RCEN                              00000003
+RCIDL                             00000006
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 18
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RCIE                              00000005
+RCIF                              00000005
+RCIP                              00000005
+RCMT                              00000006
+RCON                              00000FD0
+RCREG                             00000FAE
+RCSTA                             00000FAB
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD16                              00000007
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+RE3                               00000003
+RI                                00000004
+RSEN                              00000001
+RX                                00000007
+RX9                               00000006
+RX9D                              00000000
+RXDTP                             00000005
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SBOREN                            00000006
+SCK                               00000003
+SCKP                              00000004
+SCL                               00000003
+SCS0                              00000000
+SCS1                              00000001
+SDA                               00000004
+SDI                               00000004
+SDO                               00000005
+SEN                               00000000
+SENDB                             00000003
+SMP                               00000007
+SP0                               00000000
+SP1                               00000001
+SP2                               00000002
+SP3                               00000003
+SP4                               00000004
+SPBRG                             00000FAF
+SPBRGH                            00000FB0
+SPEN                              00000007
+SREN                              00000005
+SS                                00000005
+SSPADD                            00000FC8
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 19
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SSPBUF                            00000FC9
+SSPCON1                           00000FC6
+SSPCON2                           00000FC5
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPIP                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000FC7
+STATUS                            00000FD8
+STKFUL                            00000007
+STKOVF                            00000007
+STKPTR                            00000FFC
+STKUNF                            00000006
+SWDTE                             00000000
+SWDTEN                            00000000
+SYNC                              00000004
+T016BIT                           00000006
+T08BIT                            00000006
+T0CKI                             00000004
+T0CON                             00000FD5
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0PS0                             00000000
+T0PS1                             00000001
+T0PS2                             00000002
+T0PS3                             00000003
+T0SE                              00000004
+T13CKI                            00000000
+T1CKI                             00000000
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000FCD
+T1OSCEN                           00000003
+T1OSI                             00000001
+T1OSO                             00000000
+T1RUN                             00000006
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000FCA
+T2OUTPS0                          00000003
+T2OUTPS1                          00000004
+T2OUTPS2                          00000005
+T2OUTPS3                          00000006
+T3CCP1                            00000003
+T3CCP2                            00000006
+T3CKPS0                           00000004
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 20
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+T3CKPS1                           00000005
+T3CON                             00000FB1
+T3SYNC                            00000002
+TABLAT                            00000FF5
+TBLPTR                            00000FF6
+TBLPTRH                           00000FF7
+TBLPTRL                           00000FF6
+TBLPTRU                           00000FF8
+TMR0                              00000FD6
+TMR0H                             00000FD7
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR0IP                            00000002
+TMR0L                             00000FD6
+TMR0ON                            00000007
+TMR1                              00000FCE
+TMR1CS                            00000001
+TMR1H                             00000FCF
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1IP                            00000000
+TMR1L                             00000FCE
+TMR1ON                            00000000
+TMR2                              00000FCC
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2IP                            00000001
+TMR2ON                            00000002
+TMR3                              00000FB2
+TMR3CS                            00000001
+TMR3H                             00000FB3
+TMR3IE                            00000001
+TMR3IF                            00000001
+TMR3IP                            00000001
+TMR3L                             00000FB2
+TMR3ON                            00000000
+TO                                00000003
+TOS                               00000FFD
+TOSH                              00000FFE
+TOSL                              00000FFD
+TOSU                              00000FFF
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000F92
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISA6                            00000006
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 21
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRISA7                            00000007
+TRISB                             00000F93
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000F94
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000F95
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000F96
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TUN0                              00000000
+TUN1                              00000001
+TUN2                              00000002
+TUN3                              00000003
+TUN4                              00000004
+TX                                00000006
+TX9                               00000006
+TX9D                              00000000
+TXCKP                             00000004
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXIP                              00000004
+TXREG                             00000FAD
+TXSTA                             00000FAC
+UA                                00000001
+VCFG0                             00000004
+VCFG1                             00000005
+VDIRMAG                           00000007
+VPP                               00000003
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 22
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+VREFN                             00000002
+VREFP                             00000003
+W                                 00000000
+WCOL                              00000007
+WDTCON                            00000FD1
+WR                                00000001
+WREG                              00000FE8
+WREN                              00000002
+WRERR                             00000003
+WUE                               00000001
+Z                                 00000002
+_BOREN_NOSLP_2L                   000000FD
+_BOREN_OFF_2L                     000000F9
+_BOREN_ON_2L                      000000FB
+_BOREN_SBORDIS_2L                 000000FF
+_BORV_0_2L                        000000E7
+_BORV_1_2L                        000000EF
+_BORV_2_2L                        000000F7
+_BORV_3_2L                        000000FF
+_CCP2MX_PORTBE_3H                 000000FE
+_CCP2MX_PORTC_3H                  000000FF
+_CONFIG1H                         00300001
+_CONFIG2H                         00300003
+_CONFIG2L                         00300002
+_CONFIG3H                         00300005
+_CONFIG4L                         00300006
+_CONFIG5H                         00300009
+_CONFIG5L                         00300008
+_CONFIG6H                         0030000B
+_CONFIG6L                         0030000A
+_CONFIG7H                         0030000D
+_CONFIG7L                         0030000C
+_CP0_OFF_5L                       000000FF
+_CP0_ON_5L                        000000FE
+_CP1_OFF_5L                       000000FF
+_CP1_ON_5L                        000000FD
+_CP2_OFF_5L                       000000FF
+_CP2_ON_5L                        000000FB
+_CP3_OFF_5L                       000000FF
+_CP3_ON_5L                        000000F7
+_CPB_OFF_5H                       000000FF
+_CPB_ON_5H                        000000BF
+_CPD_OFF_5H                       000000FF
+_CPD_ON_5H                        0000007F
+_DEBUG_OFF_4L                     000000FF
+_DEBUG_ON_4L                      0000007F
+_DEVID1                           003FFFFE
+_DEVID2                           003FFFFF
+_EBTR0_OFF_7L                     000000FF
+_EBTR0_ON_7L                      000000FE
+_EBTR1_OFF_7L                     000000FF
+_EBTR1_ON_7L                      000000FD
+_EBTR2_OFF_7L                     000000FF
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 23
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_EBTR2_ON_7L                      000000FB
+_EBTR3_OFF_7L                     000000FF
+_EBTR3_ON_7L                      000000F7
+_EBTRB_OFF_7H                     000000FF
+_EBTRB_ON_7H                      000000BF
+_FCMEN_OFF_1H                     000000BF
+_FCMEN_ON_1H                      000000FF
+_IDLOC0                           00200000
+_IDLOC1                           00200001
+_IDLOC2                           00200002
+_IDLOC3                           00200003
+_IDLOC4                           00200004
+_IDLOC5                           00200005
+_IDLOC6                           00200006
+_IDLOC7                           00200007
+_IESO_OFF_1H                      0000007F
+_IESO_ON_1H                       000000FF
+_LPT1OSC_OFF_3H                   000000FB
+_LPT1OSC_ON_3H                    000000FF
+_LVP_OFF_4L                       000000FB
+_LVP_ON_4L                        000000FF
+_MCLRE_OFF_3H                     0000007F
+_MCLRE_ON_3H                      000000FF
+_OSC_ECIO6_1H                     000000F5
+_OSC_EC_1H                        000000F4
+_OSC_HSPLL_1H                     000000F6
+_OSC_HS_1H                        000000F2
+_OSC_INTIO67_1H                   000000F8
+_OSC_INTIO7_1H                    000000F9
+_OSC_LP_1H                        000000F0
+_OSC_RCIO6_1H                     000000F7
+_OSC_RC_1H                        000000F3
+_OSC_XT_1H                        000000F1
+_PBADEN_OFF_3H                    000000FD
+_PBADEN_ON_3H                     000000FF
+_PWRT_OFF_2L                      000000FF
+_PWRT_ON_2L                       000000FE
+_STVREN_OFF_4L                    000000FE
+_STVREN_ON_4L                     000000FF
+_WDTPS_1024_2H                    000000F5
+_WDTPS_128_2H                     000000EF
+_WDTPS_16384_2H                   000000FD
+_WDTPS_16_2H                      000000E9
+_WDTPS_1_2H                       000000E1
+_WDTPS_2048_2H                    000000F7
+_WDTPS_256_2H                     000000F1
+_WDTPS_2_2H                       000000E3
+_WDTPS_32768_2H                   000000FF
+_WDTPS_32_2H                      000000EB
+_WDTPS_4096_2H                    000000F9
+_WDTPS_4_2H                       000000E5
+_WDTPS_512_2H                     000000F3
+_WDTPS_64_2H                      000000ED
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 24
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WDTPS_8192_2H                    000000FB
+_WDTPS_8_2H                       000000E7
+_WDT_OFF_2H                       000000FE
+_WDT_ON_2H                        000000FF
+_WRT0_OFF_6L                      000000FF
+_WRT0_ON_6L                       000000FE
+_WRT1_OFF_6L                      000000FF
+_WRT1_ON_6L                       000000FD
+_WRT2_OFF_6L                      000000FF
+_WRT2_ON_6L                       000000FB
+_WRT3_OFF_6L                      000000FF
+_WRT3_ON_6L                       000000F7
+_WRTB_OFF_6H                      000000FF
+_WRTB_ON_6H                       000000BF
+_WRTC_OFF_6H                      000000FF
+_WRTC_ON_6H                       000000DF
+_WRTD_OFF_6H                      000000FF
+_WRTD_ON_6H                       0000007F
+_XINST_OFF_4L                     000000BF
+_XINST_ON_4L                      000000FF
+__18F4520                         00000001
+__DEBUG                           1
+display_1                         000000AE
+display_10                        00000186
+display_11                        0000019E
+display_12                        000001B6
+display_13                        000001CE
+display_14                        000001E6
+display_15                        000001FE
+display_16                        00000216
+display_2                         000000C6
+display_3                         000000DE
+display_4                         000000F6
+display_5                         0000010E
+display_6                         00000126
+display_7                         0000013E
+display_8                         00000156
+display_9                         0000016E
+wait_up_p1                        000000BC
+wait_up_p10                       00000194
+wait_up_p11                       000001AC
+wait_up_p12                       000001C4
+wait_up_p13                       000001DC
+wait_up_p14                       000001F4
+wait_up_p15                       0000020C
+wait_up_p16                       00000224
+wait_up_p2                        000000D4
+wait_up_p3                        000000EC
+wait_up_p4                        00000104
+wait_up_p5                        0000011C
+wait_up_p6                        00000134
+wait_up_p7                        0000014C
+wait_up_p8                        00000164
+MPASM  5.51                        TUT7-4.ASM   10-22-2020  20:18:24         PAGE 25
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+wait_up_p9                        0000017C
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XXXXXXXXXXXXXXXX ---------------- ---------------- XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0080 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+00C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0100 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0140 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0180 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+01C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0200 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXX-- ----------------
+0000 : -XXX-XX-XXXXXX-- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Bytes Used:   537
+Program Memory Bytes Free: 32231
+
+
+Errors   :     0
+Warnings :   202 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

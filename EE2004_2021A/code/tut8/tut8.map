@@ -1,0 +1,68 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Fri Oct 30 14:38:10 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000014
+                   .org_3       code   0x000030    program   0x000020
+                   .org_2       code   0x0000f0    program   0x00009a
+    .config_300001_TUT8.O    romdata   0x300001    program   0x000001
+    .config_300002_TUT8.O    romdata   0x300002    program   0x000001
+    .config_300003_TUT8.O    romdata   0x300003    program   0x000001
+    .config_300005_TUT8.O    romdata   0x300005    program   0x000001
+    .config_300006_TUT8.O    romdata   0x300006    program   0x000001
+    .config_300008_TUT8.O    romdata   0x300008    program   0x000001
+    .config_300009_TUT8.O    romdata   0x300009    program   0x000001
+    .config_30000A_TUT8.O    romdata   0x30000a    program   0x000001
+    .config_30000B_TUT8.O    romdata   0x30000b    program   0x000001
+    .config_30000C_TUT8.O    romdata   0x30000c    program   0x000001
+    .config_30000D_TUT8.O    romdata   0x30000d    program   0x000001
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000013      
+                            0x000030    0x00004f      
+                            0x0000f0    0x000189      
+                            0x300001    0x300003      
+                            0x300005    0x300006      
+                            0x300008    0x30000d      
+            217 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                 Big_loop   0x0000fc    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                    Delay   0x00014c    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                  Delay_2   0x000150    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                  Delay_3   0x000154    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                  Delay_4   0x000158    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                    Start   0x0000f0    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+               inner_loop   0x000100    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+             repeat_times   0x000146    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                  table_1   0x00016a    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+             table_1_data   0x000030    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+             table_1_data   0x000030    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                    Start   0x0000f0    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                 Big_loop   0x0000fc    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+               inner_loop   0x000100    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+             repeat_times   0x000146    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                    Delay   0x00014c    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                  Delay_2   0x000150    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                  Delay_3   0x000154    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                  Delay_4   0x000158    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+                  table_1   0x00016a    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut8\tut8.asm
+
+

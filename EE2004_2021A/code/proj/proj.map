@@ -1,0 +1,194 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Fri Dec 04 10:13:14 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000010
+                   .org_2       code   0x000080    program   0x0003e4
+                   .org_3       code   0x004000    program   0x003210
+    .config_300001_PROJ.O    romdata   0x300001    program   0x000001
+    .config_300002_PROJ.O    romdata   0x300002    program   0x000001
+    .config_300003_PROJ.O    romdata   0x300003    program   0x000001
+    .config_300005_PROJ.O    romdata   0x300005    program   0x000001
+    .config_300006_PROJ.O    romdata   0x300006    program   0x000001
+    .config_300008_PROJ.O    romdata   0x300008    program   0x000001
+    .config_300009_PROJ.O    romdata   0x300009    program   0x000001
+    .config_30000A_PROJ.O    romdata   0x30000a    program   0x000001
+    .config_30000B_PROJ.O    romdata   0x30000b    program   0x000001
+    .config_30000C_PROJ.O    romdata   0x30000c    program   0x000001
+    .config_30000D_PROJ.O    romdata   0x30000d    program   0x000001
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x00000f      
+                            0x000080    0x000463      
+                            0x004000    0x00720f      
+                            0x300001    0x300003      
+                            0x300005    0x300006      
+                            0x300008    0x30000d      
+            13839 out of 33048 program addresses used, program memory utilization is 41%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+       Button_P1_function   0x0000c8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P2_function   0x0000de    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P3_function   0x0000f4    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P4_function   0x00010a    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P5_function   0x000120    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P6_function   0x000136    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P7_function   0x000150    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        Button_P8_braEXIT   0x000186    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        Button_P8_braMAIN   0x00017e    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P8_function   0x00016a    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+              Delay_input   0x00019a    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+            Delay_input_2   0x00019e    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+             Delay_output   0x00021c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+           Delay_output_2   0x000220    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+                     Exit   0x0000c4    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+                 MainLoop   0x00008c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_CHINESE_meme_setting   0x0002d8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+  Message_CHINESE_setting   0x0002b2    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+  Message_EXITING_setting   0x00036c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+    Message_HELLO_setting   0x000348    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_display_inner_loop   0x00024c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_display_inner_loop_1   0x000250    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+   Message_display_repeat   0x000226    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+ Message_display_repeat_2   0x00022a    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     Message_fast_setting   0x0003b6    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+              Message_fbf   0x0001d6    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_fbf_animate_setting   0x000324    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_fbf_arrow_setting   0x00041c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_fbf_hourglass_setting   0x000440    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     Message_info_setting   0x0002fe    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+    Message_loading_arrow   0x000206    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_loading_hourglass   0x0001e8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_loading_hourglass_inner   0x0001f4    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+          Message_movable   0x0001a4    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Message_movable_FF   0x0001c2    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+    Message_movable_inner   0x0001c0    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+   Message_movable_not_FF   0x0001aa    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     Message_null_setting   0x0003fe    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     Message_slow_setting   0x0003da    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     Message_test_setting   0x000390    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+                    Start   0x000080    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+          look_up_table_C   0x000276    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+          look_up_table_D   0x000294    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               table_NULL   0x006e00    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     table_animate_C_data   0x005af8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     table_animate_D_data   0x0060f8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       table_arrow_C_data   0x006e10    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       table_arrow_D_data   0x006e90    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        table_fast_C_data   0x006b68    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        table_fast_D_data   0x006c0c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+   table_hourglass_C_data   0x006f10    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+   table_hourglass_D_data   0x007090    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_CHINESE_C_data   0x004000    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_CHINESE_D_data   0x0042c0    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_C_meme_C_data   0x004580    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_C_meme_D_data   0x004dc0    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_EXITING_C_data   0x006798    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_EXITING_D_data   0x0067f8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_HELLO_C_data   0x0066f8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_HELLO_D_data   0x006748    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_info_C_data   0x005600    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_info_D_data   0x00587c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        table_slow_C_data   0x006cb0    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        table_slow_D_data   0x006d58    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_test_messgae_C_data   0x006858    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_test_messgae_D_data   0x0069e0    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P1   0x0000d4    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P2   0x0000ea    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P3   0x000100    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P4   0x000116    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P5   0x00012c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P6   0x000146    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P7   0x000160    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    Start   0x000080    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+                 MainLoop   0x00008c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+                     Exit   0x0000c4    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P1_function   0x0000c8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P1   0x0000d4    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P2_function   0x0000de    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P2   0x0000ea    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P3_function   0x0000f4    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P3   0x000100    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P4_function   0x00010a    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P4   0x000116    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P5_function   0x000120    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P5   0x00012c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P6_function   0x000136    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P6   0x000146    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P7_function   0x000150    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               wait_up_P7   0x000160    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Button_P8_function   0x00016a    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        Button_P8_braMAIN   0x00017e    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        Button_P8_braEXIT   0x000186    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+              Delay_input   0x00019a    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+            Delay_input_2   0x00019e    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+          Message_movable   0x0001a4    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+   Message_movable_not_FF   0x0001aa    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+    Message_movable_inner   0x0001c0    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       Message_movable_FF   0x0001c2    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+              Message_fbf   0x0001d6    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_loading_hourglass   0x0001e8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_loading_hourglass_inner   0x0001f4    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+    Message_loading_arrow   0x000206    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+             Delay_output   0x00021c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+           Delay_output_2   0x000220    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+   Message_display_repeat   0x000226    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+ Message_display_repeat_2   0x00022a    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_display_inner_loop   0x00024c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_display_inner_loop_1   0x000250    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+          look_up_table_C   0x000276    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+          look_up_table_D   0x000294    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+  Message_CHINESE_setting   0x0002b2    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_CHINESE_meme_setting   0x0002d8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     Message_info_setting   0x0002fe    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_fbf_animate_setting   0x000324    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+    Message_HELLO_setting   0x000348    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+  Message_EXITING_setting   0x00036c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     Message_test_setting   0x000390    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     Message_fast_setting   0x0003b6    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     Message_slow_setting   0x0003da    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     Message_null_setting   0x0003fe    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_fbf_arrow_setting   0x00041c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+Message_fbf_hourglass_setting   0x000440    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_CHINESE_C_data   0x004000    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_CHINESE_D_data   0x0042c0    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_C_meme_C_data   0x004580    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_C_meme_D_data   0x004dc0    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_info_C_data   0x005600    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_info_D_data   0x00587c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     table_animate_C_data   0x005af8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+     table_animate_D_data   0x0060f8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_HELLO_C_data   0x0066f8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_HELLO_D_data   0x006748    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_EXITING_C_data   0x006798    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_message_EXITING_D_data   0x0067f8    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_test_messgae_C_data   0x006858    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+table_test_messgae_D_data   0x0069e0    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        table_fast_C_data   0x006b68    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        table_fast_D_data   0x006c0c    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        table_slow_C_data   0x006cb0    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+        table_slow_D_data   0x006d58    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+               table_NULL   0x006e00    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       table_arrow_C_data   0x006e10    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+       table_arrow_D_data   0x006e90    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+   table_hourglass_C_data   0x006f10    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+   table_hourglass_D_data   0x007090    program     static B:\Bridge\City2020_SEM_A\EE2004\code\proj\asm\proj.asm
+
+

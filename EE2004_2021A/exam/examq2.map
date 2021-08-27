@@ -1,0 +1,35 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Sat Dec 12 15:07:58 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000022
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000021      
+            34 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    AGAIN   0x00001a    program     static B:\Bridge\City2020_SEM_A\EE2004\exam\examq2.asm
+                    DELAY   0x000018    program     static B:\Bridge\City2020_SEM_A\EE2004\exam\examq2.asm
+                     HERE   0x000006    program     static B:\Bridge\City2020_SEM_A\EE2004\exam\examq2.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     HERE   0x000006    program     static B:\Bridge\City2020_SEM_A\EE2004\exam\examq2.asm
+                    DELAY   0x000018    program     static B:\Bridge\City2020_SEM_A\EE2004\exam\examq2.asm
+                    AGAIN   0x00001a    program     static B:\Bridge\City2020_SEM_A\EE2004\exam\examq2.asm
+
+

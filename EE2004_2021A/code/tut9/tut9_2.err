@@ -1,0 +1,8 @@
+Warning[205] D:\BRIDGE\CITY2020_SEM_A\EE2004\CODE\TUT9\TUT9_2.ASM 1 : Found directive in column 1. (LIST)
+Warning[205] D:\BRIDGE\CITY2020_SEM_A\EE2004\CODE\TUT9\TUT9_2.ASM 4 : Found directive in column 1. (CONFIG)
+Warning[205] D:\BRIDGE\CITY2020_SEM_A\EE2004\CODE\TUT9\TUT9_2.ASM 5 : Found directive in column 1. (CONFIG)
+Warning[205] D:\BRIDGE\CITY2020_SEM_A\EE2004\CODE\TUT9\TUT9_2.ASM 6 : Found directive in column 1. (CONFIG)
+Warning[205] D:\BRIDGE\CITY2020_SEM_A\EE2004\CODE\TUT9\TUT9_2.ASM 8 : Found directive in column 1. (ORG)
+Warning[203] D:\BRIDGE\CITY2020_SEM_A\EE2004\CODE\TUT9\TUT9_2.ASM 10 : Found opcode in column 1. (goto)
+Warning[205] D:\BRIDGE\CITY2020_SEM_A\EE2004\CODE\TUT9\TUT9_2.ASM 11 : Found directive in column 1. (ORG)
+Warning[205] D:\BRIDGE\CITY2020_SEM_A\EE2004\CODE\TUT9\TUT9_2.ASM 35 : Found directive in column 1. (END)

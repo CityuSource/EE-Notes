@@ -1,0 +1,50 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Mon Nov 23 21:05:17 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000022
+ .config_300001_TESTQ3C.O    romdata   0x300001    program   0x000001
+ .config_300002_TESTQ3C.O    romdata   0x300002    program   0x000001
+ .config_300003_TESTQ3C.O    romdata   0x300003    program   0x000001
+ .config_300005_TESTQ3C.O    romdata   0x300005    program   0x000001
+ .config_300006_TESTQ3C.O    romdata   0x300006    program   0x000001
+ .config_300008_TESTQ3C.O    romdata   0x300008    program   0x000001
+ .config_300009_TESTQ3C.O    romdata   0x300009    program   0x000001
+ .config_30000A_TESTQ3C.O    romdata   0x30000a    program   0x000001
+ .config_30000B_TESTQ3C.O    romdata   0x30000b    program   0x000001
+ .config_30000C_TESTQ3C.O    romdata   0x30000c    program   0x000001
+ .config_30000D_TESTQ3C.O    romdata   0x30000d    program   0x000001
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000021      
+                            0x300001    0x300003      
+                            0x300005    0x300006      
+                            0x300008    0x30000d      
+            45 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    Again   0x00001a    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\testq3c.asm
+                    Delay   0x000018    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\testq3c.asm
+                     Here   0x000006    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\testq3c.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     Here   0x000006    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\testq3c.asm
+                    Delay   0x000018    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\testq3c.asm
+                    Again   0x00001a    program     static B:\Bridge\City2020_SEM_A\EE2004\code\test\testq3c.asm
+
+

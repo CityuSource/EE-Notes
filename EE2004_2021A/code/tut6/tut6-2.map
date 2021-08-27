@@ -1,0 +1,86 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Thu Oct 15 14:51:24 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000004
+                   .org_2       code   0x000030    program   0x0000da
+  .config_300001_TUT6-2.O    romdata   0x300001    program   0x000001
+  .config_300002_TUT6-2.O    romdata   0x300002    program   0x000001
+  .config_300003_TUT6-2.O    romdata   0x300003    program   0x000001
+  .config_300005_TUT6-2.O    romdata   0x300005    program   0x000001
+  .config_300006_TUT6-2.O    romdata   0x300006    program   0x000001
+  .config_300008_TUT6-2.O    romdata   0x300008    program   0x000001
+  .config_300009_TUT6-2.O    romdata   0x300009    program   0x000001
+  .config_30000A_TUT6-2.O    romdata   0x30000a    program   0x000001
+  .config_30000B_TUT6-2.O    romdata   0x30000b    program   0x000001
+  .config_30000C_TUT6-2.O    romdata   0x30000c    program   0x000001
+  .config_30000D_TUT6-2.O    romdata   0x30000d    program   0x000001
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000003      
+                            0x000030    0x000109      
+                            0x300001    0x300003      
+                            0x300005    0x300006      
+                            0x300008    0x30000d      
+            233 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    Delay   0x000070    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                     LOOP   0x000074    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                     Loop   0x00003c    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                     Main   0x000030    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p1   0x00007a    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p2   0x00008c    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p3   0x00009e    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p4   0x0000b0    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p5   0x0000c2    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p6   0x0000d4    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p7   0x0000e6    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p8   0x0000f8    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p1   0x000082    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p2   0x000094    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p3   0x0000a6    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p4   0x0000b8    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p5   0x0000ca    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p6   0x0000dc    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p7   0x0000ee    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p8   0x000100    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     Main   0x000030    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                     Loop   0x00003c    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                    Delay   0x000070    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                     LOOP   0x000074    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p1   0x00007a    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p1   0x000082    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p2   0x00008c    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p2   0x000094    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p3   0x00009e    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p3   0x0000a6    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p4   0x0000b0    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p4   0x0000b8    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p5   0x0000c2    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p5   0x0000ca    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p6   0x0000d4    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p6   0x0000dc    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p7   0x0000e6    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p7   0x0000ee    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+                       p8   0x0000f8    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+               wait_up_p8   0x000100    program     static D:\Bridge\City2020_SEM_A\EE2004\code\tut6\tut6-2.asm
+
+
