@@ -1,0 +1,68 @@
+4
+7
+7 3 11 1 5 9 13
+7 1
+7
+7 3 11 1 5 9 13
+1 7
+7
+7 3 11 1 5 9 13
+5 1
+7
+7 3 11 1 5 9 13
+9 5
+
+================================================================================
+
+Input:
+The first line of the input contains an integer T denoting the number of test cases.
+Each test case has three lines:
+	The first line has an integer N, which is the length of the input in next line.
+	The second line has N integers separated with a space, where -1 is used to indicate an absence of node and the others are the keys for the binary tree.
+    The third line has two integers x and y separated with a space.
+
+Output:
+Case 1
+           (13)
+     (11)
+           (9)
+(7)
+           (5)
+     (3)
+           (1)
+Distance from root to 7?        0
+Distance from 7 to 1?           2
+
+Case 2
+           (13)
+     (11)
+           (9)
+(7)
+           (5)
+     (3)
+           (1)
+Distance from root to 1?        2
+Distance from 1 to 7?           2
+
+Case 3
+           (13)
+     (11)
+           (9)
+(7)
+           (5)
+     (3)
+           (1)
+Distance from root to 5?        2
+Distance from 5 to 1?           2
+
+Case 4
+           (13)
+     (11)
+           (9)
+(7)
+           (5)
+     (3)
+           (1)
+Distance from root to 9?        2
+Distance from 9 to 5?           4
+

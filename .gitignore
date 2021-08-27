@@ -3,7 +3,15 @@
 
 # Production
 /build
+**/build
 /.vscode
+**/.vscode
+
+**wsl.txt
+**ssh_command.txt
 
 # Ext
 *.ini
+*.exe
+*.rdata
+*.Rhistory

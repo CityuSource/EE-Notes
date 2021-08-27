@@ -1,0 +1,8 @@
+https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Questionnaire&CycleBeginYear=2017
+https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Examination&CycleBeginYear=2017
+
+Alcohol Use	                    ALQ_J Doc	ALQ_J Data [XPT - 434.4 KB]	December 2020
+Blood Pressure & Cholesterol	BPQ_J Doc	BPQ_J Data [XPT - 531.8 KB]	February 2020
+Diabetes	                    DIQ_J Doc	DIQ_J Data [XPT - 3.7 MB]	February 2020
+Body Measures	                BMX_J Doc	BMX_J Data [XPT - 1.4 MB]	February 2020
+

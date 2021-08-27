@@ -1,0 +1,57 @@
+9
+1
+12
+1234
+4321
+34321
+234765
+234753
+234531
+8987654321
+
+================================================================================
+Below is the description of the input format and expected output.
+================================================================================
+
+Input:
+The first line of input contains an integer T denoting the number of test cases. 
+Each following line is a test case that contains a positive number.
+
+Output:
+Case 1
+Input:  1
+Output: 1
+
+Case 2
+Input:  12
+Output: 21
+
+Case 3
+Input:  1234
+Output: 1243
+
+Case 4
+Input:  4321
+Output: 4321
+
+Case 5
+Input:  34321
+Output: 41233
+
+Case 6
+Input:  234765
+Output: 235467
+
+Case 7
+Input:  234753
+Output: 235347
+
+Case 8
+Input:  234531
+Output: 235134
+
+235764764
+235766447
+
+8987654321
+9123456788

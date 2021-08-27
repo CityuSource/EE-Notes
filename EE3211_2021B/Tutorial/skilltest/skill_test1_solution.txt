@@ -1,0 +1,8 @@
+setwd("/your path")
+
+data <- read.table("insurance.txt", header = TRUE)
+head(data)
+boxplot(data$age, main="age")
+hist(data$charges, main = "Charges", col="blue", xlab = "Charges")
+stem(data$age,atom = 10)
+barplot(data$children,main = "Children", ylab = "Number of Children", col = "pink")

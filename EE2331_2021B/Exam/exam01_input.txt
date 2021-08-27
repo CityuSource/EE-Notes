@@ -1,0 +1,29 @@
+3
+7
+1 3 5 0 2 4 6
+2
+2 1
+0
+
+================================================================================
+
+Input:
+The first line of input contains an integer T denoting the number of test cases.
+Each test case has two lines:
+	The first line of each test case contains an integer N, which is the length for the input list.
+	The second line of each test case contains N integers separated with a space which are the content of the input list.
+
+Output:
+Case 1
+Input list:     [1]-> [3]-> [5]-> [0]-> [2]-> [4]-> [6]-> NULL
+Sorted list:    [0]-> [1]-> [2]-> [3]-> [4]-> [5]-> [6]-> NULL
+
+
+Case 2
+Input list:     [2]-> [1]-> NULL
+Sorted list:    [1]-> [2]-> NULL
+
+
+Case 3
+Input list:     NULL
+Sorted list:    NULL

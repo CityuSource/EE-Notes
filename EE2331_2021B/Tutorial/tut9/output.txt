@@ -1,0 +1,51 @@
+Case 1
+(1)
+     (1)
+Is complete? Yes
+
+Case 2
+     (1)
+(1)
+     (1)
+Is complete? Yes
+
+Case 3
+     (2)
+(1)
+Is complete? No
+
+Case 4
+           (7)
+     (3)
+(1)
+           (5)
+     (2)
+           (4)
+Is complete? No
+
+Case 5
+     (3)
+           (6)
+(1)
+           (5)
+     (2)
+           (4)
+Is complete? Yes
+
+Case 6
+     (3)
+           (6)
+(1)
+     (2)
+           (4)
+Is complete? No
+
+Case 7
+           (7)
+     (3)
+           (6)
+(1)
+           (5)
+     (2)
+           (4)
+Is complete? Yes

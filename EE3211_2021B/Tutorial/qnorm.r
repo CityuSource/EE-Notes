@@ -1,0 +1,15 @@
+x.mean <- as.integer(readline(prompt = "Mean: "))
+x.sd <- as.integer(readline(prompt = "SD: "))
+
+x0 <- qnorm(0.01, mean = x.mean, sd = x.sd)
+x1 <- qnorm(0.05, mean = x.mean, sd = x.sd)
+x2 <- qnorm(0.10, mean = x.mean, sd = x.sd)
+x3 <- qnorm(0.90, mean = x.mean, sd = x.sd)
+x4 <- qnorm(0.95, mean = x.mean, sd = x.sd)
+x5 <- qnorm(0.99, mean = x.mean, sd = x.sd)
+x.df <- c(x0, x1, x2, x3, x4, x5)
+
+x.rowname <- c("P-value")
+x.colname <- c("0.01", "0.05", "0.10", "0.90", "0.95", "0.99")
+x <- matrix(x.df, nrow = 1, byrow = TRUE, dimnames = list(x.rowname, x.colname))
+print(x)

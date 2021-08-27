@@ -1,0 +1,53 @@
+6
+123
+456
+111
+111111
+222222
+222
+0
+10
+999
+111
+999888
+88877
+
+================================================================================
+Below is the description of the input format and expected output.
+================================================================================
+
+Input:
+The first line of input contains an integer T denoting the number of test cases.
+Each following test case contains two integer numbers, each on a single line. 
+
+Output:
+Case 1
+Num 1:  [3]-> [2]-> [1]-> NULL
+Num 2:  [6]-> [5]-> [4]-> NULL
+Sum:    [9]-> [7]-> [5]-> NULL
+
+Case 2
+Num 1:  [1]-> [1]-> [1]-> NULL
+Num 2:  [1]-> [1]-> [1]-> [1]-> [1]-> [1]-> NULL
+Sum:    [2]-> [2]-> [2]-> [1]-> [1]-> [1]-> NULL
+
+Case 3
+Num 1:  [2]-> [2]-> [2]-> [2]-> [2]-> [2]-> NULL
+Num 2:  [2]-> [2]-> [2]-> NULL
+Sum:    [4]-> [4]-> [4]-> [2]-> [2]-> [2]-> NULL
+
+Case 4
+Num 1:  [0]-> NULL
+Num 2:  [0]-> [1]-> NULL
+Sum:    [0]-> [1]-> NULL
+
+Case 5
+Num 1:  [9]-> [9]-> [9]-> NULL
+Num 2:  [1]-> [1]-> [1]-> NULL
+Sum:    [0]-> [1]-> [1]-> [1]-> NULL
+
+Test Case 
+Num 1:  [8]-> [8]-> [8]-> [9]-> [9]-> [9]-> NULL
+Num 2:  [7]-> [7]-> [8]-> [8]-> [8]-> NULL
+Sum:    [5]-> [6]-> [7]-> [8]-> [8]-> [0]-> [1]-> NULL
+
