@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+    <script>
+           function randomUppercaseCharacter() {
+                var d, c;
+                d = Math.floor(Math.random()*26);
+                c = String.fromCharCode(65+d);
+                return c;
+           }
+           function init() {
+                var s;
+                s = randomUppercaseCharacter();
+                document.getElementById("result").innerHTML = s;
+           }
+    </script>
+</head>
+<body onload="init();">
+    <div id="result"><br/></div>
+</body>
+</html>

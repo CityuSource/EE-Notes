@@ -1,0 +1,5 @@
+Warning[215] D:\IDK\DOWNLOADS\UNI\YR2 SEMB\EE2004 MICROSHIT\ASSSIGNMENT\1\EXAMPLEE.ASM 1 : Processor superseded by command line.  Verify processor symbol.
+Message[301] D:\PROGRAM FILES\MICROCHIP\MPASM SUITE\P18F4520.INC 33 : MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+Warning[205] D:\IDK\DOWNLOADS\UNI\YR2 SEMB\EE2004 MICROSHIT\ASSSIGNMENT\1\EXAMPLEE.ASM 9 : Found directive in column 1. (ORG)
+Warning[203] D:\IDK\DOWNLOADS\UNI\YR2 SEMB\EE2004 MICROSHIT\ASSSIGNMENT\1\EXAMPLEE.ASM 10 : Found opcode in column 1. (goto)
+Warning[205] D:\IDK\DOWNLOADS\UNI\YR2 SEMB\EE2004 MICROSHIT\ASSSIGNMENT\1\EXAMPLEE.ASM 12 : Found directive in column 1. (org)

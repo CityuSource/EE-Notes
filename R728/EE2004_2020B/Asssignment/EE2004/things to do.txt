@@ -1,0 +1,5 @@
+button to display data (done)
+Temperature read (not done)
+Temperature live show (not done)
+File write to eeprom (not done)
+file read from eeprom (not done)

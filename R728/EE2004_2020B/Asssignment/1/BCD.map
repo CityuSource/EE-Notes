@@ -1,0 +1,31 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Thu Feb 18 20:54:14 2021
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x00003e
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x00003d      
+            62 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     done   0x00003c    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\BCD.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     done   0x00003c    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\BCD.asm
+
+
