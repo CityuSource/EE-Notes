@@ -1,0 +1,42 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Sun Mar 28 08:18:14 2021
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000042
+                   .org_2       code   0x000500    program   0x000012
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000041      
+                            0x000500    0x000511      
+            84 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     Loop   0x000026    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.asm
+                     Main   0x000004    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.asm
+                    array   0x000500    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.asm
+                  f_Retlw   0x000030    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.asm
+                  f_Table   0x000014    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     Main   0x000004    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.asm
+                  f_Table   0x000014    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.asm
+                     Loop   0x000026    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.asm
+                  f_Retlw   0x000030    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.asm
+                    array   0x000500    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.asm
+
+

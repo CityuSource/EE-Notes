@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+    <script>
+           var fruit=[];
+           function addFruit() {
+              var s, i;
+              fruit[fruit.length] = document.getElementById("textinput").value;
+              s = "<ul>";
+              for (i=0; i<fruit.length; i++) {
+                   s += "<li>"+fruit[i]+"</li>";
+              }
+              s += "</ul>";
+              document.getElementById("result").innerHTML = s;
+           }
+    </script>
+</head>
+<body>
+    Input a fruit that you like:
+    <input type="text" id="textinput" />
+    <button id="button_add" onclick="addFruit();">Add</button>
+    <h2>The fruits that you like</h2>
+    <div id="result"></div>
+</body>
+</html>

@@ -1,0 +1,305 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.err
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|LookupTable.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File001]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexToASCII.err
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|ConvertHexToASCII.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File002]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.err
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|ConvertHexArrayToASCIIArray.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File003]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\test.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|test.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File004]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\test.err
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|test.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File005]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|ConvertHexArrayToASCIIArray.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File006]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\InterruptProgram.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|InterruptProgram.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File007]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\InterruptProgram.err
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|InterruptProgram.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File008]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.hex
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|LookupTable.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File009]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.lst
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|LookupTable.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File010]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\LookupTable.cof
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|LookupTable.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[File011]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexToASCII.hex
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|ConvertHexToASCII.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File012]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexToASCII.lst
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|ConvertHexToASCII.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File013]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexToASCII.cof
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|ConvertHexToASCII.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[File014]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.hex
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|ConvertHexArrayToASCIIArray.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File015]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.lst
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|ConvertHexArrayToASCIIArray.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File016]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.cof
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|ConvertHexArrayToASCIIArray.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[File017]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\test.hex
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|test.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File018]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\test.lst
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|test.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File019]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\test.cof
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|test.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[File020]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\InterruptProgram.hex
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|InterruptProgram.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File021]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\InterruptProgram.lst
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|InterruptProgram.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=
+TraceCmdString=
+DebugOptions=/d__DEBUG=1
+[File022]
+Location=D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\InterruptProgram.cof
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=D:\Program Files\Microchip\MPASM Suite\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|InterruptProgram.asm||<obj>||<lib>||<lkr>||
+SuiteArgsString=generate-absolute-code
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[TOOL_LOC_STAMPS]
+tool_loc{49D3CA3F-D9A3-4518-9943-226A347E8CC7}=D:\Program Files\Microchip\MPASM Suite\MPASMWIN.exe
+tool_loc{96C98149-AA1B-4CF9-B967-FAE79CAB663C}=D:\Program Files\Microchip\MPASM Suite\mplink.exe

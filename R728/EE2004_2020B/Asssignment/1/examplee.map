@@ -1,0 +1,36 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Wed Feb 24 20:41:45 2021
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000004
+                   .org_2       code   0x000036    program   0x00001c
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000003      
+                            0x000036    0x000051      
+            32 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  BCD2Hex   0x000040    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\examplee.asm
+                     Main   0x000036    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\examplee.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     Main   0x000036    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\examplee.asm
+                  BCD2Hex   0x000040    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\examplee.asm
+
+

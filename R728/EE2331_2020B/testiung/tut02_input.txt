@@ -1,0 +1,52 @@
+7
+aaaa
+abababa
+abccba
+CPPisFun
+theQUICKbrownFOXjumpsOVERtheLAZYdog
+GEEKSFORGEEKS
+ABDEFGABEF
+
+================================================================================
+Below is the description of the input format and expected output.
+================================================================================
+
+Input:
+The first line of input contains an integer T denoting the number of test cases. 
+Each following line is a test case that contains a string of ASCII characters.
+
+Output:
+Case 1
+The length is 1
+The substring is a
+
+Case 2
+The length is 2
+The substring is ba
+
+Case 3
+The length is 3
+The substring is cba
+
+Case 4
+The length is 6
+The substring is PisFun
+
+Case 5
+The length is 21
+The substring is theQUICKbrownFOXjumps
+
+Case 6
+The length is 7
+The substring is EKSFORG or KSFORGE
+
+Case 7
+The length is 6
+The substring is BDEFGA or DEFGAB or ABDEFG
+
+
+
+
+
+
+

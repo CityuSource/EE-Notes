@@ -1,0 +1,40 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Thu Feb 18 16:57:26 2021
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000002    program   0x000004
+                   .org_2       code   0x00000a    program   0x000018
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000002    0x000005      
+                            0x00000a    0x000021      
+            28 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     Main   0x00000a    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\Assignment 1 code.asm
+                     done   0x000020    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\Assignment 1 code.asm
+                    start   0x00000e    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\Assignment 1 code.asm
+                     sumL   0x000018    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\Assignment 1 code.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     Main   0x00000a    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\Assignment 1 code.asm
+                    start   0x00000e    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\Assignment 1 code.asm
+                     sumL   0x000018    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\Assignment 1 code.asm
+                     done   0x000020    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\1\Assignment 1 code.asm
+
+
