@@ -1,0 +1,413 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sl2dpcaex</title>
+  <meta name="keywords" content="sl2dpcaex">
+  <meta name="description" content="SL2DPCAEX Learns Extended 2D PCA on a set of matrix samples">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace_ex</a> &gt; sl2dpcaex.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace_ex&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sl2dpcaex
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SL2DPCAEX Learns Extended 2D PCA on a set of matrix samples</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Mm, PL, PR, info] = sl2dpcaex(data, matsiz, n, method, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SL2DPCAEX Learns Extended 2D PCA on a set of matrix samples
+
+ $ Syntax $
+   - [Mm, PL, PR] = sl2dpcaex(data, matsiz, n, method, ...)
+   - [Mm, PL, PR, info] = sl2dpcaex(data, matsiz, n, method, ...)
+
+ $ Arguments $
+   - data:         the matrix samples (or the array files storing them)
+   - matsiz:       the size of the matrices in terms of [nrows, ncols]
+   - n:            the number of samples
+   - method:       the method used for pursue the optimal projections
+   - Mm:           the mean image
+   - PL:           the left projection matrix
+   - PR:           the right projection matrix
+   - info:         the learning process information
+
+ $ Description $
+   - [PL, PR] = sl2dpcaex(data, matsiz, n, method, ...) performs extended 
+     2D PCA on a set of matrix samples given in data. The data can be an
+     nrows x ncols x n array or a cell array of array filenames.
+     matsiz and n respectively specify the sample size and sample number.
+     The learning process will finally output the left and right
+     projection matrices for reducing the column and row space.
+     \*
+     \t    Table 1. The methods for optimal projection pursuit       \\
+     \h     name       &amp;    description                              \\
+           'dimfix'    &amp; The dimension is fixed during optimization. \\
+           'grareduce' &amp; Gradually reduce the dimension in a dynamic 
+                         process.                                    \\
+     \*
+     For each method, you can specify additional properties to control
+     the learning process.
+     \*
+     \t   Table 2. The properties for dimfix learning        \\
+     \h    name      &amp;       description                     \\
+          'tarsiz'   &amp;  The fixed target feature size (required)
+          'maxiter'  &amp;  The maximum number of iterations
+                        (default = 50)                       \\
+          'tol'      &amp;  The maximum allowance in the change of objective
+                        function in terms of the ratio of the initial 
+                        objective value (default = 1e-6)     \\
+          'weights'  &amp;  The weights of samples (default = []) \\ 
+          'verbose'  &amp;  Whether to show iteration information  
+                        (default = true)                      \\
+     \*
+     \*
+     \t   Table 3. The properties for grareduce learning      \\
+     \h    name      &amp;       description                      \\
+          'eprate'   &amp;  The energy preservation rate in each iteration  
+                         (default = 0.998)                     \\
+          'er'       &amp;  The ratio of energy to be preserved finally 
+                         (default = 0.98)                      \\
+          'weights'  &amp;  The weights of samples                 \\
+          'verbose'  &amp;  Whether to show iteration information  \\
+                        (default = true)
+     \*
+
+ $ History $
+   - Created by Dahua Lin, on Jul 30th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>	DISP displays the dataset fields</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>	SLREADARRAY Reads an array from an array file</li><li><a href="sl2dmatcov.html" class="code" title="function varargout = sl2dmatcov(type, data, matsiz, n, meanmat, PL, PR, w)">sl2dmatcov</a>	SL2DMATCOV Computes the 2D matrix-covariances</li><li><a href="slarrmean.html" class="code" title="function arrMean = slarrmean(data, arrsiz, n, varargin)">slarrmean</a>	SLARRMEAN Computes the mean of a set of arrays</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [Mm, PL, PR, info] = do2dpca_dimfix(data, matsiz, n, varargin)</a></li><li><a href="#_sub2" class="code">function [Mm, PL, PR, info] = do2dpca_grareduce(data, matsiz, n, varargin)</a></li><li><a href="#_sub3" class="code">function P = solve_proj_dimfix(S, k)</a></li><li><a href="#_sub4" class="code">function P = solve_proj_energypreserve(S, kmax, r)</a></li><li><a href="#_sub5" class="code">function check_datasize(data, matsiz, n)</a></li><li><a href="#_sub6" class="code">function showinfo(message, opts)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Mm, PL, PR, info] = sl2dpcaex(data, matsiz, n, method, varargin)</a>
+0002 <span class="comment">%SL2DPCAEX Learns Extended 2D PCA on a set of matrix samples</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [Mm, PL, PR] = sl2dpcaex(data, matsiz, n, method, ...)</span>
+0006 <span class="comment">%   - [Mm, PL, PR, info] = sl2dpcaex(data, matsiz, n, method, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - data:         the matrix samples (or the array files storing them)</span>
+0010 <span class="comment">%   - matsiz:       the size of the matrices in terms of [nrows, ncols]</span>
+0011 <span class="comment">%   - n:            the number of samples</span>
+0012 <span class="comment">%   - method:       the method used for pursue the optimal projections</span>
+0013 <span class="comment">%   - Mm:           the mean image</span>
+0014 <span class="comment">%   - PL:           the left projection matrix</span>
+0015 <span class="comment">%   - PR:           the right projection matrix</span>
+0016 <span class="comment">%   - info:         the learning process information</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $ Description $</span>
+0019 <span class="comment">%   - [PL, PR] = sl2dpcaex(data, matsiz, n, method, ...) performs extended</span>
+0020 <span class="comment">%     2D PCA on a set of matrix samples given in data. The data can be an</span>
+0021 <span class="comment">%     nrows x ncols x n array or a cell array of array filenames.</span>
+0022 <span class="comment">%     matsiz and n respectively specify the sample size and sample number.</span>
+0023 <span class="comment">%     The learning process will finally output the left and right</span>
+0024 <span class="comment">%     projection matrices for reducing the column and row space.</span>
+0025 <span class="comment">%     \*</span>
+0026 <span class="comment">%     \t    Table 1. The methods for optimal projection pursuit       \\</span>
+0027 <span class="comment">%     \h     name       &amp;    description                              \\</span>
+0028 <span class="comment">%           'dimfix'    &amp; The dimension is fixed during optimization. \\</span>
+0029 <span class="comment">%           'grareduce' &amp; Gradually reduce the dimension in a dynamic</span>
+0030 <span class="comment">%                         process.                                    \\</span>
+0031 <span class="comment">%     \*</span>
+0032 <span class="comment">%     For each method, you can specify additional properties to control</span>
+0033 <span class="comment">%     the learning process.</span>
+0034 <span class="comment">%     \*</span>
+0035 <span class="comment">%     \t   Table 2. The properties for dimfix learning        \\</span>
+0036 <span class="comment">%     \h    name      &amp;       description                     \\</span>
+0037 <span class="comment">%          'tarsiz'   &amp;  The fixed target feature size (required)</span>
+0038 <span class="comment">%          'maxiter'  &amp;  The maximum number of iterations</span>
+0039 <span class="comment">%                        (default = 50)                       \\</span>
+0040 <span class="comment">%          'tol'      &amp;  The maximum allowance in the change of objective</span>
+0041 <span class="comment">%                        function in terms of the ratio of the initial</span>
+0042 <span class="comment">%                        objective value (default = 1e-6)     \\</span>
+0043 <span class="comment">%          'weights'  &amp;  The weights of samples (default = []) \\</span>
+0044 <span class="comment">%          'verbose'  &amp;  Whether to show iteration information</span>
+0045 <span class="comment">%                        (default = true)                      \\</span>
+0046 <span class="comment">%     \*</span>
+0047 <span class="comment">%     \*</span>
+0048 <span class="comment">%     \t   Table 3. The properties for grareduce learning      \\</span>
+0049 <span class="comment">%     \h    name      &amp;       description                      \\</span>
+0050 <span class="comment">%          'eprate'   &amp;  The energy preservation rate in each iteration</span>
+0051 <span class="comment">%                         (default = 0.998)                     \\</span>
+0052 <span class="comment">%          'er'       &amp;  The ratio of energy to be preserved finally</span>
+0053 <span class="comment">%                         (default = 0.98)                      \\</span>
+0054 <span class="comment">%          'weights'  &amp;  The weights of samples                 \\</span>
+0055 <span class="comment">%          'verbose'  &amp;  Whether to show iteration information  \\</span>
+0056 <span class="comment">%                        (default = true)</span>
+0057 <span class="comment">%     \*</span>
+0058 <span class="comment">%</span>
+0059 <span class="comment">% $ History $</span>
+0060 <span class="comment">%   - Created by Dahua Lin, on Jul 30th, 2006</span>
+0061 <span class="comment">%</span>
+0062 
+0063 <span class="comment">%% Parse and Verify Input Arguments</span>
+0064 <span class="keyword">if</span> nargin &lt; 4
+0065     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sl2dpcaex'</span>, 4);
+0066 <span class="keyword">end</span>
+0067 matsiz = matsiz(:)';
+0068 <span class="keyword">if</span> length(matsiz) ~= 2
+0069     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0070         <span class="string">'The processing matrices should be 2D, thus the matsiz should be a two-element vector'</span>);
+0071 <span class="keyword">end</span>
+0072 <span class="keyword">if</span> ~isnumeric(data) &amp;&amp; ~iscell(data)
+0073     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0074         <span class="string">'The data should be an numeric array or a cell array of filenames'</span>);
+0075 <span class="keyword">end</span>
+0076 <a href="#_sub5" class="code" title="subfunction check_datasize(data, matsiz, n)">check_datasize</a>(data, matsiz, n);
+0077 
+0078 
+0079 <span class="comment">%% Main Sketelon</span>
+0080 
+0081 <span class="keyword">switch</span> method
+0082     <span class="keyword">case</span> <span class="string">'dimfix'</span>
+0083         [Mm, PL, PR, info] = <a href="#_sub1" class="code" title="subfunction [Mm, PL, PR, info] = do2dpca_dimfix(data, matsiz, n, varargin)">do2dpca_dimfix</a>(data, matsiz, n, varargin{:});
+0084         
+0085     <span class="keyword">case</span> <span class="string">'grareduce'</span>
+0086         [Mm, PL, PR, info] = <a href="#_sub2" class="code" title="subfunction [Mm, PL, PR, info] = do2dpca_grareduce(data, matsiz, n, varargin)">do2dpca_grareduce</a>(data, matsiz, n, varargin{:});
+0087         
+0088     <span class="keyword">otherwise</span>
+0089         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0090             <span class="string">'Invalid method for 2D PCA: %s'</span>, method);
+0091 <span class="keyword">end</span>
+0092 
+0093 
+0094 <span class="comment">%% Strategy functions</span>
+0095 
+0096 <span class="comment">%% dimfix Strategy</span>
+0097 
+0098 <a name="_sub1" href="#_subfunctions" class="code">function [Mm, PL, PR, info] = do2dpca_dimfix(data, matsiz, n, varargin)</a>
+0099 
+0100 <span class="comment">% parse and verify options</span>
+0101 
+0102 opts.tarsiz = [];
+0103 opts.maxiter = 100;
+0104 opts.tol = 1e-6;
+0105 opts.weights = [];
+0106 opts.verbose = true;
+0107 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0108 
+0109 <span class="keyword">if</span> ~isequal(size(opts.tarsiz), [1, 2])
+0110     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0111         <span class="string">'The target size should be a 1 x 2 row vector and it should be specified'</span>);
+0112 <span class="keyword">end</span>
+0113 <span class="keyword">if</span> any(opts.tarsiz &gt; matsiz)
+0114     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0115         <span class="string">'Some dimensions of target size is larger than matsize'</span>);
+0116 <span class="keyword">end</span>
+0117 
+0118 k1 = opts.tarsiz(1);
+0119 k2 = opts.tarsiz(2);
+0120 w = opts.weights;
+0121 
+0122 <span class="comment">% main body</span>
+0123 
+0124 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Start 2D PCA using Strategy: dimfix.'</span>, opts);
+0125 
+0126 <span class="comment">% initialization</span>
+0127 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Initialization ...'</span>, opts);
+0128 PL = eye(matsiz(1));
+0129 PR = eye(matsiz(2));
+0130 Mm = <a href="slarrmean.html" class="code" title="function arrMean = slarrmean(data, arrsiz, n, varargin)">slarrmean</a>(data, matsiz, n, <span class="string">'weights'</span>, opts.weights);
+0131 
+0132 S0 = <a href="sl2dmatcov.html" class="code" title="function varargout = sl2dmatcov(type, data, matsiz, n, meanmat, PL, PR, w)">sl2dmatcov</a>(<span class="string">'CL'</span>, data, matsiz, n, Mm, [], [], w);
+0133 totalenergy = trace(S0);
+0134 energycurve = [];
+0135 clear S0;
+0136 
+0137 <span class="comment">% alternate update</span>
+0138 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Alternate Updating ...'</span>, opts);
+0139 isconverged = false;
+0140 it = 0;
+0141 <span class="keyword">while</span>(~isconverged &amp;&amp; it &lt; opts.maxiter)
+0142     
+0143     <span class="comment">% start an iteration</span>
+0144     it = it + 1;
+0145     
+0146     <span class="comment">% update</span>
+0147     SL = <a href="sl2dmatcov.html" class="code" title="function varargout = sl2dmatcov(type, data, matsiz, n, meanmat, PL, PR, w)">sl2dmatcov</a>(<span class="string">'CL'</span>, data, matsiz, n, Mm, [], PR, w);
+0148     PL = <a href="#_sub3" class="code" title="subfunction P = solve_proj_dimfix(S, k)">solve_proj_dimfix</a>(SL, k1);
+0149     SR = <a href="sl2dmatcov.html" class="code" title="function varargout = sl2dmatcov(type, data, matsiz, n, meanmat, PL, PR, w)">sl2dmatcov</a>(<span class="string">'CR'</span>, data, matsiz, n, Mm, PL, [], w);
+0150     PR = <a href="#_sub3" class="code" title="subfunction P = solve_proj_dimfix(S, k)">solve_proj_dimfix</a>(SR, k2);
+0151     
+0152     <span class="comment">% monitor objective</span>
+0153     curenergy = trace(PR' * SR * PR);    
+0154     <span class="keyword">if</span> it &gt; 1
+0155         isconverged = (abs(curenergy - energycurve(end)) &lt; totalenergy * opts.tol);
+0156     <span class="keyword">end</span>
+0157     energycurve = [energycurve; curenergy]; 
+0158     
+0159     <span class="comment">% summary iteration</span>
+0160     itermsg = sprintf(<span class="string">'Iter %4d: energy preservation = %f'</span>, it, curenergy / totalenergy);
+0161     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(itermsg, opts);       
+0162     
+0163 <span class="keyword">end</span>
+0164 
+0165 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'2D PCA completed.'</span>, opts);
+0166 
+0167 <span class="comment">% output info</span>
+0168 
+0169 info.total_energy = totalenergy;
+0170 info.energy_curve = energycurve;
+0171 info.numiters = it;
+0172 info.energy_ratio = curenergy / totalenergy;
+0173 info.is_converged = isconverged;
+0174 
+0175     
+0176 <span class="comment">%% grareduce Strategy</span>
+0177 
+0178 <a name="_sub2" href="#_subfunctions" class="code">function [Mm, PL, PR, info] = do2dpca_grareduce(data, matsiz, n, varargin)</a>
+0179 
+0180 <span class="comment">% parse and verify options</span>
+0181 
+0182 opts.eprate = 0.998;
+0183 opts.er = 0.98;
+0184 opts.weights = [];
+0185 opts.verbose = true;
+0186 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0187 
+0188 w = opts.weights;
+0189 
+0190 <span class="comment">% main body</span>
+0191 
+0192 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Start 2D PCA using Strategy: grareduce.'</span>, opts);
+0193 
+0194 <span class="comment">% initialization</span>
+0195 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Initialization ...'</span>, opts);
+0196 PL = eye(matsiz(1));
+0197 PR = eye(matsiz(2));
+0198 Mm = <a href="slarrmean.html" class="code" title="function arrMean = slarrmean(data, arrsiz, n, varargin)">slarrmean</a>(data, matsiz, n, <span class="string">'weights'</span>, opts.weights);
+0199 
+0200 S0 = <a href="sl2dmatcov.html" class="code" title="function varargout = sl2dmatcov(type, data, matsiz, n, meanmat, PL, PR, w)">sl2dmatcov</a>(<span class="string">'CL'</span>, data, matsiz, n, Mm, [], [], w);
+0201 totalenergy = trace(S0);
+0202 energycurve = [];
+0203 dimcurve = [];
+0204 clear S0;
+0205 
+0206 <span class="comment">% dynamic evolve</span>
+0207 it = 0;
+0208 curenergy = totalenergy;
+0209 
+0210 <span class="keyword">while</span> curenergy &gt; totalenergy * opts.er
+0211     
+0212     <span class="comment">% start an iteration</span>
+0213     it = it + 1;
+0214     
+0215     <span class="comment">% update</span>
+0216     SL = <a href="sl2dmatcov.html" class="code" title="function varargout = sl2dmatcov(type, data, matsiz, n, meanmat, PL, PR, w)">sl2dmatcov</a>(<span class="string">'CL'</span>, data, matsiz, n, Mm, PL, PR, w);
+0217     PLm = <a href="#_sub4" class="code" title="subfunction P = solve_proj_energypreserve(S, kmax, r)">solve_proj_energypreserve</a>(SL, size(PL, 2), opts.eprate);
+0218     PL = PL * PLm;
+0219     SR = <a href="sl2dmatcov.html" class="code" title="function varargout = sl2dmatcov(type, data, matsiz, n, meanmat, PL, PR, w)">sl2dmatcov</a>(<span class="string">'CR'</span>, data, matsiz, n, Mm, PL, PR, w);
+0220     PRm = <a href="#_sub4" class="code" title="subfunction P = solve_proj_energypreserve(S, kmax, r)">solve_proj_energypreserve</a>(SR, size(PR, 2), opts.eprate);
+0221     PR = PR * PRm;
+0222         
+0223     <span class="comment">% monitor objective</span>
+0224     curenergy = trace(PRm' * SR * PRm);
+0225     clear PLm PRm;
+0226     energycurve = [energycurve, curenergy]; 
+0227     dimcurve = [dimcurve; [size(PL, 2), size(PR, 2)]];
+0228     
+0229     <span class="comment">% summary iteration</span>
+0230     itermsg = sprintf(<span class="string">'Iter %4d: siz = [%d, %d], energy preservation = %f'</span>, <span class="keyword">...</span>
+0231         it, size(PL, 2), size(PR, 2), curenergy / totalenergy);
+0232     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(itermsg, opts);     
+0233     
+0234 <span class="keyword">end</span>
+0235 
+0236 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'2D PCA completed.'</span>, opts);
+0237 
+0238 <span class="comment">% output info</span>
+0239 
+0240 info.total_energy = totalenergy;
+0241 info.dim_curve = dimcurve;
+0242 info.energy_curve = energycurve;
+0243 info.numiters = it;
+0244 info.energy_ratio = curenergy / totalenergy;
+0245 
+0246 
+0247 
+0248 
+0249 <span class="comment">%% Core computing function</span>
+0250 
+0251 
+0252 <a name="_sub3" href="#_subfunctions" class="code">function P = solve_proj_dimfix(S, k)</a>
+0253 
+0254 [evals, evecs] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(S);
+0255 
+0256 <span class="keyword">if</span> k &gt; length(evals)
+0257     error(<span class="string">'k is larger than the number of eigenvalues'</span>);
+0258 <span class="keyword">end</span>
+0259 
+0260 P = evecs(:, 1:k);
+0261 
+0262 
+0263 <a name="_sub4" href="#_subfunctions" class="code">function P = solve_proj_energypreserve(S, kmax, r)</a>
+0264 
+0265 [evals, evecs] =  <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(S);
+0266 
+0267 k = min(sum(cumsum(evals) &lt; sum(evals) * r), kmax);
+0268 P = evecs(:, 1:k);
+0269 
+0270 
+0271 
+0272 
+0273 <span class="comment">%% Auxiliary functions</span>
+0274 
+0275 
+0276 <a name="_sub5" href="#_subfunctions" class="code">function check_datasize(data, matsiz, n)</a>
+0277 
+0278 <span class="keyword">if</span> isnumeric(data)
+0279     <span class="keyword">if</span> (n == 1 &amp;&amp; ~isequal(size(data), matsiz)) || <span class="keyword">...</span>
+0280             (n &gt; 1 &amp;&amp; ~isequal(size(data), [matsiz, n]))
+0281         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0282             <span class="string">'The size of data does not match the specified matsize and sample number'</span>);
+0283     <span class="keyword">end</span>
+0284 <span class="keyword">else</span>
+0285     nfiles = length(data);
+0286     cf = 0;
+0287     <span class="keyword">for</span> i = 1 : nfiles
+0288         curarr = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(data{i});
+0289         curn = size(curarr, 3);
+0290         <a href="#_sub5" class="code" title="subfunction check_datasize(data, matsiz, n)">check_datasize</a>(curarr, matsiz, curn);
+0291         cf = cf + curn;
+0292         clear curarr;
+0293     <span class="keyword">end</span>
+0294     <span class="keyword">if</span> cf ~= n
+0295         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0296             <span class="string">'The size of data does not match the specified matsize and sample number'</span>);
+0297     <span class="keyword">end</span>
+0298 <span class="keyword">end</span>
+0299 
+0300 
+0301 <a name="_sub6" href="#_subfunctions" class="code">function showinfo(message, opts)</a>
+0302 
+0303 <span class="keyword">if</span> opts.verbose
+0304     <a href="../../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>(message);
+0305 <span class="keyword">end</span>
+0306 
+0307</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

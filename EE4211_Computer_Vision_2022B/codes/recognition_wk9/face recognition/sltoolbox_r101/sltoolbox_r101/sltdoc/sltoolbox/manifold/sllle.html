@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sllle</title>
+  <meta name="keywords" content="sllle">
+  <meta name="description" content="SLLLE Performs Locally Linear Embedding">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">manifold</a> &gt; sllle.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\manifold&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sllle
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLLLE Performs Locally Linear Embedding</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Y, spectrum, WG] = sllle(X, G, d, rwparams) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLLLE Performs Locally Linear Embedding
+
+ $ Syntax $
+   - Y = sllle(X, G, d)
+   - Y = sllle(X, G, d, rwparams)
+   - [Y, spectrum, WG] = sllle(X, G, d)
+
+ $ Arguments $
+   - X:        The sample matrix (d x n)
+   - G:        The neighborhood graph or the cell array of parameters to 
+               generate the neighborhood graph. 
+               For a graph, G should have n nodes, where n is the number
+               of samples in X. The non-zero of the entry (i,j) means 
+               the i-th sample is the neighbor of the j-th sample.
+               If it is a set of parameters, it is in the form of 
+               {method, ...}, which will be input to slfindnn to 
+               construct a neighborhood graph. 
+   - d:        The dimension of the embeded space. 
+   - rwparams: The cell array parameters for solving reconstruction weights
+               default = {}
+   - Y:        The coordinates of samples in the embeded space
+   - WG:       The weight graph computed
+
+ $ Description $
+   - Y = sllle(X, G, d) solves the locally linear embedding of X in a 
+     d-dimensional linear space. 
+
+   - Y = sllle(X, G, d, rwparams) uses special set of parameters to 
+     control the solving of reconstruction parameters.
+
+   - [Y, spectrum, WG] = sllle(X, G, d) additionally returns the spectrum
+     and the local construction weight graph.
+
+ $ Remarks $
+   - It integrates the functions: 
+       - slfindnn and slnngraph: for graph construction
+       - slreconweights: for local reconstruction weight solving
+       - sllle_wg: solves LLE from constructed weight graph
+   - Only the zero/non-zero of G takes effects, it will not make use
+     of the values in G.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 11st, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>	SLADJMAT Constructs the adjacency matrix representation of a graph</li><li><a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>	SLGRAPHINFO Extracts basic information of a given graph representation</li><li><a href="../../sltoolbox/graph/slnngraph.html" class="code" title="function G = slnngraph(X, X2, nnparams, varargin)">slnngraph</a>	SLNNGRAPH Constructs a nearest neighborhood based graph</li><li><a href="sllle_wg.html" class="code" title="function [Y, spectrum] = sllle_wg(G, d)">sllle_wg</a>	SLLLE_WG Solves the Locally Linear Embedding from weight graph</li><li><a href="slnbreconweights.html" class="code" title="function WG = slnbreconweights(X0, X, G, varargin)">slnbreconweights</a>	SLNBRECONWEIGHTS Solve the optimal reconstruction weights on given neighbors</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Y, spectrum, WG] = sllle(X, G, d, rwparams)</a>
+0002 <span class="comment">%SLLLE Performs Locally Linear Embedding</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - Y = sllle(X, G, d)</span>
+0006 <span class="comment">%   - Y = sllle(X, G, d, rwparams)</span>
+0007 <span class="comment">%   - [Y, spectrum, WG] = sllle(X, G, d)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $ Arguments $</span>
+0010 <span class="comment">%   - X:        The sample matrix (d x n)</span>
+0011 <span class="comment">%   - G:        The neighborhood graph or the cell array of parameters to</span>
+0012 <span class="comment">%               generate the neighborhood graph.</span>
+0013 <span class="comment">%               For a graph, G should have n nodes, where n is the number</span>
+0014 <span class="comment">%               of samples in X. The non-zero of the entry (i,j) means</span>
+0015 <span class="comment">%               the i-th sample is the neighbor of the j-th sample.</span>
+0016 <span class="comment">%               If it is a set of parameters, it is in the form of</span>
+0017 <span class="comment">%               {method, ...}, which will be input to slfindnn to</span>
+0018 <span class="comment">%               construct a neighborhood graph.</span>
+0019 <span class="comment">%   - d:        The dimension of the embeded space.</span>
+0020 <span class="comment">%   - rwparams: The cell array parameters for solving reconstruction weights</span>
+0021 <span class="comment">%               default = {}</span>
+0022 <span class="comment">%   - Y:        The coordinates of samples in the embeded space</span>
+0023 <span class="comment">%   - WG:       The weight graph computed</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% $ Description $</span>
+0026 <span class="comment">%   - Y = sllle(X, G, d) solves the locally linear embedding of X in a</span>
+0027 <span class="comment">%     d-dimensional linear space.</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%   - Y = sllle(X, G, d, rwparams) uses special set of parameters to</span>
+0030 <span class="comment">%     control the solving of reconstruction parameters.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%   - [Y, spectrum, WG] = sllle(X, G, d) additionally returns the spectrum</span>
+0033 <span class="comment">%     and the local construction weight graph.</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% $ Remarks $</span>
+0036 <span class="comment">%   - It integrates the functions:</span>
+0037 <span class="comment">%       - slfindnn and slnngraph: for graph construction</span>
+0038 <span class="comment">%       - slreconweights: for local reconstruction weight solving</span>
+0039 <span class="comment">%       - sllle_wg: solves LLE from constructed weight graph</span>
+0040 <span class="comment">%   - Only the zero/non-zero of G takes effects, it will not make use</span>
+0041 <span class="comment">%     of the values in G.</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% $ History $</span>
+0044 <span class="comment">%   - Created by Dahua Lin, on Sep 11st, 2006</span>
+0045 <span class="comment">%</span>
+0046 
+0047 <span class="comment">%% parse and verify input arguments</span>
+0048 
+0049 <span class="keyword">if</span> nargin &lt; 3
+0050     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sllle'</span>, 3);
+0051 <span class="keyword">end</span>
+0052 
+0053 <span class="keyword">if</span> ~isnumeric(X) || ndims(X) ~= 2
+0054     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0055         <span class="string">'X should be a 2D numeric matrix'</span>);
+0056 <span class="keyword">end</span>
+0057 n = size(X, 2);
+0058 
+0059 <span class="keyword">if</span> d &gt;= n
+0060     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0061         <span class="string">'d should be strictly less than n'</span>);
+0062 <span class="keyword">end</span>
+0063 
+0064 <span class="keyword">if</span> nargin &lt; 4
+0065     rwparams = {};
+0066 <span class="keyword">end</span>
+0067 
+0068 
+0069 <span class="comment">%% process the graph</span>
+0070 
+0071 <span class="keyword">if</span> iscell(G)
+0072     G = <a href="../../sltoolbox/graph/slnngraph.html" class="code" title="function G = slnngraph(X, X2, nnparams, varargin)">slnngraph</a>(X, [], G, <span class="string">'valtype'</span>, <span class="string">'logical'</span>, <span class="string">'sparse'</span>, true);
+0073 <span class="keyword">end</span>
+0074 
+0075 gi = <a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>(G, {<span class="string">'square'</span>});
+0076 <span class="keyword">if</span> ~strcmp(gi.form, <span class="string">'adjmat'</span>)
+0077     G = <a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>(G, <span class="string">'valtype'</span>, <span class="string">'logical'</span>, <span class="string">'sparse'</span>, true);
+0078 <span class="keyword">end</span>
+0079 
+0080 <span class="comment">%% solve reconstruction weights</span>
+0081 
+0082 WG = <a href="slnbreconweights.html" class="code" title="function WG = slnbreconweights(X0, X, G, varargin)">slnbreconweights</a>(X, [], G, rwparams{:});
+0083 clear G;
+0084 
+0085 <span class="comment">%% solve the embedding</span>
+0086 
+0087 [Y, spectrum] = <a href="sllle_wg.html" class="code" title="function [Y, spectrum] = sllle_wg(G, d)">sllle_wg</a>(WG, d);
+0088     
+0089 
+0090     
+0091     
+0092     
+0093     
+0094 
+0095 
+0096 
+0097</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

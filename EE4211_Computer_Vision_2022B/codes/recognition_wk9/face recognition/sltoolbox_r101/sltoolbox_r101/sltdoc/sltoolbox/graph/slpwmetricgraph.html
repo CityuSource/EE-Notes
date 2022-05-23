@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpwmetricgraph</title>
+  <meta name="keywords" content="slpwmetricgraph">
+  <meta name="description" content="SLPWMETRICGRAPH Constructs a graph based on pairwise metrics">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">graph</a> &gt; slpwmetricgraph.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\graph&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpwmetricgraph
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPWMETRICGRAPH Constructs a graph based on pairwise metrics</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function G = slpwmetricgraph(X, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPWMETRICGRAPH Constructs a graph based on pairwise metrics
+
+ $ Syntax $
+   - G = slpwmetricgraph(X, ...)
+   - G = slpwmetricgraph(X, Xt, ...)
+
+ $ Arguments $
+   - X:        The sample matrix with each column as a (source) node
+   - Xt:       The sample matrix with each column as a (target) node  
+   - G:        The constructed graph
+   
+ $ Description $
+   - G = slpwmetricgraph(X, ...) constructs a graph based on computation
+     of pairwise metric between vector samples. You can specify the 
+     following properties:
+     \*
+     \t   The Properties of Graph Matrix construction           \\
+     \h      name       &amp;      description
+            'sparse'    &amp; whether the target graph G is sparse 
+                          (default = true)
+            'valtype'   &amp; The type of values in G: 'logical'|'numeric'
+                          (default = 'numeric')
+                          The value output by evalfunctor should conform
+                          to the specified valtype
+            'maxblk'    &amp; The maximum number of elements that can be
+                          computed in each batch. (default = 1e7)   
+            'mfunctor'  &amp; The functor to compute the metrics. In the form:
+                          V = f(X1, X2, ...)
+                          default = {@slmetric_pw, 'eucdist')
+            'tfunctor'  &amp; The functor to transform the metric values,
+                          like tv = f(sv, ...)
+                          The transform is taken before the threshold 
+                          filtering. default = []
+            'thres'     &amp; The threshold values. The values not in the
+                          valid range set by the threshold is regarded as
+                          zeros. 
+                          (default = [], means not to use threshold)
+            'threstype' &amp; The type of threshold value, (default = 'ub')
+                           - 'lb': a lower bound scalar 
+                                   valid_range: x &gt;= thres
+                           - 'ub': a upper bound scalar
+                                   valid_range: x &lt;= thres
+                           - 'lub': a vector of lower and upper bounds
+                                    valid_range: thres(1) &lt;= x &lt;= thres(2)                           
+     \*
+
+   - G = slpwmetricgraph(X, Xt, ...) constructs a bigraph with different
+     source and target node set. The properties mentioned above are
+     all applicable here.
+
+ $ Remarks $
+   - The implementation is based on slpwgraph.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 8th, 2006
+   - Modified by Dahua Lin, on Sep 10th, 2006
+       - Base on upgraded slpwgraph function
+       - Add support for bigraph</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>	SLMETRIC_PW Compute the metric between column vectors pairwisely</li><li><a href="slpwgraph.html" class="code" title="function G = slpwgraph(Xs, Xt, n, nt, evalfunctor, varargin)">slpwgraph</a>	SLVALGRAPH Constructs a graph by computing values between nodes pairwisely</li><li><a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>	SLEVALFUNCTOR Evaluates a functor</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function V = metricevalfunc(X, Xt, inds1, inds2, mfunctor, tfunctor, filter)</a></li><li><a href="#_sub2" class="code">function filter = getvaluefilter(opts)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function G = slpwmetricgraph(X, varargin)</a>
+0002 <span class="comment">%SLPWMETRICGRAPH Constructs a graph based on pairwise metrics</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - G = slpwmetricgraph(X, ...)</span>
+0006 <span class="comment">%   - G = slpwmetricgraph(X, Xt, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - X:        The sample matrix with each column as a (source) node</span>
+0010 <span class="comment">%   - Xt:       The sample matrix with each column as a (target) node</span>
+0011 <span class="comment">%   - G:        The constructed graph</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - G = slpwmetricgraph(X, ...) constructs a graph based on computation</span>
+0015 <span class="comment">%     of pairwise metric between vector samples. You can specify the</span>
+0016 <span class="comment">%     following properties:</span>
+0017 <span class="comment">%     \*</span>
+0018 <span class="comment">%     \t   The Properties of Graph Matrix construction           \\</span>
+0019 <span class="comment">%     \h      name       &amp;      description</span>
+0020 <span class="comment">%            'sparse'    &amp; whether the target graph G is sparse</span>
+0021 <span class="comment">%                          (default = true)</span>
+0022 <span class="comment">%            'valtype'   &amp; The type of values in G: 'logical'|'numeric'</span>
+0023 <span class="comment">%                          (default = 'numeric')</span>
+0024 <span class="comment">%                          The value output by evalfunctor should conform</span>
+0025 <span class="comment">%                          to the specified valtype</span>
+0026 <span class="comment">%            'maxblk'    &amp; The maximum number of elements that can be</span>
+0027 <span class="comment">%                          computed in each batch. (default = 1e7)</span>
+0028 <span class="comment">%            'mfunctor'  &amp; The functor to compute the metrics. In the form:</span>
+0029 <span class="comment">%                          V = f(X1, X2, ...)</span>
+0030 <span class="comment">%                          default = {@slmetric_pw, 'eucdist')</span>
+0031 <span class="comment">%            'tfunctor'  &amp; The functor to transform the metric values,</span>
+0032 <span class="comment">%                          like tv = f(sv, ...)</span>
+0033 <span class="comment">%                          The transform is taken before the threshold</span>
+0034 <span class="comment">%                          filtering. default = []</span>
+0035 <span class="comment">%            'thres'     &amp; The threshold values. The values not in the</span>
+0036 <span class="comment">%                          valid range set by the threshold is regarded as</span>
+0037 <span class="comment">%                          zeros.</span>
+0038 <span class="comment">%                          (default = [], means not to use threshold)</span>
+0039 <span class="comment">%            'threstype' &amp; The type of threshold value, (default = 'ub')</span>
+0040 <span class="comment">%                           - 'lb': a lower bound scalar</span>
+0041 <span class="comment">%                                   valid_range: x &gt;= thres</span>
+0042 <span class="comment">%                           - 'ub': a upper bound scalar</span>
+0043 <span class="comment">%                                   valid_range: x &lt;= thres</span>
+0044 <span class="comment">%                           - 'lub': a vector of lower and upper bounds</span>
+0045 <span class="comment">%                                    valid_range: thres(1) &lt;= x &lt;= thres(2)</span>
+0046 <span class="comment">%     \*</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">%   - G = slpwmetricgraph(X, Xt, ...) constructs a bigraph with different</span>
+0049 <span class="comment">%     source and target node set. The properties mentioned above are</span>
+0050 <span class="comment">%     all applicable here.</span>
+0051 <span class="comment">%</span>
+0052 <span class="comment">% $ Remarks $</span>
+0053 <span class="comment">%   - The implementation is based on slpwgraph.</span>
+0054 <span class="comment">%</span>
+0055 <span class="comment">% $ History $</span>
+0056 <span class="comment">%   - Created by Dahua Lin, on Sep 8th, 2006</span>
+0057 <span class="comment">%   - Modified by Dahua Lin, on Sep 10th, 2006</span>
+0058 <span class="comment">%       - Base on upgraded slpwgraph function</span>
+0059 <span class="comment">%       - Add support for bigraph</span>
+0060 <span class="comment">%</span>
+0061 
+0062 <span class="comment">%% parse and verify input</span>
+0063 
+0064 <span class="keyword">if</span> nargin &gt;= 2
+0065     <span class="keyword">if</span> isnumeric(varargin{1})
+0066         Xt = varargin{1};
+0067         <span class="keyword">if</span> nargin == 2
+0068             params = {};
+0069         <span class="keyword">else</span>
+0070             params = varargin(2:end);
+0071         <span class="keyword">end</span>
+0072     <span class="keyword">else</span>
+0073         Xt = X;
+0074         params = varargin;
+0075     <span class="keyword">end</span>
+0076 <span class="keyword">else</span>
+0077     Xt = X;
+0078     params = {};
+0079 <span class="keyword">end</span>
+0080 
+0081 opts.sparse = true;
+0082 opts.valtype = <span class="string">'numeric'</span>;
+0083 opts.maxblk = 1e7;
+0084 opts.mfunctor = {@<a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>, <span class="string">'eucdist'</span>};
+0085 opts.tfunctor = [];
+0086 opts.thres = [];
+0087 opts.threstype = <span class="string">'ub'</span>;
+0088 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, params{:});
+0089 
+0090 <span class="keyword">if</span> ~ismember(opts.threstype, {<span class="string">'lb'</span>, <span class="string">'ub'</span>, <span class="string">'lub'</span>})
+0091     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0092         <span class="string">'Invalid type of threshold: %s'</span>, opts.threstype);
+0093 <span class="keyword">end</span>
+0094 
+0095 <span class="comment">%% Main skeleton</span>
+0096 
+0097 n = size(X, 2);
+0098 nt = size(Xt, 2);
+0099 mfunctor = opts.mfunctor;
+0100 tfunctor = opts.tfunctor;
+0101 filter = <a href="#_sub2" class="code" title="subfunction filter = getvaluefilter(opts)">getvaluefilter</a>(opts);
+0102 evalfunctor = {@<a href="#_sub1" class="code" title="subfunction V = metricevalfunc(X, Xt, inds1, inds2, mfunctor, tfunctor, filter)">metricevalfunc</a>, mfunctor, tfunctor, filter};
+0103 
+0104 G = <a href="slpwgraph.html" class="code" title="function G = slpwgraph(Xs, Xt, n, nt, evalfunctor, varargin)">slpwgraph</a>(X, Xt, n, nt, evalfunctor, <span class="keyword">...</span>
+0105     <span class="string">'sparse'</span>, opts.sparse, <span class="keyword">...</span>
+0106     <span class="string">'valtype'</span>, opts.valtype, <span class="keyword">...</span>
+0107     <span class="string">'maxblk'</span>, opts.maxblk);
+0108 
+0109 
+0110 <span class="comment">%% Core functions</span>
+0111 
+0112 <a name="_sub1" href="#_subfunctions" class="code">function V = metricevalfunc(X, Xt, inds1, inds2, mfunctor, tfunctor, filter)</a>
+0113 
+0114 X1 = X(:, inds1);
+0115 X2 = Xt(:, inds2);
+0116 V = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(mfunctor, X1, X2);
+0117 
+0118 <span class="keyword">if</span> ~isempty(tfunctor)
+0119     V = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(tfunctor, V);
+0120 <span class="keyword">end</span>
+0121 
+0122 <span class="keyword">if</span> ~isempty(filter)
+0123     zero_range = ~filter(V);
+0124     V(zero_range) = 0;
+0125 <span class="keyword">end</span>    
+0126 
+0127 
+0128 <a name="_sub2" href="#_subfunctions" class="code">function filter = getvaluefilter(opts)</a>
+0129 
+0130 <span class="keyword">if</span> isempty(opts.thres)
+0131     filter = [];
+0132 <span class="keyword">else</span>
+0133     thr = opts.thres;
+0134     <span class="keyword">switch</span> opts.threstype
+0135         <span class="keyword">case</span> <span class="string">'lb'</span>
+0136             <span class="keyword">if</span> ~isscalar(thr)
+0137                 error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'For lb type, the thres should be a scalar'</span>);
+0138             <span class="keyword">end</span>
+0139             filter = @(x) x &gt;= thr;
+0140         <span class="keyword">case</span> <span class="string">'ub'</span>
+0141             <span class="keyword">if</span> ~isscalar(thr)
+0142                 error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'For ub type, the thres should be a scalar'</span>);
+0143             <span class="keyword">end</span>
+0144             filter = @(x) x &lt;= thr;
+0145         <span class="keyword">case</span> <span class="string">'lub'</span>
+0146             <span class="keyword">if</span> ~isvector(thr) || length(thr) ~= 2
+0147                 error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'For lub type, the thres should be a length-2 vector'</span>);
+0148             <span class="keyword">end</span>
+0149             filter = @(x) x &gt;= thr(1) &amp; x &lt;= thr(2);
+0150     <span class="keyword">end</span>
+0151 <span class="keyword">end</span>
+0152</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

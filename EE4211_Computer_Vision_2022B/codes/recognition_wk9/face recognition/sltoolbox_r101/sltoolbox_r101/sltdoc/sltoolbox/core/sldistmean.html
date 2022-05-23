@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sldistmean</title>
+  <meta name="keywords" content="sldistmean">
+  <meta name="description" content="SLDISTMEAN Uses fast method to compute means of pairwise distances">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">core</a> &gt; sldistmean.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\core&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sldistmean
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLDISTMEAN Uses fast method to compute means of pairwise distances</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function m = sldistmean(X1, X2, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLDISTMEAN Uses fast method to compute means of pairwise distances
+
+ $ Syntax $
+   - m = sldistmean(X1, X2, mtype, ...)
+   - m = sldistmean(X1, X2, w1, w2, mtype, ...)
+ 
+ $ Arguments $
+   - X1, X2:       The samples to compute the mean of pairwise distances
+   - mtype:        The distance metric type
+   - w1, w2:       The weights of samples in X1 and X2
+   - m:            The mean value of all pairwise distances
+
+ $ Description $
+   - m = sldistmean(X1, X2, mtype, ...) computes the average value of 
+     a specified type of distances by using a mathematical equivalent
+     and fast way. It would be much faster than computing all pairwise
+     distances and calculating their average.
+     \*
+     \t      Table. Supported Distance Types
+     \h       name      &amp;             description 
+             'sqdist'   &amp;  square distances d = ||x1 - x2||^2
+             'wsqdist'  &amp;  weighted square distances:
+                           d = sum_k w_k (x1(k) - x2(k))^2 
+                           the first extra parameter it a column vector
+                           of weights on all components
+             'quaddiff' &amp;  distance in quadratic form:
+                           d = (x1 - x2)^T Q (x1 - x2)
+                           the first extra parameter is a quadratic form
+                           matrix
+     \*
+     Please not that, if X1 and X2 have n1 an n2 samples respectively, then
+     m = 1 /(n1 * n2) * sum_i sum_j d(X1(:,i), X2(:,j)).
+
+   - m = sldistmean(X1, X2, w1, w2, mtype, ...) computes the weighted
+     average value of the distances. The w1 and w2 assign weights to
+     samples in X1 and X2 respectively. They should be row vectors of
+     size 1 x n1 and 1 x n2.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 20, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/stat/slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>	SLCOV Compute the covariance matrix</li><li><a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>	SLMEAN Compute the mean vector of samples</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function d = check_samedim(X1, X2)</a></li><li><a href="#_sub2" class="code">function check_paramsnum(name, params, n)</a></li><li><a href="#_sub3" class="code">function vs = compute_vars(X, vmean, w)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function m = sldistmean(X1, X2, varargin)</a>
+0002 <span class="comment">%SLDISTMEAN Uses fast method to compute means of pairwise distances</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - m = sldistmean(X1, X2, mtype, ...)</span>
+0006 <span class="comment">%   - m = sldistmean(X1, X2, w1, w2, mtype, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - X1, X2:       The samples to compute the mean of pairwise distances</span>
+0010 <span class="comment">%   - mtype:        The distance metric type</span>
+0011 <span class="comment">%   - w1, w2:       The weights of samples in X1 and X2</span>
+0012 <span class="comment">%   - m:            The mean value of all pairwise distances</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - m = sldistmean(X1, X2, mtype, ...) computes the average value of</span>
+0016 <span class="comment">%     a specified type of distances by using a mathematical equivalent</span>
+0017 <span class="comment">%     and fast way. It would be much faster than computing all pairwise</span>
+0018 <span class="comment">%     distances and calculating their average.</span>
+0019 <span class="comment">%     \*</span>
+0020 <span class="comment">%     \t      Table. Supported Distance Types</span>
+0021 <span class="comment">%     \h       name      &amp;             description</span>
+0022 <span class="comment">%             'sqdist'   &amp;  square distances d = ||x1 - x2||^2</span>
+0023 <span class="comment">%             'wsqdist'  &amp;  weighted square distances:</span>
+0024 <span class="comment">%                           d = sum_k w_k (x1(k) - x2(k))^2</span>
+0025 <span class="comment">%                           the first extra parameter it a column vector</span>
+0026 <span class="comment">%                           of weights on all components</span>
+0027 <span class="comment">%             'quaddiff' &amp;  distance in quadratic form:</span>
+0028 <span class="comment">%                           d = (x1 - x2)^T Q (x1 - x2)</span>
+0029 <span class="comment">%                           the first extra parameter is a quadratic form</span>
+0030 <span class="comment">%                           matrix</span>
+0031 <span class="comment">%     \*</span>
+0032 <span class="comment">%     Please not that, if X1 and X2 have n1 an n2 samples respectively, then</span>
+0033 <span class="comment">%     m = 1 /(n1 * n2) * sum_i sum_j d(X1(:,i), X2(:,j)).</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">%   - m = sldistmean(X1, X2, w1, w2, mtype, ...) computes the weighted</span>
+0036 <span class="comment">%     average value of the distances. The w1 and w2 assign weights to</span>
+0037 <span class="comment">%     samples in X1 and X2 respectively. They should be row vectors of</span>
+0038 <span class="comment">%     size 1 x n1 and 1 x n2.</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">% $ History $</span>
+0041 <span class="comment">%   - Created by Dahua Lin, on Sep 20, 2006</span>
+0042 <span class="comment">%</span>
+0043 
+0044 <span class="comment">%% parse and verify input arguments</span>
+0045 
+0046 <span class="keyword">if</span> nargin &lt; 3
+0047     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sldistmean'</span>, 3);
+0048 <span class="keyword">end</span>
+0049 
+0050 <span class="keyword">if</span> ~isnumeric(X1) || ~isnumeric(X2) || ndims(X1) ~= 2 || ndims(X2) ~= 2
+0051     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0052         <span class="string">'X1 and X2 should be numeric 2D matrices'</span>);
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="keyword">if</span> ischar(varargin{1})
+0056     mtype = varargin{1};
+0057     <span class="keyword">if</span> nargin == 3
+0058         params = {};
+0059     <span class="keyword">else</span>
+0060         params = varargin(2:end);
+0061     <span class="keyword">end</span>
+0062     w1 = [];
+0063     w2 = [];
+0064 <span class="keyword">else</span>
+0065     w1 = varargin{1};
+0066     w2 = varargin{2};
+0067     
+0068     n1 = size(X1, 2);
+0069     n2 = size(X2, 2);
+0070     <span class="keyword">if</span> ~isequal(size(w1), [1 n1]) || ~isequal(size(w2), [1, n2])
+0071         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0072             <span class="string">'The size of w1 or w2 is illegal'</span>);
+0073     <span class="keyword">end</span>
+0074     
+0075     mtype = varargin{3};
+0076     <span class="keyword">if</span> nargin == 5
+0077         params = {};
+0078     <span class="keyword">else</span>
+0079         params = varargin(4:end);
+0080     <span class="keyword">end</span>
+0081 <span class="keyword">end</span>
+0082 
+0083 
+0084 <span class="comment">%% main skeleton</span>
+0085 
+0086 <span class="keyword">switch</span> mtype
+0087     <span class="keyword">case</span> {<span class="string">'sqdist'</span>, <span class="string">'wsqdist'</span>}
+0088         d = <a href="#_sub1" class="code" title="subfunction d = check_samedim(X1, X2)">check_samedim</a>(X1, X2);
+0089         <span class="keyword">if</span> strcmp(mtype, <span class="string">'sqdist'</span>)
+0090             wc = [];
+0091         <span class="keyword">else</span>
+0092             <a href="#_sub2" class="code" title="subfunction check_paramsnum(name, params, n)">check_paramsnum</a>(mtype, params, 1);
+0093             wc = params{1};
+0094             <span class="keyword">if</span> ~isequal(size(wc), [d, 1])
+0095                 error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0096                     <span class="string">'The weights on components should be d x 1 vector'</span>);
+0097             <span class="keyword">end</span>
+0098         <span class="keyword">end</span>                
+0099         
+0100         vm1 = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X1, w1, true);
+0101         vm2 = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X2, w2, true);
+0102         vs1 = <a href="#_sub3" class="code" title="subfunction vs = compute_vars(X, vmean, w)">compute_vars</a>(X1, vm1, w1);
+0103         vs2 = <a href="#_sub3" class="code" title="subfunction vs = compute_vars(X, vmean, w)">compute_vars</a>(X2, vm2, w2);
+0104         vmd = vm1 - vm2;
+0105         vsm = vmd .* vmd;
+0106         
+0107         <span class="keyword">if</span> isempty(wc)
+0108             m = sum(vsm + vs1 + vs2);
+0109         <span class="keyword">else</span>
+0110             m = sum((vsm + vs1 + vs2) .* wc);
+0111         <span class="keyword">end</span>
+0112                        
+0113     <span class="keyword">case</span> <span class="string">'quaddiff'</span>
+0114         d = <a href="#_sub1" class="code" title="subfunction d = check_samedim(X1, X2)">check_samedim</a>(X1, X2);
+0115         <a href="#_sub2" class="code" title="subfunction check_paramsnum(name, params, n)">check_paramsnum</a>(mtype, params, 1);
+0116         Q = params{1};
+0117         <span class="keyword">if</span> ~isequal(size(Q), [d d])
+0118             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0119                 <span class="string">'The Q matrix should be a d x d square matrix'</span>);
+0120         <span class="keyword">end</span>
+0121         
+0122         vm1 = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X1, w1, true);
+0123         vm2 = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X2, w2, true);
+0124         C1 = <a href="../../sltoolbox/stat/slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X1, w1, vm1, true);
+0125         C2 = <a href="../../sltoolbox/stat/slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X2, w2, vm2, true);
+0126         vmd = vm1 - vm2;
+0127         
+0128         m = vmd' * Q * vmd + sum(sum(Q .* (C1 + C2)));
+0129                 
+0130     <span class="keyword">otherwise</span>
+0131         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0132             <span class="string">'Invalid metric type: %s'</span>, mtype);
+0133 <span class="keyword">end</span>
+0134 
+0135         
+0136 <span class="comment">%% Auxiliary functions</span>
+0137 
+0138 <a name="_sub1" href="#_subfunctions" class="code">function d = check_samedim(X1, X2)</a>
+0139 
+0140 d = size(X1, 1);
+0141 <span class="keyword">if</span> d ~= size(X2, 1)
+0142     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0143         <span class="string">'X1 and X2 have different sample dimensions'</span>);
+0144 <span class="keyword">end</span>
+0145 
+0146 <a name="_sub2" href="#_subfunctions" class="code">function check_paramsnum(name, params, n)</a>
+0147 
+0148 <span class="keyword">if</span> length(params) ~= n
+0149     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0150         <span class="string">'For metric %s, it has %d extra parameters.'</span>, name, n);
+0151 <span class="keyword">end</span>
+0152 
+0153 <a name="_sub3" href="#_subfunctions" class="code">function vs = compute_vars(X, vmean, w)</a>
+0154 
+0155 DX = <a href="sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, -vmean);
+0156 vs = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(DX .* DX, w);
+0157 
+0158 
+0159 
+0160 
+0161 
+0162 
+0163 
+0164</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

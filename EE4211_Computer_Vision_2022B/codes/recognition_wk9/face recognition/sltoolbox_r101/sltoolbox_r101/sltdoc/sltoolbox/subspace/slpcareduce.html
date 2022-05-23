@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpcareduce</title>
+  <meta name="keywords" content="slpcareduce">
+  <meta name="description" content="SLPCAREDUCE Reduces a PCA model to lower dimension">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace</a> &gt; slpcareduce.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpcareduce
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPCAREDUCE Reduces a PCA model to lower dimension</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function S = slpcareduce(S, cri, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPCAREDUCE Reduces a PCA model to lower dimension
+
+ $ Syntax $
+   - S = slpcareduce(S, cri, ...)
+
+ $ Arguments $
+   - S:        the target PCA model
+   - cri:      the criterion for PCA model reduction
+
+ $ Description $
+   - S = slpcareduce(S, cri, ...) reduces a PCA model by taking a subset
+     of principal components. cri can be a vector of selected indices of 
+     principal components, or a string representing the preset, 
+     reduction scheme, or a function handle of for selection. The 
+     user-supplied selection function takes a PCA model as input arg,
+     and return the indices of retained components. Additional arguments
+     are the feed to the criterion or user-selection function following
+     the PCA model.
+     \*
+     \t    Table 1.  The preset selection schemes   \\
+     \h     name     &amp;      description             \\
+           'num'     &amp; Select the first n components: use n as the 
+                       first argument.
+           'energy'  &amp; Select the smallest number of components, so
+                       that the ratio of the preserved energy to the
+                       total energy is not less than the specified 
+                       ratio r, which is supplied as the first argument.
+                       Note that if the energy preservation of original
+                       PCA model is lower than r, an error will be raised.
+           'eigval'  &amp; Select all components of which the ratio to the
+                       maximum eigenvalue is above a specified ratio r,
+                       which is supplied as the first argument.                        
+
+ $ Remarks $
+   1. The energy of the discarded components in the reduction will be
+      added to the residue.
+
+ $ History $
+   - Created by Dahua Lin on Apr 24, 2006
+   - Modified by Dahua Lin on Aug 17, 2006
+       - Add a field energyratio</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function inds = pcselect_num(S, n)</a></li><li><a href="#_sub2" class="code">function inds = pcselect_energy(S, r)</a></li><li><a href="#_sub3" class="code">function inds = pcselect_eigval(S, r)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function S = slpcareduce(S, cri, varargin)</a>
+0002 <span class="comment">%SLPCAREDUCE Reduces a PCA model to lower dimension</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - S = slpcareduce(S, cri, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - S:        the target PCA model</span>
+0009 <span class="comment">%   - cri:      the criterion for PCA model reduction</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - S = slpcareduce(S, cri, ...) reduces a PCA model by taking a subset</span>
+0013 <span class="comment">%     of principal components. cri can be a vector of selected indices of</span>
+0014 <span class="comment">%     principal components, or a string representing the preset,</span>
+0015 <span class="comment">%     reduction scheme, or a function handle of for selection. The</span>
+0016 <span class="comment">%     user-supplied selection function takes a PCA model as input arg,</span>
+0017 <span class="comment">%     and return the indices of retained components. Additional arguments</span>
+0018 <span class="comment">%     are the feed to the criterion or user-selection function following</span>
+0019 <span class="comment">%     the PCA model.</span>
+0020 <span class="comment">%     \*</span>
+0021 <span class="comment">%     \t    Table 1.  The preset selection schemes   \\</span>
+0022 <span class="comment">%     \h     name     &amp;      description             \\</span>
+0023 <span class="comment">%           'num'     &amp; Select the first n components: use n as the</span>
+0024 <span class="comment">%                       first argument.</span>
+0025 <span class="comment">%           'energy'  &amp; Select the smallest number of components, so</span>
+0026 <span class="comment">%                       that the ratio of the preserved energy to the</span>
+0027 <span class="comment">%                       total energy is not less than the specified</span>
+0028 <span class="comment">%                       ratio r, which is supplied as the first argument.</span>
+0029 <span class="comment">%                       Note that if the energy preservation of original</span>
+0030 <span class="comment">%                       PCA model is lower than r, an error will be raised.</span>
+0031 <span class="comment">%           'eigval'  &amp; Select all components of which the ratio to the</span>
+0032 <span class="comment">%                       maximum eigenvalue is above a specified ratio r,</span>
+0033 <span class="comment">%                       which is supplied as the first argument.</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% $ Remarks $</span>
+0036 <span class="comment">%   1. The energy of the discarded components in the reduction will be</span>
+0037 <span class="comment">%      added to the residue.</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% $ History $</span>
+0040 <span class="comment">%   - Created by Dahua Lin on Apr 24, 2006</span>
+0041 <span class="comment">%   - Modified by Dahua Lin on Aug 17, 2006</span>
+0042 <span class="comment">%       - Add a field energyratio</span>
+0043 <span class="comment">%</span>
+0044 
+0045 <span class="comment">%% parse and verify input arguments</span>
+0046 
+0047 <span class="keyword">if</span> nargin &lt; 2
+0048     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slpcareduce'</span>, 2);
+0049 <span class="keyword">end</span>
+0050 
+0051 inds_selected = [];  <span class="comment">% the selected index</span>
+0052 <span class="keyword">if</span> isnumeric(cri)
+0053     inds_selected = cri;
+0054     
+0055 <span class="keyword">elseif</span> ischar(cri)
+0056     <span class="keyword">switch</span> cri
+0057         <span class="keyword">case</span> <span class="string">'num'</span>
+0058             fh_select = @<a href="#_sub1" class="code" title="subfunction inds = pcselect_num(S, n)">pcselect_num</a>;
+0059         <span class="keyword">case</span> <span class="string">'energy'</span>
+0060             fh_select = @<a href="#_sub2" class="code" title="subfunction inds = pcselect_energy(S, r)">pcselect_energy</a>;
+0061         <span class="keyword">case</span> <span class="string">'eigval'</span>
+0062             fh_select = @<a href="#_sub3" class="code" title="subfunction inds = pcselect_eigval(S, r)">pcselect_eigval</a>;
+0063         <span class="keyword">otherwise</span>
+0064             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0065                 <span class="string">'Invalid selection scheme %s for PCA reduction'</span>, cri);
+0066     <span class="keyword">end</span>
+0067     
+0068 <span class="keyword">elseif</span> isa(cri, <span class="string">'function_handle'</span>)
+0069     fh_select = cri;
+0070     
+0071 <span class="keyword">else</span>
+0072     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0073         <span class="string">'cri should be selected indices, a scheme name or the handle to the selection function'</span>);
+0074 <span class="keyword">end</span>
+0075 
+0076 <span class="comment">%% select the components</span>
+0077 
+0078 <span class="keyword">if</span> isempty(inds_selected)  <span class="comment">% not selected yet</span>
+0079     inds_selected = fh_select(S, varargin{:});        
+0080 <span class="keyword">end</span>
+0081 RP = S.P(:, inds_selected);
+0082 
+0083 
+0084 <span class="comment">%% reduce the PCA model according to the selection</span>
+0085 
+0086 S.feadim = length(inds_selected);
+0087 S.P = RP;
+0088 
+0089 discarded_eigvals = S.eigvals;
+0090 discarded_eigvals(inds_selected) = [];
+0091 S.eigvals = S.eigvals(inds_selected);
+0092 
+0093 S.residue = S.residue + sum(discarded_eigvals);
+0094 
+0095 prinenergy = sum(S.eigvals);
+0096 S.energyratio = prinenergy / (prinenergy + S.residue);
+0097 
+0098 <span class="comment">%% Preset user selection criteria (scheme)</span>
+0099 
+0100 <a name="_sub1" href="#_subfunctions" class="code">function inds = pcselect_num(S, n)</a>
+0101 
+0102 <span class="keyword">if</span> n &gt; S.feadim
+0103     error(<span class="string">'sltoolbox:valueexceed'</span>, <span class="keyword">...</span>
+0104         <span class="string">'n is larger than the number of components preserved in the input model'</span>);
+0105 <span class="keyword">end</span>
+0106 
+0107 inds = (1:n)';
+0108 
+0109 <a name="_sub2" href="#_subfunctions" class="code">function inds = pcselect_energy(S, r)</a>
+0110 
+0111 pe = sum(S.eigvals);          <span class="comment">% preserved energy in input model</span>
+0112 te = pe + S.residue;            <span class="comment">% total energy</span>
+0113 ub_r = pe / te;               <span class="comment">% upper bound on r</span>
+0114 
+0115 <span class="keyword">if</span> r &gt; ub_r
+0116     error(<span class="string">'sltoolbox:valueexceed'</span>, <span class="keyword">...</span>
+0117         <span class="string">'r is larger than the ratio of energy preserved in the input model'</span>);
+0118 <span class="keyword">end</span>
+0119 
+0120 eb = te * r;
+0121 ce = cumsum(S.eigvals);
+0122 n = find(ce &gt;= eb, 1);
+0123 <span class="keyword">if</span> isempty(n)
+0124     n = S.feadim;
+0125 <span class="keyword">end</span>
+0126 
+0127 inds = (1:n)';
+0128 
+0129 <a name="_sub3" href="#_subfunctions" class="code">function inds = pcselect_eigval(S, r)</a>
+0130 
+0131 <span class="keyword">if</span> r &lt; 0 || r &gt;= 1
+0132     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0133         <span class="string">'It should be met that 0 &lt; r &lt;= 1 for eigenvalue ratio based selection'</span>);
+0134 <span class="keyword">end</span>
+0135 
+0136 n = sum(S.eigvals &gt; r * S.eigvals(1));
+0137 
+0138 inds = (1:n)';
+0139 
+0140</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

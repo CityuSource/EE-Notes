@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcorrectrate</title>
+  <meta name="keywords" content="slcorrectrate">
+  <meta name="description" content="SLCORRECTRATE Computes the correct rate of classification">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">perfeval</a> &gt; slcorrectrate.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\perfeval&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcorrectrate
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCORRECTRATE Computes the correct rate of classification</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function cr = slcorrectrate(scores, clabels, qlabels, op, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCORRECTRATE Computes the correct rate of classification
+
+ $ Syntax $
+   - cr = slcorrectrate(scores, clabels, qlabels, op, ...) 
+
+ $ Arguments $
+   - scores:           the scores to support the classification
+   - clabels:          the labels of classes
+   - qlabels:          the groundtruth of the labels of query samples
+   - op:               the option of the score
+   - cr:               the correct rate of the score-based classification
+
+ $ Description $
+   - cr = slcorrectrate(scores, clabels, slabels, op, ...) 
+     Computes the classification correct rate. Suppose we want to 
+     classify n samples into m classes, then scores will be an m x n 
+     matrix, with the entry at i-th row, j-th column representing the 
+     score of the j-th sample in the i-th class. 
+     For op, it can take either of the two values: 'high' and 'low'. 
+     If op is 'high' then it means that the sample will be classified 
+     to the class where it has the highest score value, vice versa 
+     for 'low'.
+ 
+ $ History $
+   - Created by Dahua Lin on Jun 10th, 2005
+   - Modified by Dahua Lin on May 1st, 2005
+     - To base on the sltoolbox v4.
+   - Modified by Dahua Lin on Aug 9th, 2006
+     - Extract slclassify as independent function and base on it
+   - Modified by Dahua Lin on Aug 16th, 2006
+     - Based on new slclassify to support multiple schemes</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slclassify.html" class="code" title="function [decisions, decscores] = slclassify(scores, clabels, op, varargin)">slclassify</a>	SLCLASSIFY Classifies a set of samples according to final scores</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function cr = slcorrectrate(scores, clabels, qlabels, op, varargin)</a>
+0002 <span class="comment">%SLCORRECTRATE Computes the correct rate of classification</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - cr = slcorrectrate(scores, clabels, qlabels, op, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - scores:           the scores to support the classification</span>
+0009 <span class="comment">%   - clabels:          the labels of classes</span>
+0010 <span class="comment">%   - qlabels:          the groundtruth of the labels of query samples</span>
+0011 <span class="comment">%   - op:               the option of the score</span>
+0012 <span class="comment">%   - cr:               the correct rate of the score-based classification</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - cr = slcorrectrate(scores, clabels, slabels, op, ...)</span>
+0016 <span class="comment">%     Computes the classification correct rate. Suppose we want to</span>
+0017 <span class="comment">%     classify n samples into m classes, then scores will be an m x n</span>
+0018 <span class="comment">%     matrix, with the entry at i-th row, j-th column representing the</span>
+0019 <span class="comment">%     score of the j-th sample in the i-th class.</span>
+0020 <span class="comment">%     For op, it can take either of the two values: 'high' and 'low'.</span>
+0021 <span class="comment">%     If op is 'high' then it means that the sample will be classified</span>
+0022 <span class="comment">%     to the class where it has the highest score value, vice versa</span>
+0023 <span class="comment">%     for 'low'.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% $ History $</span>
+0026 <span class="comment">%   - Created by Dahua Lin on Jun 10th, 2005</span>
+0027 <span class="comment">%   - Modified by Dahua Lin on May 1st, 2005</span>
+0028 <span class="comment">%     - To base on the sltoolbox v4.</span>
+0029 <span class="comment">%   - Modified by Dahua Lin on Aug 9th, 2006</span>
+0030 <span class="comment">%     - Extract slclassify as independent function and base on it</span>
+0031 <span class="comment">%   - Modified by Dahua Lin on Aug 16th, 2006</span>
+0032 <span class="comment">%     - Based on new slclassify to support multiple schemes</span>
+0033 <span class="comment">%</span>
+0034 
+0035 <span class="comment">%% parse and verify input arguments</span>
+0036 
+0037 <span class="keyword">if</span> nargin &lt; 4
+0038     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slcorrectrate'</span>, 4);
+0039 <span class="keyword">end</span>
+0040 
+0041 
+0042 <span class="comment">%% Make decision</span>
+0043 
+0044 decisions = <a href="../../sltoolbox/utils/slclassify.html" class="code" title="function [decisions, decscores] = slclassify(scores, clabels, op, varargin)">slclassify</a>(scores, clabels, op, varargin{:});
+0045 
+0046 <span class="comment">%% Evaluate correct rate</span>
+0047 
+0048 qlabels = qlabels(:)';
+0049 cr = sum(decisions == qlabels) / length(qlabels);
+0050 
+0051 
+0052 
+0053 
+0054 
+0055 
+0056</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

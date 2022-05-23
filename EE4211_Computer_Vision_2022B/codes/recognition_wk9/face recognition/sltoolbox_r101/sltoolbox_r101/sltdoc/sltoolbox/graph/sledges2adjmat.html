@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sledges2adjmat</title>
+  <meta name="keywords" content="sledges2adjmat">
+  <meta name="description" content="SLEDGES2ADJMAT Creates an adjacency matrix from edge set">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">graph</a> &gt; sledges2adjmat.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\graph&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sledges2adjmat
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLEDGES2ADJMAT Creates an adjacency matrix from edge set</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function A = sledges2adjmat(n, nt, edges, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLEDGES2ADJMAT Creates an adjacency matrix from edge set
+
+ $ Syntax $
+   - A = sledges2adjmat(n, nt, edges, ...)
+
+ $ Arguments $
+   - n:            The number of (source) nodes
+   - nt:           The number of (target) nodes
+   - edges:        The matrix of edge set
+   
+ $ Description $
+   - A = sledges2adjmat(n, nt, edges) creates an adjacency matrix 
+     from the edge set. You can specify the following properties:
+       - 'valtype':        the value type of the target matrix
+                           - 'auto': if has value, make numeric matrix
+                                     if no value, make logical matrix
+                           - 'logical': make logical matrix always
+                           - 'numeric': make numeric matrix always
+                           (default = 'auto')
+       - 'sparse':         whether to create a sparse matrix 
+                           (default = true)
+       - 'preprune':       whether to prune the edges first 
+                           (default = false)
+       - 'prunemethod':    the method used to prune the edge set
+                           (default = [], means using default method)
+                           refer to slpruneedgeset for the specification 
+                           of the prune methods.
+       - 'sym':            whether to create symmetric graph
+       - 'symmethod':      the method to symmetrize the graph
+                           (default = [], means using default method)
+                           refer to slsymedgeset for the specification.
+
+ $ Remarks $
+   - The property sym can only be true when n == nt.
+
+   - It is an integrated wrapper for slmakeadjmat, slsymgraph and
+     slpruneedgeset.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 9, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slmakeadjmat.html" class="code" title="function A = slmakeadjmat(n, nt, edges, vals, islogic, isspar)">slmakeadjmat</a>	SLMAKEADJMAT Makes an adjacency matrix using edges and corresponing values</li><li><a href="slpruneedgeset.html" class="code" title="function edges = slpruneedgeset(n, nt, edges, method)">slpruneedgeset</a>	SLPRUNEEDGESET Prunes the edge set</li><li><a href="slsymgraph.html" class="code" title="function As = slsymgraph(A, symmethod)">slsymgraph</a>	SLSYMGRAPH Forces symmetry of the adjacency matrix of a graph</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>	SLADJMAT Constructs the adjacency matrix representation of a graph</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function A = sledges2adjmat(n, nt, edges, varargin)</a>
+0002 <span class="comment">%SLEDGES2ADJMAT Creates an adjacency matrix from edge set</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - A = sledges2adjmat(n, nt, edges, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - n:            The number of (source) nodes</span>
+0009 <span class="comment">%   - nt:           The number of (target) nodes</span>
+0010 <span class="comment">%   - edges:        The matrix of edge set</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - A = sledges2adjmat(n, nt, edges) creates an adjacency matrix</span>
+0014 <span class="comment">%     from the edge set. You can specify the following properties:</span>
+0015 <span class="comment">%       - 'valtype':        the value type of the target matrix</span>
+0016 <span class="comment">%                           - 'auto': if has value, make numeric matrix</span>
+0017 <span class="comment">%                                     if no value, make logical matrix</span>
+0018 <span class="comment">%                           - 'logical': make logical matrix always</span>
+0019 <span class="comment">%                           - 'numeric': make numeric matrix always</span>
+0020 <span class="comment">%                           (default = 'auto')</span>
+0021 <span class="comment">%       - 'sparse':         whether to create a sparse matrix</span>
+0022 <span class="comment">%                           (default = true)</span>
+0023 <span class="comment">%       - 'preprune':       whether to prune the edges first</span>
+0024 <span class="comment">%                           (default = false)</span>
+0025 <span class="comment">%       - 'prunemethod':    the method used to prune the edge set</span>
+0026 <span class="comment">%                           (default = [], means using default method)</span>
+0027 <span class="comment">%                           refer to slpruneedgeset for the specification</span>
+0028 <span class="comment">%                           of the prune methods.</span>
+0029 <span class="comment">%       - 'sym':            whether to create symmetric graph</span>
+0030 <span class="comment">%       - 'symmethod':      the method to symmetrize the graph</span>
+0031 <span class="comment">%                           (default = [], means using default method)</span>
+0032 <span class="comment">%                           refer to slsymedgeset for the specification.</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">% $ Remarks $</span>
+0035 <span class="comment">%   - The property sym can only be true when n == nt.</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">%   - It is an integrated wrapper for slmakeadjmat, slsymgraph and</span>
+0038 <span class="comment">%     slpruneedgeset.</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">% $ History $</span>
+0041 <span class="comment">%   - Created by Dahua Lin, on Sep 9, 2006</span>
+0042 <span class="comment">%</span>
+0043 
+0044 <span class="comment">%% parse and verify input arguments</span>
+0045 
+0046 <span class="keyword">if</span> nargin &lt; 3
+0047     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sledges2adjmat'</span>, 3);
+0048 <span class="keyword">end</span>
+0049 
+0050 <span class="keyword">if</span> ~isempty(edges)
+0051     ncols = size(edges, 2);
+0052     <span class="keyword">if</span> ndims(edges) ~= 2 || (ncols ~= 2 &amp;&amp; ncols ~= 3)
+0053         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0054             <span class="string">'The edges should be a 2D matrix with two or three columns'</span>);
+0055     <span class="keyword">end</span>
+0056 <span class="keyword">end</span>
+0057 
+0058 opts.valtype = <span class="string">'auto'</span>;
+0059 opts.sparse = true;
+0060 opts.preprune = false;
+0061 opts.prunemethod = [];
+0062 opts.sym = false;
+0063 opts.symmethod = [];
+0064 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0065 
+0066 <span class="keyword">if</span> opts.sym
+0067     <span class="keyword">if</span> n ~= nt
+0068         error(<span class="string">'sltoolbox:rterror'</span>, <span class="keyword">...</span>
+0069             <span class="string">'The sym can only be true when n == nt'</span>);
+0070     <span class="keyword">end</span>
+0071 <span class="keyword">end</span>
+0072 
+0073 <span class="keyword">switch</span> opts.valtype
+0074     <span class="keyword">case</span> <span class="string">'auto'</span>
+0075         islogic = (ncols == 2);
+0076     <span class="keyword">case</span> <span class="string">'numeric'</span>
+0077         islogic = false;
+0078     <span class="keyword">case</span> <span class="string">'logical'</span>
+0079         islogic = true;
+0080     <span class="keyword">otherwise</span>
+0081         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0082         <span class="string">'Invalid value type of adjacency matrix: %s'</span>, opts.valtype);
+0083 <span class="keyword">end</span>
+0084 
+0085 
+0086 <span class="comment">%% main skeleton</span>
+0087 
+0088 <span class="comment">% prune</span>
+0089 <span class="keyword">if</span> opts.preprune
+0090     edges = <a href="slpruneedgeset.html" class="code" title="function edges = slpruneedgeset(n, nt, edges, method)">slpruneedgeset</a>(n, nt, edges, opts.prunemethod);
+0091 <span class="keyword">end</span>
+0092 
+0093 <span class="comment">% make adjmat</span>
+0094 
+0095 A = <a href="slmakeadjmat.html" class="code" title="function A = slmakeadjmat(n, nt, edges, vals, islogic, isspar)">slmakeadjmat</a>(n, nt, edges, [], islogic, opts.sparse);
+0096 
+0097 <span class="comment">% symmetrize</span>
+0098 <span class="keyword">if</span> opts.sym
+0099     A = <a href="slsymgraph.html" class="code" title="function As = slsymgraph(A, symmethod)">slsymgraph</a>(A, opts.symmethod);
+0100 <span class="keyword">end</span>
+0101</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

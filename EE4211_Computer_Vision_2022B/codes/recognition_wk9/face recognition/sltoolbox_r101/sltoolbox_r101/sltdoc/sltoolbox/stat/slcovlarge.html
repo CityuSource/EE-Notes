@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcovlarge</title>
+  <meta name="keywords" content="slcovlarge">
+  <meta name="description" content="SLCOVLARGE Computes large covariance matrix using memory-efficient way">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slcovlarge.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcovlarge
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCOVLARGE Computes large covariance matrix using memory-efficient way</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function C = slcovlarge(X, w, vmean, cachesize) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCOVLARGE Computes large covariance matrix using memory-efficient way
+
+ $ Syntax $
+   - C = slcovlarge(X, w, vmean, cachesize)
+
+ $ Arguments $
+   - X:            the sample matrix
+   - w:            the weights of samples (default = [])
+                   if it is specifed, it should be a 1 x n vector
+   - vmean:        the pre-computed mean (default = [])
+   - cachesize:    the size of working cache (in the unit of Mbytes)
+
+ $ Description $
+   - C = slcovlarge(X, w, vmean, cachesize) computes the large covariance 
+     matrix within a memory-limited context. Compared to slcov, which is
+     faster at the expense of using more memory, it is slower, however
+     the memory used is under control. Thus it can effectively prevent
+     from the situation of out of memory. 
+
+ $ Remarks $
+   - The memory increased in the function will not exceed 
+     the size of the covariance matrix plus the cachesize.
+
+   - For vmean
+       - if it is empty, then a mean vector will be calculated
+       - if it is zero, then the data is assumed to be centralized
+       - if it is specified, then its size should be d x 1.
+
+   - The memory estimated to be used for each section is
+     if has no weight
+           2 x sd x sn + 2 x (sd + sn). 
+     else
+           3 x sd x sn + 2 x (sd + sn).
+     end
+     Here sd and sn are the sub-dimension
+     and sub-number of that section.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 17, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>	SLMEAN Compute the mean vector of samples</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li><li><a href="../../sltoolbox/utils/slpartition.html" class="code" title="function PS = slpartition(whole_size, spec_item, varargin)">slpartition</a>	SLPARTITION Partition a range into blocks in a specified manner</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function sx = weight_x(sx, w)</a></li><li><a href="#_sub2" class="code">function sy = shift_x(sx, vmean, sidx, eidx)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function C = slcovlarge(X, w, vmean, cachesize)</a>
+0002 <span class="comment">%SLCOVLARGE Computes large covariance matrix using memory-efficient way</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - C = slcovlarge(X, w, vmean, cachesize)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X:            the sample matrix</span>
+0009 <span class="comment">%   - w:            the weights of samples (default = [])</span>
+0010 <span class="comment">%                   if it is specifed, it should be a 1 x n vector</span>
+0011 <span class="comment">%   - vmean:        the pre-computed mean (default = [])</span>
+0012 <span class="comment">%   - cachesize:    the size of working cache (in the unit of Mbytes)</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - C = slcovlarge(X, w, vmean, cachesize) computes the large covariance</span>
+0016 <span class="comment">%     matrix within a memory-limited context. Compared to slcov, which is</span>
+0017 <span class="comment">%     faster at the expense of using more memory, it is slower, however</span>
+0018 <span class="comment">%     the memory used is under control. Thus it can effectively prevent</span>
+0019 <span class="comment">%     from the situation of out of memory.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% $ Remarks $</span>
+0022 <span class="comment">%   - The memory increased in the function will not exceed</span>
+0023 <span class="comment">%     the size of the covariance matrix plus the cachesize.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%   - For vmean</span>
+0026 <span class="comment">%       - if it is empty, then a mean vector will be calculated</span>
+0027 <span class="comment">%       - if it is zero, then the data is assumed to be centralized</span>
+0028 <span class="comment">%       - if it is specified, then its size should be d x 1.</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">%   - The memory estimated to be used for each section is</span>
+0031 <span class="comment">%     if has no weight</span>
+0032 <span class="comment">%           2 x sd x sn + 2 x (sd + sn).</span>
+0033 <span class="comment">%     else</span>
+0034 <span class="comment">%           3 x sd x sn + 2 x (sd + sn).</span>
+0035 <span class="comment">%     end</span>
+0036 <span class="comment">%     Here sd and sn are the sub-dimension</span>
+0037 <span class="comment">%     and sub-number of that section.</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% $ History $</span>
+0040 <span class="comment">%   - Created by Dahua Lin, on Aug 17, 2006</span>
+0041 <span class="comment">%</span>
+0042 
+0043 <span class="comment">%% parse and verify input arguments</span>
+0044 
+0045 <span class="keyword">if</span> nargin &lt; 4
+0046     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slcovlarge'</span>, 4);
+0047 <span class="keyword">end</span>
+0048 
+0049 <span class="keyword">if</span> ndims(X) ~= 2 || ~isnumeric(X)
+0050     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0051         <span class="string">'X should be a 2D numeric matrix'</span>);
+0052 <span class="keyword">end</span>
+0053 
+0054 [d, n] = size(X);
+0055 
+0056 <span class="keyword">if</span> ~isempty(w)
+0057     <span class="keyword">if</span> ~isequal(size(w), [1, n])
+0058         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0059             <span class="string">'The w should be an 1 x n vector'</span>);
+0060     <span class="keyword">end</span>
+0061 <span class="keyword">end</span>
+0062 
+0063 <span class="comment">% convert cache size</span>
+0064 cacheelems = floor(cachesize * 1e6 / 8);
+0065 
+0066 <span class="keyword">if</span> isempty(vmean)
+0067     <span class="keyword">if</span> cacheelems &lt; d
+0068         error(<span class="string">'sltoolbox:notenoughmem'</span>, <span class="keyword">...</span>
+0069             <span class="string">'The cache size is not enough to hold even a mean vector'</span>);
+0070     <span class="keyword">end</span>    
+0071     cacheelems = cacheelems - d;
+0072     vmean = <a href="slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X, w);
+0073 <span class="keyword">else</span>
+0074     <span class="keyword">if</span> ~isequal(vmean, 0)
+0075         <span class="keyword">if</span> ~isequal(size(vmean), [d, 1])
+0076             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0077                 <span class="string">'The vmean should be a d x 1 vector'</span>);
+0078         <span class="keyword">end</span>
+0079     <span class="keyword">end</span>
+0080 <span class="keyword">end</span>
+0081 
+0082 
+0083 <span class="comment">%% decide partition struct</span>
+0084 
+0085 <span class="keyword">if</span> cacheelems &gt; 2*d*n + 2*(d+n)   <span class="comment">% can compute without partitioning</span>
+0086     ps = [];            
+0087 <span class="keyword">else</span>     
+0088     <span class="keyword">if</span> isempty(w)
+0089         cblks = 2;
+0090     <span class="keyword">else</span>
+0091         cblks = 3;
+0092     <span class="keyword">end</span>
+0093             
+0094     sd = floor( (cacheelems - 2 * n) / (cblks * n + 2) );
+0095     divide_row = false;
+0096     <span class="keyword">if</span> sd &lt;= 0
+0097         sd = 1;
+0098         <span class="keyword">if</span> cacheelems &lt; cblks + 4
+0099             error(<span class="string">'sltoolbox:notenoughmem'</span>, <span class="keyword">...</span>
+0100                 <span class="string">'The cache is not large enough'</span>);
+0101         <span class="keyword">end</span>
+0102         sn = floor((cacheelems - 2) / (cblks + 2));
+0103         divide_row = true;
+0104     <span class="keyword">end</span>
+0105             
+0106     ps = <a href="../../sltoolbox/utils/slpartition.html" class="code" title="function PS = slpartition(whole_size, spec_item, varargin)">slpartition</a>(d, <span class="string">'maxblksize'</span>, sd);
+0107     <span class="keyword">if</span> divide_row
+0108         rps = <a href="../../sltoolbox/utils/slpartition.html" class="code" title="function PS = slpartition(whole_size, spec_item, varargin)">slpartition</a>(d, <span class="string">'maxblksize'</span>, sn);
+0109     <span class="keyword">end</span>        
+0110 <span class="keyword">end</span>
+0111 
+0112 
+0113 <span class="comment">%% compute</span>
+0114 
+0115 <span class="keyword">if</span> isempty(ps)
+0116     
+0117     <span class="keyword">if</span> ~isempty(w);
+0118         X = <a href="#_sub1" class="code" title="subfunction sx = weight_x(sx, w)">weight_x</a>(X, w);
+0119     <span class="keyword">end</span>
+0120     X = <a href="#_sub2" class="code" title="subfunction sy = shift_x(sx, vmean, sidx, eidx)">shift_x</a>(X, vmean);
+0121     Xt = X';
+0122     C = X * Xt;
+0123     
+0124 <span class="keyword">else</span>
+0125     
+0126     <span class="keyword">if</span> ~divide_row      <span class="comment">% each row is taken as integral</span>
+0127         
+0128         C = zeros(d, d);        
+0129         nsecs = length(ps.sinds);
+0130         
+0131         <span class="keyword">for</span> i = 1 : nsecs
+0132             <span class="keyword">for</span> j = 1 : nsecs
+0133                 si = ps.sinds(i);
+0134                 ei = ps.einds(i);
+0135                 sj = ps.sinds(j);
+0136                 ej = ps.einds(j);
+0137                                    
+0138                 <span class="keyword">if</span> isempty(w)
+0139                     curXj = X(sj:ej, :);  
+0140                     curXj = <a href="#_sub2" class="code" title="subfunction sy = shift_x(sx, vmean, sidx, eidx)">shift_x</a>(curXj, vmean, sj, ej);
+0141                     curXjt = curXj';
+0142                     clear curXj;
+0143                     
+0144                     curXi = X(si:ei, :);    
+0145                     curXi = <a href="#_sub2" class="code" title="subfunction sy = shift_x(sx, vmean, sidx, eidx)">shift_x</a>(curXi, vmean, si, ei);
+0146                 <span class="keyword">else</span>
+0147                     curXj = X(sj:ej, :);
+0148                     curXj = <a href="#_sub2" class="code" title="subfunction sy = shift_x(sx, vmean, sidx, eidx)">shift_x</a>(curXj, vmean, sj, ej);               
+0149                     curXj = <a href="#_sub1" class="code" title="subfunction sx = weight_x(sx, w)">weight_x</a>(curXj, w);
+0150                     clear curwj;
+0151                     curXjt = curXj';
+0152                     clear curXj;
+0153                     
+0154                     curXi = X(si:ei, :);
+0155                     curXi = <a href="#_sub2" class="code" title="subfunction sy = shift_x(sx, vmean, sidx, eidx)">shift_x</a>(curXi, vmean, si, ei);
+0156                     curXi = <a href="#_sub1" class="code" title="subfunction sx = weight_x(sx, w)">weight_x</a>(curXi, w);
+0157                     clear curwi;
+0158                 <span class="keyword">end</span>
+0159                 
+0160                 C(si:ei, sj:ej) = curXi * curXjt;
+0161 
+0162             <span class="keyword">end</span>
+0163         <span class="keyword">end</span>
+0164                                 
+0165     <span class="keyword">else</span>                <span class="comment">% even each row need to be divided</span>
+0166         
+0167         <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(rps);
+0168         
+0169         error(<span class="string">'sltoolbox:rterror'</span>, <span class="keyword">...</span>
+0170             <span class="string">'In current implementation, row-division is not implemeted yet'</span>);        
+0171     <span class="keyword">end</span>    
+0172     
+0173 <span class="keyword">end</span>
+0174               
+0175 
+0176 <span class="comment">%% scale down</span>
+0177 
+0178 <span class="keyword">if</span> isempty(w)
+0179     C = C / n;
+0180 <span class="keyword">else</span>
+0181     tw = sum(w);
+0182     C = C / tw;
+0183 <span class="keyword">end</span>
+0184 
+0185 
+0186 <span class="comment">%% Core computing function</span>
+0187 
+0188 <a name="_sub1" href="#_subfunctions" class="code">function sx = weight_x(sx, w)</a>
+0189 
+0190 sn = size(sx, 2);
+0191 <span class="keyword">for</span> i = 1 : sn
+0192     sx(:, i) = sx(:, i) * sqrt(w(i));
+0193 <span class="keyword">end</span>
+0194 
+0195 <a name="_sub2" href="#_subfunctions" class="code">function sy = shift_x(sx, vmean, sidx, eidx)</a>
+0196 
+0197 [sd, sn] = size(sx);
+0198 <span class="keyword">if</span> ~isequal(vmean, 0)
+0199     
+0200     <span class="keyword">if</span> nargin == 2
+0201         curmean = vmean;
+0202     <span class="keyword">else</span>
+0203         curmean = vmean(sidx:eidx);
+0204     <span class="keyword">end</span>    
+0205     
+0206     sy = zeros(sd, sn);
+0207     <span class="keyword">for</span> i = 1 : sn
+0208         sy(:,i) = sx(:,i) - curmean;
+0209     <span class="keyword">end</span>
+0210 <span class="keyword">else</span>
+0211     sy = sx;
+0212 <span class="keyword">end</span>
+0213 
+0214 
+0215 
+0216 
+0217         
+0218 
+0219</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

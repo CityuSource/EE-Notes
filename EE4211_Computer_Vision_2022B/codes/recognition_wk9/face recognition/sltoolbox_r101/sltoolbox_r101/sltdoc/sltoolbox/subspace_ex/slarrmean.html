@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slarrmean</title>
+  <meta name="keywords" content="slarrmean">
+  <meta name="description" content="SLARRMEAN Computes the mean of a set of arrays">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace_ex</a> &gt; slarrmean.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace_ex&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slarrmean
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLARRMEAN Computes the mean of a set of arrays</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function arrMean = slarrmean(data, arrsiz, n, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLARRMEAN Computes the mean of a set of arrays
+
+ $ Syntax $
+   - slarrmean(arrs, arrsiz, n, ...)
+   - slarrmean(fns, arrsiz, n, ...)
+
+ $ Arguments $
+   - arrs:         the super-array consisting of all arrays
+   - fns:          the file paths of all array files
+   - arrsiz:       the size of each array unit. (for a column vector, it
+                   is the length of the vector)
+   - n:            the total number of array units
+
+ $ Description $
+   - slarrmean(arrs, arrsiz, n, ...) computes the mean of all array units
+     with the size of each unit specified by arrsiz. If there are more 
+     than one array unit, the size of arrs should be [arrsiz, n].
+
+   - slarrmean(fns, arrsiz, n, ...) computes the mean of all array units
+     stored in the array files given in fns. Each array file stores
+     an super-array of a set of array units.
+
+   - You can specify additional properties.
+       \t      The properties of slarrmean
+       \h      name       &amp;        description
+              'weights'   &amp;  The weights of each array unit, default = []
+             
+ $ History $
+   - Created by Dahua Lin on Jul 27th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>	SLREADARRAY Reads an array from an array file</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sl2dpcaex.html" class="code" title="function [Mm, PL, PR, info] = sl2dpcaex(data, matsiz, n, method, varargin)">sl2dpcaex</a>	SL2DPCAEX Learns Extended 2D PCA on a set of matrix samples</li><li><a href="slpartitionpca.html" class="code" title="function slpartitionpca(data, arrsiz, n, ps, filepath, varargin)">slpartitionpca</a>	SLPARTITIONPCA Performs Partition-based PCA and saves the models</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function S = compute_array_sum(arrs, arrsiz, n, w)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function arrMean = slarrmean(data, arrsiz, n, varargin)</a>
+0002 <span class="comment">%SLARRMEAN Computes the mean of a set of arrays</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - slarrmean(arrs, arrsiz, n, ...)</span>
+0006 <span class="comment">%   - slarrmean(fns, arrsiz, n, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - arrs:         the super-array consisting of all arrays</span>
+0010 <span class="comment">%   - fns:          the file paths of all array files</span>
+0011 <span class="comment">%   - arrsiz:       the size of each array unit. (for a column vector, it</span>
+0012 <span class="comment">%                   is the length of the vector)</span>
+0013 <span class="comment">%   - n:            the total number of array units</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ Description $</span>
+0016 <span class="comment">%   - slarrmean(arrs, arrsiz, n, ...) computes the mean of all array units</span>
+0017 <span class="comment">%     with the size of each unit specified by arrsiz. If there are more</span>
+0018 <span class="comment">%     than one array unit, the size of arrs should be [arrsiz, n].</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">%   - slarrmean(fns, arrsiz, n, ...) computes the mean of all array units</span>
+0021 <span class="comment">%     stored in the array files given in fns. Each array file stores</span>
+0022 <span class="comment">%     an super-array of a set of array units.</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">%   - You can specify additional properties.</span>
+0025 <span class="comment">%       \t      The properties of slarrmean</span>
+0026 <span class="comment">%       \h      name       &amp;        description</span>
+0027 <span class="comment">%              'weights'   &amp;  The weights of each array unit, default = []</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% $ History $</span>
+0030 <span class="comment">%   - Created by Dahua Lin on Jul 27th, 2006</span>
+0031 <span class="comment">%</span>
+0032 
+0033 <span class="comment">%% parse and verify input arguments</span>
+0034 
+0035 <span class="keyword">if</span> nargin &lt; 3
+0036     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slarrmean'</span>, 3);
+0037 <span class="keyword">end</span>
+0038     
+0039 <span class="keyword">if</span> isnumeric(data)
+0040     isdirect = true;
+0041     arrs = data;
+0042     arrsiz = arrsiz(:)';
+0043     <span class="keyword">if</span> ~isequal(size(arrs), [arrsiz, n])
+0044         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0045             <span class="string">'The size of arrs (data) is invalid'</span>);
+0046     <span class="keyword">end</span>
+0047     
+0048 <span class="keyword">elseif</span> iscell(data)
+0049     isdirect = false;
+0050     fns = data;
+0051     arrsiz = arrsiz(:)';
+0052     nfiles = numel(fns);
+0053     
+0054 <span class="keyword">else</span>
+0055     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0056         <span class="string">'The first argument for slarrmean should be an numeric array or a cell array of file names'</span>);
+0057 <span class="keyword">end</span>
+0058 
+0059 opts.weights = [];
+0060 
+0061 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0062 hasweights = ~isempty(opts.weights);
+0063 
+0064 <span class="keyword">if</span> (hasweights)
+0065     opts.weights = opts.weights(:);
+0066     <span class="keyword">if</span> length(opts.weights) ~= n
+0067         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0068             <span class="string">'The length of weights is inconsistent with the number of units'</span>);
+0069     <span class="keyword">end</span>
+0070 <span class="keyword">end</span>
+0071 
+0072 
+0073 <span class="comment">%% Main skeleton</span>
+0074 
+0075 <span class="keyword">if</span> isdirect
+0076     arrMean = <a href="#_sub1" class="code" title="subfunction S = compute_array_sum(arrs, arrsiz, n, w)">compute_array_sum</a>(arrs, arrsiz, n, opts.weights);
+0077 <span class="keyword">else</span>
+0078     arrMean = zeros(arrsiz);
+0079     c = 0;          
+0080     <span class="keyword">for</span> i = 1 : nfiles
+0081         curarrs = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(fns{i});
+0082         curn = size(curarrs, length(arrsiz) + 1);
+0083         <span class="keyword">if</span> ~hasweights
+0084             arrMean = arrMean + <a href="#_sub1" class="code" title="subfunction S = compute_array_sum(arrs, arrsiz, n, w)">compute_array_sum</a>(curarrs, arrsiz, curn, []);
+0085         <span class="keyword">else</span>
+0086             arrMean = arrMean + <a href="#_sub1" class="code" title="subfunction S = compute_array_sum(arrs, arrsiz, n, w)">compute_array_sum</a>(curarrs, arrsiz, curn, opts.weights(c+1:c+curn));
+0087         <span class="keyword">end</span>
+0088         c = c + curn;
+0089         
+0090         <span class="keyword">if</span> c &gt; n
+0091             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0092                 <span class="string">'The total number of units in the set of array files is not n'</span>);
+0093         <span class="keyword">end</span>
+0094     <span class="keyword">end</span>
+0095     
+0096     <span class="keyword">if</span> c ~= n
+0097         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0098             <span class="string">'The total number of units in the set of array files is not n'</span>);
+0099     <span class="keyword">end</span>
+0100     
+0101 <span class="keyword">end</span>
+0102 
+0103 <span class="keyword">if</span> ~hasweights
+0104     arrMean = arrMean / n;
+0105 <span class="keyword">else</span>
+0106     arrMean = arrMean / sum(opts.weights);
+0107 <span class="keyword">end</span>
+0108 
+0109 
+0110 
+0111 <span class="comment">%% Compute function</span>
+0112 
+0113 <a name="_sub1" href="#_subfunctions" class="code">function S = compute_array_sum(arrs, arrsiz, n, w)</a>
+0114 
+0115 <span class="keyword">if</span> ~isequal(size(arrs), [arrsiz, n])
+0116     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0117         <span class="string">'The size of array is not consistent as specified'</span>);
+0118 <span class="keyword">end</span>
+0119 
+0120 d = length(arrsiz);
+0121 <span class="keyword">if</span> isempty(w)
+0122     S = sum(arrs, d+1);
+0123 <span class="keyword">else</span>
+0124     S = reshape(arrs, [prod(arrsiz), n]) * w;
+0125     <span class="keyword">if</span> d == 1
+0126         S = reshape(S, [arrsiz, 1]);
+0127     <span class="keyword">else</span>
+0128         S = reshape(S, arrsiz);
+0129     <span class="keyword">end</span>
+0130 <span class="keyword">end</span>
+0131 
+0132 
+0133 
+0134 
+0135 
+0136 
+0137 
+0138 
+0139 
+0140</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

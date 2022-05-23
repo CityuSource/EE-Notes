@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of edl_updatectrlfile</title>
+  <meta name="keywords" content="edl_updatectrlfile">
+  <meta name="description" content="EDL_UPDATECTRLFILE Updates the status in a control file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">ExpDL</a> &gt; edl_updatectrlfile.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>edl_updatectrlfile
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>EDL_UPDATECTRLFILE Updates the status in a control file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function edl_updatectrlfile(guid, filename, idx, status) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">EDL_UPDATECTRLFILE Updates the status in a control file
+
+ $ Syntax $
+   - edl_updatectrlfile(guid, filename, idx, status)
+
+ $ Arguments $
+   - guid:         the expecting GUID of the control file
+   - filename:     the filename of the control file
+   - idx:          the internal index of the entry to be updated
+   - status:       the updated status
+
+ $ Description $
+   - edl_updatectrlfile(guid, filename, idx, status) updates a specified
+     entry of a control file.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 14, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_readctrlfile.html" class="code" title="function C = edl_readctrlfile(filename)">edl_readctrlfile</a>	EDL_READCTRLFILE Reads in a control file</li><li><a href="edl_writeprops.html" class="code" title="function edl_writeprops(doctag, attribs, nodeTag, props, filename)">edl_writeprops</a>	EDL_WRITEPROPS Writes the property table to XML file</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_batchexp.html" class="code" title="function edl_batchexp(expfun, scrpath, env, logger, filter, runopt)">edl_batchexp</a>	EDL_BATCHEXP Performs Batch experiments according to scheme</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function edl_updatectrlfile(guid, filename, idx, status)</a>
+0002 <span class="comment">%EDL_UPDATECTRLFILE Updates the status in a control file</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - edl_updatectrlfile(guid, filename, idx, status)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - guid:         the expecting GUID of the control file</span>
+0009 <span class="comment">%   - filename:     the filename of the control file</span>
+0010 <span class="comment">%   - idx:          the internal index of the entry to be updated</span>
+0011 <span class="comment">%   - status:       the updated status</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - edl_updatectrlfile(guid, filename, idx, status) updates a specified</span>
+0015 <span class="comment">%     entry of a control file.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $ History $</span>
+0018 <span class="comment">%   - Created by Dahua Lin, on Aug 14, 2006</span>
+0019 <span class="comment">%</span>
+0020 
+0021 <span class="comment">%% parse and verify input</span>
+0022 <span class="keyword">if</span> nargin &lt; 4
+0023     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'edl_updatectrlfile'</span>, 4);
+0024 <span class="keyword">end</span>
+0025 
+0026 <span class="comment">%% read and verify</span>
+0027 
+0028 C = <a href="edl_readctrlfile.html" class="code" title="function C = edl_readctrlfile(filename)">edl_readctrlfile</a>(filename);
+0029 
+0030 <span class="keyword">if</span> ~strcmpi(C.guid, guid)
+0031     error(<span class="string">'edl:interperror'</span>, <span class="keyword">...</span>
+0032         <span class="string">'Inconsistent between the GUID of control file and script on %s'</span>, filename);
+0033 <span class="keyword">end</span>
+0034 
+0035 <span class="comment">%% update</span>
+0036 
+0037 n = length(C.status);
+0038 <span class="keyword">if</span> idx &gt; length(C.status)
+0039     error(<span class="string">'edl:interperror'</span>, <span class="keyword">...</span>
+0040         <span class="string">'The index is beyond the number of entries on %s'</span>, filename);
+0041 <span class="keyword">end</span>
+0042 
+0043 <span class="keyword">if</span> ~ismember(status, {<span class="string">'pending'</span>, <span class="string">'succeed'</span>, <span class="string">'failed'</span>})
+0044     error(<span class="string">'edl:interperror'</span>, <span class="keyword">...</span>
+0045         <span class="string">'Invalid status for control file: %s'</span>, status);
+0046 <span class="keyword">end</span>
+0047 
+0048 C.status{idx} = status;
+0049 
+0050 <span class="comment">%% write</span>
+0051 
+0052 
+0053 doctag = <span class="string">'ExpControl'</span>;
+0054 attribs.guid = guid;
+0055 nodetag = <span class="string">'Entry'</span>;
+0056 
+0057 props = struct(<span class="keyword">...</span>
+0058     <span class="string">'internal_index'</span>, cell(n, 1), <span class="keyword">...</span>
+0059     <span class="string">'status'</span>, cell(n, 1) <span class="keyword">...</span>
+0060     );
+0061 <span class="keyword">for</span> i = 1 : n
+0062     props(i).internal_index = i;
+0063     props(i).status = C.status{i};
+0064 <span class="keyword">end</span>
+0065 
+0066 
+0067 <span class="comment">% backup first</span>
+0068 copyfile(filename, [filename, <span class="string">'.bak'</span>]);
+0069 <a href="edl_writeprops.html" class="code" title="function edl_writeprops(doctag, attribs, nodeTag, props, filename)">edl_writeprops</a>(doctag, attribs, nodetag, props, filename);
+0070 
+0071 
+0072 
+0073 
+0074</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

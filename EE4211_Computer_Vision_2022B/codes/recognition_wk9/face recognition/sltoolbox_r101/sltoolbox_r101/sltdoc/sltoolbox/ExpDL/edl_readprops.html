@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of edl_readprops</title>
+  <meta name="keywords" content="edl_readprops">
+  <meta name="description" content="EDL_READPROPS Reads properties from a property table XML file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">ExpDL</a> &gt; edl_readprops.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>edl_readprops
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>EDL_READPROPS Reads properties from a property table XML file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function S = edl_readprops(filename, nodetag) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">EDL_READPROPS Reads properties from a property table XML file
+
+ $ Syntax $
+   - S = edl_readprops(filename, nodetag)
+
+ $ Arguments $
+   - filename:     the filename of the XML file describing the properties
+   - nodetag:      the tag name of each child node of the document node
+   - S:            the struct array of read document
+                   - 'tag':  the document node tag
+                   - 'attribs': the document node attributes
+                   - the struct array using nodetag as fieldname
+
+ $ Description $
+   - S = edl_readprops(filename, nodetag) reads a table of properties from 
+     a property table XML file.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 10th, 2006
+   - Modified by Dahua Lin, on Aug 13rd, 2006
+       - adds support of document header attribute
+       - changes the structure of the result
+       - adds the selection of node tag</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/xmlkits/xml_getattribs.html" class="code" title="function A = xml_getattribs(xelem, varargin)">xml_getattribs</a>	XML_GETATTRIBS Constructs an attribte struct from an XML element</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_readctrlfile.html" class="code" title="function C = edl_readctrlfile(filename)">edl_readctrlfile</a>	EDL_READCTRLFILE Reads in a control file</li><li><a href="edl_readreport.html" class="code" title="function report = edl_readreport(filename)">edl_readreport</a>	EDL_READREPORT Reads in a EDL report</li><li><a href="edl_readscript.html" class="code" title="function script = edl_readscript(filename)">edl_readscript</a>	EDL_READSCRIPT Reads in a EDL script</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function S = edl_readprops(filename, nodetag)</a>
+0002 <span class="comment">%EDL_READPROPS Reads properties from a property table XML file</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - S = edl_readprops(filename, nodetag)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - filename:     the filename of the XML file describing the properties</span>
+0009 <span class="comment">%   - nodetag:      the tag name of each child node of the document node</span>
+0010 <span class="comment">%   - S:            the struct array of read document</span>
+0011 <span class="comment">%                   - 'tag':  the document node tag</span>
+0012 <span class="comment">%                   - 'attribs': the document node attributes</span>
+0013 <span class="comment">%                   - the struct array using nodetag as fieldname</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ Description $</span>
+0016 <span class="comment">%   - S = edl_readprops(filename, nodetag) reads a table of properties from</span>
+0017 <span class="comment">%     a property table XML file.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% $ History $</span>
+0020 <span class="comment">%   - Created by Dahua Lin, on Aug 10th, 2006</span>
+0021 <span class="comment">%   - Modified by Dahua Lin, on Aug 13rd, 2006</span>
+0022 <span class="comment">%       - adds support of document header attribute</span>
+0023 <span class="comment">%       - changes the structure of the result</span>
+0024 <span class="comment">%       - adds the selection of node tag</span>
+0025 <span class="comment">%</span>
+0026 
+0027 <span class="comment">%% Read file</span>
+0028 
+0029 <span class="keyword">if</span> nargin &lt; 2
+0030     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'edl_readprops'</span>, 2);
+0031 <span class="keyword">end</span>
+0032     
+0033 xdoc = xmlread(filename);
+0034 docelem = xdoc.getDocumentElement;
+0035 
+0036 <span class="comment">%% Read header</span>
+0037 
+0038 S.tag = char(docelem.getTagName);
+0039 S.attribs = <a href="../../sltoolbox/xmlkits/xml_getattribs.html" class="code" title="function A = xml_getattribs(xelem, varargin)">xml_getattribs</a>(docelem);
+0040 
+0041 
+0042 <span class="comment">%% Read properties</span>
+0043 
+0044 propElemList = docelem.getElementsByTagName(nodetag);
+0045 n = propElemList.getLength;
+0046 
+0047 <span class="keyword">if</span> n &gt; 0
+0048     <span class="comment">% pre-allocation</span>
+0049     <span class="comment">% (this can remarkably accelerates the construction of large struct array)</span>
+0050     attrMap = propElemList.item(0).getAttributes;
+0051     firstattr = attrMap.item(0);
+0052     firstname = char(firstattr.getName);
+0053     entries = struct(firstname, cell(n, 1));
+0054 
+0055     <span class="keyword">for</span> i = 1 : n
+0056 
+0057         curentry = propElemList.item(i-1);
+0058         attrMap = curentry.getAttributes;
+0059         na = attrMap.getLength;
+0060 
+0061         <span class="keyword">for</span> j = 1 : na
+0062             attr = attrMap.item(j-1);
+0063             attrname = char(attr.getName);
+0064             attrval = char(attr.getValue);
+0065             entries(i).(attrname) = attrval;
+0066         <span class="keyword">end</span>
+0067 
+0068     <span class="keyword">end</span>
+0069 <span class="keyword">else</span>    
+0070     entries = [];
+0071 <span class="keyword">end</span>
+0072 
+0073 S.(nodetag) = entries;
+0074 
+0075 
+0076</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

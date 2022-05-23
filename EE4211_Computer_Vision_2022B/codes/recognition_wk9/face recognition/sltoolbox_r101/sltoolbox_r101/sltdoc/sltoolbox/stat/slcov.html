@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcov</title>
+  <meta name="keywords" content="slcov">
+  <meta name="description" content="SLCOV Compute the covariance matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slcov.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcov
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCOV Compute the covariance matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function C = slcov(X, w, vmean, hasbeenchecked) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCOV Compute the covariance matrix
+
+ $ Syntax $
+   - C = slcov(X) 
+   - C = slcov(X, w)
+   - C = slcov(X, w, vmean)
+   - C = slcov(X, w, 0)
+   - C = slcov(X, w, vmean, true)
+
+ $ Arguments $
+   - X:        the sample matrix
+   - w:        the weights of the samples
+   - vmean:    the pre-computed mean vector
+   - C:        the computed covariance matrix
+
+ $ Description $
+   - C = slcov(X) computes the covariance matrix for the samples in X.
+     the samples are stored as column vectors. X should be a d x n 2D
+     matrix, where d is the vector dimension, and n is the number of
+     samples. 
+
+   - C = slcov(X, w) computes the weighted covariance matrix for
+     the samples in X. w is a 1 x n row vector of the sample weights.
+     If w is empty, the non-weighted covariance matrix is computed.
+
+   - C = slcov(X, w, vmean) computes the (weighted) covariance matrix
+     with the mean vector supplied. Thus in the function, vmean will be
+     used, instead of re-computing the mean vector. 
+
+   - C = slcov(X, w, 0) computes the (weighted) covariance matrix on 
+     the centered vectors. Since the vectors are treated as centered,
+     no mean vector would be computed, and X will not be shifted.
+
+   - C = slcov(X, w, vmean, true) indicates that the size consistency
+     has been verified by the invoker. In this function, no checking
+     will be conducted on the sizes of input arguments. This syntax
+     is designed for the sake of efficiency.
+
+ $ Remarks $
+   - M should be a 2D matrix (d x n), then w should be a 1 x n row vector,
+     vmean should be a d x 1 column vector or 0. Then C would be a 
+     d x d matrix.
+   - In a non-weighted version, C = X * X' / n; while in a weighed
+     version, the weights would be first normalized before the covariance
+     is computed.
+
+ $ History $
+   - Created by Dahua Lin on Apr 22, 2006
+   - Modified by Dahua Lin on Sep 10, 2006
+       - replace sladd by sladdvec to increase efficiency
+       - replace slmul by slmulvec</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>	SLMEAN Compute the mean vector of samples</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sldistmean.html" class="code" title="function m = sldistmean(X1, X2, varargin)">sldistmean</a>	SLDISTMEAN Uses fast method to compute means of pairwise distances</li><li><a href="slcovs.html" class="code" title="function varargout = slcovs(X, w, nums, M)">slcovs</a>	SLCOVS Computes the sample covariance matrix</li><li><a href="slgaussest.html" class="code" title="function GS = slgaussest(X, varargin)">slgaussest</a>	SLGAUSSEST Estimates the Gaussian models from samples</li><li><a href="../../sltoolbox/subspace/slscatter.html" class="code" title="function S = slscatter(X, type, varargin)">slscatter</a>	SLSCATTER Compute the scatter matrix</li><li><a href="../../sltoolbox/subspace_ex/slpartitionpca.html" class="code" title="function slpartitionpca(data, arrsiz, n, ps, filepath, varargin)">slpartitionpca</a>	SLPARTITIONPCA Performs Partition-based PCA and saves the models</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function C = slcov(X, w, vmean, hasbeenchecked)</a>
+0002 <span class="comment">%SLCOV Compute the covariance matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - C = slcov(X)</span>
+0006 <span class="comment">%   - C = slcov(X, w)</span>
+0007 <span class="comment">%   - C = slcov(X, w, vmean)</span>
+0008 <span class="comment">%   - C = slcov(X, w, 0)</span>
+0009 <span class="comment">%   - C = slcov(X, w, vmean, true)</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Arguments $</span>
+0012 <span class="comment">%   - X:        the sample matrix</span>
+0013 <span class="comment">%   - w:        the weights of the samples</span>
+0014 <span class="comment">%   - vmean:    the pre-computed mean vector</span>
+0015 <span class="comment">%   - C:        the computed covariance matrix</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $ Description $</span>
+0018 <span class="comment">%   - C = slcov(X) computes the covariance matrix for the samples in X.</span>
+0019 <span class="comment">%     the samples are stored as column vectors. X should be a d x n 2D</span>
+0020 <span class="comment">%     matrix, where d is the vector dimension, and n is the number of</span>
+0021 <span class="comment">%     samples.</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%   - C = slcov(X, w) computes the weighted covariance matrix for</span>
+0024 <span class="comment">%     the samples in X. w is a 1 x n row vector of the sample weights.</span>
+0025 <span class="comment">%     If w is empty, the non-weighted covariance matrix is computed.</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%   - C = slcov(X, w, vmean) computes the (weighted) covariance matrix</span>
+0028 <span class="comment">%     with the mean vector supplied. Thus in the function, vmean will be</span>
+0029 <span class="comment">%     used, instead of re-computing the mean vector.</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%   - C = slcov(X, w, 0) computes the (weighted) covariance matrix on</span>
+0032 <span class="comment">%     the centered vectors. Since the vectors are treated as centered,</span>
+0033 <span class="comment">%     no mean vector would be computed, and X will not be shifted.</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">%   - C = slcov(X, w, vmean, true) indicates that the size consistency</span>
+0036 <span class="comment">%     has been verified by the invoker. In this function, no checking</span>
+0037 <span class="comment">%     will be conducted on the sizes of input arguments. This syntax</span>
+0038 <span class="comment">%     is designed for the sake of efficiency.</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">% $ Remarks $</span>
+0041 <span class="comment">%   - M should be a 2D matrix (d x n), then w should be a 1 x n row vector,</span>
+0042 <span class="comment">%     vmean should be a d x 1 column vector or 0. Then C would be a</span>
+0043 <span class="comment">%     d x d matrix.</span>
+0044 <span class="comment">%   - In a non-weighted version, C = X * X' / n; while in a weighed</span>
+0045 <span class="comment">%     version, the weights would be first normalized before the covariance</span>
+0046 <span class="comment">%     is computed.</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">% $ History $</span>
+0049 <span class="comment">%   - Created by Dahua Lin on Apr 22, 2006</span>
+0050 <span class="comment">%   - Modified by Dahua Lin on Sep 10, 2006</span>
+0051 <span class="comment">%       - replace sladd by sladdvec to increase efficiency</span>
+0052 <span class="comment">%       - replace slmul by slmulvec</span>
+0053 <span class="comment">%</span>
+0054 
+0055 <span class="comment">%% parse and verify input arguments</span>
+0056 
+0057 <span class="keyword">if</span> nargin &lt; 4 || ~hasbeenchecked
+0058 
+0059     <span class="comment">% basic</span>
+0060     <span class="keyword">if</span> ndims(X) ~= 2
+0061         error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="string">'X should be a 2D matrix'</span>);
+0062     <span class="keyword">end</span>
+0063     [d, n] = size(X);
+0064 
+0065     <span class="comment">% for weights</span>
+0066     <span class="keyword">if</span> nargin &lt; 2
+0067         w = [];
+0068     <span class="keyword">end</span>
+0069     <span class="keyword">if</span> ~isempty(w)
+0070         <span class="keyword">if</span> size(w, 1) ~= 1 || size(w, 2) ~= n
+0071             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0072                 <span class="string">'w should be an 1 x n row vector'</span>);
+0073         <span class="keyword">end</span>
+0074     <span class="keyword">end</span>
+0075 
+0076     <span class="comment">% for mean vector</span>
+0077     <span class="keyword">if</span> nargin &gt;= 3 &amp;&amp; ~isempty(vmean) &amp;&amp; ~isequal(vmean, 0)
+0078         <span class="keyword">if</span> size(vmean, 1) ~= d || size(vmean, 2) ~= 1
+0079             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0080                 <span class="string">'v should be a d x 1 column vector'</span>);
+0081         <span class="keyword">end</span>
+0082     <span class="keyword">end</span>
+0083     
+0084 <span class="keyword">else</span>
+0085     
+0086     <span class="comment">% simple parse</span>
+0087     n = size(X, 2);
+0088     <span class="keyword">if</span> nargin &lt; 2
+0089         w = [];
+0090     <span class="keyword">end</span>
+0091     
+0092 <span class="keyword">end</span>
+0093 
+0094 <span class="comment">%% centerize the samples</span>
+0095 
+0096 <span class="keyword">if</span> nargin &lt; 3 || isempty(vmean)
+0097     vmean = <a href="slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X, w, true);
+0098 <span class="keyword">end</span>
+0099 
+0100 <span class="keyword">if</span> ~isequal(vmean, 0) <span class="comment">% need centerization</span>
+0101     X = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, -vmean, 1);
+0102 <span class="keyword">end</span>
+0103 
+0104 <span class="comment">%% compute the covariance</span>
+0105 
+0106 <span class="keyword">if</span> isempty(w)   <span class="comment">% not weighted</span>
+0107     
+0108     C = X * X' / n;
+0109     
+0110 <span class="keyword">else</span>            <span class="comment">% weighted</span>
+0111     
+0112     w = w / sum(w);    
+0113     C = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(X, w, 2) * X';
+0114         
+0115 <span class="keyword">end</span>
+0116     
+0117 
+0118     
+0119 
+0120</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

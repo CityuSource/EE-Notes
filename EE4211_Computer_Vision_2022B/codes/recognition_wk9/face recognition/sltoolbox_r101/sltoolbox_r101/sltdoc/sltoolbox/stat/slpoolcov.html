@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpoolcov</title>
+  <meta name="keywords" content="slpoolcov">
+  <meta name="description" content="SLPOOLCOV Compute the pooled covariance">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slpoolcov.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpoolcov
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPOOLCOV Compute the pooled covariance</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function C = slpoolcov(Cs, w) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPOOLCOV Compute the pooled covariance 
+
+ $ Syntax $
+   - C = slpoolcov(Cs)
+   - C = slpoolcov(Cs, w)
+
+ $ Arguments $
+   - Cs        the stack of covariance matrices for all components
+   - w:        the weights for components
+   - C:        the pooled covariance matrix
+
+ $ Description $
+   - C = slpoolcov(Cs) computes the average covariance matrix.
+
+   - C = slpoolcov(Cs, w) computes the weighted pooled covariance matrix
+     with the component weights specified in w.
+
+ $ History $
+   - Created by Dahua Lin on Dec 19th, 2004
+   - Modified by Dahua Lin on Apr 22nd, 2004
+       - Give an much more efficient implementation using matrix product
+         and reshaping.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slregcov.html" class="code" title="function Crs = slregcov(Cs, varargin)">slregcov</a>	SLREGCOV Regularizes covariance matrices</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function C = slpoolcov(Cs, w)</a>
+0002 <span class="comment">%SLPOOLCOV Compute the pooled covariance</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - C = slpoolcov(Cs)</span>
+0006 <span class="comment">%   - C = slpoolcov(Cs, w)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - Cs        the stack of covariance matrices for all components</span>
+0010 <span class="comment">%   - w:        the weights for components</span>
+0011 <span class="comment">%   - C:        the pooled covariance matrix</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - C = slpoolcov(Cs) computes the average covariance matrix.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%   - C = slpoolcov(Cs, w) computes the weighted pooled covariance matrix</span>
+0017 <span class="comment">%     with the component weights specified in w.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% $ History $</span>
+0020 <span class="comment">%   - Created by Dahua Lin on Dec 19th, 2004</span>
+0021 <span class="comment">%   - Modified by Dahua Lin on Apr 22nd, 2004</span>
+0022 <span class="comment">%       - Give an much more efficient implementation using matrix product</span>
+0023 <span class="comment">%         and reshaping.</span>
+0024 <span class="comment">%</span>
+0025 
+0026 <span class="comment">%% parse and verify input arguments</span>
+0027 [d1, d2, n] = size(Cs);
+0028 <span class="keyword">if</span> d1 ~= d2
+0029     error(<span class="string">'sltoolbox:notsquaremat'</span>, <span class="keyword">...</span>
+0030         <span class="string">'the covariance matrices should be square'</span>);
+0031 <span class="keyword">end</span>
+0032 d = d1;
+0033 <span class="keyword">if</span> nargin &lt; 2 || isempty(w)
+0034     isweighted = false;
+0035 <span class="keyword">else</span>
+0036     isweighted = true;
+0037     <span class="keyword">if</span> numel(w) ~= n
+0038         error(<span class="string">'sltoolbox:argmismatch'</span>, <span class="keyword">...</span>
+0039             <span class="string">'the size of w does not match that of Cs'</span>);
+0040     <span class="keyword">end</span>
+0041 <span class="keyword">end</span>
+0042 
+0043 <span class="comment">%% compute</span>
+0044 <span class="keyword">if</span> n == 1
+0045     C = Cs;
+0046 <span class="keyword">else</span>
+0047     <span class="keyword">if</span> ~isweighted
+0048         Cs = reshape(Cs, [d*d, n]);
+0049         C = reshape(sum(Cs, 2), [d, d]);
+0050     <span class="keyword">else</span>        
+0051         w = w(:) / sum(w(:));
+0052         Cs = reshape(Cs, [d*d, n]);
+0053         C = reshape(Cs * w, [d, d]);
+0054     <span class="keyword">end</span>
+0055 <span class="keyword">end</span>
+0056 
+0057 
+0058 
+0059 
+0060 
+0061     
+0062 
+0063 
+0064</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

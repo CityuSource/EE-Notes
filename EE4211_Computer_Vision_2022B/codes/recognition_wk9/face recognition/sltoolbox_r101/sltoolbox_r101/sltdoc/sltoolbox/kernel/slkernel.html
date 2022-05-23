@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slkernel</title>
+  <meta name="keywords" content="slkernel">
+  <meta name="description" content="SLKERNEL Computes the kernel for samples">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">kernel</a> &gt; slkernel.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\kernel&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slkernel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLKERNEL Computes the kernel for samples</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function K = slkernel(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLKERNEL Computes the kernel for samples
+
+ $ Syntax $
+   - K = slkernel(X0, kernel_type, ...)
+   - K = slkernel(X0, X, kernel_type, ...)
+
+ $ Description $
+   - K = slkernel(X0, kernel_type, ...) Computes the Gram matrix for
+     the samples in matrix X0 using the kernel specified by kernel_type. 
+     kernel_type can be name of a built-in kernel type, or the name, 
+     handle of an user-specified function. The user-specified function
+     should take in two d x n matrix containing n pairs of vectors, and
+     output a 1 x n vector of their kernel values. The available builtin
+     kernels are given as follows:
+     \*
+     \t   Table 1.  Built-in Kernel Types          \\
+     \h     name     &amp;    description              \\
+           'lin'     &amp;  Linear Kernel: 
+                        x1' * x2, 
+                        with no parameters         \\
+           'gauss'   &amp;  Gaussian RBF Kernel:
+                        exp(- ||x1 - x2||^2 / (2 * sigma^2)), 
+                        with one parameter sigma   \\ 
+           'poly'    &amp;  Polynomial Kernel:
+                        ((x1' * x2) + a)^k,
+                        with two parameters: k and a \\
+           'sigmoid' &amp;  Sigmoidal Kernel:
+                        tanh(k * (x1' * x2) + a),    
+                        with two parameters: k and a \\
+           'invquad' &amp;  Inverse Quadratic Kernel:
+                        1 / sqrt(||x1 - x2||^2 + a), 
+                        with one parameter: a        \\
+     \* 
+
+   - K = slkernel(X0, X, kernel_type, p1, p2, ...) Computes the empirical
+     kernel mapping for samples X with respect to data set X0. Suppose
+     there are n0 samples in X0, n samples in X, then K will be an n0 * n
+     matrix. Each column in K corresponds to a column in X.
+
+ $ History $
+   - Created by Dahua Lin on Jul 13rd, 2005
+   - Modified by Dahua Lin on May 2nd, 2005
+       - base on sltoolbox v4
+       - re-organize the code structure
+       - add the ability of user-specified kernel functions.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>	SLMETRIC_PW Compute the metric between column vectors pairwisely</li><li><a href="../../sltoolbox/core/slpweval.html" class="code" title="function M = slpweval(X1, X2, f, varargin)">slpweval</a>	SLPWEVAL Perform pairwise computation</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slkernelfea.html" class="code" title="function Y = slkernelfea(X, X0, kparams, varargin)">slkernelfea</a>	SLKERNELFEA Extracts kernelized mapped features</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function K = lin_kernel(X0, X)</a></li><li><a href="#_sub2" class="code">function K = gauss_kernel(X0, X, sigma)</a></li><li><a href="#_sub3" class="code">function K = poly_kernel(X0, X, k, a)</a></li><li><a href="#_sub4" class="code">function K = sigmoid_kernel(X0, X, k, a)</a></li><li><a href="#_sub5" class="code">function K = invquad_kernel(X0, X, a)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function K = slkernel(varargin)</a>
+0002 <span class="comment">%SLKERNEL Computes the kernel for samples</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - K = slkernel(X0, kernel_type, ...)</span>
+0006 <span class="comment">%   - K = slkernel(X0, X, kernel_type, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Description $</span>
+0009 <span class="comment">%   - K = slkernel(X0, kernel_type, ...) Computes the Gram matrix for</span>
+0010 <span class="comment">%     the samples in matrix X0 using the kernel specified by kernel_type.</span>
+0011 <span class="comment">%     kernel_type can be name of a built-in kernel type, or the name,</span>
+0012 <span class="comment">%     handle of an user-specified function. The user-specified function</span>
+0013 <span class="comment">%     should take in two d x n matrix containing n pairs of vectors, and</span>
+0014 <span class="comment">%     output a 1 x n vector of their kernel values. The available builtin</span>
+0015 <span class="comment">%     kernels are given as follows:</span>
+0016 <span class="comment">%     \*</span>
+0017 <span class="comment">%     \t   Table 1.  Built-in Kernel Types          \\</span>
+0018 <span class="comment">%     \h     name     &amp;    description              \\</span>
+0019 <span class="comment">%           'lin'     &amp;  Linear Kernel:</span>
+0020 <span class="comment">%                        x1' * x2,</span>
+0021 <span class="comment">%                        with no parameters         \\</span>
+0022 <span class="comment">%           'gauss'   &amp;  Gaussian RBF Kernel:</span>
+0023 <span class="comment">%                        exp(- ||x1 - x2||^2 / (2 * sigma^2)),</span>
+0024 <span class="comment">%                        with one parameter sigma   \\</span>
+0025 <span class="comment">%           'poly'    &amp;  Polynomial Kernel:</span>
+0026 <span class="comment">%                        ((x1' * x2) + a)^k,</span>
+0027 <span class="comment">%                        with two parameters: k and a \\</span>
+0028 <span class="comment">%           'sigmoid' &amp;  Sigmoidal Kernel:</span>
+0029 <span class="comment">%                        tanh(k * (x1' * x2) + a),</span>
+0030 <span class="comment">%                        with two parameters: k and a \\</span>
+0031 <span class="comment">%           'invquad' &amp;  Inverse Quadratic Kernel:</span>
+0032 <span class="comment">%                        1 / sqrt(||x1 - x2||^2 + a),</span>
+0033 <span class="comment">%                        with one parameter: a        \\</span>
+0034 <span class="comment">%     \*</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">%   - K = slkernel(X0, X, kernel_type, p1, p2, ...) Computes the empirical</span>
+0037 <span class="comment">%     kernel mapping for samples X with respect to data set X0. Suppose</span>
+0038 <span class="comment">%     there are n0 samples in X0, n samples in X, then K will be an n0 * n</span>
+0039 <span class="comment">%     matrix. Each column in K corresponds to a column in X.</span>
+0040 <span class="comment">%</span>
+0041 <span class="comment">% $ History $</span>
+0042 <span class="comment">%   - Created by Dahua Lin on Jul 13rd, 2005</span>
+0043 <span class="comment">%   - Modified by Dahua Lin on May 2nd, 2005</span>
+0044 <span class="comment">%       - base on sltoolbox v4</span>
+0045 <span class="comment">%       - re-organize the code structure</span>
+0046 <span class="comment">%       - add the ability of user-specified kernel functions.</span>
+0047 <span class="comment">%</span>
+0048 
+0049 <span class="comment">%% parse and verify input arguments</span>
+0050 
+0051 <span class="comment">% for X0</span>
+0052 <span class="keyword">if</span> ~isnumeric(varargin{1})
+0053     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0054         <span class="string">'The first argument should be an numeric matrix'</span>);
+0055 <span class="keyword">end</span>
+0056 X0 = varargin{1};
+0057 <span class="keyword">if</span> ndims(X0) ~= 2
+0058     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0059         <span class="string">'The X0 should be a 2D matrix'</span>);
+0060 <span class="keyword">end</span>
+0061 
+0062 <span class="comment">% for X</span>
+0063 <span class="keyword">if</span> isnumeric(varargin{2})
+0064     X = varargin{2};    
+0065     <span class="keyword">if</span> ndims(X) ~= 2
+0066         error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0067             <span class="string">'X should be a 2D matrix'</span>);
+0068     <span class="keyword">end</span>
+0069     ipkt = 3;       <span class="comment">% argument index of kernel type</span>
+0070 <span class="keyword">else</span>
+0071     X = X0;
+0072     ipkt = 2;        
+0073 <span class="keyword">end</span>
+0074 
+0075 <span class="comment">% for kernel type</span>
+0076 <span class="keyword">if</span> nargin &lt; ipkt || isempty(varargin{ipkt})
+0077     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0078         <span class="string">'kernel type is not specified'</span>);
+0079 <span class="keyword">end</span>
+0080 kernel_type = varargin{ipkt};
+0081 
+0082 <span class="comment">% for extra parameters</span>
+0083 <span class="keyword">if</span> nargin == ipkt       <span class="comment">% no extra parameters</span>
+0084     params = {};
+0085 <span class="keyword">else</span>
+0086     params = varargin(ipkt+1:end);
+0087 <span class="keyword">end</span>
+0088 
+0089 
+0090 <span class="comment">%% Determine the computation routine and delegate to it</span>
+0091 
+0092 <span class="comment">% determine for the built-in ones</span>
+0093 
+0094 bik = false;
+0095 <span class="keyword">if</span> ischar(kernel_type)
+0096     <span class="keyword">switch</span> kernel_type
+0097         <span class="keyword">case</span> <span class="string">'lin'</span>
+0098             bik = true;   <span class="comment">% bik means built-in kernel</span>
+0099             fh_kernel = @<a href="#_sub1" class="code" title="subfunction K = lin_kernel(X0, X)">lin_kernel</a>;
+0100         <span class="keyword">case</span> <span class="string">'gauss'</span>
+0101             bik = true;
+0102             fh_kernel = @<a href="#_sub2" class="code" title="subfunction K = gauss_kernel(X0, X, sigma)">gauss_kernel</a>;
+0103         <span class="keyword">case</span> <span class="string">'poly'</span>
+0104             bik = true;
+0105             fh_kernel = @<a href="#_sub3" class="code" title="subfunction K = poly_kernel(X0, X, k, a)">poly_kernel</a>;
+0106         <span class="keyword">case</span> <span class="string">'sigmoid'</span>
+0107             bik = true;
+0108             fh_kernel = @<a href="#_sub4" class="code" title="subfunction K = sigmoid_kernel(X0, X, k, a)">sigmoid_kernel</a>;
+0109         <span class="keyword">case</span> <span class="string">'invquad'</span>
+0110             bik = true;
+0111             fh_kernel = @<a href="#_sub5" class="code" title="subfunction K = invquad_kernel(X0, X, a)">invquad_kernel</a>;
+0112     <span class="keyword">end</span>
+0113 <span class="keyword">end</span>
+0114 
+0115 <span class="comment">% delegate</span>
+0116 <span class="keyword">if</span> bik
+0117     K = fh_kernel(X0, X, params{:});
+0118 <span class="keyword">else</span>
+0119     K = <a href="../../sltoolbox/core/slpweval.html" class="code" title="function M = slpweval(X1, X2, f, varargin)">slpweval</a>(X0, X, kernel_type, params{:});
+0120 <span class="keyword">end</span>
+0121 
+0122 
+0123 <span class="comment">%% The built-in kernel functions</span>
+0124 
+0125 <span class="comment">% Linear Kernel</span>
+0126 <a name="_sub1" href="#_subfunctions" class="code">function K = lin_kernel(X0, X)</a>
+0127 
+0128 K = X0' * X;
+0129 
+0130 
+0131 <span class="comment">% Gaussian Radius Base Function Kernel</span>
+0132 <a name="_sub2" href="#_subfunctions" class="code">function K = gauss_kernel(X0, X, sigma)</a>
+0133 
+0134 D2 = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(X0, X, <span class="string">'sqdist'</span>);
+0135 K = exp(- D2 / (2 * sigma * sigma));
+0136 
+0137 
+0138 <span class="comment">% Polynomial Kernel</span>
+0139 <a name="_sub3" href="#_subfunctions" class="code">function K = poly_kernel(X0, X, k, a)</a>
+0140 
+0141 K = (X0' * X + a).^k;
+0142 
+0143 
+0144 <span class="comment">% Sigmoidal Kernel</span>
+0145 <a name="_sub4" href="#_subfunctions" class="code">function K = sigmoid_kernel(X0, X, k, a)</a>
+0146 
+0147 K = tanh(k * (X0' * X) + a);
+0148 
+0149 
+0150 <span class="comment">% Inverse Quadratic Kernel</span>
+0151 <a name="_sub5" href="#_subfunctions" class="code">function K = invquad_kernel(X0, X, a)</a>
+0152 
+0153 D2 = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(X0, X, <span class="string">'sqdist'</span>);
+0154 K = 1 ./ sqrt(D2 + a);
+0155 
+0156</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

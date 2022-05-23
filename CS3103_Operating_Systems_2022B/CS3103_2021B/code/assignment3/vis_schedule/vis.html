@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+
+<body>
+
+    <!-- <script src="https://d3js.org/d3.v5.min.js"></script> -->
+    <!-- use local d3.js script file -->
+    <script src="assets/js/d3.min.js"></script> 
+
+    <input type="file" id="file_input" name="file_input" accept="text/plain">
+
+    <div id="canvas"></div>
+
+    <script type="text/javascript">
+
+        if(!window.FileReader) {
+            alert("FileReader is not supported by your browser!");
+        }
+
+        function read_file(e) {
+            e = e || window.event;
+            var files = this.files;
+            for(var i = 0, f; f = files[i]; i++) {
+                var reader = new FileReader();
+                reader.onload = (function(file) {
+                    return function(e) {
+                        var process_ids = new Array();
+                        var cur_id = 0;
+                        var schedule = new Array();
+                        var max_step = 0;
+                        rows = this.result.split("\n");
+                        for(var i = 0; i < rows.length; i++) {
+                            items = rows[i].trim().split(" ");
+                            if(items[0].startsWith("process")) {
+                                cur_id = parseInt(items[1]);
+                                process_ids.push(cur_id);
+                                continue;
+                            }
+                            if(items.length <= 1) {
+                                continue;
+                            }
+                            for(var j = 0; j < items.length; j += 2) {
+                                schedule.push([cur_id, parseInt(items[j]), parseInt(items[j+1])]);
+                                if(parseInt(items[j+1]) > max_step) {
+                                    max_step = parseInt(items[j+1]);
+                                }
+                            }
+                        }
+                        console.log(process_ids);
+                        console.log(schedule);
+                        clear_diagram();
+                        draw_diagram(process_ids, schedule, max_step);
+                    };
+                })(f);
+                reader.readAsText(f);
+            }
+        }
+
+        document.getElementById('file_input').addEventListener('change', read_file, false);
+
+        function clear_diagram() {
+            d3.selectAll("svg").remove();
+        }
+
+        function draw_diagram(process_ids, schedule, max_step) {
+            // set plot width and length
+            var width = 600, height = 400;
+            var margin = {top: 50, right: 70, left: 60, bottom: 70};
+            var step_length = width / max_step;
+            var process_height = height / process_ids.length;
+
+            // create svg element
+            var canvas = d3.select("#canvas")
+                        .append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom);;
+            var gs = canvas.append("g")
+                    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+            var s = gs.append("svg")
+                    .attr("id", "heatmap")
+                    .attr("width", width + "px")
+                    .attr("height", height + "px")
+                    .style("overflow", "hidden");
+
+            // draw x axis
+            var xticks = 10;
+            var xscale = d3.scaleLinear().domain([0, max_step]).range([0, width]);
+            var xaxis = d3.axisBottom(xscale).ticks(xticks);
+            gs.append("g")
+                .attr("id", "axis-x")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xaxis);
+            var yticks = new Array();
+            for(var i = 0; i < process_ids.length; i++) {
+                yticks.push(i);
+            }
+            var yscale = d3.scaleLinear().domain([0, process_ids.length]).range([0, height]);
+            // var yaxis = d3.axisLeft(yscale).ticks(process_ids.length);
+            var yaxis = d3.axisLeft(yscale).tickValues(yticks).tickFormat(d3.format("d"));
+            gs.append("g")
+                .attr("id", "axis-y")
+                .attr("transform", "translate(0,0)")
+                .call(yaxis)
+                .selectAll("text")
+                .attr("transform", "translate(0,"+process_height/2+")");;
+
+            // draw diagram
+            s.selectAll()
+                .data(schedule)
+                .enter()
+                .append("rect")
+                .attr("x", function(d, k){
+                    return d[1] * step_length;
+                })
+                .attr("y", function(d, k){
+                    return d[0] * process_height;
+                })
+                .attr("width", function(d, k){ return (d[2] - d[1]) * step_length; })
+                .attr("height", function(d, k){ return process_height; })
+                .attr("fill", function(d, k){ return "rgb(68, 114, 196)"; })
+
+            // draw title
+            canvas.append("text")
+                    .text("CPU Schedule")
+                    .attr("x", margin.left + width / 2)
+                    .attr("y", 30)
+                    .style("fill", "black")
+                    .style("font-size", "10 px")
+                    .style("text-anchor", "middle");
+
+            // draw axis name
+            canvas.append("text")
+                    .text("ID#")
+                    .attr("x", 0)
+                    .attr("y", margin.top + height / 2)
+                    .style("fill", "black")
+                    .style("font-size", "20 px");
+            canvas.append("text")
+                    .text("Tick")
+                    .attr("x", margin.left + width / 2)
+                    .attr("y", margin.top + height + margin.bottom * 0.6)
+                    .style("fill", "black")
+                    .style("font-size", "20 px")
+                    .style("text-anchor", "middle");
+
+            // draw grid
+            console.log(xaxis.tickValues());
+            s.selectAll()
+                .data(xaxis.scale().ticks())
+                .enter()
+                .append("line")
+                .attr("x1", function(d){ return d * step_length; })
+                .attr("y1", 0)
+                .attr("x2", function(d){ return d * step_length; })
+                .attr("y2", height)
+                .style("stroke", "black")
+                .style("stroke-dasharray", ("3, 3"))
+                .attr("stroke-width", "0.5px");
+        }
+
+        function regulate_scale(max_scale, num_scale) {
+            var delta = Math.floor(max_scale / num_scale);
+            var scale = new Array();
+            for(var i = 0; i < max_scale; i += delta) {
+                scale.push(i);
+            }
+            scale.push(i);
+            return scale;
+        }
+
+    </script>
+
+
+</body>
+
+</html>

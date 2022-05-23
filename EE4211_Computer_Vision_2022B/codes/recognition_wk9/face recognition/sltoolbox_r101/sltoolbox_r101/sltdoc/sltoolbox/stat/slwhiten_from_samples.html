@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slwhiten_from_samples</title>
+  <meta name="keywords" content="slwhiten_from_samples">
+  <meta name="description" content="SLWHITEN_FROM_SAMPLES Compute the whitening matrix from sample matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slwhiten_from_samples.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slwhiten_from_samples
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLWHITEN_FROM_SAMPLES Compute the whitening matrix from sample matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function W = slwhiten_from_samples(X, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLWHITEN_FROM_SAMPLES Compute the whitening matrix from sample matrix
+
+ $ Syntax $
+   - W = slwhiten_from_samples(X)
+   - W = slwhiten_from_samples(X, ...)
+
+ $ Arguments $
+   - X:            the sample matrix
+   - W:            the computed whitening transform matrix
+
+ $ Description $
+   - W = slwhiten_from_samples(X) computes the whiten transform matrix
+     from samples using the automatic-selection scheme.
+
+   - W = slwhiten_from_samples(X, ...) computes the whiten transform
+     matrix from samples according to the user-specified properties.
+     \*   
+     \t   Table 1. The properties of sample-whitening computation \\
+     \h     name     &amp;      description                   \\
+           'scheme'  &amp;  The scheme of computation procedure, 
+                        default = 'auto' \\
+           'evproc'  &amp;  The {method, ...} form of eigenvalue processing. 
+                        default = {'std'} \\
+                        This will be input to the slinvevals function. \\
+           'weights' &amp;  The sample weights.  default = []. \\
+     \*      
+     The available schemes are listed as follows
+     \* 
+     \t   Table 2. The schemes of computing whitening matrix       \\
+     \h     name   &amp;     description                               \\
+           'auto'  &amp;  Automatically select a proper scheme for computing.
+                      \\ 
+           'std'   &amp;  Standard scheme: first compute the covariance matrix
+                      and then derive the whitening transform matrix. \\
+           'svd'   &amp;  SVD-based scheme. Using svd for eigen-decomposition.
+           'trans' &amp;  Use a transpose-based way. It is more efficient for
+                      the case with high-dimensionality and small sample
+                      size.                                            \\
+     \*
+     The methods for processing the eigenvalues, i.e. computing their
+     reciprocals can be referred to the slinvevals function.
+
+ $ Remarks $
+   - It is a prerequisite that the samples are properly centered. 
+
+ $ History $
+   - Created by Lin Dahua on Apr 30, 2006
+   - Modified by Dahua Lin on Sep 10, 2006
+       - replace slmul by slmulvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slnormalize.html" class="code" title="function An = slnormalize(A, p, d)">slnormalize</a>	SLNORMALIZE Normalize the sub-arrays</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="slinvevals.html" class="code" title="function revs = slinvevals(evals, method, r)">slinvevals</a>	SLINVEVALS Compute the reciprocals of eigenvalues in a robust way</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/subspace/slfld.html" class="code" title="function T = slfld(X, nums, varargin)">slfld</a>	SLFLD Performs Fisher Linear Discriminant Analysis</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function W = compute_whiten_auto(X, evproc)</a></li><li><a href="#_sub2" class="code">function W = compute_whiten_std(X, evproc)</a></li><li><a href="#_sub3" class="code">function W = compute_whiten_svd(X, evproc)</a></li><li><a href="#_sub4" class="code">function W = compute_whiten_trans(X, evproc)</a></li><li><a href="#_sub5" class="code">function [revs, U] = proc_eigs(evs, U, evproc)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function W = slwhiten_from_samples(X, varargin)</a>
+0002 <span class="comment">%SLWHITEN_FROM_SAMPLES Compute the whitening matrix from sample matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - W = slwhiten_from_samples(X)</span>
+0006 <span class="comment">%   - W = slwhiten_from_samples(X, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - X:            the sample matrix</span>
+0010 <span class="comment">%   - W:            the computed whitening transform matrix</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - W = slwhiten_from_samples(X) computes the whiten transform matrix</span>
+0014 <span class="comment">%     from samples using the automatic-selection scheme.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%   - W = slwhiten_from_samples(X, ...) computes the whiten transform</span>
+0017 <span class="comment">%     matrix from samples according to the user-specified properties.</span>
+0018 <span class="comment">%     \*</span>
+0019 <span class="comment">%     \t   Table 1. The properties of sample-whitening computation \\</span>
+0020 <span class="comment">%     \h     name     &amp;      description                   \\</span>
+0021 <span class="comment">%           'scheme'  &amp;  The scheme of computation procedure,</span>
+0022 <span class="comment">%                        default = 'auto' \\</span>
+0023 <span class="comment">%           'evproc'  &amp;  The {method, ...} form of eigenvalue processing.</span>
+0024 <span class="comment">%                        default = {'std'} \\</span>
+0025 <span class="comment">%                        This will be input to the slinvevals function. \\</span>
+0026 <span class="comment">%           'weights' &amp;  The sample weights.  default = []. \\</span>
+0027 <span class="comment">%     \*</span>
+0028 <span class="comment">%     The available schemes are listed as follows</span>
+0029 <span class="comment">%     \*</span>
+0030 <span class="comment">%     \t   Table 2. The schemes of computing whitening matrix       \\</span>
+0031 <span class="comment">%     \h     name   &amp;     description                               \\</span>
+0032 <span class="comment">%           'auto'  &amp;  Automatically select a proper scheme for computing.</span>
+0033 <span class="comment">%                      \\</span>
+0034 <span class="comment">%           'std'   &amp;  Standard scheme: first compute the covariance matrix</span>
+0035 <span class="comment">%                      and then derive the whitening transform matrix. \\</span>
+0036 <span class="comment">%           'svd'   &amp;  SVD-based scheme. Using svd for eigen-decomposition.</span>
+0037 <span class="comment">%           'trans' &amp;  Use a transpose-based way. It is more efficient for</span>
+0038 <span class="comment">%                      the case with high-dimensionality and small sample</span>
+0039 <span class="comment">%                      size.                                            \\</span>
+0040 <span class="comment">%     \*</span>
+0041 <span class="comment">%     The methods for processing the eigenvalues, i.e. computing their</span>
+0042 <span class="comment">%     reciprocals can be referred to the slinvevals function.</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">% $ Remarks $</span>
+0045 <span class="comment">%   - It is a prerequisite that the samples are properly centered.</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">% $ History $</span>
+0048 <span class="comment">%   - Created by Lin Dahua on Apr 30, 2006</span>
+0049 <span class="comment">%   - Modified by Dahua Lin on Sep 10, 2006</span>
+0050 <span class="comment">%       - replace slmul by slmulvec to increase efficiency</span>
+0051 <span class="comment">%</span>
+0052 
+0053 <span class="comment">%% parse and verify input arguments</span>
+0054 
+0055 <span class="keyword">if</span> ndims(X) ~= 2
+0056     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0057         <span class="string">'The sample matrix X should be a 2D matrix'</span>);
+0058 <span class="keyword">end</span>
+0059 n = size(X, 2);
+0060 
+0061 <span class="comment">% check options</span>
+0062 
+0063 opts.scheme = <span class="string">'auto'</span>;
+0064 opts.evproc = {<span class="string">'std'</span>};
+0065 opts.weights = [];
+0066 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0067 
+0068 <span class="keyword">switch</span> opts.scheme 
+0069     <span class="keyword">case</span> <span class="string">'auto'</span>
+0070         fh_compW = @<a href="#_sub1" class="code" title="subfunction W = compute_whiten_auto(X, evproc)">compute_whiten_auto</a>;
+0071     <span class="keyword">case</span> <span class="string">'std'</span>
+0072         fh_compW = @<a href="#_sub2" class="code" title="subfunction W = compute_whiten_std(X, evproc)">compute_whiten_std</a>;
+0073     <span class="keyword">case</span> <span class="string">'svd'</span>
+0074         fh_compW = @<a href="#_sub3" class="code" title="subfunction W = compute_whiten_svd(X, evproc)">compute_whiten_svd</a>;
+0075     <span class="keyword">case</span> <span class="string">'trans'</span>
+0076         fh_compW = @<a href="#_sub4" class="code" title="subfunction W = compute_whiten_trans(X, evproc)">compute_whiten_trans</a>;
+0077     <span class="keyword">otherwise</span>
+0078         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0079             <span class="string">'Invalid whiten matrix computing scheme %s'</span>, opts.scheme);
+0080 <span class="keyword">end</span>
+0081 
+0082 <span class="keyword">if</span> ~isempty(opts.weights)
+0083     <span class="keyword">if</span> ~isequal(size(opts.weights), [1, n])
+0084         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0085             <span class="string">'The weights should be a 1 x n row vector'</span>);
+0086     <span class="keyword">end</span>
+0087 <span class="keyword">end</span>
+0088 
+0089 
+0090 <span class="comment">%% prepare the samples</span>
+0091 
+0092 <span class="keyword">if</span> ~isempty(opts.weights)
+0093     X = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(X, sqrt(max(opts.weights, 0)), 2);
+0094 <span class="keyword">end</span>
+0095 
+0096 <span class="comment">%% compute</span>
+0097 
+0098 W = fh_compW(X, opts.evproc);
+0099 
+0100 <span class="comment">%% The functions for computing whiten matrix</span>
+0101 
+0102 <a name="_sub1" href="#_subfunctions" class="code">function W = compute_whiten_auto(X, evproc)</a>
+0103 
+0104 <span class="keyword">if</span> size(X, 1) &gt; size(X, 2)
+0105     W = <a href="#_sub4" class="code" title="subfunction W = compute_whiten_trans(X, evproc)">compute_whiten_trans</a>(X, evproc);
+0106 <span class="keyword">else</span>
+0107     W = <a href="#_sub2" class="code" title="subfunction W = compute_whiten_std(X, evproc)">compute_whiten_std</a>(X, evproc);
+0108 <span class="keyword">end</span>
+0109 
+0110 <a name="_sub2" href="#_subfunctions" class="code">function W = compute_whiten_std(X, evproc)</a>
+0111 
+0112 S = X * X';
+0113 [evs, U] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(S);
+0114 [revs, U] = <a href="#_sub5" class="code" title="subfunction [revs, U] = proc_eigs(evs, U, evproc)">proc_eigs</a>(evs, U, evproc);
+0115 W = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(U, sqrt(revs)', 2);
+0116 
+0117 <a name="_sub3" href="#_subfunctions" class="code">function W = compute_whiten_svd(X, evproc)</a>
+0118 
+0119 [U, D] = svd(X, 0);
+0120 evs = diag(D) .^ 2;
+0121 clear D;
+0122 
+0123 [revs, U] = <a href="#_sub5" class="code" title="subfunction [revs, U] = proc_eigs(evs, U, evproc)">proc_eigs</a>(evs, U, evproc);
+0124 W = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(U, sqrt(revs)', 2);
+0125 
+0126 <a name="_sub4" href="#_subfunctions" class="code">function W = compute_whiten_trans(X, evproc)</a>
+0127 
+0128 S = X' * X;
+0129 [evs, V] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(S);
+0130 U = X * V; 
+0131 clear V;
+0132 [revs, U] = <a href="#_sub5" class="code" title="subfunction [revs, U] = proc_eigs(evs, U, evproc)">proc_eigs</a>(evs, U, evproc);
+0133 U = <a href="../../sltoolbox/core/slnormalize.html" class="code" title="function An = slnormalize(A, p, d)">slnormalize</a>(U);
+0134 
+0135 W = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(U, sqrt(revs)', 2);
+0136 
+0137 
+0138 
+0139 <span class="comment">%% The auxiliary function for obtaining truncated eigen-reciprocals</span>
+0140 
+0141 <a name="_sub5" href="#_subfunctions" class="code">function [revs, U] = proc_eigs(evs, U, evproc)</a>
+0142 
+0143 revs = <a href="slinvevals.html" class="code" title="function revs = slinvevals(evals, method, r)">slinvevals</a>(evs, evproc{:});
+0144 
+0145 si = find(revs == 0);
+0146 <span class="keyword">if</span> ~isempty(si)
+0147     revs(si) = [];
+0148     U(:, si) = [];
+0149 <span class="keyword">end</span>
+0150</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

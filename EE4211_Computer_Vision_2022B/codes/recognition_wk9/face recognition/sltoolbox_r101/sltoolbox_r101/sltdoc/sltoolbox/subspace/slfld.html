@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slfld</title>
+  <meta name="keywords" content="slfld">
+  <meta name="description" content="SLFLD Performs Fisher Linear Discriminant Analysis">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace</a> &gt; slfld.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slfld
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLFLD Performs Fisher Linear Discriminant Analysis</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function T = slfld(X, nums, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLFLD Performs Fisher Linear Discriminant Analysis
+
+ $ Syntax $
+   - T = slfld(X, nums)
+   - T = slfld(X, nums, ...)
+
+ $ Arguments $
+   - X:        the training sample matrix
+   - nums:     the numbers of samples in all classes
+   - T:        the solved transform matrix
+
+ $ Description $
+   - T = slfld(X, nums) performs Fisher linear discriminant analysis 
+     on the samples X in default way.
+
+   - T = slfld(X, nums, ...) performs Fisher linear discriminant analysis
+     on the samples X according to the specified properties. 
+     \*
+     \t   Table 1.  The properties of Fisher Discriminant Analysis   \\
+     \h     name     &amp;     description                                \\
+           'prepca'  &amp;  Whether to perform a preamble PCA to first 
+                        reduce the dimensions to the samples' rank.
+                        default = false.                              \\
+           'whiten' &amp;  The cell containing the arguments for computing 
+                       the whitening transform.  default = {}.       \\
+           'dimset'  &amp;  The cell containing the arguments for determining
+                        the output feature dimension. default = {}.
+                        (refer to sldim_by_eigval).                   \\
+           'Sb'      &amp;  The pre-computed between-class scattering matrix
+                        or the cell containing the arguments for 
+                        computing the scatter matrix in the form
+                        {type, ...}, which is input to slscatter.     \\
+           'Sw'      &amp;  The pre-computed within-class scattering matrix
+                        or the cell containing the arguments for 
+                        computing the scatter matrix in the form
+                        {type, ...}, which is input to slscatter.     \\
+         'weights'   &amp;  The sample weights. default = [].             \\
+     \*  
+
+ $ Remarks $
+   -# The function solves the transform in mainly two stages: 
+      First, whiten the samples so that the between-class scattering
+      become the identity matrix; then solves the projection to maximize
+      the whitened between-class scattering. If prepca is set to true
+      a preamble step for reducing the dimensions to rank by PCA is taken.
+
+   -# The function is very flexible. By tuning the arguments for
+      pre-pca, whitening, and the computation of Sb and Sw, it turns to
+      be various LDA-based algorithms, including fisher LDA, 
+      regularized LDA, weighted pairwise LDA, dual-space LDA etc.
+      
+   -# If Sw or its computing rule is given, the whiten transform is 
+      directly solved from Sw,  otherwise the whitening transform is 
+      solved from samples. If Sb is given, the whitened between-class 
+      scattering is computed by directly applying the whiten transform 
+      to Sb, otherwise, Sb is computed from whitenned samples. If both 
+      Sb and Sw are given, then the samples are not used in the function. 
+      In this cases, you can simply input an empty X. 
+
+   -# If both Sb and Sw are given, the pre-pca step will not be conducted.
+      no matter whether prepca is true or false.
+
+ $ History $
+   - Created by Dahua Lin on Apr 30th, 2006
+   - Modified by Dahua Lin on Sep 10th, 2006
+       - replace sladd by sladdvec to increase efficiency.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="../../sltoolbox/stat/slmeans.html" class="code" title="function varargout = slmeans(X, w, nums)">slmeans</a>	SLMEANS Compute the mean vectors</li><li><a href="../../sltoolbox/stat/slwhiten_from_cov.html" class="code" title="function W = slwhiten_from_cov(C, method, varargin)">slwhiten_from_cov</a>	SLWHITEN_FROM_COV Compute the whitening transform from covariance matrix</li><li><a href="../../sltoolbox/stat/slwhiten_from_samples.html" class="code" title="function W = slwhiten_from_samples(X, varargin)">slwhiten_from_samples</a>	SLWHITEN_FROM_SAMPLES Compute the whitening matrix from sample matrix</li><li><a href="sldim_by_eigval.html" class="code" title="function d = sldim_by_eigval(eigvals, sch, varargin)">sldim_by_eigval</a>	SLDIM_BY_EIGVAL Determines the dimension of principal subspace by eigenvalues</li><li><a href="slpca.html" class="code" title="function S = slpca(X, varargin)">slpca</a>	SLPCA Learns a PCA model from training samples</li><li><a href="slscatter.html" class="code" title="function S = slscatter(X, type, varargin)">slscatter</a>	SLSCATTER Compute the scatter matrix</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>	SLNUMS2BOUNDS Compute the index-boundaries from section sizes</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sllda.html" class="code" title="function T = sllda(X, nums, method, varargin)">sllda</a>	SLLDA Trains a Linear Discriminant Model using specified method</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function Y = make_withinclass_diffvecs(X, w, nums)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function T = slfld(X, nums, varargin)</a>
+0002 <span class="comment">%SLFLD Performs Fisher Linear Discriminant Analysis</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - T = slfld(X, nums)</span>
+0006 <span class="comment">%   - T = slfld(X, nums, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - X:        the training sample matrix</span>
+0010 <span class="comment">%   - nums:     the numbers of samples in all classes</span>
+0011 <span class="comment">%   - T:        the solved transform matrix</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - T = slfld(X, nums) performs Fisher linear discriminant analysis</span>
+0015 <span class="comment">%     on the samples X in default way.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%   - T = slfld(X, nums, ...) performs Fisher linear discriminant analysis</span>
+0018 <span class="comment">%     on the samples X according to the specified properties.</span>
+0019 <span class="comment">%     \*</span>
+0020 <span class="comment">%     \t   Table 1.  The properties of Fisher Discriminant Analysis   \\</span>
+0021 <span class="comment">%     \h     name     &amp;     description                                \\</span>
+0022 <span class="comment">%           'prepca'  &amp;  Whether to perform a preamble PCA to first</span>
+0023 <span class="comment">%                        reduce the dimensions to the samples' rank.</span>
+0024 <span class="comment">%                        default = false.                              \\</span>
+0025 <span class="comment">%           'whiten' &amp;  The cell containing the arguments for computing</span>
+0026 <span class="comment">%                       the whitening transform.  default = {}.       \\</span>
+0027 <span class="comment">%           'dimset'  &amp;  The cell containing the arguments for determining</span>
+0028 <span class="comment">%                        the output feature dimension. default = {}.</span>
+0029 <span class="comment">%                        (refer to sldim_by_eigval).                   \\</span>
+0030 <span class="comment">%           'Sb'      &amp;  The pre-computed between-class scattering matrix</span>
+0031 <span class="comment">%                        or the cell containing the arguments for</span>
+0032 <span class="comment">%                        computing the scatter matrix in the form</span>
+0033 <span class="comment">%                        {type, ...}, which is input to slscatter.     \\</span>
+0034 <span class="comment">%           'Sw'      &amp;  The pre-computed within-class scattering matrix</span>
+0035 <span class="comment">%                        or the cell containing the arguments for</span>
+0036 <span class="comment">%                        computing the scatter matrix in the form</span>
+0037 <span class="comment">%                        {type, ...}, which is input to slscatter.     \\</span>
+0038 <span class="comment">%         'weights'   &amp;  The sample weights. default = [].             \\</span>
+0039 <span class="comment">%     \*</span>
+0040 <span class="comment">%</span>
+0041 <span class="comment">% $ Remarks $</span>
+0042 <span class="comment">%   -# The function solves the transform in mainly two stages:</span>
+0043 <span class="comment">%      First, whiten the samples so that the between-class scattering</span>
+0044 <span class="comment">%      become the identity matrix; then solves the projection to maximize</span>
+0045 <span class="comment">%      the whitened between-class scattering. If prepca is set to true</span>
+0046 <span class="comment">%      a preamble step for reducing the dimensions to rank by PCA is taken.</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">%   -# The function is very flexible. By tuning the arguments for</span>
+0049 <span class="comment">%      pre-pca, whitening, and the computation of Sb and Sw, it turns to</span>
+0050 <span class="comment">%      be various LDA-based algorithms, including fisher LDA,</span>
+0051 <span class="comment">%      regularized LDA, weighted pairwise LDA, dual-space LDA etc.</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">%   -# If Sw or its computing rule is given, the whiten transform is</span>
+0054 <span class="comment">%      directly solved from Sw,  otherwise the whitening transform is</span>
+0055 <span class="comment">%      solved from samples. If Sb is given, the whitened between-class</span>
+0056 <span class="comment">%      scattering is computed by directly applying the whiten transform</span>
+0057 <span class="comment">%      to Sb, otherwise, Sb is computed from whitenned samples. If both</span>
+0058 <span class="comment">%      Sb and Sw are given, then the samples are not used in the function.</span>
+0059 <span class="comment">%      In this cases, you can simply input an empty X.</span>
+0060 <span class="comment">%</span>
+0061 <span class="comment">%   -# If both Sb and Sw are given, the pre-pca step will not be conducted.</span>
+0062 <span class="comment">%      no matter whether prepca is true or false.</span>
+0063 <span class="comment">%</span>
+0064 <span class="comment">% $ History $</span>
+0065 <span class="comment">%   - Created by Dahua Lin on Apr 30th, 2006</span>
+0066 <span class="comment">%   - Modified by Dahua Lin on Sep 10th, 2006</span>
+0067 <span class="comment">%       - replace sladd by sladdvec to increase efficiency.</span>
+0068 <span class="comment">%</span>
+0069 
+0070 <span class="comment">%% parse and verify input arguments</span>
+0071 
+0072 <span class="keyword">if</span> nargin &lt; 2
+0073     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slfld'</span>, 2);
+0074 <span class="keyword">end</span>
+0075 
+0076 <span class="comment">% check size</span>
+0077 
+0078 <span class="keyword">if</span> ~isempty(X)    
+0079     <span class="keyword">if</span> ndims(X) ~= 2
+0080         error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0081             <span class="string">'The sample matrix X should be a 2D matrix'</span>);
+0082     <span class="keyword">end</span>
+0083     [d, n] = size(X);
+0084     
+0085     k = length(nums);
+0086     <span class="keyword">if</span> ~isequal(size(nums), [1, k]);
+0087         error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0088             <span class="string">'The nums vector should be a row vector'</span>);
+0089     <span class="keyword">end</span>
+0090     <span class="keyword">if</span> sum(nums) ~= n
+0091         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0092             <span class="string">'The total number in nums is not consistent with that in X'</span>);
+0093     <span class="keyword">end</span>
+0094 <span class="keyword">end</span>
+0095 
+0096 <span class="comment">% check options</span>
+0097 
+0098 opts.prepca = false;
+0099 opts.whiten = {};
+0100 opts.dimset = {};
+0101 opts.Sb = {<span class="string">'Sb'</span>};
+0102 opts.Sw = {<span class="string">'Sw'</span>};
+0103 opts.weights = [];
+0104 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0105 
+0106 
+0107 has_Sb = ~isempty(opts.Sb) &amp;&amp; isnumeric(opts.Sb);
+0108 has_Sw = ~isempty(opts.Sw) &amp;&amp; isnumeric(opts.Sw);
+0109 <span class="keyword">if</span> has_Sb &amp;&amp; has_Sw
+0110     use_samples = false;
+0111     d = size(opts.Sw, 1);
+0112     
+0113     <span class="keyword">if</span> ~isequal(size(opts.Sb), [d, d]) || ~isequal(size(opts.Sw), [d, d])
+0114         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0115             <span class="string">'Size consistency in Sb and Sw'</span>);
+0116     <span class="keyword">end</span>
+0117         
+0118 <span class="keyword">else</span>
+0119     <span class="keyword">if</span> isempty(X)
+0120         error(<span class="string">'sltoolbox:invalidargs'</span>, <span class="keyword">...</span>
+0121             <span class="string">'The samples cannot be empty when Sb or Sw is not pre-computed'</span>);
+0122     <span class="keyword">end</span>
+0123     use_samples = true;
+0124     <span class="keyword">if</span> (has_Sb &amp;&amp; ~isequal(size(opts.Sb), [d, d])) || (has_Sw &amp;&amp; ~isequal(size(opts.Sw), [d, d]))
+0125         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0126             <span class="string">'Size consistency in Sb and Sw'</span>);
+0127     <span class="keyword">end</span>
+0128     
+0129 <span class="keyword">end</span>
+0130 w = opts.weights;
+0131 
+0132 
+0133 <span class="comment">%% Compute</span>
+0134 
+0135 <span class="comment">%% Step 0: Pre-PCA</span>
+0136 pca_computed = false;
+0137 <span class="keyword">if</span> use_samples &amp;&amp; opts.prepca
+0138     SPCA = <a href="slpca.html" class="code" title="function S = slpca(X, varargin)">slpca</a>(X, <span class="string">'weights'</span>, w);
+0139     X = SPCA.P' * <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, -SPCA.vmean, 1);
+0140     pca_computed = true;
+0141 <span class="keyword">end</span>
+0142 
+0143 <span class="comment">%% Step 1: Compute whiten transform</span>
+0144 
+0145 <span class="keyword">if</span> has_Sw
+0146     TW = <a href="../../sltoolbox/stat/slwhiten_from_cov.html" class="code" title="function W = slwhiten_from_cov(C, method, varargin)">slwhiten_from_cov</a>(opts.Sw, opts.whiten{:});
+0147 <span class="keyword">elseif</span> ~isempty(opts.Sw) &amp;&amp; ~isequal(opts.Sw, {<span class="string">'Sw'</span>})
+0148     Sw = <a href="slscatter.html" class="code" title="function S = slscatter(X, type, varargin)">slscatter</a>(X, opts.Sw{:}, <span class="string">'sweights'</span>, w, <span class="string">'nums'</span>, nums);
+0149     TW = <a href="../../sltoolbox/stat/slwhiten_from_cov.html" class="code" title="function W = slwhiten_from_cov(C, method, varargin)">slwhiten_from_cov</a>(Sw);
+0150     clear Sw;
+0151 <span class="keyword">else</span>
+0152     TW = <a href="../../sltoolbox/stat/slwhiten_from_samples.html" class="code" title="function W = slwhiten_from_samples(X, varargin)">slwhiten_from_samples</a>(<a href="#_sub1" class="code" title="subfunction Y = make_withinclass_diffvecs(X, w, nums)">make_withinclass_diffvecs</a>(X, w, nums), <span class="keyword">...</span>
+0153         <span class="string">'weights'</span>, w, opts.whiten{:});
+0154 <span class="keyword">end</span>
+0155 
+0156 <span class="keyword">if</span> pca_computed
+0157     T1 = SPCA.P * TW;
+0158     clear SPCA TW;
+0159 <span class="keyword">else</span>
+0160     T1 = TW;
+0161     clear TW;
+0162 <span class="keyword">end</span>
+0163 
+0164 
+0165 <span class="comment">%% Step 2: Compute the second-stage transform</span>
+0166 
+0167 <span class="keyword">if</span> has_Sb
+0168     WSb = T1' * opts.Sb * T1;
+0169 <span class="keyword">else</span>
+0170     X = T1' * X;
+0171     WSb = <a href="slscatter.html" class="code" title="function S = slscatter(X, type, varargin)">slscatter</a>(X, opts.Sb{:}, <span class="string">'sweights'</span>, w, <span class="string">'nums'</span>, nums);
+0172 <span class="keyword">end</span>
+0173 [evs, T2] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(WSb);
+0174 rk2 = <a href="sldim_by_eigval.html" class="code" title="function d = sldim_by_eigval(eigvals, sch, varargin)">sldim_by_eigval</a>(evs, opts.dimset{:});
+0175 T2 = T2(:, 1:rk2);
+0176 
+0177 <span class="comment">%% Integrate the transforms</span>
+0178 
+0179 T = T1 * T2;
+0180 
+0181 
+0182 <span class="comment">%% The function for making the difference vectors</span>
+0183 <a name="_sub1" href="#_subfunctions" class="code">function Y = make_withinclass_diffvecs(X, w, nums)</a>
+0184 
+0185 mvs = <a href="../../sltoolbox/stat/slmeans.html" class="code" title="function varargout = slmeans(X, w, nums)">slmeans</a>(X, w, nums);
+0186 Y = X;
+0187 [sp, ep] = <a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>(nums);
+0188 k = length(nums);
+0189 <span class="keyword">for</span> i = 1 : k
+0190     Y(:, sp(i):ep(i)) = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X(:, sp(i):ep(i)), -mvs(:,i), 1);
+0191 <span class="keyword">end</span>
+0192 
+0193 
+0194 
+0195 
+0196 
+0197</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

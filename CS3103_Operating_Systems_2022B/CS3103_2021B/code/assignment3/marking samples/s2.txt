@@ -1,0 +1,25 @@
+# 0 0 4
+C 5
+L mutex
+C 5
+U mutex
+# 1 0 4
+C 5
+L mutex
+C 5
+U mutex
+# 2 8 4
+C 10
+L mutex
+C 10
+U mutex
+# 3 8 4
+C 5
+L mutex
+C 5
+U mutex
+# 4 28 4
+C 5
+L mutex
+C 5
+U mutex

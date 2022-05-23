@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slclassify_eucnn</title>
+  <meta name="keywords" content="slclassify_eucnn">
+  <meta name="description" content="SLCLASSIFY_EUCNN Classifies samples using Euclidena-based NN">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">core</a> &gt; slclassify_eucnn.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\core&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slclassify_eucnn
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCLASSIFY_EUCNN Classifies samples using Euclidena-based NN</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function labels = slclassify_eucnn(centers, samples) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCLASSIFY_EUCNN Classifies samples using Euclidena-based NN
+
+ $ Syntax $
+   - labels = slclassify_eucnn(centers, samples)
+
+ $ Arguments $
+   - centers:          the class centers
+   - samples:          the samples to be classified
+   - labels:           the classified result
+
+ $ Description $
+   - labels = slclassify_eucnn(centers, samples) classifies the samples to
+     nearest centers based on Euclidean distances. The output labels
+     indicate which nearest center the samples are classified to.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 21, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>	SLMETRIC_PW Compute the metric between column vectors pairwisely</li><li><a href="../../sltoolbox/utils/slclassify.html" class="code" title="function [decisions, decscores] = slclassify(scores, clabels, op, varargin)">slclassify</a>	SLCLASSIFY Classifies a set of samples according to final scores</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/stat/slgmm.html" class="code" title="function [GS, pp, info] = slgmm(X, varargin)">slgmm</a>	SLGMM Learns Gaussian Mixture model from samples</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function labels = slclassify_eucnn(centers, samples)</a>
+0002 <span class="comment">%SLCLASSIFY_EUCNN Classifies samples using Euclidena-based NN</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - labels = slclassify_eucnn(centers, samples)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - centers:          the class centers</span>
+0009 <span class="comment">%   - samples:          the samples to be classified</span>
+0010 <span class="comment">%   - labels:           the classified result</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - labels = slclassify_eucnn(centers, samples) classifies the samples to</span>
+0014 <span class="comment">%     nearest centers based on Euclidean distances. The output labels</span>
+0015 <span class="comment">%     indicate which nearest center the samples are classified to.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $ History $</span>
+0018 <span class="comment">%   - Created by Dahua Lin, on Aug 21, 2006</span>
+0019 <span class="comment">%</span>
+0020 
+0021 dists = <a href="slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(centers, samples, <span class="string">'eucdist'</span>);
+0022 labels = <a href="../../sltoolbox/utils/slclassify.html" class="code" title="function [decisions, decscores] = slclassify(scores, clabels, op, varargin)">slclassify</a>(dists, 1:size(dists,1), <span class="string">'low'</span>);</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

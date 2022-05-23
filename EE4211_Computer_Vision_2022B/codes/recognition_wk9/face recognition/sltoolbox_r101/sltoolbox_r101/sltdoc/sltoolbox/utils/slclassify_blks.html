@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slclassify_blks</title>
+  <meta name="keywords" content="slclassify_blks">
+  <meta name="description" content="SLCLASSIFY_BLKS Classifies samples according to blockwise scores">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">utils</a> &gt; slclassify_blks.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\utils&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slclassify_blks
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCLASSIFY_BLKS Classifies samples according to blockwise scores</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [decisions, decscores] = slclassify_blks(scores, n, blocks, clabels, op, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCLASSIFY_BLKS Classifies samples according to blockwise scores
+
+ $ Syntax $
+   - [decisions, decscores] = slclassify_blks(scores, n, blocks, clabels, op, ...)
+
+ $ Arguments $
+   - scores:       the score matrix
+   - n:            the number of query samples
+   - blocks:       the cell array of block limits
+   - clabels:      the class labels of reference samples
+   - op:           the score attribute  
+   - decisions:    the classification decisions
+   - decscores:    the scores of the classified targets
+
+ $ Remarks $
+   - An extension of slclassify to support blockwise scores.
+
+ $ History $
+   - Created by Dahua Lin on Aug 9th, 2006
+   - Modified by Dahua Lin, on Aug 16th, 2006
+       - eliminate the qlabel parameters, which are essentially not
+         needed.
+       - add functionality to support schemes. In current revision,
+         it supports nearest-neighbor ('nn') and leave-one-out ('loo').</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>	SLREADARRAY Reads an array from an array file</li><li><a href="raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/perfeval/slcorrectrate_blks.html" class="code" title="function cr = slcorrectrate_blks(scores, blocks, clabels, qlabels, op, varargin)">slcorrectrate_blks</a>	SLCORRECTRATE_BLKS Computes the correct rate based on blockwise scores</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [decinds, decscores] = procblock(filename, rlim, clim, op, opts)</a></li><li><a href="#_sub2" class="code">function [decinds, decscores] = procbatch(srow, n, rlim, collims, op, opts)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [decisions, decscores] = slclassify_blks(scores, n, blocks, clabels, op, varargin)</a>
+0002 <span class="comment">%SLCLASSIFY_BLKS Classifies samples according to blockwise scores</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [decisions, decscores] = slclassify_blks(scores, n, blocks, clabels, op, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - scores:       the score matrix</span>
+0009 <span class="comment">%   - n:            the number of query samples</span>
+0010 <span class="comment">%   - blocks:       the cell array of block limits</span>
+0011 <span class="comment">%   - clabels:      the class labels of reference samples</span>
+0012 <span class="comment">%   - op:           the score attribute</span>
+0013 <span class="comment">%   - decisions:    the classification decisions</span>
+0014 <span class="comment">%   - decscores:    the scores of the classified targets</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Remarks $</span>
+0017 <span class="comment">%   - An extension of slclassify to support blockwise scores.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% $ History $</span>
+0020 <span class="comment">%   - Created by Dahua Lin on Aug 9th, 2006</span>
+0021 <span class="comment">%   - Modified by Dahua Lin, on Aug 16th, 2006</span>
+0022 <span class="comment">%       - eliminate the qlabel parameters, which are essentially not</span>
+0023 <span class="comment">%         needed.</span>
+0024 <span class="comment">%       - add functionality to support schemes. In current revision,</span>
+0025 <span class="comment">%         it supports nearest-neighbor ('nn') and leave-one-out ('loo').</span>
+0026 <span class="comment">%</span>
+0027 
+0028 <span class="comment">%% parse and verify input arguments</span>
+0029 
+0030 <span class="keyword">if</span> nargin &lt; 5
+0031     <a href="raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slclassify_blks'</span>, 5);
+0032 <span class="keyword">end</span>
+0033 <span class="keyword">if</span> ~iscell(scores)
+0034     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0035         <span class="string">'The scores should be a cell array of filenames'</span>);
+0036 <span class="keyword">end</span>
+0037 <span class="keyword">if</span> ~isequal(size(scores), size(blocks))
+0038     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0039         <span class="string">'The sizes of scores and blocks are inconsistent'</span>);
+0040 <span class="keyword">end</span>
+0041 [nrows, ncols] = size(blocks);
+0042 <span class="keyword">if</span> ~ismember(op, {<span class="string">'high'</span>, <span class="string">'low'</span>})
+0043     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0044         <span class="string">'Invalid score option %s'</span>, op);
+0045 <span class="keyword">end</span>
+0046 
+0047 opts.scheme = <span class="string">'nn'</span>;
+0048 opts = <a href="slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0049 
+0050 <span class="keyword">if</span> ~ismember(opts.scheme, {<span class="string">'nn'</span>, <span class="string">'loo'</span>})
+0051     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0052         <span class="string">'Invalid scheme for classification: %s'</span>, opts.scheme);
+0053 <span class="keyword">end</span>
+0054 
+0055 
+0056 <span class="comment">%% Verify regularity of blocks</span>
+0057 
+0058 rowlims = vertcat(blocks{:, 1});
+0059 rowlims = reshape(rowlims(:, 1), [2, nrows]);
+0060 collims = vertcat(blocks{1, :});
+0061 collims = reshape(collims(:, 2), [2, ncols]);
+0062 
+0063 <span class="keyword">for</span> i = 1 : nrows
+0064     <span class="keyword">for</span> j = 1 : ncols
+0065         rl = rowlims(:, i);
+0066         cl = collims(:, j);
+0067         <span class="keyword">if</span> ~isequal(blocks{i, j}, [rl cl])
+0068             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0069                 <span class="string">'The blocks are nonregular'</span>);
+0070         <span class="keyword">end</span>
+0071     <span class="keyword">end</span>
+0072 <span class="keyword">end</span>
+0073 
+0074 
+0075 <span class="comment">%% Classify</span>
+0076 
+0077 <span class="comment">% first-batch (on first block row)</span>
+0078 [decinds, decscores] = <a href="#_sub2" class="code" title="subfunction [decinds, decscores] = procbatch(srow, n, rlim, collims, op, opts)">procbatch</a>(scores(1, :), n, rowlims(:, 1), collims, op, opts);
+0079 
+0080 <span class="comment">% following batches</span>
+0081 
+0082 <span class="keyword">if</span> nrows &gt; 1
+0083     
+0084     <span class="keyword">for</span> i = 2 : nrows
+0085         [curinds, curscores] = <a href="#_sub2" class="code" title="subfunction [decinds, decscores] = procbatch(srow, n, rlim, collims, op, opts)">procbatch</a>(scores(i, :), n, rowlims(:, i), collims, op, opts);
+0086         
+0087         <span class="comment">% update</span>
+0088         <span class="keyword">switch</span> op
+0089             <span class="keyword">case</span> <span class="string">'high'</span>
+0090                 to_replace = curscores &gt; decscores;
+0091             <span class="keyword">case</span> <span class="string">'low'</span>
+0092                 to_replace = curscores &lt; decscores;
+0093         <span class="keyword">end</span>
+0094         decinds(to_replace) = curinds(to_replace);
+0095         decscores(to_replace) = curscores(to_replace);        
+0096     <span class="keyword">end</span>
+0097     
+0098 <span class="keyword">end</span>
+0099 
+0100 <span class="comment">% convert indices to decision labels</span>
+0101 decisions = clabels(decinds);
+0102 <span class="keyword">if</span> size(decisions, 1) &gt; 1
+0103     decisions = decisions';
+0104 <span class="keyword">end</span>
+0105 
+0106 
+0107 <span class="comment">%% Internal function to process each block (batch)</span>
+0108 
+0109 <a name="_sub1" href="#_subfunctions" class="code">function [decinds, decscores] = procblock(filename, rlim, clim, op, opts)</a>
+0110 
+0111 matsiz = [rlim(2) - rlim(1) + 1, clim(2) - clim(1) + 1];
+0112 s = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(filename);
+0113 <span class="keyword">if</span> ~isequal(size(s), matsiz)
+0114     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0115         <span class="string">'Illegal size of array in %s'</span>, filename);
+0116 <span class="keyword">end</span>
+0117 
+0118 <span class="keyword">if</span> strcmpi(opts.scheme, <span class="string">'loo'</span>)
+0119     <span class="comment">% select the disabled scores</span>
+0120     sl1 = max(rlim(1), clim(1));
+0121     sl2 = min(rlim(2), clim(2));
+0122     <span class="keyword">if</span> sl1 &lt;= sl2 <span class="comment">% contains some elements to be disabled</span>
+0123         <span class="comment">% calculate the local indices</span>
+0124         srs = (sl1:sl2) - (rlim(1)-1);
+0125         scs = (sl1:sl2) - (clim(1)-1);
+0126         sdinds = (scs - 1) * matsiz(1) + srs;        
+0127         <span class="comment">% disable the selected elements</span>
+0128         <span class="keyword">switch</span> op
+0129             <span class="keyword">case</span> <span class="string">'high'</span>
+0130                 s(sdinds) = -Inf;
+0131             <span class="keyword">case</span> <span class="string">'low'</span>
+0132                 s(sdinds) = Inf;
+0133         <span class="keyword">end</span>
+0134     <span class="keyword">end</span>
+0135 <span class="keyword">end</span>        
+0136 
+0137 indbase = rlim(1) - 1;
+0138 
+0139 <span class="keyword">switch</span> op
+0140     <span class="keyword">case</span> <span class="string">'high'</span>
+0141         [decscores, decinds] = max(s, [], 1);
+0142     <span class="keyword">case</span> <span class="string">'low'</span>
+0143         [decscores, decinds] = min(s, [], 1);
+0144 <span class="keyword">end</span>
+0145     
+0146 
+0147 <span class="keyword">if</span> indbase ~= 0
+0148     decinds = decinds + indbase;
+0149 <span class="keyword">end</span>
+0150 
+0151 
+0152 
+0153 <a name="_sub2" href="#_subfunctions" class="code">function [decinds, decscores] = procbatch(srow, n, rlim, collims, op, opts)</a>
+0154 
+0155 decinds = zeros(1, n);
+0156 decscores = zeros(1, n);
+0157 ncols = size(srow, 2);
+0158 
+0159 <span class="keyword">for</span> j = 1 : ncols    
+0160     sc = collims(1, j);
+0161     ec = collims(2, j);
+0162     [curinds, curdsco] = <a href="#_sub1" class="code" title="subfunction [decinds, decscores] = procblock(filename, rlim, clim, op, opts)">procblock</a>(srow{1, j}, rlim, [sc; ec], op, opts);
+0163     decinds(sc:ec) = curinds;
+0164     decscores(sc:ec) = curdsco;        
+0165 <span class="keyword">end</span>
+0166</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

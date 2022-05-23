@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slstrsplit</title>
+  <meta name="keywords" content="slstrsplit">
+  <meta name="description" content="SLSTRSPLIT splits a string into cell array of strings by delimiters">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">text</a> &gt; slstrsplit.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\text&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slstrsplit
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLSTRSPLIT splits a string into cell array of strings by delimiters</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function strs = slstrsplit(srcstr, delimiters) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLSTRSPLIT splits a string into cell array of strings by delimiters
+
+ $ Syntax $
+   - strs = slstrsplit(srcstr, delimiters)
+
+ $ Arguments $
+   - srcstr:       the source string
+   - delimiters:   the array of delimiting chars
+
+ $ Description $
+   - strs = slstrsplit(srcstr, delimiters) splits the source string into
+     a cell array of parts, which are delimited by the chars in
+     delimiters. 
+ 
+ $ Remarks $
+   - If for adjacent delimiters, the between will not will extracted.
+   - No further processing is applied, you can use functions like 
+     slcompresstext to achieve these goals.
+ 
+ $ History $
+   - Created by Dahua Lin, on Aug 13, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/ExpDL/edl_logerror.html" class="code" title="function edl_logerror(caller, err, logger, varargin)">edl_logerror</a>	EDL_LOGERROR Logs an error into logger</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function strs = slstrsplit(srcstr, delimiters)</a>
+0002 <span class="comment">%SLSTRSPLIT splits a string into cell array of strings by delimiters</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - strs = slstrsplit(srcstr, delimiters)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - srcstr:       the source string</span>
+0009 <span class="comment">%   - delimiters:   the array of delimiting chars</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - strs = slstrsplit(srcstr, delimiters) splits the source string into</span>
+0013 <span class="comment">%     a cell array of parts, which are delimited by the chars in</span>
+0014 <span class="comment">%     delimiters.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Remarks $</span>
+0017 <span class="comment">%   - If for adjacent delimiters, the between will not will extracted.</span>
+0018 <span class="comment">%   - No further processing is applied, you can use functions like</span>
+0019 <span class="comment">%     slcompresstext to achieve these goals.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% $ History $</span>
+0022 <span class="comment">%   - Created by Dahua Lin, on Aug 13, 2006</span>
+0023 <span class="comment">%</span>
+0024 
+0025 <span class="comment">%% determine delimiter positions</span>
+0026 
+0027 n0 = length(srcstr);
+0028 is_delimiter = false(n0, 1);
+0029 
+0030 nd = length(delimiters);
+0031 <span class="keyword">for</span> i = 1 : nd
+0032     ch = delimiters(i);
+0033     is_delimiter(srcstr == ch) = true;
+0034 <span class="keyword">end</span>
+0035 
+0036 dps = find(is_delimiter);
+0037 dps = dps(:)';
+0038 
+0039 <span class="comment">%% extract parts</span>
+0040 
+0041 <span class="keyword">if</span> isempty(dps)
+0042     strs = {srcstr};
+0043 <span class="keyword">else</span>
+0044     sps = [1, dps+1];
+0045     eps = [dps-1, n0];
+0046     fv = find(sps &lt;= eps);
+0047     <span class="keyword">if</span> ~isempty(fv)    
+0048         sps = sps(fv);
+0049         eps = eps(fv);
+0050         np = length(fv);
+0051         strs = cell(np, 1);
+0052         <span class="keyword">for</span> i = 1 : np
+0053             strs{i} = srcstr(sps(i):eps(i));
+0054         <span class="keyword">end</span>        
+0055     <span class="keyword">else</span>
+0056         strs = {};
+0057     <span class="keyword">end</span>
+0058 <span class="keyword">end</span>
+0059 
+0060         
+0061 
+0062</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

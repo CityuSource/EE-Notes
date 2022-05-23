@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcount</title>
+  <meta name="keywords" content="slcount">
+  <meta name="description" content="SLCOUNT Count the number of sum entities">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">utils</a> &gt; slcount.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\utils&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcount
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCOUNT Count the number of sum entities</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [nums, U] = slcount(A) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCOUNT Count the number of sum entities
+
+ $ Syntax $
+   - nums = slcount(A)
+   - [nums, U] = slcount(A)
+
+ $ Arguments $
+   - A:          the array (or cell array) containing things to be count
+   - nums:       the resultant column vector of numbers
+   - U:          the column vector or column cell array containing
+                 the unique instances
+
+ $ Description $
+   - nums = slcount(A) counts the numbers of each entity contained in A.
+
+   - [nums, U] = slcount(A) counts the numbers of each entity, and return
+     the unique instances of these entities in order via U. 
+
+ $ Remarks $
+   # The instances belonging to the same type should be put together.
+   # A can be a numeric array or a cell array. For numeric arrays, we
+     use = for comparison, for cell array, we use isequal for comparison.
+
+ $ Examples $
+   - Count elements in a numeric array,
+     \{
+          A = [1 1 1 2 2 2 3 3 1 1 1 1];
+          [n, U] = slcount(A)
+
+          n = 
+               3
+               3
+               2
+               4
+
+          U =
+               1
+               2
+               3
+               1
+     \}
+
+   - Count elements in a cell array
+     \{
+          A = {'a', 'a', 'a', 'b', 'b'};
+          [n, U] = slcount(A)
+
+          n =
+              3
+              2
+
+          U =
+              'a'
+              'b'
+     \}
+
+ $ History $
+   - Created by Dahua Lin on Nov 19th, 2005</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/discrete/slcountvote.html" class="code" title="function H = slcountvote(m, n, V, w, countrule)">slcountvote</a>	SLCOUNTRULE Counts the votings to make histogram</li><li><a href="../../sltoolbox/graph/sledgeset2adjlist.html" class="code" title="function targets = sledgeset2adjlist(n, edges, sch)">sledgeset2adjlist</a>	SLEDGESET2ADJLIST Converts edge set to adjacency list</li><li><a href="../../sltoolbox/graph/slpruneedgeset.html" class="code" title="function edges = slpruneedgeset(n, nt, edges, method)">slpruneedgeset</a>	SLPRUNEEDGESET Prunes the edge set</li><li><a href="sllabelinds.html" class="code" title="function Inds = sllabelinds(labels, labelset)">sllabelinds</a>	SLLABELINDS Extract indices corresponding to specified labels</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [nums, U] = slcount(A)</a>
+0002 <span class="comment">%SLCOUNT Count the number of sum entities</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - nums = slcount(A)</span>
+0006 <span class="comment">%   - [nums, U] = slcount(A)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - A:          the array (or cell array) containing things to be count</span>
+0010 <span class="comment">%   - nums:       the resultant column vector of numbers</span>
+0011 <span class="comment">%   - U:          the column vector or column cell array containing</span>
+0012 <span class="comment">%                 the unique instances</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - nums = slcount(A) counts the numbers of each entity contained in A.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%   - [nums, U] = slcount(A) counts the numbers of each entity, and return</span>
+0018 <span class="comment">%     the unique instances of these entities in order via U.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $ Remarks $</span>
+0021 <span class="comment">%   # The instances belonging to the same type should be put together.</span>
+0022 <span class="comment">%   # A can be a numeric array or a cell array. For numeric arrays, we</span>
+0023 <span class="comment">%     use = for comparison, for cell array, we use isequal for comparison.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% $ Examples $</span>
+0026 <span class="comment">%   - Count elements in a numeric array,</span>
+0027 <span class="comment">%     \{</span>
+0028 <span class="comment">%          A = [1 1 1 2 2 2 3 3 1 1 1 1];</span>
+0029 <span class="comment">%          [n, U] = slcount(A)</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%          n =</span>
+0032 <span class="comment">%               3</span>
+0033 <span class="comment">%               3</span>
+0034 <span class="comment">%               2</span>
+0035 <span class="comment">%               4</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">%          U =</span>
+0038 <span class="comment">%               1</span>
+0039 <span class="comment">%               2</span>
+0040 <span class="comment">%               3</span>
+0041 <span class="comment">%               1</span>
+0042 <span class="comment">%     \}</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">%   - Count elements in a cell array</span>
+0045 <span class="comment">%     \{</span>
+0046 <span class="comment">%          A = {'a', 'a', 'a', 'b', 'b'};</span>
+0047 <span class="comment">%          [n, U] = slcount(A)</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">%          n =</span>
+0050 <span class="comment">%              3</span>
+0051 <span class="comment">%              2</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">%          U =</span>
+0054 <span class="comment">%              'a'</span>
+0055 <span class="comment">%              'b'</span>
+0056 <span class="comment">%     \}</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">% $ History $</span>
+0059 <span class="comment">%   - Created by Dahua Lin on Nov 19th, 2005</span>
+0060 <span class="comment">%</span>
+0061 
+0062 <span class="keyword">if</span> nargout &gt;= 2
+0063     bU = true;
+0064 <span class="keyword">else</span>
+0065     bU = false;
+0066 <span class="keyword">end</span>
+0067 
+0068 <span class="keyword">if</span> isnumeric(A) <span class="comment">% processing numeric array (vectorized code)</span>
+0069     A = A(:);
+0070     difs = diff(A);
+0071     n = length(A);
+0072     nums = [0; find(difs ~= 0); n];
+0073     <span class="keyword">if</span> bU
+0074         U = A(nums(2:end));
+0075     <span class="keyword">end</span>
+0076     nums = diff(nums);
+0077     
+0078 <span class="keyword">elseif</span> iscell(A) <span class="comment">% processing cell array (non-vectorizable code)</span>
+0079     A = A(:);
+0080     n = length(A);
+0081     difs = false(n, 1);
+0082     <span class="keyword">for</span> i = 1 : n-1
+0083         <span class="keyword">if</span> ~isequal(A{i}, A{i+1})
+0084             difs(i) = 1;
+0085         <span class="keyword">end</span>
+0086     <span class="keyword">end</span>
+0087     difs(n) = 1;
+0088     nums = [0; find(difs)];
+0089     <span class="keyword">if</span> bU
+0090         U = A(nums(2:end));
+0091     <span class="keyword">end</span>
+0092     nums = diff(nums);
+0093     
+0094 <span class="keyword">else</span>
+0095     error(<span class="string">'sltoolbox:invalidtype'</span>, <span class="keyword">...</span>
+0096         <span class="string">'A should be a numeric array or a cell array'</span>);
+0097 <span class="keyword">end</span>
+0098     
+0099     
+0100 
+0101 
+0102 
+0103 
+0104 
+0105 
+0106 
+0107 
+0108 
+0109</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

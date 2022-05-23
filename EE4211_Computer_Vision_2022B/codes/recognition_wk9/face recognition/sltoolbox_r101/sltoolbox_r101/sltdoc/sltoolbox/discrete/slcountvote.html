@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcountvote</title>
+  <meta name="keywords" content="slcountvote">
+  <meta name="description" content="SLCOUNTRULE Counts the votings to make histogram">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">discrete</a> &gt; slcountvote.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\discrete&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcountvote
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCOUNTRULE Counts the votings to make histogram</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function H = slcountvote(m, n, V, w, countrule) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCOUNTRULE Counts the votings to make histogram
+
+ $ Syntax $
+   - H = slcountvote(m, n, V, w, countrule)
+
+ $ Arguments $
+   - m:            The number of models to be voted for
+   - n:            The number of samples
+   - V:            The voting results
+   - w:            The weights of the samples
+   - countrule:    The rule of counting (summarizing the votings)
+
+ $ Description $
+   - H = slcountvote(m, n, V, w, countrule) counts/summarizes the 
+     voting results using specified rule to build a histogram.
+     There are m models, and the H would be an m x 1 column vector.
+     The following rules are implemented. Please note that using
+     different ways, the format of V will be different.
+     \*
+     \t    Table. The Couting rules in slvote
+     \h     name      &amp;          description
+            'nm'      &amp; (Nearest Model): the simplest way of voting. Each 
+                        sample contributes 1 to the nearest model.
+                        V is an 1 x n row vector indicating the indices
+                        of the matched models for all samples.
+            'nmx'     &amp; (Extended Nearest Model): each sample contributes
+                        to the nearest model with a value indicating the
+                        confidence.
+                        V is an 2 x n matrix with the first row indicating
+                        the indices of the matched models, while the 2nd
+                        row indicates the confidence values.
+            'mmc'     &amp; (Multi-Model Count): each sample contributes to 
+                        multiple models, the contribution to each model
+                        is 1.
+                        V is an m x n matrix or sparse matrix. The entry
+                        V(k,i) is non-zero when the i-th sample
+                        contributes to the k-th model.
+            'mms'     &amp; (Multi-Model Sum): each sample contributes to 
+                        multiple models with real values. The voting on
+                        each model is summarized by summing the
+                        contribution values from all samples.
+                        V is an m x n matrix.
+            'mmns'    &amp; (Multi-Model Normalized Sum): each sample 
+                        contributes to multiple models with real values.
+                        The voting on each model is summarized by summing
+                        the contribution values from all samples. 
+                        However, in contrary to mms, the total
+                        contributions from a sample would be normalized 
+                        to one. V is an m x n matrix.
+     \* 
+ 
+ $ History $
+   - Created by Dahua Lin, on Sep 18, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sllabeledsum.html" class="code" title="function S = sllabeledsum(X, labels, labelset, w)">sllabeledsum</a>	SLLABELEDSUM Sums the numbers according to labels</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slcount.html" class="code" title="function [nums, U] = slcount(A)">slcount</a>	SLCOUNT Count the number of sum entities</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slvote.html" class="code" title="function H = slvote(models, m, samples, n, evalfunctor, countrule, varargin)">slvote</a>	SLVOTE Builds histogram by voting (or fuzzy voting)</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function H = countvote_nm(V, w, m, n)</a></li><li><a href="#_sub2" class="code">function H = countvote_nmx(V, w, m, n)</a></li><li><a href="#_sub3" class="code">function H = countvote_mmc(V, w, m, n)</a></li><li><a href="#_sub4" class="code">function H = countvote_mms(V, w, m, n)</a></li><li><a href="#_sub5" class="code">function H = countvote_mmns(V, w, m, n)</a></li><li><a href="#_sub6" class="code">function check_Vsize(rulename, V, d1, d2)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function H = slcountvote(m, n, V, w, countrule)</a>
+0002 <span class="comment">%SLCOUNTRULE Counts the votings to make histogram</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - H = slcountvote(m, n, V, w, countrule)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - m:            The number of models to be voted for</span>
+0009 <span class="comment">%   - n:            The number of samples</span>
+0010 <span class="comment">%   - V:            The voting results</span>
+0011 <span class="comment">%   - w:            The weights of the samples</span>
+0012 <span class="comment">%   - countrule:    The rule of counting (summarizing the votings)</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - H = slcountvote(m, n, V, w, countrule) counts/summarizes the</span>
+0016 <span class="comment">%     voting results using specified rule to build a histogram.</span>
+0017 <span class="comment">%     There are m models, and the H would be an m x 1 column vector.</span>
+0018 <span class="comment">%     The following rules are implemented. Please note that using</span>
+0019 <span class="comment">%     different ways, the format of V will be different.</span>
+0020 <span class="comment">%     \*</span>
+0021 <span class="comment">%     \t    Table. The Couting rules in slvote</span>
+0022 <span class="comment">%     \h     name      &amp;          description</span>
+0023 <span class="comment">%            'nm'      &amp; (Nearest Model): the simplest way of voting. Each</span>
+0024 <span class="comment">%                        sample contributes 1 to the nearest model.</span>
+0025 <span class="comment">%                        V is an 1 x n row vector indicating the indices</span>
+0026 <span class="comment">%                        of the matched models for all samples.</span>
+0027 <span class="comment">%            'nmx'     &amp; (Extended Nearest Model): each sample contributes</span>
+0028 <span class="comment">%                        to the nearest model with a value indicating the</span>
+0029 <span class="comment">%                        confidence.</span>
+0030 <span class="comment">%                        V is an 2 x n matrix with the first row indicating</span>
+0031 <span class="comment">%                        the indices of the matched models, while the 2nd</span>
+0032 <span class="comment">%                        row indicates the confidence values.</span>
+0033 <span class="comment">%            'mmc'     &amp; (Multi-Model Count): each sample contributes to</span>
+0034 <span class="comment">%                        multiple models, the contribution to each model</span>
+0035 <span class="comment">%                        is 1.</span>
+0036 <span class="comment">%                        V is an m x n matrix or sparse matrix. The entry</span>
+0037 <span class="comment">%                        V(k,i) is non-zero when the i-th sample</span>
+0038 <span class="comment">%                        contributes to the k-th model.</span>
+0039 <span class="comment">%            'mms'     &amp; (Multi-Model Sum): each sample contributes to</span>
+0040 <span class="comment">%                        multiple models with real values. The voting on</span>
+0041 <span class="comment">%                        each model is summarized by summing the</span>
+0042 <span class="comment">%                        contribution values from all samples.</span>
+0043 <span class="comment">%                        V is an m x n matrix.</span>
+0044 <span class="comment">%            'mmns'    &amp; (Multi-Model Normalized Sum): each sample</span>
+0045 <span class="comment">%                        contributes to multiple models with real values.</span>
+0046 <span class="comment">%                        The voting on each model is summarized by summing</span>
+0047 <span class="comment">%                        the contribution values from all samples.</span>
+0048 <span class="comment">%                        However, in contrary to mms, the total</span>
+0049 <span class="comment">%                        contributions from a sample would be normalized</span>
+0050 <span class="comment">%                        to one. V is an m x n matrix.</span>
+0051 <span class="comment">%     \*</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">% $ History $</span>
+0054 <span class="comment">%   - Created by Dahua Lin, on Sep 18, 2006</span>
+0055 <span class="comment">%</span>
+0056 
+0057 <span class="comment">%% parse and verify input arguments</span>
+0058 
+0059 <span class="keyword">if</span> nargin &lt; 5
+0060     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slcountvote'</span>, 5);
+0061 <span class="keyword">end</span>
+0062 
+0063 <span class="keyword">if</span> ~isempty(w)
+0064     <span class="keyword">if</span> ~isequal(size(w), [1 n])
+0065         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0066             <span class="string">'The weights size is not consistent with that of sample number'</span>);
+0067     <span class="keyword">end</span>
+0068 <span class="keyword">end</span>
+0069 
+0070 <span class="comment">% count voting and make histogram</span>
+0071 
+0072 <span class="keyword">switch</span> countrule
+0073     <span class="keyword">case</span> <span class="string">'nm'</span>
+0074         H = <a href="#_sub1" class="code" title="subfunction H = countvote_nm(V, w, m, n)">countvote_nm</a>(V, w, m, n);
+0075     <span class="keyword">case</span> <span class="string">'nmx'</span>
+0076         H = <a href="#_sub2" class="code" title="subfunction H = countvote_nmx(V, w, m, n)">countvote_nmx</a>(V, w, m, n);
+0077     <span class="keyword">case</span> <span class="string">'mmc'</span>
+0078         H = <a href="#_sub3" class="code" title="subfunction H = countvote_mmc(V, w, m, n)">countvote_mmc</a>(V, w, m, n);
+0079     <span class="keyword">case</span> <span class="string">'mms'</span>
+0080         H = <a href="#_sub4" class="code" title="subfunction H = countvote_mms(V, w, m, n)">countvote_mms</a>(V, w, m, n);
+0081     <span class="keyword">case</span> <span class="string">'mmns'</span>
+0082         H = <a href="#_sub5" class="code" title="subfunction H = countvote_mmns(V, w, m, n)">countvote_mmns</a>(V, w, m, n);
+0083     <span class="keyword">otherwise</span>
+0084         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0085             <span class="string">'Invalid counting rule: %s'</span>, countrule);
+0086 <span class="keyword">end</span>
+0087 
+0088 
+0089 <span class="comment">%% Vote-Count functions</span>
+0090 
+0091 <a name="_sub1" href="#_subfunctions" class="code">function H = countvote_nm(V, w, m, n)</a>
+0092 
+0093 <a href="#_sub6" class="code" title="subfunction check_Vsize(rulename, V, d1, d2)">check_Vsize</a>(<span class="string">'Nearest Model'</span>, V, 1, n);
+0094 
+0095 <span class="keyword">if</span> isempty(w)
+0096     H = zeros(m, 1);
+0097     [nums, u] = <a href="../../sltoolbox/utils/slcount.html" class="code" title="function [nums, U] = slcount(A)">slcount</a>(sort(V));
+0098     H(u) = nums;
+0099 <span class="keyword">else</span>
+0100     H = <a href="../../sltoolbox/core/sllabeledsum.html" class="code" title="function S = sllabeledsum(X, labels, labelset, w)">sllabeledsum</a>(w, V, 1:m)';
+0101 <span class="keyword">end</span>
+0102 
+0103 
+0104 <a name="_sub2" href="#_subfunctions" class="code">function H = countvote_nmx(V, w, m, n)</a>
+0105 
+0106 <a href="#_sub6" class="code" title="subfunction check_Vsize(rulename, V, d1, d2)">check_Vsize</a>(<span class="string">'Extended Nearest Model'</span>, V, 2, n);
+0107 
+0108 H = <a href="../../sltoolbox/core/sllabeledsum.html" class="code" title="function S = sllabeledsum(X, labels, labelset, w)">sllabeledsum</a>(V(2,:), V(1,:), 1:m, w);
+0109 
+0110 
+0111 <a name="_sub3" href="#_subfunctions" class="code">function H = countvote_mmc(V, w, m, n)</a>
+0112 
+0113 <a href="#_sub6" class="code" title="subfunction check_Vsize(rulename, V, d1, d2)">check_Vsize</a>(<span class="string">'Multi-Model Count'</span>, V, m, n);
+0114 
+0115 <span class="keyword">if</span> isempty(w)
+0116     H = sum(V ~= 0, 2);
+0117 <span class="keyword">else</span>
+0118     H = (V ~= 0) * w';
+0119 <span class="keyword">end</span>
+0120 <span class="keyword">if</span> issparse(H)
+0121     H = full(H);
+0122 <span class="keyword">end</span>
+0123 
+0124 
+0125 <a name="_sub4" href="#_subfunctions" class="code">function H = countvote_mms(V, w, m, n)</a>
+0126 
+0127 <a href="#_sub6" class="code" title="subfunction check_Vsize(rulename, V, d1, d2)">check_Vsize</a>(<span class="string">'Multi-Model Sum'</span>, V, m, n);
+0128 
+0129 <span class="keyword">if</span> isempty(w)
+0130     H = sum(V, 2);
+0131 <span class="keyword">else</span>
+0132     H = V * w';
+0133 <span class="keyword">end</span>
+0134 <span class="keyword">if</span> issparse(H)
+0135     H = full(H);
+0136 <span class="keyword">end</span>
+0137 
+0138 
+0139 <a name="_sub5" href="#_subfunctions" class="code">function H = countvote_mmns(V, w, m, n)</a>
+0140 
+0141 <a href="#_sub6" class="code" title="subfunction check_Vsize(rulename, V, d1, d2)">check_Vsize</a>(<span class="string">'Multi-Model Normalized Sum'</span>, V, m, n);
+0142 
+0143 ss = sum(V, 1);
+0144 <span class="keyword">if</span> issparse(ss)
+0145     ss = full(ss);
+0146 <span class="keyword">end</span>
+0147 ss(ss &lt; eps) = eps;
+0148 
+0149 <span class="keyword">if</span> isempty(w)
+0150     w = 1 ./ ss;
+0151 <span class="keyword">else</span>
+0152     w = w ./ ss;
+0153 <span class="keyword">end</span>
+0154 
+0155 H = V * w';
+0156 <span class="keyword">if</span> issparse(H)
+0157     H = full(H);
+0158 <span class="keyword">end</span>
+0159 
+0160 
+0161 <span class="comment">%% Auxiliary functions</span>
+0162 
+0163 <a name="_sub6" href="#_subfunctions" class="code">function check_Vsize(rulename, V, d1, d2)</a>
+0164 
+0165 <span class="keyword">if</span> ~isequal(size(V), [d1, d2])
+0166     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0167         <span class="string">'V should be an %d x %d matrix for the counting rule %s'</span>, <span class="keyword">...</span>
+0168         d1, d2, rulename);
+0169 <span class="keyword">end</span>
+0170</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcenkernel</title>
+  <meta name="keywords" content="slcenkernel">
+  <meta name="description" content="SLCENKERNEL Compute the centralized kernel matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">kernel</a> &gt; slcenkernel.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\kernel&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcenkernel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCENKERNEL Compute the centralized kernel matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function KC = slcenkernel(K0, K, w) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCENKERNEL Compute the centralized kernel matrix
+
+ $ Syntax $
+   - KC = slcenkernel(K0)
+   - KC = slcenkernel(K0, [], w)
+   - KC = slcenkernel(K0, K)
+   - KC = slcenkernel(K0, K, w)
+
+ $ Arguments $
+   - K0:       the gram matrix of the referenced samples
+   - K:        the kernel matrix for target samples
+   - w:        the weights for the referenced samples
+   - KC:       the centralized kernel matrix.
+
+ $ Description $
+   - KC = slcenkernel(K0) compute the centralized kernel matrix from
+     the original kernel gram matrix K0.
+ 
+   - KC = slcenkernel(K, [], w) compute the centralized kernel gram
+     matrix from the original kernel gram matrix K0. The mean feature
+     is obtained with the weights for referenced samples, given by w.
+
+   - KC = slcenkernel(K0, K) compute the centralized kernel matrix
+     for target samples, with the original gram matrix for referenced
+     samples K0 and the kernel matrix for target samples w.r.t the 
+     referenced samples K given.
+
+   - KC = slcenkernel(K0, K, w) compute the centralied kernel matrix
+     for target samples, with feature mean computed in a weighted 
+     manner.
+
+ $ Remarks $
+   -# For original kernel matrix K, it is defined as 
+      K(i, j) = &lt;phi(i), phi(j)&gt;, given that phi(i) and phi(j) are
+      the feature map of the samples x(i) and x(j) respectively.
+      Then the centralized kernel matrix is defined as
+      KC(i, j) = &lt;phi(i) - mean_phi, phi(j) - mean_phi&gt;, where
+      mean_phi is the mean of all referenced feature maps. If w
+      is specified mean_phi is given by weighted mean. 
+      Kernel centralization plays an important role in many 
+      kernelized algorithms such as Kernel PCA.
+
+   -# Suppose the mean feature map is defined by 
+      mean_phi = sum_i w_i phi(i).
+      Then the centralized kernel gram matrix can be written as
+      KC = K - 1 * (w^T * K) - (K * w) * 1^T + 1 * (w^T * K * w) * 1^T.
+      It can be easily shown that the mean of columns (rows) of KC is
+      a zero vector. Thus, centralize the centralized kernel matrix
+      would keep the input unchanged. 
+
+   -# Instead of applying the formula given above, the function 
+      implements a more efficient computational routine by reducing
+      the redundant computations.
+
+ $ History $
+   - Created by Dahua Lin on May 2nd, 2006
+   - Modified by Dahua Lin on Sep 10, 2006
+       - use sladdrowcols to replace sladd to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdrowcols.html" class="code" title="function Y = sladdrowcols(X, vrow, vcol)">sladdrowcols</a>	SLADDROWCOLS Adds the vectors to all rows and all columns</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slgda.html" class="code" title="function A = slgda(K, nums, sol)">slgda</a>	SLGDA Performs Baudat's Generalized Discriminant Analysis</li><li><a href="slkernelfea.html" class="code" title="function Y = slkernelfea(X, X0, kparams, varargin)">slkernelfea</a>	SLKERNELFEA Extracts kernelized mapped features</li><li><a href="slkpca.html" class="code" title="function [A, evs] = slkpca(K0, varargin)">slkpca</a>	SLPCA Learns a Kernel PCA model from training samples</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function KC = slcenkernel(K0, K, w)</a>
+0002 <span class="comment">%SLCENKERNEL Compute the centralized kernel matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - KC = slcenkernel(K0)</span>
+0006 <span class="comment">%   - KC = slcenkernel(K0, [], w)</span>
+0007 <span class="comment">%   - KC = slcenkernel(K0, K)</span>
+0008 <span class="comment">%   - KC = slcenkernel(K0, K, w)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% $ Arguments $</span>
+0011 <span class="comment">%   - K0:       the gram matrix of the referenced samples</span>
+0012 <span class="comment">%   - K:        the kernel matrix for target samples</span>
+0013 <span class="comment">%   - w:        the weights for the referenced samples</span>
+0014 <span class="comment">%   - KC:       the centralized kernel matrix.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - KC = slcenkernel(K0) compute the centralized kernel matrix from</span>
+0018 <span class="comment">%     the original kernel gram matrix K0.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">%   - KC = slcenkernel(K, [], w) compute the centralized kernel gram</span>
+0021 <span class="comment">%     matrix from the original kernel gram matrix K0. The mean feature</span>
+0022 <span class="comment">%     is obtained with the weights for referenced samples, given by w.</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">%   - KC = slcenkernel(K0, K) compute the centralized kernel matrix</span>
+0025 <span class="comment">%     for target samples, with the original gram matrix for referenced</span>
+0026 <span class="comment">%     samples K0 and the kernel matrix for target samples w.r.t the</span>
+0027 <span class="comment">%     referenced samples K given.</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%   - KC = slcenkernel(K0, K, w) compute the centralied kernel matrix</span>
+0030 <span class="comment">%     for target samples, with feature mean computed in a weighted</span>
+0031 <span class="comment">%     manner.</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">% $ Remarks $</span>
+0034 <span class="comment">%   -# For original kernel matrix K, it is defined as</span>
+0035 <span class="comment">%      K(i, j) = &lt;phi(i), phi(j)&gt;, given that phi(i) and phi(j) are</span>
+0036 <span class="comment">%      the feature map of the samples x(i) and x(j) respectively.</span>
+0037 <span class="comment">%      Then the centralized kernel matrix is defined as</span>
+0038 <span class="comment">%      KC(i, j) = &lt;phi(i) - mean_phi, phi(j) - mean_phi&gt;, where</span>
+0039 <span class="comment">%      mean_phi is the mean of all referenced feature maps. If w</span>
+0040 <span class="comment">%      is specified mean_phi is given by weighted mean.</span>
+0041 <span class="comment">%      Kernel centralization plays an important role in many</span>
+0042 <span class="comment">%      kernelized algorithms such as Kernel PCA.</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">%   -# Suppose the mean feature map is defined by</span>
+0045 <span class="comment">%      mean_phi = sum_i w_i phi(i).</span>
+0046 <span class="comment">%      Then the centralized kernel gram matrix can be written as</span>
+0047 <span class="comment">%      KC = K - 1 * (w^T * K) - (K * w) * 1^T + 1 * (w^T * K * w) * 1^T.</span>
+0048 <span class="comment">%      It can be easily shown that the mean of columns (rows) of KC is</span>
+0049 <span class="comment">%      a zero vector. Thus, centralize the centralized kernel matrix</span>
+0050 <span class="comment">%      would keep the input unchanged.</span>
+0051 <span class="comment">%</span>
+0052 <span class="comment">%   -# Instead of applying the formula given above, the function</span>
+0053 <span class="comment">%      implements a more efficient computational routine by reducing</span>
+0054 <span class="comment">%      the redundant computations.</span>
+0055 <span class="comment">%</span>
+0056 <span class="comment">% $ History $</span>
+0057 <span class="comment">%   - Created by Dahua Lin on May 2nd, 2006</span>
+0058 <span class="comment">%   - Modified by Dahua Lin on Sep 10, 2006</span>
+0059 <span class="comment">%       - use sladdrowcols to replace sladd to increase efficiency</span>
+0060 <span class="comment">%</span>
+0061 
+0062 <span class="comment">%% parse and verify input arguments</span>
+0063 
+0064 <span class="comment">% for K0</span>
+0065 n0 = size(K0, 1);
+0066 <span class="keyword">if</span> ndims(K0) ~= 2 || size(K0, 2) ~= n0;
+0067     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0068         <span class="string">'K0 should be a 2D square matrix'</span>);
+0069 <span class="keyword">end</span>
+0070 
+0071 <span class="comment">% for K</span>
+0072 <span class="keyword">if</span> nargin &lt; 2 || isempty(K)
+0073     K = K0;
+0074 <span class="keyword">else</span>
+0075     <span class="keyword">if</span> ndims(K) ~= 2
+0076         error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0077             <span class="string">'K should be a 2D matrix'</span>);
+0078     <span class="keyword">end</span>
+0079     <span class="keyword">if</span> size(K, 1) ~= n0
+0080         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0081             <span class="string">'Size inconsistency between K0 and K'</span>);
+0082     <span class="keyword">end</span>
+0083 <span class="keyword">end</span>
+0084     
+0085 <span class="comment">% for w</span>
+0086 <span class="keyword">if</span> nargin &lt; 3 || isempty(w)
+0087     isweighted = false;
+0088 <span class="keyword">else</span>
+0089     <span class="keyword">if</span> ~isequal(size(w), [1, n0])
+0090         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0091             <span class="string">'Size inconsistency between K0 and w'</span>);
+0092     <span class="keyword">end</span>    
+0093     isweighted = true;
+0094 <span class="keyword">end</span>
+0095 
+0096 
+0097 <span class="comment">%% compute</span>
+0098 
+0099 <span class="comment">% Steps:</span>
+0100 <span class="comment">% 1. compute v1: mean row vector of K (1 x n)</span>
+0101 <span class="comment">% 2. compute v2: mean column vector of K0 (n x 1)</span>
+0102 <span class="comment">% 3. compute s3: mean value of of all elements of K0 (1 x 1)</span>
+0103 <span class="comment">% 4. KC = K - expand(v1) - expand(v2) + s3</span>
+0104 
+0105 <span class="keyword">if</span> ~isweighted  <span class="comment">% non-weighted case</span>
+0106 
+0107     v1 = sum(K, 1) * (1 / n0);
+0108     v2 = sum(K0, 2) * (1 / n0);
+0109     s3 = sum(v2) * (1 / n0);
+0110     
+0111 <span class="keyword">else</span>            <span class="comment">% weighted case</span>
+0112     
+0113     w = w / sum(w);     <span class="comment">% normalize the weights</span>
+0114     
+0115     v1 = w * K;
+0116     v2 = K0 * w';
+0117     s3 = w * v2;
+0118     
+0119 <span class="keyword">end</span>
+0120 
+0121 KC = <a href="../../sltoolbox/core/sladdrowcols.html" class="code" title="function Y = sladdrowcols(X, vrow, vcol)">sladdrowcols</a>(K, -v1, -v2+s3);
+0122 
+0123</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

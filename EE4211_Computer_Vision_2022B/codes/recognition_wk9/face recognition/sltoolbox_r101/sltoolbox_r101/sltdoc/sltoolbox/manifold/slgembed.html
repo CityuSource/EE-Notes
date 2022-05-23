@@ -1,0 +1,349 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slgembed</title>
+  <meta name="keywords" content="slgembed">
+  <meta name="description" content="SLGEMBED Solves the general graph-based embedding">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">manifold</a> &gt; slgembed.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\manifold&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slgembed
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLGEMBED Solves the general graph-based embedding</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Y, spectrum] = slgembed(G, Gc, d, fm, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLGEMBED Solves the general graph-based embedding 
+
+ $ Syntax $
+   - Y = slgembed(G, Gc, d, fm, ...)
+   - [Y, spectrum] = slgembed(G, Gc, d, fm, ...)
+
+ $ Arguments $
+   - G:        The graph to be optimized
+   - Gc:       The constraint graph
+   - d:        The dimension of the embedding
+   - fm:       The type of formulation
+   - Y:        The embedding sample coordinates
+
+ $ Description $
+   - Y = slgembed(G, Gc, d, fm, ...) solves the general graph-based 
+     embedding of dimension d. In mathematics, it is to solve the
+     following optimization problem:
+           min/max y^T M y,  s.t. y^T C y = I
+     Based on different fm, the formulations of M and C are different:
+     fm is a cell array of two char string elements:
+           fm = {fg, fc}
+     fg indicates the formulation of M, fc indicates the formulation of
+     the constraint matrix C.
+       fg has the following different values:
+           - 'minW':   minimization using M = W, (W is the adjmat of G)
+           - 'maxW':   maximization using M = W
+           - 'minL':   minimization using M = L = D - W
+           - 'maxL':   maximization using M = L = D - W
+       fc has the following different values:
+           - 'I':      use C = I, that is y^T * y = I
+           - 'D':      use C = D, that is y^T * D * y = I (based on G)
+           - 'WC':      use C = W, adjacency matrix (based on Gc)
+           - 'LC':      use C = L = D - W, (based on Gc)
+     For example, if you specify fm = {'maxW', 'D'}, then the function 
+     will solve the following optimization problem:
+           maximize y^T W y,   s.t. y^T * D * y = I
+     You can also specify the following properties:
+       - 'inv':        The parameters do to eigenvalue inverse
+                       {method, ...}
+                       (refer to slinvevals for details)
+                       This parameter take effects only when fc = 'WC&quot; or
+                       fc = 'LC'.
+       - 'skip':       How many eigen-components to skip. default = 0.
+                       (In some algorithms, it is necessary to skip
+                        the first or first several eigen-components).
+
+   - [Y, spectrum] = slgembed(G, Gc, d, fm, ...) additionally return
+     the spectrum of the embedding, the eigenvalues of the whitened
+     C^(-1/2) M C^(-1/2).
+     
+ $ Remarks $
+   - The fc can be 'WC' or 'LC' only when Gc is full matrix, in current
+     version of implementation.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 12, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slmulrowcols.html" class="code" title="function Y = slmulrowcols(X, vrow, vcol)">slmulrowcols</a>	SLMULROWCOLS Multiplies the vectors to all rows and all columns</li><li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>	SLADJMAT Constructs the adjacency matrix representation of a graph</li><li><a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>	SLGRAPHINFO Extracts basic information of a given graph representation</li><li><a href="../../sltoolbox/stat/slwhiten_from_cov.html" class="code" title="function W = slwhiten_from_cov(C, method, varargin)">slwhiten_from_cov</a>	SLWHITEN_FROM_COV Compute the whitening transform from covariance matrix</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/subspace/slgbfe.html" class="code" title="function T = slgbfe(X, G, Gc, dy, fm, varargin)">slgbfe</a>	SLGBFE Performs Graph-based Feature Extraction Learning</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function M = make_Wmat(W)</a></li><li><a href="#_sub2" class="code">function vD = make_Dvec(W)</a></li><li><a href="#_sub3" class="code">function L = make_Lmat(W)</a></li><li><a href="#_sub4" class="code">function MTcell = whM_by_D(M, W)</a></li><li><a href="#_sub5" class="code">function MTcell = whM_by_W(M, W, invparams)</a></li><li><a href="#_sub6" class="code">function MTcell = whM_by_L(M, W, invparams)</a></li><li><a href="#_sub7" class="code">function [Y, spectrum] = optim_embed(M, optype, d, dskip)</a></li><li><a href="#_sub8" class="code">function Y = nY_by_S(Y, T)</a></li><li><a href="#_sub9" class="code">function Y = nY_by_T(Y, T)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Y, spectrum] = slgembed(G, Gc, d, fm, varargin)</a>
+0002 <span class="comment">%SLGEMBED Solves the general graph-based embedding</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - Y = slgembed(G, Gc, d, fm, ...)</span>
+0006 <span class="comment">%   - [Y, spectrum] = slgembed(G, Gc, d, fm, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - G:        The graph to be optimized</span>
+0010 <span class="comment">%   - Gc:       The constraint graph</span>
+0011 <span class="comment">%   - d:        The dimension of the embedding</span>
+0012 <span class="comment">%   - fm:       The type of formulation</span>
+0013 <span class="comment">%   - Y:        The embedding sample coordinates</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ Description $</span>
+0016 <span class="comment">%   - Y = slgembed(G, Gc, d, fm, ...) solves the general graph-based</span>
+0017 <span class="comment">%     embedding of dimension d. In mathematics, it is to solve the</span>
+0018 <span class="comment">%     following optimization problem:</span>
+0019 <span class="comment">%           min/max y^T M y,  s.t. y^T C y = I</span>
+0020 <span class="comment">%     Based on different fm, the formulations of M and C are different:</span>
+0021 <span class="comment">%     fm is a cell array of two char string elements:</span>
+0022 <span class="comment">%           fm = {fg, fc}</span>
+0023 <span class="comment">%     fg indicates the formulation of M, fc indicates the formulation of</span>
+0024 <span class="comment">%     the constraint matrix C.</span>
+0025 <span class="comment">%       fg has the following different values:</span>
+0026 <span class="comment">%           - 'minW':   minimization using M = W, (W is the adjmat of G)</span>
+0027 <span class="comment">%           - 'maxW':   maximization using M = W</span>
+0028 <span class="comment">%           - 'minL':   minimization using M = L = D - W</span>
+0029 <span class="comment">%           - 'maxL':   maximization using M = L = D - W</span>
+0030 <span class="comment">%       fc has the following different values:</span>
+0031 <span class="comment">%           - 'I':      use C = I, that is y^T * y = I</span>
+0032 <span class="comment">%           - 'D':      use C = D, that is y^T * D * y = I (based on G)</span>
+0033 <span class="comment">%           - 'WC':      use C = W, adjacency matrix (based on Gc)</span>
+0034 <span class="comment">%           - 'LC':      use C = L = D - W, (based on Gc)</span>
+0035 <span class="comment">%     For example, if you specify fm = {'maxW', 'D'}, then the function</span>
+0036 <span class="comment">%     will solve the following optimization problem:</span>
+0037 <span class="comment">%           maximize y^T W y,   s.t. y^T * D * y = I</span>
+0038 <span class="comment">%     You can also specify the following properties:</span>
+0039 <span class="comment">%       - 'inv':        The parameters do to eigenvalue inverse</span>
+0040 <span class="comment">%                       {method, ...}</span>
+0041 <span class="comment">%                       (refer to slinvevals for details)</span>
+0042 <span class="comment">%                       This parameter take effects only when fc = 'WC&quot; or</span>
+0043 <span class="comment">%                       fc = 'LC'.</span>
+0044 <span class="comment">%       - 'skip':       How many eigen-components to skip. default = 0.</span>
+0045 <span class="comment">%                       (In some algorithms, it is necessary to skip</span>
+0046 <span class="comment">%                        the first or first several eigen-components).</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">%   - [Y, spectrum] = slgembed(G, Gc, d, fm, ...) additionally return</span>
+0049 <span class="comment">%     the spectrum of the embedding, the eigenvalues of the whitened</span>
+0050 <span class="comment">%     C^(-1/2) M C^(-1/2).</span>
+0051 <span class="comment">%</span>
+0052 <span class="comment">% $ Remarks $</span>
+0053 <span class="comment">%   - The fc can be 'WC' or 'LC' only when Gc is full matrix, in current</span>
+0054 <span class="comment">%     version of implementation.</span>
+0055 <span class="comment">%</span>
+0056 <span class="comment">% $ History $</span>
+0057 <span class="comment">%   - Created by Dahua Lin, on Sep 12, 2006</span>
+0058 <span class="comment">%</span>
+0059 
+0060 <span class="comment">%% parse and verify input arguments</span>
+0061 
+0062 <span class="keyword">if</span> nargin &lt; 4
+0063     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slgembed'</span>, 4);
+0064 <span class="keyword">end</span>
+0065 
+0066 gi = <a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>(G, {<span class="string">'square'</span>});
+0067 n = gi.n;
+0068 W = <a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>(G, <span class="string">'valtype'</span>, <span class="string">'numeric'</span>, <span class="string">'sparse'</span>, issparse(G));
+0069 
+0070 [fg, fc] = deal(fm{:});
+0071 
+0072 Wc = [];
+0073 <span class="keyword">if</span> strcmp(fc, <span class="string">'WC'</span>) || strcmp(fc, <span class="string">'LC'</span>)
+0074     <span class="keyword">if</span> ~isempty(Gc)
+0075         <span class="keyword">if</span> ~isnumeric(Gc) || issparse(Gc) || ~isequal(size(Gc), [n n])
+0076             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0077                 <span class="string">'In current implementation, Gc must be an n x n full numeric matrix for fc = WC or GC'</span>);
+0078         <span class="keyword">end</span>
+0079         Wc = Gc;
+0080     <span class="keyword">else</span>
+0081         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0082             <span class="string">'When fc is WC or LC, Wc should be specified'</span>);
+0083     <span class="keyword">end</span>
+0084 <span class="keyword">end</span>
+0085 
+0086 opts.inv = {};
+0087 opts.skip = 0;
+0088 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0089 
+0090 <span class="keyword">if</span> d + opts.skip &gt; n
+0091     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0092         <span class="string">'The embedding dimension d plus the skip dimension should not exceed n'</span>);
+0093 <span class="keyword">end</span>
+0094 
+0095 
+0096 <span class="comment">%% main skeleton</span>
+0097 
+0098 W = W + W';
+0099 <span class="keyword">if</span> ~isempty(Wc)
+0100     Wc = Wc + Wc';
+0101 <span class="keyword">end</span>
+0102 
+0103 <span class="comment">% parse formulation and decide scheme</span>
+0104 
+0105 <span class="keyword">switch</span> fg
+0106     <span class="keyword">case</span> <span class="string">'minW'</span>
+0107         Mfunc = @<a href="#_sub1" class="code" title="subfunction M = make_Wmat(W)">make_Wmat</a>;
+0108         optype = <span class="string">'max'</span>;
+0109     <span class="keyword">case</span> <span class="string">'maxW'</span>
+0110         Mfunc = @<a href="#_sub1" class="code" title="subfunction M = make_Wmat(W)">make_Wmat</a>;
+0111         optype = <span class="string">'max'</span>;
+0112     <span class="keyword">case</span> <span class="string">'minL'</span>
+0113         Mfunc = @<a href="#_sub3" class="code" title="subfunction L = make_Lmat(W)">make_Lmat</a>;
+0114         optype = <span class="string">'min'</span>;
+0115     <span class="keyword">case</span> <span class="string">'maxL'</span>
+0116         Mfunc = @<a href="#_sub3" class="code" title="subfunction L = make_Lmat(W)">make_Lmat</a>;
+0117         optype = <span class="string">'max'</span>;
+0118     <span class="keyword">otherwise</span>
+0119         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'Invalid fg type: %s'</span>, fg);
+0120 <span class="keyword">end</span>
+0121 
+0122 <span class="keyword">switch</span> fc
+0123     <span class="keyword">case</span> <span class="string">'I'</span>
+0124         whfunc = [];
+0125     <span class="keyword">case</span> <span class="string">'D'</span>
+0126         whfunc = @(M) <a href="#_sub4" class="code" title="subfunction MTcell = whM_by_D(M, W)">whM_by_D</a>(M, W);
+0127         nyfunc = @(Y, T) <a href="#_sub8" class="code" title="subfunction Y = nY_by_S(Y, T)">nY_by_S</a>(Y, T);
+0128     <span class="keyword">case</span> <span class="string">'WC'</span>
+0129         whfunc = @(M) <a href="#_sub5" class="code" title="subfunction MTcell = whM_by_W(M, W, invparams)">whM_by_W</a>(M, Wc, opts.inv);
+0130         nyfunc = @(Y, T) <a href="#_sub9" class="code" title="subfunction Y = nY_by_T(Y, T)">nY_by_T</a>(Y, T);
+0131     <span class="keyword">case</span> <span class="string">'LC'</span>
+0132         whfunc = @(M) <a href="#_sub6" class="code" title="subfunction MTcell = whM_by_L(M, W, invparams)">whM_by_L</a>(M, Wc, opts.inv);
+0133         nyfunc = @(Y, T) <a href="#_sub9" class="code" title="subfunction Y = nY_by_T(Y, T)">nY_by_T</a>(Y, T);
+0134     <span class="keyword">otherwise</span>
+0135         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'Invalid fc type: %s'</span>, fc);
+0136 <span class="keyword">end</span>
+0137 
+0138 
+0139 <span class="comment">% make M</span>
+0140 M = Mfunc(W);
+0141 
+0142 <span class="comment">% whiten M</span>
+0143 <span class="keyword">if</span> ~isempty(whfunc)
+0144     MTcell = whfunc(M);
+0145     M = MTcell{1};
+0146     T = MTcell{2};
+0147     clear MTcell;
+0148 <span class="keyword">end</span>
+0149 
+0150 <span class="comment">% optimize to solve embedding</span>
+0151 [Y, spectrum] = <a href="#_sub7" class="code" title="subfunction [Y, spectrum] = optim_embed(M, optype, d, dskip)">optim_embed</a>(M, optype, d, opts.skip);
+0152 
+0153 <span class="comment">% normalize the embedding to satisfy the constraint</span>
+0154 <span class="keyword">if</span> ~isempty(whfunc)
+0155     Y = nyfunc(Y, T);
+0156 <span class="keyword">end</span>
+0157 Y = Y';
+0158     
+0159 
+0160 <span class="comment">%% Core routines</span>
+0161 
+0162 <a name="_sub1" href="#_subfunctions" class="code">function M = make_Wmat(W)</a>
+0163 
+0164 M = W;
+0165 
+0166 <a name="_sub2" href="#_subfunctions" class="code">function vD = make_Dvec(W)</a>
+0167 
+0168 vD = sum(W, 1)';
+0169 <span class="keyword">if</span> issparse(vD)
+0170     vD = full(vD);
+0171 <span class="keyword">end</span>
+0172 
+0173 <a name="_sub3" href="#_subfunctions" class="code">function L = make_Lmat(W)</a>
+0174 
+0175 vD = <a href="#_sub2" class="code" title="subfunction vD = make_Dvec(W)">make_Dvec</a>(W);
+0176 n = size(W, 1);
+0177 <span class="keyword">if</span> issparse(W)
+0178     D = sparse((1:n)', (1:n)', vD, n, n, n);
+0179     L = D - W;
+0180 <span class="keyword">else</span>
+0181     L = -W;
+0182     dinds = (1:n)'*(n+1)-n;
+0183     L(dinds) = L(dinds) + vD;
+0184 <span class="keyword">end</span>
+0185 
+0186 <a name="_sub4" href="#_subfunctions" class="code">function MTcell = whM_by_D(M, W)</a>
+0187 
+0188 vD = <a href="#_sub2" class="code" title="subfunction vD = make_Dvec(W)">make_Dvec</a>(W);
+0189 vD(vD &lt; eps) = eps;
+0190 cv = 1 ./ sqrt(vD);
+0191 
+0192 n = size(M, 1);
+0193 <span class="keyword">if</span> issparse(M)    
+0194     Mw = M;
+0195     <span class="keyword">for</span> i = 1 : n
+0196         Mw(:,i) = Mw(:,i) * cv(i);
+0197     <span class="keyword">end</span>
+0198     <span class="keyword">for</span> i = 1 : n
+0199         Mw(i,:) = Mw(i,:) * cv(i);
+0200     <span class="keyword">end</span>
+0201 <span class="keyword">else</span>
+0202     Mw = <a href="../../sltoolbox/core/slmulrowcols.html" class="code" title="function Y = slmulrowcols(X, vrow, vcol)">slmulrowcols</a>(M, cv', cv);
+0203 <span class="keyword">end</span>
+0204 
+0205 MTcell = {Mw, cv};
+0206 
+0207 
+0208 <a name="_sub5" href="#_subfunctions" class="code">function MTcell = whM_by_W(M, W, invparams)</a>
+0209 
+0210 T = <a href="../../sltoolbox/stat/slwhiten_from_cov.html" class="code" title="function W = slwhiten_from_cov(C, method, varargin)">slwhiten_from_cov</a>(W, invparams{:});
+0211 Mw = T' * M * T;
+0212 MTcell = {Mw, T};
+0213 
+0214 
+0215 <a name="_sub6" href="#_subfunctions" class="code">function MTcell = whM_by_L(M, W, invparams)</a>
+0216 
+0217 L = <a href="#_sub3" class="code" title="subfunction L = make_Lmat(W)">make_Lmat</a>(W);
+0218 MTcell = <a href="#_sub5" class="code" title="subfunction MTcell = whM_by_W(M, W, invparams)">whM_by_W</a>(M, L, invparams);
+0219 
+0220 
+0221 <a name="_sub7" href="#_subfunctions" class="code">function [Y, spectrum] = optim_embed(M, optype, d, dskip)</a>
+0222 
+0223 <span class="keyword">switch</span> optype
+0224     <span class="keyword">case</span> <span class="string">'min'</span>
+0225         ord = <span class="string">'ascend'</span>;
+0226     <span class="keyword">case</span> <span class="string">'max'</span>
+0227         ord = <span class="string">'descend'</span>;
+0228 <span class="keyword">end</span>
+0229 
+0230 d0 = d + dskip;
+0231 [spectrum, Y] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(M, d0, ord);
+0232 <span class="keyword">if</span> dskip &gt; 0
+0233     spectrum = spectrum(dskip+1:d0);
+0234     Y = Y(:, dskip+1:d0);
+0235 <span class="keyword">end</span>
+0236 
+0237 <a name="_sub8" href="#_subfunctions" class="code">function Y = nY_by_S(Y, T)</a>
+0238 
+0239 Y = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(Y, T, 1);
+0240 
+0241 <a name="_sub9" href="#_subfunctions" class="code">function Y = nY_by_T(Y, T)</a>
+0242 
+0243 Y = T * Y;
+0244 
+0245 
+0246</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

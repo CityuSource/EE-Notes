@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpadimg</title>
+  <meta name="keywords" content="slpadimg">
+  <meta name="description" content="SLPADIMG Pads an image with boundary">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">imgproc</a> &gt; slpadimg.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\imgproc&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpadimg
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPADIMG Pads an image with boundary</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function imgpadded = slpadimg(img, padsize, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPADIMG Pads an image with boundary 
+
+ $ Syntax $
+   - imgpadded = slpadimg(img, padsize, padval)
+   - imgpadded = slpadimg(img, padsize, padtype)
+
+ $ Arguments $
+   - img:          The original input image
+   - padsize:      The boundary widths in [top, bottom, left, right]
+                   in addition, it can be in the other two forms:
+                   [len] =&gt; top = bottom = left = right = len
+                   [ey, ex] =&gt; top = bottom = ey, left = right = ex
+   - padval:       The padded values
+   - padtype:      The type of padding 
+                   'replicate' | 'symmetric' | 'circular'
+   - imgpadded:    The padded image
+
+ $ Description $
+   - imgpadded = slpadimg(img, padsize, padval) pads the image with
+     constant values. For single-channel image, padval should be a
+     scalar. For multi-channle image, padval can be a scalar, which 
+     indicates to pad all channels using the same value, or an array
+     with the number of elements as the number of channels. Then 
+     different channels will be padded with corresponding element.
+
+   - imgpadded = slpadimg(img, padsize, padtype) pads the image with
+     specified scheme. Either of the 'replicate', 'circular' or 
+     'symmetric'.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 1st, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/sltakeval.html" class="code" title="function varargout = sltakeval(A)">sltakeval</a>	SLTAKEVAL Extracts the values in an array/cell array to output</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slpixneighbors.html" class="code" title="function [R, pixinds] = slpixneighbors(img, filtersize, varargin)">slpixneighbors</a>	SLPIXNEIGHBORS Extracts the neighborhood of pixels from an image</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function imgdst = pad_constant(img, padsize, padval)</a></li><li><a href="#_sub2" class="code">function imgdst = pad_replicate(img, padsize)</a></li><li><a href="#_sub3" class="code">function imgdst = pad_circular(img, padsize)</a></li><li><a href="#_sub4" class="code">function imgdst = pad_symmetric(img, padsize)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function imgpadded = slpadimg(img, padsize, varargin)</a>
+0002 <span class="comment">%SLPADIMG Pads an image with boundary</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - imgpadded = slpadimg(img, padsize, padval)</span>
+0006 <span class="comment">%   - imgpadded = slpadimg(img, padsize, padtype)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - img:          The original input image</span>
+0010 <span class="comment">%   - padsize:      The boundary widths in [top, bottom, left, right]</span>
+0011 <span class="comment">%                   in addition, it can be in the other two forms:</span>
+0012 <span class="comment">%                   [len] =&gt; top = bottom = left = right = len</span>
+0013 <span class="comment">%                   [ey, ex] =&gt; top = bottom = ey, left = right = ex</span>
+0014 <span class="comment">%   - padval:       The padded values</span>
+0015 <span class="comment">%   - padtype:      The type of padding</span>
+0016 <span class="comment">%                   'replicate' | 'symmetric' | 'circular'</span>
+0017 <span class="comment">%   - imgpadded:    The padded image</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% $ Description $</span>
+0020 <span class="comment">%   - imgpadded = slpadimg(img, padsize, padval) pads the image with</span>
+0021 <span class="comment">%     constant values. For single-channel image, padval should be a</span>
+0022 <span class="comment">%     scalar. For multi-channle image, padval can be a scalar, which</span>
+0023 <span class="comment">%     indicates to pad all channels using the same value, or an array</span>
+0024 <span class="comment">%     with the number of elements as the number of channels. Then</span>
+0025 <span class="comment">%     different channels will be padded with corresponding element.</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%   - imgpadded = slpadimg(img, padsize, padtype) pads the image with</span>
+0028 <span class="comment">%     specified scheme. Either of the 'replicate', 'circular' or</span>
+0029 <span class="comment">%     'symmetric'.</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% $ History $</span>
+0032 <span class="comment">%   - Created by Dahua Lin, on Sep 1st, 2006</span>
+0033 <span class="comment">%</span>
+0034 
+0035 <span class="comment">%% parse and verify input</span>
+0036 
+0037 <span class="keyword">if</span> nargin &lt; 3
+0038     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slpadimg'</span>, 3);
+0039 <span class="keyword">end</span>
+0040 
+0041 <span class="comment">% process padsize</span>
+0042 
+0043 <span class="keyword">if</span> ~isvector(padsize)
+0044     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0045         <span class="string">'The padsize should be a vector'</span>);
+0046 <span class="keyword">end</span>
+0047 
+0048 <span class="keyword">if</span> length(padsize) == 1
+0049     padsize = padsize * ones(1, 4);
+0050 <span class="keyword">elseif</span> length(padsize) == 2
+0051     padsize = [padsize(1), padsize(1), padsize(2), padsize(2)];
+0052 <span class="keyword">elseif</span> length(padsize) == 4
+0053     padsize = padsize(:)';
+0054 <span class="keyword">else</span>
+0055     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0056         <span class="string">'The length of padsize is illegal'</span>);
+0057 <span class="keyword">end</span>    
+0058 
+0059 
+0060 <span class="comment">% decide number of channels k</span>
+0061 d = ndims(img);
+0062 <span class="keyword">if</span> d == 2
+0063     k = 1;
+0064 <span class="keyword">elseif</span> d == 3
+0065     k = size(img, 3);
+0066 <span class="keyword">else</span>
+0067     imgsiz = size(img);
+0068     k = prod(imgsiz(3:end));
+0069 <span class="keyword">end</span>
+0070     
+0071 padparam = varargin{1};
+0072 <span class="keyword">if</span> isnumeric(padparam) || islogical(padparam)
+0073     padtype = <span class="string">'constant'</span>;
+0074     padval = padparam;
+0075     <span class="keyword">if</span> numel(padval) == 1
+0076         <span class="keyword">if</span> k &gt; 1
+0077             padval = padval * ones(k, 1);
+0078         <span class="keyword">end</span>
+0079     <span class="keyword">elseif</span> numel(padval) == k
+0080         padval = padval(:);
+0081     <span class="keyword">else</span>
+0082         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0083             <span class="string">'The size of padval is illegal'</span>);
+0084     <span class="keyword">end</span>
+0085 <span class="keyword">elseif</span> ischar(padparam)
+0086     padtype = padparam;
+0087     <span class="keyword">if</span> ~ismember(padtype, {<span class="string">'replicate'</span>, <span class="string">'circular'</span>, <span class="string">'symmetric'</span>})
+0088         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0089             <span class="string">'Invalid padding type: %s'</span>, padtype);
+0090     <span class="keyword">end</span>
+0091 <span class="keyword">else</span>
+0092     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'The padding parameters is invalid'</span>);
+0093 <span class="keyword">end</span>
+0094 
+0095 <span class="comment">%% Main skeleton</span>
+0096 
+0097 <span class="keyword">switch</span> padtype
+0098     <span class="keyword">case</span> <span class="string">'constant'</span>
+0099         imgpadded = <a href="#_sub1" class="code" title="subfunction imgdst = pad_constant(img, padsize, padval)">pad_constant</a>(img, padsize, padval);
+0100     <span class="keyword">case</span> <span class="string">'replicate'</span>
+0101         imgpadded = <a href="#_sub2" class="code" title="subfunction imgdst = pad_replicate(img, padsize)">pad_replicate</a>(img, padsize);
+0102     <span class="keyword">case</span> <span class="string">'circular'</span>
+0103         imgpadded = <a href="#_sub3" class="code" title="subfunction imgdst = pad_circular(img, padsize)">pad_circular</a>(img, padsize);
+0104     <span class="keyword">case</span> <span class="string">'symmetric'</span>
+0105         imgpadded = <a href="#_sub4" class="code" title="subfunction imgdst = pad_symmetric(img, padsize)">pad_symmetric</a>(img, padsize);
+0106 <span class="keyword">end</span>
+0107 
+0108 <span class="comment">%% Reshape</span>
+0109 
+0110 <span class="keyword">if</span> d &gt; 3
+0111     imgsiz(1) = size(imgpadded, 1);
+0112     imgsiz(2) = size(imgpadded, 2);
+0113     imgpadded = reshape(imgpadded, imgsiz);
+0114 <span class="keyword">end</span>
+0115 
+0116 
+0117 <span class="comment">%% Core functions</span>
+0118 
+0119 <a name="_sub1" href="#_subfunctions" class="code">function imgdst = pad_constant(img, padsize, padval)</a>
+0120 
+0121 [h0, w0, k] = size(img);
+0122 hd = h0 + padsize(1) + padsize(2);
+0123 wd = w0 + padsize(3) + padsize(4);
+0124 
+0125 <span class="comment">% make the constant layer</span>
+0126 padval = reshape(padval, [1 1 k]);
+0127 imgdst = padval(ones(hd,1), ones(wd,1), :);
+0128 
+0129 <span class="comment">% put in the target</span>
+0130 i0 = padsize(1) + 1; i1 = padsize(1) + h0;
+0131 j0 = padsize(3) + 1; j1 = padsize(3) + w0;
+0132 
+0133 imgdst(i0:i1, j0:j1, :) = img(:, :, :);
+0134 
+0135 
+0136 <a name="_sub2" href="#_subfunctions" class="code">function imgdst = pad_replicate(img, padsize)</a>
+0137 
+0138 [tm, bm, lm, rm] = <a href="../../sltoolbox/utils/sltakeval.html" class="code" title="function varargout = sltakeval(A)">sltakeval</a>(padsize);
+0139 h0 = size(img, 1);
+0140 w0 = size(img, 2);
+0141 
+0142 inds_i = [ones(1, tm), 1:h0, ones(1, bm) * h0];
+0143 inds_j = [ones(1, lm), 1:w0, ones(1, rm) * w0];
+0144 
+0145 imgdst = img(inds_i, inds_j, :);
+0146 
+0147 
+0148 <a name="_sub3" href="#_subfunctions" class="code">function imgdst = pad_circular(img, padsize)</a>
+0149 
+0150 [tm, bm, lm, rm] = <a href="../../sltoolbox/utils/sltakeval.html" class="code" title="function varargout = sltakeval(A)">sltakeval</a>(padsize);
+0151 h0 = size(img, 1);
+0152 w0 = size(img, 2);
+0153 
+0154 inds_i = mod(-tm:h0+bm-1, h0) + 1;
+0155 inds_j = mod(-lm:w0+rm-1, w0) + 1;
+0156 
+0157 imgdst = img(inds_i, inds_j, :);
+0158 
+0159 
+0160 <a name="_sub4" href="#_subfunctions" class="code">function imgdst = pad_symmetric(img, padsize)</a>
+0161 
+0162 [tm, bm, lm, rm] = <a href="../../sltoolbox/utils/sltakeval.html" class="code" title="function varargout = sltakeval(A)">sltakeval</a>(padsize);
+0163 h0 = size(img, 1);
+0164 w0 = size(img, 2);
+0165 
+0166 sni = [1:h0, h0:-1:1];
+0167 snj = [1:w0, w0:-1:1];
+0168 
+0169 inds_i = sni(mod(-tm:h0+bm-1, h0*2) + 1);
+0170 inds_j = snj(mod(-lm:w0+rm-1, w0*2) + 1);
+0171 
+0172 imgdst = img(inds_i, inds_j, :);
+0173 
+0174 
+0175 
+0176 
+0177 
+0178 
+0179 
+0180 
+0181         
+0182     
+0183     
+0184     
+0185     
+0186</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

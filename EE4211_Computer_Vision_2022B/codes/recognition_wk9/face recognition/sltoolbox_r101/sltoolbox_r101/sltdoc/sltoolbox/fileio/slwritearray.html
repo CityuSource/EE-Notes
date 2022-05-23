@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slwritearray</title>
+  <meta name="keywords" content="slwritearray">
+  <meta name="description" content="SLWRITEARRAY Writes an array to an array file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">fileio</a> &gt; slwritearray.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\fileio&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slwritearray
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLWRITEARRAY Writes an array to an array file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function slwritearray(A, filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLWRITEARRAY Writes an array to an array file
+
+ $ Syntax $
+   - slwritearray(A, filename)
+   
+ $ Arguments $
+   - A:            The array to be written
+   - filename:     The filename of the array file
+
+ $ Description $
+   - slwritearray(A, filename) writes an array A to the array file.
+
+ $ History $
+   - Created by Dahua Lin, on Jul 26th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slpwcomp_blks.html" class="code" title="function slpwcomp_blks(X1, X2, ps, dstpath, compfunc, varargin)">slpwcomp_blks</a>	SLPWCOMP_BLKS Computes pairwise value matrix</li><li><a href="slimgsetprep.html" class="code" title="function slimgsetprep(srcfolder, dstpath, matsize, maxsec)">slimgsetprep</a>	SLIMGSETPREP organizes the images in a MATLAB friendly way</li><li><a href="../../sltoolbox/subspace_ex/slpartitionpca.html" class="code" title="function slpartitionpca(data, arrsiz, n, ps, filepath, varargin)">slpartitionpca</a>	SLPARTITIONPCA Performs Partition-based PCA and saves the models</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function slwritearray(A, filename)</a>
+0002 <span class="comment">%SLWRITEARRAY Writes an array to an array file</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - slwritearray(A, filename)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - A:            The array to be written</span>
+0009 <span class="comment">%   - filename:     The filename of the array file</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - slwritearray(A, filename) writes an array A to the array file.</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ History $</span>
+0015 <span class="comment">%   - Created by Dahua Lin, on Jul 26th, 2006</span>
+0016 <span class="comment">%</span>
+0017 
+0018 
+0019 value_types = { <span class="keyword">...</span>
+0020     <span class="string">'double'</span>, <span class="keyword">...</span>
+0021     <span class="string">'single'</span>, <span class="keyword">...</span>
+0022     <span class="string">'logical'</span>, <span class="keyword">...</span>
+0023     <span class="string">'char'</span>, <span class="keyword">...</span>
+0024     <span class="string">'int8'</span>, <span class="keyword">...</span>
+0025     <span class="string">'uint8'</span>, <span class="keyword">...</span>
+0026     <span class="string">'int16'</span>, <span class="keyword">...</span>
+0027     <span class="string">'uint16'</span>, <span class="keyword">...</span>
+0028     <span class="string">'int32'</span>, <span class="keyword">...</span>
+0029     <span class="string">'uint32'</span>, <span class="keyword">...</span>
+0030     <span class="string">'int64'</span>, <span class="keyword">...</span>
+0031     <span class="string">'uint64'</span>};
+0032 
+0033 
+0034 <span class="comment">%% open file</span>
+0035 
+0036 fid = fopen(filename, <span class="string">'w'</span>);
+0037 <span class="keyword">if</span> fid &lt;= 0
+0038     error(<span class="string">'sltoolbox:filefail'</span>, <span class="keyword">...</span>
+0039         <span class="string">'Fail to open file %s'</span>, filename);
+0040 <span class="keyword">end</span>
+0041 
+0042 <span class="comment">%% write header</span>
+0043 
+0044 <span class="comment">% write tag</span>
+0045 fwrite(fid, [<span class="string">'arr'</span>, 0], <span class="string">'char'</span>);
+0046 
+0047 <span class="comment">% write value type and dimension number</span>
+0048 [tf, typeidx] = ismember(class(A), value_types);
+0049 <span class="keyword">if</span> ~tf
+0050     error(<span class="string">'Unknown type for A: %s'</span>, class(A));
+0051 <span class="keyword">end</span>
+0052 d = ndims(A);
+0053 info = uint8([typeidx, d, 0, 0]);
+0054 fwrite(fid, info, <span class="string">'uint8'</span>);
+0055 
+0056 <span class="comment">%% write size</span>
+0057 
+0058 siz = size(A);
+0059 fwrite(fid, uint32(siz), <span class="string">'uint32'</span>);
+0060 
+0061 <span class="comment">%% write data</span>
+0062 
+0063 fwrite(fid, A, class(A));
+0064 
+0065 <span class="comment">%% close file</span>
+0066 
+0067 fclose(fid);
+0068 
+0069 
+0070 
+0071 
+0072 
+0073</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcountlines</title>
+  <meta name="keywords" content="slcountlines">
+  <meta name="description" content="SLCOUNTLINES Count the lines of m-files in a folder and make a report">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">fileio</a> &gt; slcountlines.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\fileio&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcountlines
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCOUNTLINES Count the lines of m-files in a folder and make a report</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function R = slcountlines(folderpath, fnreport) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCOUNTLINES Count the lines of m-files in a folder and make a report
+
+ $ Syntax $
+   - R = slcountlines(folderpath)
+   - slcountlines(folderpath, fnreport)
+   - R = slcountlines(folderpath, fnreport)
+
+ $ Arguments $
+   - folderpath:       the path of the target folder 
+   - fnreport:         the filename of the report
+   - R:                the struct array storing the statistics     
+
+ $ Description $
+   - R = slcountlines(folderpath) makes statistics on the source codes
+     in a matlab toolbox folder and returns the statistics by R.
+     R is a struct with following fields:
+       1. name:     the current level name of the folder
+       2. info:     the struct array recording the statistics, the
+                    statistics struct has following fields:
+                    a. filename
+                    b. length (number of bytes of the whole file)
+                    c. totallines (total number of source code lines)
+                    d. codelines
+                    e. commentlines
+                    f. emptylines
+       3. subdir:   the struct array of sub-folders
+       4. stat:     a struct representing the summarized statistics:
+                    a. numfiles
+                    b. totallines
+                    c. codelines
+                    d. commentlines
+                    e. emptylines
+   - slcountlines(folderpath, fnreport) makes statistics on the source
+     codes in a matlab toolbox folder and generates a report file.
+
+   - R = slcountlines(folderpath, fnreport) makes statistics on the 
+     source codes in a matlab toolbox folder, generates a report file,
+     and returns the struct.
+
+ $ History $
+   - Created by Dahua Lin on May 2nd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slreadtext.html" class="code" title="function T = slreadtext(filename)">slreadtext</a>	SLREADTEXT Reads in a text file into a cell array</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function R = make_folder_stat(folderpath)</a></li><li><a href="#_sub2" class="code">function info = make_source_stat(filepath, info)</a></li><li><a href="#_sub3" class="code">function make_folder_report(fh, parentpath, R)</a></li><li><a href="#_sub4" class="code">function make_file_reportline(fh, info)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function R = slcountlines(folderpath, fnreport)</a>
+0002 <span class="comment">%SLCOUNTLINES Count the lines of m-files in a folder and make a report</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - R = slcountlines(folderpath)</span>
+0006 <span class="comment">%   - slcountlines(folderpath, fnreport)</span>
+0007 <span class="comment">%   - R = slcountlines(folderpath, fnreport)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $ Arguments $</span>
+0010 <span class="comment">%   - folderpath:       the path of the target folder</span>
+0011 <span class="comment">%   - fnreport:         the filename of the report</span>
+0012 <span class="comment">%   - R:                the struct array storing the statistics</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - R = slcountlines(folderpath) makes statistics on the source codes</span>
+0016 <span class="comment">%     in a matlab toolbox folder and returns the statistics by R.</span>
+0017 <span class="comment">%     R is a struct with following fields:</span>
+0018 <span class="comment">%       1. name:     the current level name of the folder</span>
+0019 <span class="comment">%       2. info:     the struct array recording the statistics, the</span>
+0020 <span class="comment">%                    statistics struct has following fields:</span>
+0021 <span class="comment">%                    a. filename</span>
+0022 <span class="comment">%                    b. length (number of bytes of the whole file)</span>
+0023 <span class="comment">%                    c. totallines (total number of source code lines)</span>
+0024 <span class="comment">%                    d. codelines</span>
+0025 <span class="comment">%                    e. commentlines</span>
+0026 <span class="comment">%                    f. emptylines</span>
+0027 <span class="comment">%       3. subdir:   the struct array of sub-folders</span>
+0028 <span class="comment">%       4. stat:     a struct representing the summarized statistics:</span>
+0029 <span class="comment">%                    a. numfiles</span>
+0030 <span class="comment">%                    b. totallines</span>
+0031 <span class="comment">%                    c. codelines</span>
+0032 <span class="comment">%                    d. commentlines</span>
+0033 <span class="comment">%                    e. emptylines</span>
+0034 <span class="comment">%   - slcountlines(folderpath, fnreport) makes statistics on the source</span>
+0035 <span class="comment">%     codes in a matlab toolbox folder and generates a report file.</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">%   - R = slcountlines(folderpath, fnreport) makes statistics on the</span>
+0038 <span class="comment">%     source codes in a matlab toolbox folder, generates a report file,</span>
+0039 <span class="comment">%     and returns the struct.</span>
+0040 <span class="comment">%</span>
+0041 <span class="comment">% $ History $</span>
+0042 <span class="comment">%   - Created by Dahua Lin on May 2nd, 2006</span>
+0043 <span class="comment">%</span>
+0044 
+0045 <span class="comment">%% parse and verify input arguments</span>
+0046 
+0047 <span class="keyword">if</span> nargin &gt;= 2
+0048     report_required = true;
+0049 <span class="keyword">else</span>
+0050     report_required = false;
+0051 <span class="keyword">end</span>
+0052 
+0053 
+0054 <span class="comment">%% Carry out tasks</span>
+0055 
+0056 <span class="comment">% make statistics</span>
+0057 
+0058 R = <a href="#_sub1" class="code" title="subfunction R = make_folder_stat(folderpath)">make_folder_stat</a>(folderpath);
+0059 
+0060 <span class="comment">% make report</span>
+0061 
+0062 <span class="keyword">if</span> report_required
+0063     fh = fopen(fnreport, <span class="string">'wt'</span>);    
+0064     <span class="keyword">if</span> fh &gt; 0
+0065         <a href="#_sub3" class="code" title="subfunction make_folder_report(fh, parentpath, R)">make_folder_report</a>(fh, [], R);
+0066         fclose(fh);
+0067     <span class="keyword">else</span>
+0068         error(<span class="string">'sltoolbox:ioerror'</span>, <span class="keyword">...</span>
+0069             <span class="string">'Fail to create file %s for reporting'</span>, fnreport);
+0070     <span class="keyword">end</span>            
+0071 <span class="keyword">end</span>
+0072 
+0073 
+0074 
+0075 <span class="comment">%% The recursive function for making folder-level statistics</span>
+0076 <a name="_sub1" href="#_subfunctions" class="code">function R = make_folder_stat(folderpath)</a>
+0077 
+0078 
+0079 <span class="comment">% initialize the struct</span>
+0080 [pstr, foldername] = fileparts(folderpath);
+0081 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(pstr);
+0082 clear pstr;
+0083 
+0084 R.name = foldername;
+0085 R.info = struct( <span class="keyword">...</span>
+0086     <span class="string">'filename'</span>, {}, <span class="keyword">...</span>
+0087     <span class="string">'length'</span>, {}, <span class="keyword">...</span>
+0088     <span class="string">'totallines'</span>, {}, <span class="keyword">...</span>
+0089     <span class="string">'codelines'</span>, {}, <span class="keyword">...</span>
+0090     <span class="string">'commentlines'</span>, {}, <span class="keyword">...</span>
+0091     <span class="string">'emptylines'</span>, {});
+0092 
+0093 R.subdir = struct( <span class="keyword">...</span>
+0094     <span class="string">'name'</span>, {}, <span class="keyword">...</span>
+0095     <span class="string">'info'</span>, {}, <span class="keyword">...</span>
+0096     <span class="string">'subdir'</span>, {}, <span class="keyword">...</span>
+0097     <span class="string">'stat'</span>, {});
+0098 
+0099 R.stat = struct( <span class="keyword">...</span>
+0100     <span class="string">'numfiles'</span>, 0, <span class="keyword">...</span>
+0101     <span class="string">'totallines'</span>, 0, <span class="keyword">...</span>
+0102     <span class="string">'codelines'</span>, 0, <span class="keyword">...</span>
+0103     <span class="string">'commentlines'</span>, 0, <span class="keyword">...</span>
+0104     <span class="string">'emptylines'</span>, 0);
+0105 
+0106 <span class="comment">% list candidates</span>
+0107 L = dir(folderpath);
+0108 nitems = length(L);
+0109 countdir = 0;
+0110 countfile = 0;
+0111 
+0112 <span class="comment">% process items</span>
+0113 <span class="keyword">for</span> i = 1 : nitems
+0114     
+0115     curitem = L(i);
+0116     
+0117     <span class="keyword">if</span> curitem.isdir    <span class="comment">% for a sub folder</span>
+0118         <span class="keyword">if</span> ~strcmp(curitem.name, <span class="string">'.'</span>) &amp;&amp; ~strcmp(curitem.name, <span class="string">'..'</span>) <span class="comment">% non-trivial folder</span>
+0119             cursub = <a href="#_sub1" class="code" title="subfunction R = make_folder_stat(folderpath)">make_folder_stat</a>(fullfile(folderpath, curitem.name));                        
+0120             <span class="keyword">if</span> ~isempty(cursub.info) || ~isempty(cursub.subdir)     <span class="comment">% non-empty folder</span>
+0121                 countdir = countdir + 1;
+0122                 R.subdir(countdir) = cursub;
+0123                 
+0124                 R.stat.numfiles = R.stat.numfiles + cursub.stat.numfiles;
+0125                 R.stat.totallines = R.stat.totallines + cursub.stat.totallines;
+0126                 R.stat.codelines = R.stat.codelines + cursub.stat.codelines;
+0127                 R.stat.commentlines = R.stat.commentlines + cursub.stat.commentlines;
+0128                 R.stat.emptylines = R.stat.emptylines + cursub.stat.emptylines;
+0129                 
+0130             <span class="keyword">end</span>
+0131         <span class="keyword">end</span>                
+0132     <span class="keyword">else</span>                <span class="comment">% for a file</span>
+0133         <span class="keyword">if</span> length(curitem.name) &gt; 2 &amp;&amp; strcmpi(curitem.name(end-1:end), <span class="string">'.m'</span>) <span class="comment">% an m-file</span>
+0134             curinfo.filename = curitem.name;
+0135             curinfo.length = curitem.bytes;
+0136             curinfo = <a href="#_sub2" class="code" title="subfunction info = make_source_stat(filepath, info)">make_source_stat</a>(fullfile(folderpath, curitem.name), curinfo);
+0137             
+0138             countfile = countfile + 1;                                   
+0139             R.info(countfile) = curinfo;
+0140             
+0141             R.stat.numfiles = R.stat.numfiles + 1;
+0142             R.stat.totallines = R.stat.totallines + curinfo.totallines;
+0143             R.stat.codelines = R.stat.codelines + curinfo.codelines;
+0144             R.stat.commentlines = R.stat.commentlines + curinfo.commentlines;
+0145             R.stat.emptylines = R.stat.emptylines + curinfo.emptylines;
+0146             
+0147         <span class="keyword">end</span>            
+0148     <span class="keyword">end</span>
+0149     
+0150 <span class="keyword">end</span>
+0151 
+0152 
+0153 <span class="comment">%% The function for making source file-level statistics</span>
+0154 <a name="_sub2" href="#_subfunctions" class="code">function info = make_source_stat(filepath, info)</a>
+0155 
+0156 txt = <a href="slreadtext.html" class="code" title="function T = slreadtext(filename)">slreadtext</a>(filepath);
+0157 n = length(txt);
+0158 
+0159 labels = zeros(n, 1);
+0160 <span class="comment">% label meanings:</span>
+0161 <span class="comment">%   0 - empty line</span>
+0162 <span class="comment">%   1 - comment line</span>
+0163 <span class="comment">%   2 - code line</span>
+0164 
+0165 <span class="keyword">for</span> i = 1 : n    
+0166     curline = strtrim(txt{i});
+0167     <span class="keyword">if</span> ~isempty(curline)
+0168         <span class="keyword">if</span> curline(1) == <span class="string">'%'</span>
+0169             labels(i) = 1;
+0170         <span class="keyword">else</span>
+0171             labels(i) = 2;
+0172         <span class="keyword">end</span>
+0173     <span class="keyword">end</span>    
+0174 <span class="keyword">end</span>
+0175 
+0176 info.totallines = n;
+0177 info.codelines = sum(labels == 2);
+0178 info.commentlines = sum(labels == 1);
+0179 info.emptylines = sum(labels == 0);
+0180 
+0181 
+0182 <span class="comment">%% The function for making folder-level reports</span>
+0183 <a name="_sub3" href="#_subfunctions" class="code">function make_folder_report(fh, parentpath, R)</a>
+0184 
+0185 curpath = fullfile(parentpath, R.name);
+0186 
+0187 <span class="comment">% print header</span>
+0188 fprintf(fh, <span class="string">'Folder: %s \r\n'</span>, curpath);
+0189 fprintf(fh, <span class="string">'------------------------------------------------------------\r\n'</span>);
+0190 fprintf(fh, <span class="string">'\n'</span>);
+0191 
+0192 <span class="comment">% print files</span>
+0193 nfiles = length(R.info);
+0194 <span class="keyword">if</span> nfiles &gt; 0
+0195     fprintf(fh, <span class="string">'%-25s \t %15s \t %15s \t %15s \t %15s \r\n'</span>, <span class="keyword">...</span>
+0196         <span class="string">'filename'</span>, <span class="string">'totallines'</span>, <span class="string">'code'</span>, <span class="string">'comment'</span>, <span class="string">'empty'</span>);
+0197     <span class="keyword">for</span> i = 1 : nfiles
+0198         <a href="#_sub4" class="code" title="subfunction make_file_reportline(fh, info)">make_file_reportline</a>(fh, R.info(i)); 
+0199     <span class="keyword">end</span>
+0200 <span class="keyword">end</span>
+0201 fprintf(fh, <span class="string">'\r\n'</span>);
+0202 
+0203 <span class="comment">% print sub-folders</span>
+0204 nsubdirs = length(R.subdir);
+0205 <span class="keyword">for</span> i = 1 : nsubdirs
+0206     <a href="#_sub3" class="code" title="subfunction make_folder_report(fh, parentpath, R)">make_folder_report</a>(fh, curpath, R.subdir(i));
+0207 <span class="keyword">end</span>
+0208 
+0209 <span class="comment">% print summarized statistics</span>
+0210 fprintf(fh, <span class="string">'Summary: \n'</span>);
+0211 vinfo.filename = sprintf(<span class="string">'total files %d'</span>, R.stat.numfiles);
+0212 vinfo.totallines = R.stat.totallines;
+0213 vinfo.codelines = R.stat.codelines;
+0214 vinfo.commentlines = R.stat.commentlines;
+0215 vinfo.emptylines = R.stat.emptylines;
+0216 <a href="#_sub4" class="code" title="subfunction make_file_reportline(fh, info)">make_file_reportline</a>(fh, vinfo);
+0217 
+0218 <span class="comment">% print margin blank</span>
+0219 fprintf(fh, <span class="string">'\r\n \r\n'</span>);
+0220 
+0221 
+0222 <span class="comment">%% The function for making file-level report</span>
+0223 <a name="_sub4" href="#_subfunctions" class="code">function make_file_reportline(fh, info)</a>
+0224 
+0225 fprintf(fh, <span class="string">'%-25s \t %15d \t %15d \t %15d \t %15d \r\n'</span>, <span class="keyword">...</span>
+0226     info.filename, <span class="keyword">...</span>
+0227     info.totallines, <span class="keyword">...</span>
+0228     info.codelines, <span class="keyword">...</span>
+0229     info.commentlines, <span class="keyword">...</span>
+0230     info.emptylines);
+0231 
+0232 
+0233 
+0234 
+0235 
+0236 
+0237 
+0238 
+0239 
+0240 
+0241 
+0242 
+0243 
+0244 
+0245 
+0246</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

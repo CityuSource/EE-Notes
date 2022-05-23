@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slinvevals</title>
+  <meta name="keywords" content="slinvevals">
+  <meta name="description" content="SLINVEVALS Compute the reciprocals of eigenvalues in a robust way">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slinvevals.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slinvevals
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLINVEVALS Compute the reciprocals of eigenvalues in a robust way</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function revs = slinvevals(evals, method, r) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLINVEVALS Compute the reciprocals of eigenvalues in a robust way
+
+ $ Syntax $
+   - revs = slinvevals(evals)
+   - revs = slinvevals(evals, method, r)
+
+ $ Description $
+   - revs = slinvevals(evals) computes the reciprocals of eigenvalues in
+     the default way: using the default method and its corresponding
+     default r value.
+   
+   - revs = slinvevals(evals, method, r) computes the reciprocals of 
+     eigenvalues in a user-specified way.
+     \*
+     \t   Table 1. The methods of computing eigenvalue reciprocals
+          name      &amp;        revs
+          'std'     &amp; For effective eigenvalues, their reciprocals are
+                      computed as usual; for the rest ones, their 
+                      reciprocals are set to zeros. r values here is 
+                      the ratio of minimum allowable effective eigenvalues
+                      to the maximum eigenvalue. default r = 1e-7;
+          'reg'     &amp; Regularize the eigenvalues before computing their
+                      reciprocals. By regularization, a small positive 
+                      value is added to all eigenvalues. r value here is
+                      the ratio of the addend to the maximum eigenvalue.
+                      default r = 1e-6.
+          'bound'   &amp; Enforce lower bound to eigenvalues before computing
+                      their reciprocals. The eigenvalues below the lower
+                      bound is set to the lower bound value. r value here
+                      is the ratio of the lower bound to the maximum 
+                      eigenvalue. default r = 1e-6.
+          'gapprox' &amp; Computing the reciprocals of the eigenvalues in the
+                      way of optimal non-singular approximation of 
+                      Gaussian distribution. r values here is the ratio
+                      of the minimum effective eigenvalues to the
+                      maximum eigenvalue. The eigenvalues below are 
+                      considered to be corresponding to isometric noises.
+                      default r = 1e-6.
+     \*
+
+ $ Remarks $
+   - The eigenvalues should be a column vector with values arranged in 
+     a descending order.
+
+ $ History $
+   - Created by Dahua Lin on Apr 30th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slgaussinv.html" class="code" title="function R = slgaussinv(GS, fn, invparams)">slgaussinv</a>	SLGAUSSINV Computes the inverse of variance/covariance in Gaussian model</li><li><a href="slinvcov.html" class="code" title="function R = slinvcov(C, method, r)">slinvcov</a>	SLINVCOV Compute the inverse of an covariance matrix</li><li><a href="slwhiten_from_cov.html" class="code" title="function W = slwhiten_from_cov(C, method, varargin)">slwhiten_from_cov</a>	SLWHITEN_FROM_COV Compute the whitening transform from covariance matrix</li><li><a href="slwhiten_from_samples.html" class="code" title="function W = slwhiten_from_samples(X, varargin)">slwhiten_from_samples</a>	SLWHITEN_FROM_SAMPLES Compute the whitening matrix from sample matrix</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function revs = slinvevals(evals, method, r)</a>
+0002 <span class="comment">%SLINVEVALS Compute the reciprocals of eigenvalues in a robust way</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - revs = slinvevals(evals)</span>
+0006 <span class="comment">%   - revs = slinvevals(evals, method, r)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Description $</span>
+0009 <span class="comment">%   - revs = slinvevals(evals) computes the reciprocals of eigenvalues in</span>
+0010 <span class="comment">%     the default way: using the default method and its corresponding</span>
+0011 <span class="comment">%     default r value.</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%   - revs = slinvevals(evals, method, r) computes the reciprocals of</span>
+0014 <span class="comment">%     eigenvalues in a user-specified way.</span>
+0015 <span class="comment">%     \*</span>
+0016 <span class="comment">%     \t   Table 1. The methods of computing eigenvalue reciprocals</span>
+0017 <span class="comment">%          name      &amp;        revs</span>
+0018 <span class="comment">%          'std'     &amp; For effective eigenvalues, their reciprocals are</span>
+0019 <span class="comment">%                      computed as usual; for the rest ones, their</span>
+0020 <span class="comment">%                      reciprocals are set to zeros. r values here is</span>
+0021 <span class="comment">%                      the ratio of minimum allowable effective eigenvalues</span>
+0022 <span class="comment">%                      to the maximum eigenvalue. default r = 1e-7;</span>
+0023 <span class="comment">%          'reg'     &amp; Regularize the eigenvalues before computing their</span>
+0024 <span class="comment">%                      reciprocals. By regularization, a small positive</span>
+0025 <span class="comment">%                      value is added to all eigenvalues. r value here is</span>
+0026 <span class="comment">%                      the ratio of the addend to the maximum eigenvalue.</span>
+0027 <span class="comment">%                      default r = 1e-6.</span>
+0028 <span class="comment">%          'bound'   &amp; Enforce lower bound to eigenvalues before computing</span>
+0029 <span class="comment">%                      their reciprocals. The eigenvalues below the lower</span>
+0030 <span class="comment">%                      bound is set to the lower bound value. r value here</span>
+0031 <span class="comment">%                      is the ratio of the lower bound to the maximum</span>
+0032 <span class="comment">%                      eigenvalue. default r = 1e-6.</span>
+0033 <span class="comment">%          'gapprox' &amp; Computing the reciprocals of the eigenvalues in the</span>
+0034 <span class="comment">%                      way of optimal non-singular approximation of</span>
+0035 <span class="comment">%                      Gaussian distribution. r values here is the ratio</span>
+0036 <span class="comment">%                      of the minimum effective eigenvalues to the</span>
+0037 <span class="comment">%                      maximum eigenvalue. The eigenvalues below are</span>
+0038 <span class="comment">%                      considered to be corresponding to isometric noises.</span>
+0039 <span class="comment">%                      default r = 1e-6.</span>
+0040 <span class="comment">%     \*</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">% $ Remarks $</span>
+0043 <span class="comment">%   - The eigenvalues should be a column vector with values arranged in</span>
+0044 <span class="comment">%     a descending order.</span>
+0045 <span class="comment">%</span>
+0046 <span class="comment">% $ History $</span>
+0047 <span class="comment">%   - Created by Dahua Lin on Apr 30th, 2006</span>
+0048 <span class="comment">%</span>
+0049 
+0050 <span class="comment">%% parse and verify input arguments</span>
+0051 
+0052 n = length(evals);
+0053 <span class="keyword">if</span> n ~= numel(evals)
+0054     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'evals should be a vector'</span>);
+0055 <span class="keyword">end</span>
+0056 
+0057 <span class="keyword">if</span> nargin &lt; 2 || isempty(method)
+0058     method = <span class="string">'std'</span>;
+0059 <span class="keyword">end</span>
+0060 
+0061 <span class="comment">%% compute</span>
+0062 
+0063 <span class="comment">% make strictly non-negative</span>
+0064 evals = max(evals, 0);
+0065 
+0066 <span class="keyword">switch</span> method    
+0067     <span class="keyword">case</span> <span class="string">'std'</span>
+0068         <span class="keyword">if</span> nargin &lt; 3 || isempty(r)
+0069             r = 1e-7;
+0070         <span class="keyword">end</span>
+0071         lb = r * evals(1);
+0072         k = sum(evals &gt;= lb);
+0073         <span class="keyword">if</span> k == n
+0074             revs = 1 ./ evals;
+0075         <span class="keyword">else</span>
+0076             revs = [1 ./ evals(1:k); zeros(n-k, 1)];
+0077         <span class="keyword">end</span>
+0078         
+0079     <span class="keyword">case</span> <span class="string">'reg'</span>
+0080         <span class="keyword">if</span> nargin &lt; 3 || isempty(r)
+0081             r = 1e-6;
+0082         <span class="keyword">end</span>
+0083         a = r * evals(1);
+0084         revs = 1 ./ (evals + a);
+0085         
+0086     <span class="keyword">case</span> <span class="string">'bound'</span>
+0087         <span class="keyword">if</span> nargin &lt; 3 || isempty(r)
+0088             r = 1e-6;
+0089         <span class="keyword">end</span>
+0090         lb = r * evals(1);
+0091         evals = max(evals, lb);
+0092         revs = 1 ./ evals;
+0093         
+0094     <span class="keyword">case</span> <span class="string">'gapprox'</span>
+0095         <span class="keyword">if</span> nargin &lt; 3 || isempty(r)
+0096             r = 1e-6;
+0097         <span class="keyword">end</span>
+0098         lb = r * evals(1);
+0099         k = sum(evals &gt;= lb);
+0100         <span class="keyword">if</span> k == n
+0101             revs = 1 ./ evals;
+0102         <span class="keyword">else</span>
+0103             nv = sum(evals(k+1:n)) / (n-k);
+0104             rnv = 1 / nv;
+0105             rnvs = rnv(ones(n-k, 1));
+0106             revs = [1 ./ evals(1:k); rnvs];
+0107         <span class="keyword">end</span>
+0108         
+0109 <span class="keyword">end</span>
+0110</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

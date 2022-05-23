@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpartitionpca_apply</title>
+  <meta name="keywords" content="slpartitionpca_apply">
+  <meta name="description" content="SLPARTITIONPCA_APPLY applies partition-based PCA to a set of arrays">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace_ex</a> &gt; slpartitionpca_apply.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace_ex&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpartitionpca_apply
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPARTITIONPCA_APPLY applies partition-based PCA to a set of arrays</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function feas = slpartitionpca_apply(S, modeldir, data, n, k) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPARTITIONPCA_APPLY applies partition-based PCA to a set of arrays
+
+ $ Syntax $
+   - feas = slpartitionpca_apply(S, modeldir, data, n)
+   - feas = slpartitionpca_apply(S, modeldir, data, n, k)
+
+ $ Arguments $
+   - S:            the partition-based PCA model struct or model core file
+   - modeldir:     the directory path of the projection files
+   - data:         the arrays for feature extraction
+   - n:            the number of samples
+   - k:            the finally used number of features
+   - feas:         the features
+
+ $ Description $
+   - feas = slpartitionpca_apply(S, modeldir, data, n) applies the 
+     partition PCA to a set of array units given in data. Here, S can be 
+     a struct loaded from core file or the core filename. modeldir is the 
+     directory of the corefile and the related projection matrix files.
+     data can be either an array or a cell array of array filenames.
+
+   - feas = slpartitionpca_apply(S, modeldir, data, n, k) further 
+     reduces the feature space dimension to k by discarding the trailing
+     feature components. The feature space can only be truncated when
+     the combined model is learned.
+
+ $ History $
+   - Created by Dahua Lin on Jul 30th, 2006
+   - Modified by Dahua Lin, on Sep 10, 2006
+       - replace sladd by sladdvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>	SLREADARRAY Reads an array from an array file</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>	SLADDPATH Adds dirpath to precede the filenames</li><li><a href="../../sltoolbox/utils/slrange2indcells.html" class="code" title="function C = slrange2indcells(range)">slrange2indcells</a>	SLRANGE2INDCELLS Converts a range array to indices cell array</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function V = generate_intfeature(S, data, n, rangecell, projmat)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function feas = slpartitionpca_apply(S, modeldir, data, n, k)</a>
+0002 <span class="comment">%SLPARTITIONPCA_APPLY applies partition-based PCA to a set of arrays</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - feas = slpartitionpca_apply(S, modeldir, data, n)</span>
+0006 <span class="comment">%   - feas = slpartitionpca_apply(S, modeldir, data, n, k)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - S:            the partition-based PCA model struct or model core file</span>
+0010 <span class="comment">%   - modeldir:     the directory path of the projection files</span>
+0011 <span class="comment">%   - data:         the arrays for feature extraction</span>
+0012 <span class="comment">%   - n:            the number of samples</span>
+0013 <span class="comment">%   - k:            the finally used number of features</span>
+0014 <span class="comment">%   - feas:         the features</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - feas = slpartitionpca_apply(S, modeldir, data, n) applies the</span>
+0018 <span class="comment">%     partition PCA to a set of array units given in data. Here, S can be</span>
+0019 <span class="comment">%     a struct loaded from core file or the core filename. modeldir is the</span>
+0020 <span class="comment">%     directory of the corefile and the related projection matrix files.</span>
+0021 <span class="comment">%     data can be either an array or a cell array of array filenames.</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%   - feas = slpartitionpca_apply(S, modeldir, data, n, k) further</span>
+0024 <span class="comment">%     reduces the feature space dimension to k by discarding the trailing</span>
+0025 <span class="comment">%     feature components. The feature space can only be truncated when</span>
+0026 <span class="comment">%     the combined model is learned.</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% $ History $</span>
+0029 <span class="comment">%   - Created by Dahua Lin on Jul 30th, 2006</span>
+0030 <span class="comment">%   - Modified by Dahua Lin, on Sep 10, 2006</span>
+0031 <span class="comment">%       - replace sladd by sladdvec to increase efficiency</span>
+0032 <span class="comment">%</span>
+0033 
+0034 <span class="comment">%% parse and verify input arguments</span>
+0035 
+0036 <span class="keyword">if</span> nargin &lt; 4
+0037     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slpartitionpca_apply'</span>, 4);
+0038 <span class="keyword">end</span>
+0039 
+0040 <span class="keyword">if</span> ischar(S)
+0041     S = load(S);
+0042 <span class="keyword">elseif</span> ~isstruct(S)
+0043     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0044         <span class="string">'The S should be the filename of the core file or the core struct'</span>);
+0045 <span class="keyword">end</span>
+0046 
+0047 <span class="keyword">if</span> ~isnumeric(data) &amp;&amp; ~iscell(data)
+0048     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0049         <span class="string">'data should be an numeric array or a cell array of strings'</span>);
+0050 <span class="keyword">end</span>
+0051 
+0052 <span class="keyword">if</span> nargin &lt; 5
+0053     k = S.diminfo.feadim;
+0054 <span class="keyword">else</span>
+0055     <span class="keyword">if</span> k &gt; S.diminfo.feadim
+0056         error(<span class="string">'k is higher than the dimension of the whole feature subspace'</span>);
+0057     <span class="keyword">elseif</span> k &lt; S.diminfo.feadim &amp;&amp; isempty(S.combprojfile)
+0058         error(<span class="string">'The feature space cannot be truncated without the combined model'</span>);
+0059     <span class="keyword">end</span>
+0060 <span class="keyword">end</span>
+0061 
+0062 
+0063 <span class="comment">%% Generate the intermediate stacked features</span>
+0064 
+0065 NBlks = numel(S.blocks);
+0066 intfeas = zeros(S.diminfo.intdim, n);
+0067 
+0068 projpaths = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(S.projfiles, modeldir);
+0069 
+0070 dc = 0;
+0071 <span class="keyword">for</span> ib = 1 : NBlks
+0072     
+0073     curblock = S.blocks{ib};
+0074     cursubdim = S.diminfo.subdims(ib);    
+0075     rgncell = <a href="../../sltoolbox/utils/slrange2indcells.html" class="code" title="function C = slrange2indcells(range)">slrange2indcells</a>(curblock);
+0076     
+0077     projmat = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(projpaths{ib});
+0078     
+0079     V = <a href="#_sub1" class="code" title="subfunction V = generate_intfeature(S, data, n, rangecell, projmat)">generate_intfeature</a>(S, data, n, rgncell, projmat);
+0080     intfeas(dc+1:dc+cursubdim, :) = V;
+0081     dc = dc + cursubdim;
+0082     
+0083     clear projmat;    
+0084 <span class="keyword">end</span>
+0085 
+0086 
+0087 <span class="comment">%% Apply combined projection</span>
+0088 
+0089 <span class="keyword">if</span> ~isempty(S.combprojfile)
+0090     combprojpath = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(S.combprojfile, modeldir);
+0091     
+0092     P = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(combprojpath);    
+0093     <span class="keyword">if</span> k &lt; S.diminfo.feadim
+0094         P = P(:, 1:k);
+0095     <span class="keyword">end</span>    
+0096     P = P';
+0097     
+0098     feas = P * intfeas;
+0099 <span class="keyword">else</span>
+0100     feas = intfeas;
+0101 <span class="keyword">end</span>
+0102             
+0103 
+0104 
+0105 <span class="comment">%% Core computing functions</span>
+0106 
+0107 <a name="_sub1" href="#_subfunctions" class="code">function V = generate_intfeature(S, data, n, rangecell, projmat)</a>
+0108 
+0109 [d0, d1] = size(projmat);
+0110 nd = length(rangecell);
+0111 
+0112 <span class="keyword">if</span> isnumeric(data)
+0113     
+0114     <span class="keyword">if</span> size(data, nd+1) ~= n
+0115         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0116             <span class="string">'The data size does not match the specified sample number'</span>);
+0117     <span class="keyword">end</span>
+0118     
+0119     localarr = data(rangecell{:}, :);
+0120     localarr = reshape(localarr, [d0, n]);
+0121     localmean = S.meanarr(rangecell{:}, :);
+0122     localmean = reshape(localmean, [d0, 1]);
+0123     
+0124     localarr = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(localarr, -localmean, 1);
+0125     
+0126     V = projmat' * localarr;
+0127     
+0128 <span class="keyword">else</span>
+0129     
+0130     V = zeros(d1, n);
+0131     
+0132     cf = 0;
+0133     nfiles = length(data);
+0134     <span class="keyword">for</span> i = 1 : nfiles        
+0135         datapart = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(data{i});
+0136         curn = size(datapart, nd+1);        
+0137         V(:, cf+1:cf+curn) = <a href="#_sub1" class="code" title="subfunction V = generate_intfeature(S, data, n, rangecell, projmat)">generate_intfeature</a>(S, datapart, curn, rangecell, projmat);      
+0138         cf = cf + curn;
+0139     <span class="keyword">end</span>
+0140     
+0141     <span class="keyword">if</span> cf ~= n
+0142         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0143             <span class="string">'The total number of units in the set of array files is not n'</span>);
+0144     <span class="keyword">end</span>
+0145 <span class="keyword">end</span>
+0146 
+0147 
+0148 
+0149     
+0150         
+0151</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

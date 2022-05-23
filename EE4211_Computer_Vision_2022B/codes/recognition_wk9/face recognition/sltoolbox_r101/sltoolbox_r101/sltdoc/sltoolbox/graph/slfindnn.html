@@ -1,0 +1,441 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slfindnn</title>
+  <meta name="keywords" content="slfindnn">
+  <meta name="description" content="SLFINDNN Finds the nearest neighbors using specified strategy">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">graph</a> &gt; slfindnn.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\graph&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slfindnn
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLFINDNN Finds the nearest neighbors using specified strategy</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [nnidx, dists] = slfindnn(X0, X, method, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLFINDNN Finds the nearest neighbors using specified strategy
+
+ $ Syntax $
+   - [nnidx, dists] = slfindnn(X0, X, method, ...)
+ 
+ $ Arguments $
+   - X0:           The referenced samples in which the neighbors are found
+   - X:            The query samples
+   - method:       The method to find nearest neighbors
+   - nnidx:        The indices of the nearest neighbors
+   - dists:        The distances between the samples and corresponding
+                   neighbors
+
+ $ Description $
+   - [nnidx, dists] = slfindnn(X0, X, method, ...) finds the nearest
+     neighbors for all samples using the specified method. You can specify
+     the X0 and X in three different configurations:
+       - X0, []:   finds the nearest neighbors for the samples in X0, 
+                   each sample itself is not considered as a neighbor
+       - X0, X0:   finds the nearest neighbors for the samples in X0,
+                   each sample itself is also taken as a neighbor
+       - X0, X:    the query samples and the reference samples are not
+                   in the same set.
+     If there are n query samples, then nnidx is a cell array of size
+     1 x n, and each cell contains a column vector of all indices of the
+     neighbors of the corresponding sample. dists will be in the same form
+     except that the values are distances instead of indices.
+     \*
+     \t      Table. The methods for nearest neighbor finding
+     \h        name    &amp;           description
+              'knn'    &amp; Strict KNN using exhaustive search, having the
+                         following properties:
+                           - 'K':  The number of neighbors to find for
+                                   each query sample (default = 3)
+                           - 'maxblk': The maximum number of distances
+                                       that can be computed in one batch
+                                       (default = 1e7)
+                           - 'metric': The metric type used to compute
+                                       distances. It can be string of
+                                       the metric name, or a cell array
+                                       of parameters for slmetric_pw.
+                                       or a function handle in the form:
+                                          D = f(X1, X2)
+                                       (default = 'eucdist')
+              'ann'    &amp; Approximate KNN using KD-tree, having the 
+                         following properties:
+                           - 'K':  The number of neighbors to find for
+                                   each query sample (default = 3)
+              'eps'    &amp; Find all neighbors with distance below a
+                         threshold, having the following properties:
+                           - 'e':  The threshold of the distance
+                                   (default = 1)
+                           - 'maxblk': The maximum number of distances
+                                       that can be computed in one batch
+                                       (default = 1e7)
+                           - 'metric': The metric type used to compute
+                                       distances. It can be string of
+                                       the metric name, or a cell array
+                                       of parameters for slmetric_pw.
+                                       or a function handle in the form:
+                                          D = f(X1, X2)
+                                       (default = 'eucdist')
+     \*
+
+ $ Remarks $
+   - In current version, the distances metric should have the attribute
+     that it decreases when the samples become nearer. Don't use 
+     similarity metrics. The metric customization only applies to 
+     'knn' and 'eps', for 'ann', it can only use Euclidean distances.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 8th, 2006
+   - Modified by Dahua Lin, on Sep 18, 2006
+       - add the functionality to support various distance metric types
+         and user-supplied distances.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/ann/annsearch.html" class="code" title="function [nnidx, dists] = annsearch(X0, X, k, varargin)">annsearch</a>	ANNSEARCH Approximate Nearest Neighbor Search</li><li><a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>	SLMETRIC_PW Compute the metric between column vectors pairwisely</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li><li><a href="../../sltoolbox/utils/slpartition.html" class="code" title="function PS = slpartition(whole_size, spec_item, varargin)">slpartition</a>	SLPARTITION Partition a range into blocks in a specified manner</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slnngraph.html" class="code" title="function G = slnngraph(X, X2, nnparams, varargin)">slnngraph</a>	SLNNGRAPH Constructs a nearest neighborhood based graph</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [nnidx, dists] = find_knn(X0, X, excludediag, varargin)</a></li><li><a href="#_sub2" class="code">function [nnidx, dists] = find_ann(X0, X, excludediag, varargin)</a></li><li><a href="#_sub3" class="code">function [nnidx, dists] = find_eps(X0, X, excludediag, varargin)</a></li><li><a href="#_sub4" class="code">function dists = compute_pwdists(X0, X, fhmetric, sp, ep, excludediag)</a></li><li><a href="#_sub5" class="code">function fh = get_metricfunc(m)</a></li><li><a href="#_sub6" class="code">function C = cols_to_cells(M)</a></li><li><a href="#_sub7" class="code">function nnidx = select_output_indices(is_selected)</a></li><li><a href="#_sub8" class="code">function vals = select_output_values(vals0, is_selected)</a></li><li><a href="#_sub9" class="code">function K = getK(opts, X0)</a></li><li><a href="#_sub10" class="code">function [secs, nsecs] = getparsecs(opts, X0, X)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [nnidx, dists] = slfindnn(X0, X, method, varargin)</a>
+0002 <span class="comment">%SLFINDNN Finds the nearest neighbors using specified strategy</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [nnidx, dists] = slfindnn(X0, X, method, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X0:           The referenced samples in which the neighbors are found</span>
+0009 <span class="comment">%   - X:            The query samples</span>
+0010 <span class="comment">%   - method:       The method to find nearest neighbors</span>
+0011 <span class="comment">%   - nnidx:        The indices of the nearest neighbors</span>
+0012 <span class="comment">%   - dists:        The distances between the samples and corresponding</span>
+0013 <span class="comment">%                   neighbors</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ Description $</span>
+0016 <span class="comment">%   - [nnidx, dists] = slfindnn(X0, X, method, ...) finds the nearest</span>
+0017 <span class="comment">%     neighbors for all samples using the specified method. You can specify</span>
+0018 <span class="comment">%     the X0 and X in three different configurations:</span>
+0019 <span class="comment">%       - X0, []:   finds the nearest neighbors for the samples in X0,</span>
+0020 <span class="comment">%                   each sample itself is not considered as a neighbor</span>
+0021 <span class="comment">%       - X0, X0:   finds the nearest neighbors for the samples in X0,</span>
+0022 <span class="comment">%                   each sample itself is also taken as a neighbor</span>
+0023 <span class="comment">%       - X0, X:    the query samples and the reference samples are not</span>
+0024 <span class="comment">%                   in the same set.</span>
+0025 <span class="comment">%     If there are n query samples, then nnidx is a cell array of size</span>
+0026 <span class="comment">%     1 x n, and each cell contains a column vector of all indices of the</span>
+0027 <span class="comment">%     neighbors of the corresponding sample. dists will be in the same form</span>
+0028 <span class="comment">%     except that the values are distances instead of indices.</span>
+0029 <span class="comment">%     \*</span>
+0030 <span class="comment">%     \t      Table. The methods for nearest neighbor finding</span>
+0031 <span class="comment">%     \h        name    &amp;           description</span>
+0032 <span class="comment">%              'knn'    &amp; Strict KNN using exhaustive search, having the</span>
+0033 <span class="comment">%                         following properties:</span>
+0034 <span class="comment">%                           - 'K':  The number of neighbors to find for</span>
+0035 <span class="comment">%                                   each query sample (default = 3)</span>
+0036 <span class="comment">%                           - 'maxblk': The maximum number of distances</span>
+0037 <span class="comment">%                                       that can be computed in one batch</span>
+0038 <span class="comment">%                                       (default = 1e7)</span>
+0039 <span class="comment">%                           - 'metric': The metric type used to compute</span>
+0040 <span class="comment">%                                       distances. It can be string of</span>
+0041 <span class="comment">%                                       the metric name, or a cell array</span>
+0042 <span class="comment">%                                       of parameters for slmetric_pw.</span>
+0043 <span class="comment">%                                       or a function handle in the form:</span>
+0044 <span class="comment">%                                          D = f(X1, X2)</span>
+0045 <span class="comment">%                                       (default = 'eucdist')</span>
+0046 <span class="comment">%              'ann'    &amp; Approximate KNN using KD-tree, having the</span>
+0047 <span class="comment">%                         following properties:</span>
+0048 <span class="comment">%                           - 'K':  The number of neighbors to find for</span>
+0049 <span class="comment">%                                   each query sample (default = 3)</span>
+0050 <span class="comment">%              'eps'    &amp; Find all neighbors with distance below a</span>
+0051 <span class="comment">%                         threshold, having the following properties:</span>
+0052 <span class="comment">%                           - 'e':  The threshold of the distance</span>
+0053 <span class="comment">%                                   (default = 1)</span>
+0054 <span class="comment">%                           - 'maxblk': The maximum number of distances</span>
+0055 <span class="comment">%                                       that can be computed in one batch</span>
+0056 <span class="comment">%                                       (default = 1e7)</span>
+0057 <span class="comment">%                           - 'metric': The metric type used to compute</span>
+0058 <span class="comment">%                                       distances. It can be string of</span>
+0059 <span class="comment">%                                       the metric name, or a cell array</span>
+0060 <span class="comment">%                                       of parameters for slmetric_pw.</span>
+0061 <span class="comment">%                                       or a function handle in the form:</span>
+0062 <span class="comment">%                                          D = f(X1, X2)</span>
+0063 <span class="comment">%                                       (default = 'eucdist')</span>
+0064 <span class="comment">%     \*</span>
+0065 <span class="comment">%</span>
+0066 <span class="comment">% $ Remarks $</span>
+0067 <span class="comment">%   - In current version, the distances metric should have the attribute</span>
+0068 <span class="comment">%     that it decreases when the samples become nearer. Don't use</span>
+0069 <span class="comment">%     similarity metrics. The metric customization only applies to</span>
+0070 <span class="comment">%     'knn' and 'eps', for 'ann', it can only use Euclidean distances.</span>
+0071 <span class="comment">%</span>
+0072 <span class="comment">% $ History $</span>
+0073 <span class="comment">%   - Created by Dahua Lin, on Sep 8th, 2006</span>
+0074 <span class="comment">%   - Modified by Dahua Lin, on Sep 18, 2006</span>
+0075 <span class="comment">%       - add the functionality to support various distance metric types</span>
+0076 <span class="comment">%         and user-supplied distances.</span>
+0077 <span class="comment">%</span>
+0078 
+0079 <span class="comment">%% parse and verify input</span>
+0080 
+0081 <span class="keyword">if</span> nargin &lt; 3
+0082     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slfindnn'</span>, 3);
+0083 <span class="keyword">end</span>
+0084 
+0085 <span class="keyword">if</span> ~ismember(method, {<span class="string">'knn'</span>, <span class="string">'ann'</span>, <span class="string">'eps'</span>})
+0086     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0087         <span class="string">'Invalid method for nearest neighbor finding: %s'</span>, method);
+0088 <span class="keyword">end</span>
+0089 
+0090 <span class="keyword">if</span> isempty(X)
+0091     X = X0;
+0092     excludediag = true;
+0093 <span class="keyword">else</span>
+0094     excludediag = false;
+0095 <span class="keyword">end</span>
+0096 
+0097 
+0098 <span class="comment">%% Main skeleton</span>
+0099 
+0100 <span class="keyword">switch</span> method
+0101     <span class="keyword">case</span> <span class="string">'knn'</span>
+0102         <span class="keyword">if</span> nargout &lt; 2
+0103             nnidx = <a href="#_sub1" class="code" title="subfunction [nnidx, dists] = find_knn(X0, X, excludediag, varargin)">find_knn</a>(X0, X, excludediag, varargin{:});
+0104         <span class="keyword">else</span>
+0105             [nnidx, dists] = <a href="#_sub1" class="code" title="subfunction [nnidx, dists] = find_knn(X0, X, excludediag, varargin)">find_knn</a>(X0, X, excludediag, varargin{:});
+0106         <span class="keyword">end</span>
+0107     <span class="keyword">case</span> <span class="string">'ann'</span>
+0108         <span class="keyword">if</span> nargout &lt; 2
+0109             nnidx = <a href="#_sub2" class="code" title="subfunction [nnidx, dists] = find_ann(X0, X, excludediag, varargin)">find_ann</a>(X0, X, excludediag, varargin{:});
+0110         <span class="keyword">else</span>
+0111             [nnidx, dists] = <a href="#_sub2" class="code" title="subfunction [nnidx, dists] = find_ann(X0, X, excludediag, varargin)">find_ann</a>(X0, X, excludediag, varargin{:});
+0112         <span class="keyword">end</span>
+0113     <span class="keyword">case</span> <span class="string">'eps'</span>
+0114         <span class="keyword">if</span> nargout &lt; 2
+0115             nnidx = <a href="#_sub3" class="code" title="subfunction [nnidx, dists] = find_eps(X0, X, excludediag, varargin)">find_eps</a>(X0, X, excludediag, varargin{:});
+0116         <span class="keyword">else</span>
+0117             [nnidx, dists] = <a href="#_sub3" class="code" title="subfunction [nnidx, dists] = find_eps(X0, X, excludediag, varargin)">find_eps</a>(X0, X, excludediag, varargin{:});
+0118         <span class="keyword">end</span>
+0119 <span class="keyword">end</span>
+0120 
+0121 <span class="comment">%% Core functions</span>
+0122 
+0123 <a name="_sub1" href="#_subfunctions" class="code">function [nnidx, dists] = find_knn(X0, X, excludediag, varargin)</a>
+0124 
+0125 <span class="comment">% parse input</span>
+0126 opts.K = 3;
+0127 opts.maxblk = 1e7;
+0128 opts.metric = <span class="string">'eucdist'</span>;
+0129 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0130 fhmetric = <a href="#_sub5" class="code" title="subfunction fh = get_metricfunc(m)">get_metricfunc</a>(opts.metric);
+0131 
+0132 n = size(X, 2);
+0133 K = <a href="#_sub9" class="code" title="subfunction K = getK(opts, X0)">getK</a>(opts, X0);
+0134 [secs, nsecs] = <a href="#_sub10" class="code" title="subfunction [secs, nsecs] = getparsecs(opts, X0, X)">getparsecs</a>(opts, X0, X);
+0135 
+0136 to_output_dist = (nargout &gt;= 2);
+0137 
+0138 <span class="comment">% prepare storage</span>
+0139 nnidx = zeros(K, n);
+0140 <span class="keyword">if</span> to_output_dist
+0141     dists = zeros(K, n);
+0142 <span class="keyword">end</span>
+0143 
+0144 <span class="comment">% compute and select</span>
+0145 <span class="keyword">for</span> k = 1 : nsecs
+0146     
+0147     <span class="comment">% compute distances</span>
+0148     sp = secs.sinds(k); ep = secs.einds(k);
+0149     curdists = <a href="#_sub4" class="code" title="subfunction dists = compute_pwdists(X0, X, fhmetric, sp, ep, excludediag)">compute_pwdists</a>(X0, X, fhmetric, sp, ep, excludediag);
+0150     
+0151     <span class="comment">% sort distances</span>
+0152     [curdists, curnnidx] = sort(curdists, 1);
+0153     
+0154     <span class="comment">% selecte and record</span>
+0155     curnnidx = curnnidx(1:K, :);
+0156     nnidx(:, sp:ep) = curnnidx;    
+0157     <span class="keyword">if</span> to_output_dist
+0158         curdists = curdists(1:K, :);
+0159         dists(:, sp:ep) = curdists;
+0160     <span class="keyword">end</span>
+0161     
+0162     clear curnnidx curdists;        
+0163     
+0164 <span class="keyword">end</span>
+0165 
+0166 <span class="comment">% organize output</span>
+0167 nnidx = <a href="#_sub6" class="code" title="subfunction C = cols_to_cells(M)">cols_to_cells</a>(nnidx);
+0168 <span class="keyword">if</span> nargout &gt;= 2
+0169     dists = <a href="#_sub6" class="code" title="subfunction C = cols_to_cells(M)">cols_to_cells</a>(dists);
+0170 <span class="keyword">end</span>
+0171 
+0172 
+0173 <a name="_sub2" href="#_subfunctions" class="code">function [nnidx, dists] = find_ann(X0, X, excludediag, varargin)</a>
+0174 
+0175 <span class="comment">% parse input</span>
+0176 opts.K = 3;
+0177 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0178 K = <a href="#_sub9" class="code" title="subfunction K = getK(opts, X0)">getK</a>(opts, X0);
+0179 to_output_dist = (nargout &gt;= 2);
+0180 
+0181 <span class="keyword">if</span> excludediag
+0182     X = [];
+0183 <span class="keyword">end</span>
+0184 
+0185 <span class="comment">% perform search</span>
+0186 <span class="keyword">if</span> ~to_output_dist
+0187     nnidx = <a href="../../sltoolbox/ann/annsearch.html" class="code" title="function [nnidx, dists] = annsearch(X0, X, k, varargin)">annsearch</a>(X0, X, K);
+0188 <span class="keyword">else</span>
+0189     [nnidx, dists] = <a href="../../sltoolbox/ann/annsearch.html" class="code" title="function [nnidx, dists] = annsearch(X0, X, k, varargin)">annsearch</a>(X0, X, K);
+0190 <span class="keyword">end</span>
+0191 
+0192 <span class="comment">% organize output</span>
+0193 nnidx = <a href="#_sub6" class="code" title="subfunction C = cols_to_cells(M)">cols_to_cells</a>(nnidx);
+0194 <span class="keyword">if</span> to_output_dist
+0195     dists = <a href="#_sub6" class="code" title="subfunction C = cols_to_cells(M)">cols_to_cells</a>(dists);
+0196 <span class="keyword">end</span>
+0197     
+0198 
+0199 <a name="_sub3" href="#_subfunctions" class="code">function [nnidx, dists] = find_eps(X0, X, excludediag, varargin)</a>
+0200 
+0201 <span class="comment">% parse input</span>
+0202 opts.e = 1;
+0203 opts.maxblk = 1e7;
+0204 opts.metric = <span class="string">'eucdist'</span>;
+0205 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0206 fhmetric = <a href="#_sub5" class="code" title="subfunction fh = get_metricfunc(m)">get_metricfunc</a>(opts.metric);
+0207 [secs, nsecs] = <a href="#_sub10" class="code" title="subfunction [secs, nsecs] = getparsecs(opts, X0, X)">getparsecs</a>(opts, X0, X);
+0208 to_output_dist = (nargout &gt;= 2);
+0209 
+0210 <span class="comment">% prepare storage</span>
+0211 n = size(X, 2);
+0212 nnidx = cell(1, n);
+0213 <span class="keyword">if</span> to_output_dist
+0214     dists = cell(1, n);
+0215 <span class="keyword">end</span>
+0216 
+0217 
+0218 <span class="comment">% compute and select</span>
+0219 <span class="keyword">for</span> k = 1 : nsecs
+0220     
+0221     <span class="comment">% compute distances</span>
+0222     sp = secs.sinds(k); ep = secs.einds(k);
+0223     curdists = <a href="#_sub4" class="code" title="subfunction dists = compute_pwdists(X0, X, fhmetric, sp, ep, excludediag)">compute_pwdists</a>(X0, X, fhmetric, sp, ep, excludediag);
+0224     
+0225     <span class="comment">% filter</span>
+0226     is_selected = (curdists &lt; opts.e);
+0227     
+0228     <span class="comment">% store</span>
+0229     nnidx(sp:ep) = <a href="#_sub7" class="code" title="subfunction nnidx = select_output_indices(is_selected)">select_output_indices</a>(is_selected);
+0230     <span class="keyword">if</span> to_output_dist
+0231         dists(sp:ep) = <a href="#_sub8" class="code" title="subfunction vals = select_output_values(vals0, is_selected)">select_output_values</a>(curdists, is_selected);
+0232     <span class="keyword">end</span>
+0233     
+0234 <span class="keyword">end</span>
+0235 
+0236 
+0237 
+0238 <span class="comment">%% Auxiliary function</span>
+0239 
+0240 <a name="_sub4" href="#_subfunctions" class="code">function dists = compute_pwdists(X0, X, fhmetric, sp, ep, excludediag)</a>
+0241 
+0242 n0 = size(X0, 2);
+0243 n = size(X, 2);
+0244 
+0245 <span class="keyword">if</span> sp == 1 &amp;&amp; ep == n
+0246     curX = X;
+0247 <span class="keyword">else</span>
+0248     curX = X(:, sp:ep);
+0249 <span class="keyword">end</span>
+0250 
+0251 <span class="comment">% dists = slmetric_pw(X0, curX, 'eucdist');</span>
+0252 dists = fhmetric(X0, curX);
+0253 
+0254 <span class="keyword">if</span> excludediag
+0255     curn = ep - sp + 1;
+0256     inds_diag = sub2ind([n0, curn], sp:ep, 1:curn);
+0257     dists(inds_diag) = inf;
+0258 <span class="keyword">end</span>
+0259 
+0260 
+0261 <a name="_sub5" href="#_subfunctions" class="code">function fh = get_metricfunc(m)</a>
+0262 
+0263 <span class="keyword">if</span> ischar(m)
+0264     fh = @(X, Y) <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(X, Y, m);
+0265 <span class="keyword">elseif</span> iscell(m)
+0266     fh = @(X, Y) <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(X, Y, m{:});
+0267 <span class="keyword">elseif</span> isa(m, <span class="string">'function_handle'</span>)
+0268     fh = m;
+0269 <span class="keyword">else</span>
+0270     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'The metric is specified incorrectly'</span>);
+0271 <span class="keyword">end</span>
+0272 
+0273 
+0274     
+0275 <a name="_sub6" href="#_subfunctions" class="code">function C = cols_to_cells(M)   </a>
+0276 
+0277 [m, n] = size(M);
+0278 C = mat2cell(M, m, ones(1, n));
+0279 
+0280 
+0281 <a name="_sub7" href="#_subfunctions" class="code">function nnidx = select_output_indices(is_selected)</a>
+0282 
+0283 n = size(is_selected, 2);
+0284 nnidx = cell(1, n);
+0285 <span class="keyword">for</span> i = 1 : n
+0286     nnidx{i} = find(is_selected(:,i));
+0287 <span class="keyword">end</span>
+0288 
+0289 <a name="_sub8" href="#_subfunctions" class="code">function vals = select_output_values(vals0, is_selected)</a>
+0290 
+0291 n = size(is_selected, 2);
+0292 vals = cell(1, n);
+0293 <span class="keyword">for</span> i = 1 : n
+0294     vals{i} = vals0(is_selected(:,i), i);
+0295 <span class="keyword">end</span>
+0296 
+0297 
+0298 <a name="_sub9" href="#_subfunctions" class="code">function K = getK(opts, X0)</a>
+0299 
+0300 K = opts.K;
+0301 n0 = size(X0, 2);
+0302 <span class="keyword">if</span> K &gt;= n0
+0303     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0304         <span class="string">'The specified K should be less than the number of referenced samples'</span>);
+0305 <span class="keyword">end</span>
+0306 
+0307 <a name="_sub10" href="#_subfunctions" class="code">function [secs, nsecs] = getparsecs(opts, X0, X)</a>
+0308 
+0309 n0 = size(X0, 2);
+0310 ss = max(floor(opts.maxblk / n0), 1);
+0311 n = size(X, 2);
+0312 secs = <a href="../../sltoolbox/utils/slpartition.html" class="code" title="function PS = slpartition(whole_size, spec_item, varargin)">slpartition</a>(n, <span class="string">'maxblksize'</span>, ss);
+0313 nsecs = length(secs.sinds);
+0314 
+0315 
+0316 
+0317 
+0318 
+0319</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

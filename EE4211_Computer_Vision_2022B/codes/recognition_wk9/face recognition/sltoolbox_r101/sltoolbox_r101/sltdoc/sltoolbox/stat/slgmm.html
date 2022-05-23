@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slgmm</title>
+  <meta name="keywords" content="slgmm">
+  <meta name="description" content="SLGMM Learns Gaussian Mixture model from samples">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slgmm.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slgmm
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLGMM Learns Gaussian Mixture model from samples</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [GS, pp, info] = slgmm(X, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLGMM Learns Gaussian Mixture model from samples
+
+ $ Syntax $
+   - GS = slgmm(X, ...)
+   - [GS, pp] = slgmm(X, ...)
+   - [GS, pp, info] = slgmm(X, ...)
+
+ $ Arguments $
+   - GS:       The Gaussian model struct with mixture weights
+   - pp:       the posteriori of samples to component models
+   - info:     the information of learning process
+   - X:        the sample matrix 
+
+ $ Description $
+   - GS = slgmm(X, ...) learns Gaussian mixture model from samples
+     in matrix X. The following properties can be specified:
+     \*  
+     \t    Table. Properties of Learning Gausssian Mixture Model
+     \h    name         &amp;      description                      \\
+          'method'      &amp; The method using for GMM learning. Currently,
+                          there are only one method available: 'EM',
+                          default = 'EM'.
+          'K'           &amp; The number of initial components in the mixture 
+                          model (default = 3)                     \\
+          'update'      &amp; The way of updating (default = 'pass'):
+                          1. 'pass'     Pass-wise update;
+                          2. 'comp'     Component-wise update     \\
+          'cyclecn'     &amp; The ratio of components to be updated in each 
+                          cycle for 'comp' update scheme. default = 1.
+          'maxiter'     &amp; The maximum number of iterations 
+                          (default = 100) \\
+          'tol'         &amp; The maximum tolerance of posteriori error when 
+                          the iteration terminates, (default = 1e-6) \\
+          'verbose'     &amp; whether to display information while iteration, 
+                          default = true                              \\
+          'annthres'    &amp; The threshold of annealing in FJ algorithm, 
+                          default = 0 (unit = average mixture weight) \\
+          'weights'     &amp; The weights of the samples, default = [], 
+                          indicating non-weighted. Weights should be given
+                          by a 1 x n row vector. \\
+          'varform'     &amp; The form of variance: 'univar'|'diagvar'|'covar', 
+                          default = 'covar';          \\
+          'sharevar'    &amp; Whether the variance is shared by all models,
+                          default = false;            \\
+          'invparams'   &amp; The parameters for computing inverse of variance
+                          default = {}                \\
+           
+ $ Remarks $
+   - In current version, the component-wise update scheme is only
+     supported when sharevar is false.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 28, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slclassify_eucnn.html" class="code" title="function labels = slclassify_eucnn(centers, samples)">slclassify_eucnn</a>	SLCLASSIFY_EUCNN Classifies samples using Euclidena-based NN</li><li><a href="slfmm.html" class="code" title="function [S, cw, pp, info] = slfmm(X, n, estfunctor, evalfunctor, varargin)">slfmm</a>	SLFMM Learns a Finite Mixture Model (FMM)</li><li><a href="slgaussest.html" class="code" title="function GS = slgaussest(X, varargin)">slgaussest</a>	SLGAUSSEST Estimates the Gaussian models from samples</li><li><a href="slgausspdf.html" class="code" title="function P = slgausspdf(GS, X, varargin)">slgausspdf</a>	SLGAUSSPDF Computes the probability density of Gaussian models</li><li><a href="slgausstype.html" class="code" title="function tyinfo = slgausstype(GS)">slgausstype</a>	SLGAUSSTYPE Judges the type of a Gaussian model struct</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function GS = gmm_estfunc(GS, X, n, W, selinds, varform, sharevar, invparams)</a></li><li><a href="#_sub2" class="code">function condp = gmm_evalfunc(GS, X, n)</a></li><li><a href="#_sub3" class="code">function GS = gmm_manifunc(GS0, op, varargin)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [GS, pp, info] = slgmm(X, varargin)</a>
+0002 <span class="comment">%SLGMM Learns Gaussian Mixture model from samples</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - GS = slgmm(X, ...)</span>
+0006 <span class="comment">%   - [GS, pp] = slgmm(X, ...)</span>
+0007 <span class="comment">%   - [GS, pp, info] = slgmm(X, ...)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $ Arguments $</span>
+0010 <span class="comment">%   - GS:       The Gaussian model struct with mixture weights</span>
+0011 <span class="comment">%   - pp:       the posteriori of samples to component models</span>
+0012 <span class="comment">%   - info:     the information of learning process</span>
+0013 <span class="comment">%   - X:        the sample matrix</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ Description $</span>
+0016 <span class="comment">%   - GS = slgmm(X, ...) learns Gaussian mixture model from samples</span>
+0017 <span class="comment">%     in matrix X. The following properties can be specified:</span>
+0018 <span class="comment">%     \*</span>
+0019 <span class="comment">%     \t    Table. Properties of Learning Gausssian Mixture Model</span>
+0020 <span class="comment">%     \h    name         &amp;      description                      \\</span>
+0021 <span class="comment">%          'method'      &amp; The method using for GMM learning. Currently,</span>
+0022 <span class="comment">%                          there are only one method available: 'EM',</span>
+0023 <span class="comment">%                          default = 'EM'.</span>
+0024 <span class="comment">%          'K'           &amp; The number of initial components in the mixture</span>
+0025 <span class="comment">%                          model (default = 3)                     \\</span>
+0026 <span class="comment">%          'update'      &amp; The way of updating (default = 'pass'):</span>
+0027 <span class="comment">%                          1. 'pass'     Pass-wise update;</span>
+0028 <span class="comment">%                          2. 'comp'     Component-wise update     \\</span>
+0029 <span class="comment">%          'cyclecn'     &amp; The ratio of components to be updated in each</span>
+0030 <span class="comment">%                          cycle for 'comp' update scheme. default = 1.</span>
+0031 <span class="comment">%          'maxiter'     &amp; The maximum number of iterations</span>
+0032 <span class="comment">%                          (default = 100) \\</span>
+0033 <span class="comment">%          'tol'         &amp; The maximum tolerance of posteriori error when</span>
+0034 <span class="comment">%                          the iteration terminates, (default = 1e-6) \\</span>
+0035 <span class="comment">%          'verbose'     &amp; whether to display information while iteration,</span>
+0036 <span class="comment">%                          default = true                              \\</span>
+0037 <span class="comment">%          'annthres'    &amp; The threshold of annealing in FJ algorithm,</span>
+0038 <span class="comment">%                          default = 0 (unit = average mixture weight) \\</span>
+0039 <span class="comment">%          'weights'     &amp; The weights of the samples, default = [],</span>
+0040 <span class="comment">%                          indicating non-weighted. Weights should be given</span>
+0041 <span class="comment">%                          by a 1 x n row vector. \\</span>
+0042 <span class="comment">%          'varform'     &amp; The form of variance: 'univar'|'diagvar'|'covar',</span>
+0043 <span class="comment">%                          default = 'covar';          \\</span>
+0044 <span class="comment">%          'sharevar'    &amp; Whether the variance is shared by all models,</span>
+0045 <span class="comment">%                          default = false;            \\</span>
+0046 <span class="comment">%          'invparams'   &amp; The parameters for computing inverse of variance</span>
+0047 <span class="comment">%                          default = {}                \\</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">% $ Remarks $</span>
+0050 <span class="comment">%   - In current version, the component-wise update scheme is only</span>
+0051 <span class="comment">%     supported when sharevar is false.</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">% $ History $</span>
+0054 <span class="comment">%   - Created by Dahua Lin, on Aug 28, 2006</span>
+0055 <span class="comment">%</span>
+0056 
+0057 <span class="comment">%% parse and verify input arguments</span>
+0058 
+0059 <span class="keyword">if</span> ~isnumeric(X) || ndims(X) ~= 2
+0060     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0061         <span class="string">'X should be a 2D numeric matrix'</span>);
+0062 <span class="keyword">end</span>
+0063 
+0064 opts.method = <span class="string">'EM'</span>;
+0065 opts.K = 3;
+0066 opts.update = <span class="string">'pass'</span>;
+0067 opts.cyclecn = 1;
+0068 opts.maxiter = 100;
+0069 opts.tol = 1e-6;
+0070 opts.verbose = true;
+0071 opts.annthres = 0;
+0072 opts.weights = [];
+0073 opts.varform = <span class="string">'covar'</span>;
+0074 opts.sharevar = false;
+0075 opts.invparams = {};
+0076 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0077 
+0078 n = size(X, 2);
+0079 
+0080 
+0081 <span class="comment">%% initialization by random clustering</span>
+0082 
+0083 <span class="keyword">if</span> opts.K &gt; n
+0084     error(<span class="string">'sltoolbox:sizoverflow'</span>, <span class="keyword">...</span>
+0085         <span class="string">'The K is larger than the number of samples'</span>);
+0086 <span class="keyword">end</span>
+0087 
+0088 init_centerinds = randsample(n, opts.K);
+0089 init_centers = X(:, init_centerinds);
+0090 initc = <a href="../../sltoolbox/core/slclassify_eucnn.html" class="code" title="function labels = slclassify_eucnn(centers, samples)">slclassify_eucnn</a>(init_centers, X);
+0091 
+0092 <span class="comment">%% perform learning based on FMM</span>
+0093 
+0094 estfunctor = {@<a href="#_sub1" class="code" title="subfunction GS = gmm_estfunc(GS, X, n, W, selinds, varform, sharevar, invparams)">gmm_estfunc</a>, opts.varform, opts.sharevar, opts.invparams};
+0095 evalfunctor = {@<a href="#_sub2" class="code" title="subfunction condp = gmm_evalfunc(GS, X, n)">gmm_evalfunc</a>};
+0096 
+0097 [GS, cw, pp, info] = <a href="slfmm.html" class="code" title="function [S, cw, pp, info] = slfmm(X, n, estfunctor, evalfunctor, varargin)">slfmm</a>(X, n, estfunctor, evalfunctor, <span class="keyword">...</span>
+0098     <span class="string">'method'</span>, opts.method, <span class="keyword">...</span>
+0099     <span class="string">'update'</span>, opts.update, <span class="keyword">...</span>
+0100     <span class="string">'cyclecn'</span>, opts.cyclecn, <span class="keyword">...</span>
+0101     <span class="string">'iter'</span>, {<span class="string">'maxiter'</span>, opts.maxiter}, <span class="keyword">...</span>
+0102     <span class="string">'tol'</span>, opts.tol, <span class="keyword">...</span>
+0103     <span class="string">'verbose'</span>, opts.verbose, <span class="keyword">...</span>
+0104     <span class="string">'initc'</span>, initc, <span class="keyword">...</span>
+0105     <span class="string">'annthres'</span>, opts.annthres, <span class="keyword">...</span>
+0106     <span class="string">'weights'</span>, opts.weights, <span class="keyword">...</span>
+0107     <span class="string">'estmode'</span>, <span class="string">'innermul'</span>, <span class="keyword">...</span>
+0108     <span class="string">'condpmode'</span>, <span class="string">'log'</span>, <span class="keyword">...</span>
+0109     <span class="string">'manifunc'</span>, @<a href="#_sub3" class="code" title="subfunction GS = gmm_manifunc(GS0, op, varargin)">gmm_manifunc</a>);
+0110 
+0111 <span class="comment">%% post actions</span>
+0112 
+0113 GS.mixweights = cw;
+0114 
+0115 
+0116 <span class="comment">%% Core slot functions</span>
+0117 
+0118 <a name="_sub1" href="#_subfunctions" class="code">function GS = gmm_estfunc(GS, X, n, W, selinds, varform, sharevar, invparams)</a>
+0119 
+0120 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(n);
+0121 
+0122 <span class="keyword">if</span> isempty(selinds)
+0123     GS = <a href="slgaussest.html" class="code" title="function GS = slgaussest(X, varargin)">slgaussest</a>(X, <span class="string">'weights'</span>, W, <span class="keyword">...</span>
+0124         <span class="string">'varform'</span>, varform, <span class="string">'sharevar'</span>, sharevar, <span class="keyword">...</span>
+0125         <span class="string">'compinv'</span>, true, <span class="string">'invparams'</span>, invparams);
+0126 <span class="keyword">else</span>
+0127     <span class="keyword">if</span> sharevar
+0128         error(<span class="string">'sltoolbox:rterror'</span>, <span class="keyword">...</span>
+0129             <span class="string">'The selective updating scheme is only supported when sharevar is false'</span>);
+0130     <span class="keyword">end</span>
+0131     
+0132     Wsel = W(selinds, :);
+0133     GSu = <a href="slgaussest.html" class="code" title="function GS = slgaussest(X, varargin)">slgaussest</a>(X, <span class="string">'weights'</span>, Wsel, <span class="keyword">...</span>
+0134         <span class="string">'varform'</span>, varform, <span class="string">'sharevar'</span>, sharevar, <span class="keyword">...</span>
+0135         <span class="string">'compinv'</span>, true, <span class="string">'invparams'</span>, invparams);
+0136     
+0137     nu = length(selinds);
+0138     <span class="keyword">switch</span> varform
+0139         <span class="keyword">case</span> <span class="string">'univar'</span>
+0140             <span class="keyword">for</span> idx = 1 : nu
+0141                 iu = selinds(idx);
+0142                 GS.means(:, iu) = GSu.means(:,idx);
+0143                 GS.vars(iu) = GSu.vars(idx);
+0144                 GS.invvars(iu) = GSu.invvars(idx);
+0145             <span class="keyword">end</span>
+0146         <span class="keyword">case</span> <span class="string">'diagvar'</span>
+0147             <span class="keyword">for</span> idx = 1 : nu
+0148                 iu = selinds(idx);
+0149                 GS.means(:, iu) = GSu.means(:, idx);
+0150                 GS.vars(:, iu) = GSu.vars(:, idx);
+0151                 GS.invvars(:, iu) = GSu.invvars(:, idx);
+0152             <span class="keyword">end</span>
+0153         <span class="keyword">case</span> <span class="string">'covar'</span>
+0154             <span class="keyword">for</span> idx = 1 : nu
+0155                 iu = selinds(idx);
+0156                 GS.means(:, iu) = GSu.means(:, idx);
+0157                 GS.covs(:,:, iu) = GSu.covs(:,:, idx);
+0158                 GS.invcovs(:,:, iu) = GSu.invcovs(:,:, idx);
+0159             <span class="keyword">end</span>
+0160     <span class="keyword">end</span>
+0161     
+0162 <span class="keyword">end</span>
+0163 
+0164 <a name="_sub2" href="#_subfunctions" class="code">function condp = gmm_evalfunc(GS, X, n)</a>
+0165 
+0166 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(n);
+0167 condp = <a href="slgausspdf.html" class="code" title="function P = slgausspdf(GS, X, varargin)">slgausspdf</a>(GS, X, <span class="string">'output'</span>, <span class="string">'log'</span>);
+0168 
+0169 
+0170 <a name="_sub3" href="#_subfunctions" class="code">function GS = gmm_manifunc(GS0, op, varargin)</a>
+0171 
+0172 <span class="keyword">switch</span> op
+0173     <span class="keyword">case</span> <span class="string">'select'</span>
+0174         
+0175         selinds = varargin{1};
+0176         
+0177         tyi = <a href="slgausstype.html" class="code" title="function tyinfo = slgausstype(GS)">slgausstype</a>(GS0);
+0178         
+0179         GS.dim = GS0.dim;
+0180         GS.nmodels = length(selinds);
+0181         GS.means = GS0.means(:, selinds);
+0182         
+0183         <span class="keyword">switch</span> tyi.varform
+0184             <span class="keyword">case</span> {<span class="string">'univar'</span>, <span class="string">'diagvar'</span>}
+0185                 <span class="keyword">if</span> tyi.sharevar
+0186                     GS.vars = GS0.vars;
+0187                     GS.invvars = GS0.invvars;
+0188                 <span class="keyword">else</span>
+0189                     GS.vars = GS0.vars(:, selinds);
+0190                     GS.invvars = GS0.invvars(:, selinds);
+0191                 <span class="keyword">end</span>
+0192             <span class="keyword">case</span> <span class="string">'covar'</span>
+0193                 <span class="keyword">if</span> tyi.sharevar
+0194                     GS.covs = GS0.covs;
+0195                     GS.invcovs = GS0.invcovs;
+0196                 <span class="keyword">else</span>
+0197                     GS.covs = GS0.covs(:,:,selinds);
+0198                     GS.invcovs = GS0.invcovs(:,:,selinds);
+0199                 <span class="keyword">end</span>
+0200         <span class="keyword">end</span>
+0201         
+0202         
+0203     <span class="keyword">otherwise</span>
+0204         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0205             <span class="string">'Unsupported manipulation option for GMM: %s'</span>, op);
+0206 <span class="keyword">end</span>
+0207 
+0208 
+0209 
+0210 
+0211 
+0212 
+0213</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

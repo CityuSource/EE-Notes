@@ -1,0 +1,403 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slnbreconweights</title>
+  <meta name="keywords" content="slnbreconweights">
+  <meta name="description" content="SLNBRECONWEIGHTS Solve the optimal reconstruction weights on given neighbors">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">manifold</a> &gt; slnbreconweights.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\manifold&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slnbreconweights
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLNBRECONWEIGHTS Solve the optimal reconstruction weights on given neighbors</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function WG = slnbreconweights(X0, X, G, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLNBRECONWEIGHTS Solve the optimal reconstruction weights on given neighbors
+
+ $ Syntax $
+   - WG = slnbreconweights(X0, X, G, ...)
+
+ $ Arguments $
+   - X0:       The reference samples to reconstruct the query samples
+   - X:        The query samples
+   - G:        The graph giving the neighborhood relations 
+   - WG:       The weighted graph giving the solved weights
+
+ $ Description $
+   - WG = slnbreconweights(X0, X, G, ...) solves the optimal weights to
+     reconstruct the samples in X from those in X0. If X is empty, then
+     it would use X0 as X. The graph G indicates the neighborhood 
+     relation, having n0 sources and n targets. The WG is a graph with
+     of the same size as G, and the reconstuction weights are placed
+     in the positions corresponding to those in G. 
+     You can specify the following properties to control the solving:
+     \*
+     \t    Table. The Properties of Reconstruction Weights Solving
+     \h       name        &amp;     description
+            'constraint'  &amp; The constraint on the solution, it can be
+                            one of the following string to indicate a
+                            single constraint or a cell array of multiple
+                            strings to indicate compound constaints.
+                            - 'nonneg':  non-negative
+                            - 's1':      the weights sum to 1
+                            (default = 's1')
+            'delta'       &amp; The value of regularization. In practice, 
+                            regularization is essential to guarantee the
+                            stability of the solution. In implementation,
+                            the diagonal elements of the gram matrix will
+                            be added with a value:
+                               (delta^2) * trace(G) / K
+                            here G is X^T * X, K is the neighbor number.
+                            (default = 0.1)
+            'solver'      &amp; The solver offered by user (function handle).  
+                            If the user specify a non-empty solver, then 
+                            it will use the user's solver to solve 
+                            weights. The solver is like the form:
+                               w = f(X, y)
+                            Here X is d x K neighbor sample matrix, y is
+                            a d x 1 vector representing the target sample.
+                            It should output a K x 1 vector giving the
+                            reconstruction weights. 
+                            By default, solver = [], indicating to use
+                            internal solver based on constraint and delta.   
+            'thres'       &amp; The thres, if the ratio of a weight value
+                            to the average weight for that reconstruction
+                            is lower than thres, the weight is set 
+                            to strictly zeros. This would significantly
+                            reduces the near-zero weights, and thus
+                            reduces the complexity of the graph.
+                            (default = 1e-8)
+     \*
+
+ $ Remarks $
+   - When the user specify a non-empty solver, the internal solver will
+     not be used, thus constraint and delta will not take effect.
+
+   - G would be in all acceptable graph form. WG will always be a 
+     numeric matrix. If G is a sparse adjmat, then WG would be sparse,
+     otherwise WG is full.
+
+   - With the WG solved, to reconstruct by weighed combination of
+     neighbors, you can simply write it as: Xr = X0 * WG, then Xr
+     is a d x n matrix with the j-th column reconstructed from the 
+     referenced samples in Xr using the j-th column's weights in WG.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 11st, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>	SLADJMAT Constructs the adjacency matrix representation of a graph</li><li><a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>	SLGRAPHINFO Extracts basic information of a given graph representation</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sllle.html" class="code" title="function [Y, spectrum, WG] = sllle(X, G, d, rwparams)">sllle</a>	SLLLE Performs Locally Linear Embedding</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function c = parse_constraints(cs)</a></li><li><a href="#_sub2" class="code">function w = internal_wsolver_unc(X, y, delta2)</a></li><li><a href="#_sub3" class="code">function w = internal_wsolver_s1(X, y, delta2)</a></li><li><a href="#_sub4" class="code">function w = internal_wsolver_nonneg(X, y, delta, optimopts)</a></li><li><a href="#_sub5" class="code">function w = internal_wsolver_nonneg_s1(X, y, delta, optimopts)</a></li><li><a href="#_sub6" class="code">function [G, Xty, K] = compute_G_Xty(X, y, delta2)</a></li><li><a href="#_sub7" class="code">function [Xa, ya, K] = augformulate(X, y, delta)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function WG = slnbreconweights(X0, X, G, varargin)</a>
+0002 <span class="comment">%SLNBRECONWEIGHTS Solve the optimal reconstruction weights on given neighbors</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - WG = slnbreconweights(X0, X, G, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X0:       The reference samples to reconstruct the query samples</span>
+0009 <span class="comment">%   - X:        The query samples</span>
+0010 <span class="comment">%   - G:        The graph giving the neighborhood relations</span>
+0011 <span class="comment">%   - WG:       The weighted graph giving the solved weights</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - WG = slnbreconweights(X0, X, G, ...) solves the optimal weights to</span>
+0015 <span class="comment">%     reconstruct the samples in X from those in X0. If X is empty, then</span>
+0016 <span class="comment">%     it would use X0 as X. The graph G indicates the neighborhood</span>
+0017 <span class="comment">%     relation, having n0 sources and n targets. The WG is a graph with</span>
+0018 <span class="comment">%     of the same size as G, and the reconstuction weights are placed</span>
+0019 <span class="comment">%     in the positions corresponding to those in G.</span>
+0020 <span class="comment">%     You can specify the following properties to control the solving:</span>
+0021 <span class="comment">%     \*</span>
+0022 <span class="comment">%     \t    Table. The Properties of Reconstruction Weights Solving</span>
+0023 <span class="comment">%     \h       name        &amp;     description</span>
+0024 <span class="comment">%            'constraint'  &amp; The constraint on the solution, it can be</span>
+0025 <span class="comment">%                            one of the following string to indicate a</span>
+0026 <span class="comment">%                            single constraint or a cell array of multiple</span>
+0027 <span class="comment">%                            strings to indicate compound constaints.</span>
+0028 <span class="comment">%                            - 'nonneg':  non-negative</span>
+0029 <span class="comment">%                            - 's1':      the weights sum to 1</span>
+0030 <span class="comment">%                            (default = 's1')</span>
+0031 <span class="comment">%            'delta'       &amp; The value of regularization. In practice,</span>
+0032 <span class="comment">%                            regularization is essential to guarantee the</span>
+0033 <span class="comment">%                            stability of the solution. In implementation,</span>
+0034 <span class="comment">%                            the diagonal elements of the gram matrix will</span>
+0035 <span class="comment">%                            be added with a value:</span>
+0036 <span class="comment">%                               (delta^2) * trace(G) / K</span>
+0037 <span class="comment">%                            here G is X^T * X, K is the neighbor number.</span>
+0038 <span class="comment">%                            (default = 0.1)</span>
+0039 <span class="comment">%            'solver'      &amp; The solver offered by user (function handle).</span>
+0040 <span class="comment">%                            If the user specify a non-empty solver, then</span>
+0041 <span class="comment">%                            it will use the user's solver to solve</span>
+0042 <span class="comment">%                            weights. The solver is like the form:</span>
+0043 <span class="comment">%                               w = f(X, y)</span>
+0044 <span class="comment">%                            Here X is d x K neighbor sample matrix, y is</span>
+0045 <span class="comment">%                            a d x 1 vector representing the target sample.</span>
+0046 <span class="comment">%                            It should output a K x 1 vector giving the</span>
+0047 <span class="comment">%                            reconstruction weights.</span>
+0048 <span class="comment">%                            By default, solver = [], indicating to use</span>
+0049 <span class="comment">%                            internal solver based on constraint and delta.</span>
+0050 <span class="comment">%            'thres'       &amp; The thres, if the ratio of a weight value</span>
+0051 <span class="comment">%                            to the average weight for that reconstruction</span>
+0052 <span class="comment">%                            is lower than thres, the weight is set</span>
+0053 <span class="comment">%                            to strictly zeros. This would significantly</span>
+0054 <span class="comment">%                            reduces the near-zero weights, and thus</span>
+0055 <span class="comment">%                            reduces the complexity of the graph.</span>
+0056 <span class="comment">%                            (default = 1e-8)</span>
+0057 <span class="comment">%     \*</span>
+0058 <span class="comment">%</span>
+0059 <span class="comment">% $ Remarks $</span>
+0060 <span class="comment">%   - When the user specify a non-empty solver, the internal solver will</span>
+0061 <span class="comment">%     not be used, thus constraint and delta will not take effect.</span>
+0062 <span class="comment">%</span>
+0063 <span class="comment">%   - G would be in all acceptable graph form. WG will always be a</span>
+0064 <span class="comment">%     numeric matrix. If G is a sparse adjmat, then WG would be sparse,</span>
+0065 <span class="comment">%     otherwise WG is full.</span>
+0066 <span class="comment">%</span>
+0067 <span class="comment">%   - With the WG solved, to reconstruct by weighed combination of</span>
+0068 <span class="comment">%     neighbors, you can simply write it as: Xr = X0 * WG, then Xr</span>
+0069 <span class="comment">%     is a d x n matrix with the j-th column reconstructed from the</span>
+0070 <span class="comment">%     referenced samples in Xr using the j-th column's weights in WG.</span>
+0071 <span class="comment">%</span>
+0072 <span class="comment">% $ History $</span>
+0073 <span class="comment">%   - Created by Dahua Lin, on Sep 11st, 2006</span>
+0074 <span class="comment">%</span>
+0075 
+0076 <span class="comment">%% parse and verify input arguments</span>
+0077 
+0078 <span class="keyword">if</span> nargin &lt; 3
+0079     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slnbreconweights'</span>, 3);
+0080 <span class="keyword">end</span>
+0081 
+0082 <span class="keyword">if</span> ~isnumeric(X0) || ndims(X0) ~= 2
+0083     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0084         <span class="string">'X should be a 2D numeric matrix'</span>);
+0085 <span class="keyword">end</span>
+0086 [d, n0] = size(X0);
+0087 
+0088 
+0089 <span class="keyword">if</span> isempty(X)
+0090     X = X0;    
+0091 <span class="keyword">else</span>
+0092     <span class="keyword">if</span> ~isnumeric(X) || ndims(X) ~= 2
+0093         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0094             <span class="string">'X0 should be a 2D numeric matrix'</span>);
+0095     <span class="keyword">end</span>        
+0096     <span class="keyword">if</span> size(X, 1) ~= d
+0097         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0098             <span class="string">'The sample dimension in X is not the same as that in X0'</span>);
+0099     <span class="keyword">end</span>
+0100 <span class="keyword">end</span>
+0101 n = size(X, 2);
+0102 
+0103 gi = <a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>(G);
+0104 <span class="keyword">if</span> gi.n ~= n0 || gi.nt ~= n
+0105     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0106         <span class="string">'The size of the graph is not consisitent with the sample set'</span>);
+0107 <span class="keyword">end</span>
+0108 
+0109 opts.constraint = <span class="string">'s1'</span>;
+0110 opts.delta = 0.1;
+0111 opts.solver = [];
+0112 opts.thres = 1e-8;
+0113 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0114 
+0115 thres = opts.thres;
+0116 
+0117 <span class="comment">%% Prepare parameters</span>
+0118 
+0119 <span class="comment">% prepare graph</span>
+0120 <span class="keyword">if</span> ~strcmp(gi.form, <span class="string">'adjmat'</span>)
+0121     G = <a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>(G, <span class="string">'sparse'</span>, true, <span class="string">'valtype'</span>, <span class="string">'logical'</span>);
+0122 <span class="keyword">end</span>
+0123     
+0124 <span class="comment">% prepare solver</span>
+0125 <span class="keyword">if</span> isempty(opts.solver)
+0126        
+0127     <span class="comment">% parse constraints</span>
+0128     cs = opts.constraint;
+0129     <span class="keyword">if</span> ~isempty(cs)
+0130         <span class="keyword">if</span> ~iscell(cs)
+0131             cs = {cs};
+0132         <span class="keyword">end</span>
+0133         constraint = <a href="#_sub1" class="code" title="subfunction c = parse_constraints(cs)">parse_constraints</a>(cs);
+0134     <span class="keyword">else</span>
+0135         constraint = <a href="#_sub1" class="code" title="subfunction c = parse_constraints(cs)">parse_constraints</a>({});
+0136     <span class="keyword">end</span>
+0137     
+0138     <span class="comment">% decide solver</span>
+0139     <span class="keyword">if</span> ~constraint.nonneg
+0140         delta2 = opts.delta^2;
+0141         <span class="keyword">if</span> ~constraint.s1
+0142             wsolver = @(X, y) <a href="#_sub2" class="code" title="subfunction w = internal_wsolver_unc(X, y, delta2)">internal_wsolver_unc</a>(X, y, delta2);
+0143         <span class="keyword">else</span>
+0144             wsolver = @(X, y) <a href="#_sub3" class="code" title="subfunction w = internal_wsolver_s1(X, y, delta2)">internal_wsolver_s1</a>(X, y, delta2);
+0145         <span class="keyword">end</span>
+0146     <span class="keyword">else</span>
+0147         optimopts = optimset(<span class="string">'Display'</span>, <span class="string">'off'</span>, <span class="string">'LargeScale'</span>, <span class="string">'off'</span>);
+0148         <span class="keyword">if</span> ~constraint.s1
+0149             wsolver = @(X, y) <a href="#_sub4" class="code" title="subfunction w = internal_wsolver_nonneg(X, y, delta, optimopts)">internal_wsolver_nonneg</a>(X, y, opts.delta, optimopts);
+0150         <span class="keyword">else</span>
+0151             wsolver = @(X, y) <a href="#_sub5" class="code" title="subfunction w = internal_wsolver_nonneg_s1(X, y, delta, optimopts)">internal_wsolver_nonneg_s1</a>(X, y, opts.delta, optimopts);
+0152         <span class="keyword">end</span>
+0153     <span class="keyword">end</span>                           
+0154     
+0155 <span class="keyword">else</span>
+0156     <span class="keyword">if</span> ~isa(opts.solver, <span class="string">'function_handle'</span>)
+0157         error(<span class="string">'The weight solver should be a function handle'</span>);
+0158     <span class="keyword">end</span>
+0159     wsolver = opts.solver;
+0160 <span class="keyword">end</span>
+0161 
+0162 
+0163 <span class="comment">%% main skeleton</span>
+0164 
+0165 <span class="comment">% init WG</span>
+0166 <span class="keyword">if</span> issparse(G)
+0167     WG = spalloc(n0, n, nnz(G));
+0168 <span class="keyword">else</span>
+0169     WG = zeros(n0, n);
+0170 <span class="keyword">end</span>
+0171 
+0172 <span class="comment">% solve weights</span>
+0173 <span class="keyword">for</span> i = 1 : n
+0174     nbinds = find(G(:,i));
+0175     <span class="keyword">if</span> ~isempty(nbinds)        
+0176         Xnb = X0(:, nbinds);
+0177         y = X(:,i);
+0178         w = wsolver(Xnb, y);
+0179         <span class="keyword">if</span> thres &gt; 0
+0180             absw = abs(w);
+0181             curthres = thres * sum(absw) / length(w);
+0182             w(absw &lt; curthres) = 0;
+0183         <span class="keyword">end</span>        
+0184         WG(nbinds, i) = w;
+0185     <span class="keyword">end</span>    
+0186 <span class="keyword">end</span>
+0187 
+0188 
+0189 <span class="comment">%% constraint parsing function</span>
+0190 
+0191 <a name="_sub1" href="#_subfunctions" class="code">function c = parse_constraints(cs)</a>
+0192 
+0193 ncs = length(cs);
+0194 
+0195 c = struct(<span class="string">'nonneg'</span>, false, <span class="string">'s1'</span>, false);
+0196 
+0197 <span class="keyword">for</span> i = 1 : ncs
+0198     cname = cs{i};
+0199     <span class="keyword">if</span> ~ischar(cname)
+0200         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0201             <span class="string">'The constraint should be given in char string'</span>);
+0202     <span class="keyword">end</span>
+0203     <span class="keyword">switch</span> cname
+0204         <span class="keyword">case</span> <span class="string">'nonneg'</span>
+0205             c.nonneg = true;
+0206         <span class="keyword">case</span> <span class="string">'s1'</span>
+0207             c.s1 = true;
+0208         <span class="keyword">otherwise</span>
+0209             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0210                 <span class="string">'Invalid constraint name for weight solving: %s'</span>, cname);
+0211     <span class="keyword">end</span>
+0212 <span class="keyword">end</span>
+0213 
+0214 
+0215 
+0216 <span class="comment">%% The internal weight solvers</span>
+0217 
+0218 <span class="comment">% unconstrained solver</span>
+0219 <a name="_sub2" href="#_subfunctions" class="code">function w = internal_wsolver_unc(X, y, delta2)</a>
+0220 
+0221 [G, Xty] = <a href="#_sub6" class="code" title="subfunction [G, Xty, K] = compute_G_Xty(X, y, delta2)">compute_G_Xty</a>(X, y, delta2);
+0222 w = G \ Xty; 
+0223 
+0224 <span class="comment">% solver with s1 constraint</span>
+0225 <a name="_sub3" href="#_subfunctions" class="code">function w = internal_wsolver_s1(X, y, delta2)</a>
+0226 
+0227 [G, Xty, K] = <a href="#_sub6" class="code" title="subfunction [G, Xty, K] = compute_G_Xty(X, y, delta2)">compute_G_Xty</a>(X, y, delta2);
+0228 wu = G \ [Xty, ones(K, 1)];
+0229 
+0230 w = wu(:,1);
+0231 u = wu(:,2);
+0232 lambda = (1 - sum(w)) / sum(u);
+0233 w = w + lambda * u;
+0234 
+0235 <span class="comment">% solver with nonnegative constraint</span>
+0236 <a name="_sub4" href="#_subfunctions" class="code">function w = internal_wsolver_nonneg(X, y, delta, optimopts)</a>
+0237 
+0238 [Xa, ya, K] = <a href="#_sub7" class="code" title="subfunction [Xa, ya, K] = augformulate(X, y, delta)">augformulate</a>(X, y, delta);
+0239 <span class="keyword">if</span> K &lt;= 20
+0240     w = lsqnonneg(Xa, ya, [], optimopts);
+0241 <span class="keyword">else</span>
+0242     lb = zeros(K, 1);
+0243     w = lsqlin(Xa, ya, [], [], [], [], lb, [], [], optimopts);
+0244 <span class="keyword">end</span>
+0245 
+0246 <span class="comment">% solver with nonnegative and s1 constraint</span>
+0247 <a name="_sub5" href="#_subfunctions" class="code">function w = internal_wsolver_nonneg_s1(X, y, delta, optimopts)</a>
+0248 
+0249 [Xa, ya, K] = <a href="#_sub7" class="code" title="subfunction [Xa, ya, K] = augformulate(X, y, delta)">augformulate</a>(X, y, delta);
+0250 
+0251 Aeq = ones(1, K);
+0252 beq = 1;
+0253 lb = zeros(K, 1);
+0254 w = lsqlin(Xa, ya, [], [], Aeq, beq, lb, [], [], optimopts);
+0255 
+0256 
+0257 <span class="comment">% solver preparation function</span>
+0258 
+0259 <a name="_sub6" href="#_subfunctions" class="code">function [G, Xty, K] = compute_G_Xty(X, y, delta2)</a>
+0260 
+0261 <span class="comment">% compute Xt, G, and Xty</span>
+0262 K = size(X, 2);
+0263 Xt = X';
+0264 G = Xt * X;
+0265 Xty = Xt * y;
+0266 
+0267 <span class="comment">% regularize</span>
+0268 <span class="keyword">if</span> delta2 &gt; 0
+0269     diaginds = (1:K)*(K+1) - K;
+0270     rv = delta2 * sum(G(diaginds)) / K;
+0271     G(diaginds) = G(diaginds) + rv;
+0272 <span class="keyword">end</span>
+0273 
+0274 <a name="_sub7" href="#_subfunctions" class="code">function [Xa, ya, K] = augformulate(X, y, delta)</a>
+0275 
+0276 K = size(X, 2);
+0277 <span class="keyword">if</span> delta ~= 0
+0278     Xa = [X; delta * eye(K)];
+0279     ya = [y; zeros(K, 1)];
+0280 <span class="keyword">else</span>
+0281     Xa = X;
+0282     ya = y;
+0283 <span class="keyword">end</span>
+0284</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

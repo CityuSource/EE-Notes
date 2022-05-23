@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slgaborbands</title>
+  <meta name="keywords" content="slgaborbands">
+  <meta name="description" content="SLGABORBANDS Generates a set of Gabor kernels">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">imgproc</a> &gt; slgaborbands.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\imgproc&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slgaborbands
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLGABORBANDS Generates a set of Gabor kernels</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function FB = slgaborbands(w, scales, orientations) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLGABORBANDS Generates a set of Gabor kernels
+
+ $ Syntax $
+   - FB = slgaborbands(w, scales, radians)
+
+ $ Arguments $
+   - w:                   the kernel window size is wxw
+   - scales:              the scales (number of scales is m)
+   - orientations:        the orientations (number of orientations is o)
+   - FB:                  the array of filter banks
+
+ $ Description $
+   - Generates a set of complex filter banks for Gabor, with the 
+     scales and orientations of the filter specified. If there are
+     m scales and n orientations, it will product an w x w x m x n
+     array containing m x n kernels.
+
+ $ References $
+   - C. Liu and H. Wechsler, ''Gabor Feature Based Classification Using the
+   Enhanced Fisher Linear Discriminant Model for Face Recognition'', IEEE
+   Trans. on Imag. Proc, Vol. 11, No. 4, Apr, 2002.
+
+ $ History $
+   - Created by Dahua Lin on Feb 25th, 2006.
+   - Modified by Dahua Lin on Aug 4th, 2006.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function M = single_gabor_kernel(w, v, u)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function FB = slgaborbands(w, scales, orientations)</a>
+0002 <span class="comment">%SLGABORBANDS Generates a set of Gabor kernels</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - FB = slgaborbands(w, scales, radians)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - w:                   the kernel window size is wxw</span>
+0009 <span class="comment">%   - scales:              the scales (number of scales is m)</span>
+0010 <span class="comment">%   - orientations:        the orientations (number of orientations is o)</span>
+0011 <span class="comment">%   - FB:                  the array of filter banks</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - Generates a set of complex filter banks for Gabor, with the</span>
+0015 <span class="comment">%     scales and orientations of the filter specified. If there are</span>
+0016 <span class="comment">%     m scales and n orientations, it will product an w x w x m x n</span>
+0017 <span class="comment">%     array containing m x n kernels.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% $ References $</span>
+0020 <span class="comment">%   - C. Liu and H. Wechsler, ''Gabor Feature Based Classification Using the</span>
+0021 <span class="comment">%   Enhanced Fisher Linear Discriminant Model for Face Recognition'', IEEE</span>
+0022 <span class="comment">%   Trans. on Imag. Proc, Vol. 11, No. 4, Apr, 2002.</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% $ History $</span>
+0025 <span class="comment">%   - Created by Dahua Lin on Feb 25th, 2006.</span>
+0026 <span class="comment">%   - Modified by Dahua Lin on Aug 4th, 2006.</span>
+0027 <span class="comment">%</span>
+0028 
+0029 
+0030 m = length(scales);
+0031 n = length(orientations);
+0032 FB = zeros(w, w, m, n);
+0033 
+0034 <span class="keyword">for</span> i = 1 : m
+0035     <span class="keyword">for</span> j = 1 : n
+0036         FB(:,:,i,j) = <a href="#_sub1" class="code" title="subfunction M = single_gabor_kernel(w, v, u)">single_gabor_kernel</a>(w, scales(i), orientations(j));
+0037     <span class="keyword">end</span>
+0038 <span class="keyword">end</span>
+0039 
+0040 <a name="_sub1" href="#_subfunctions" class="code">function M = single_gabor_kernel(w, v, u)</a>
+0041 <span class="comment">% v - scale, u - orientation</span>
+0042 
+0043 mincoord = fix(- w / 2);
+0044 coords = mincoord + (0 : w-1);
+0045 [X, Y] = meshgrid(coords, coords);
+0046 
+0047 kmax = pi / 2;
+0048 f = sqrt(2);
+0049 sigma = 2 * pi;
+0050 
+0051 k_v = kmax / f^v;
+0052 phi_u = pi * u / 8; 
+0053 k_uv = k_v * exp(i * phi_u);
+0054 
+0055 F1 = (k_v^2) / (sigma^2) * exp(-k_v^2 * abs(X.^2 + Y.^2) / (2*sigma^2)) ;
+0056 F2 = exp(i * (real(k_uv) * X + imag(k_uv) * Y)) - exp(-sigma^2/2);
+0057 M = F1 .* F2;
+0058 
+0059 
+0060 
+0061 
+0062 
+0063</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

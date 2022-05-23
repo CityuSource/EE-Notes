@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slmean</title>
+  <meta name="keywords" content="slmean">
+  <meta name="description" content="SLMEAN Compute the mean vector of samples">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slmean.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slmean
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLMEAN Compute the mean vector of samples</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function v = slmean(M, w, hasbeenchecked) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLMEAN Compute the mean vector of samples
+
+ $ Syntax $
+   - v = slmean(M)
+   - v = slmean(M, w)
+   - v = slmean(M, w, true)
+
+ $ Arguments $
+   - M:        the matrix of sample vectors stored as columns
+   - w:        the weights of the vectors
+   - v:        the computed mean vector
+
+ $ Description $
+   - v = slmean(M) computes the mean vector of column vectors in M.
+   
+   - v = slmean(M, w) computes the weighted mean vector of column vectors
+     in M. w is the weights of the samples. if w is empty, the normal
+     mean vector would be computed. 
+
+   - v = slmean(M, w, true) indicates that the size consistency has been
+     checked by invoker. Then in this function, it will not be checked
+     again. This syntax is designed for the sake of efficiency.
+
+ $ Remarks $
+   - M should be a 2D matrix (d x n), then w should be a 1 x n row vector,
+     v would be a d x 1 column vector.
+
+ $ History $
+   - Created by Dahua Lin on Apr 22nd, 2006
+   - Modified by Dahua Lin on Sep 10th, 2006
+       - replace slmul by slmulvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/cluster/slkmeans.html" class="code" title="function [means, labels] = slkmeans(X, varargin)">slkmeans</a>	SLKMEANS Performs K-Means Clustering on samples</li><li><a href="../../sltoolbox/core/sldistmean.html" class="code" title="function m = sldistmean(X1, X2, varargin)">sldistmean</a>	SLDISTMEAN Uses fast method to compute means of pairwise distances</li><li><a href="../../sltoolbox/manifold/sllocaltanspace.html" class="code" title="function [LM, LP, LS] = sllocaltanspace(X0, G, dl)">sllocaltanspace</a>	SLLOCALTANSPACE Solves the local tangent spaces</li><li><a href="slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>	SLCOV Compute the covariance matrix</li><li><a href="slcovlarge.html" class="code" title="function C = slcovlarge(X, w, vmean, cachesize)">slcovlarge</a>	SLCOVLARGE Computes large covariance matrix using memory-efficient way</li><li><a href="slgaussest.html" class="code" title="function GS = slgaussest(X, varargin)">slgaussest</a>	SLGAUSSEST Estimates the Gaussian models from samples</li><li><a href="slmeans.html" class="code" title="function varargout = slmeans(X, w, nums)">slmeans</a>	SLMEANS Compute the mean vectors</li><li><a href="../../sltoolbox/subspace/slcopca.html" class="code" title="function [P1, P2, spectrum] = slcopca(X1, X2, d, varargin)">slcopca</a>	SLCOPCA Performs Coupled PCA Learning</li><li><a href="../../sltoolbox/subspace/slpca.html" class="code" title="function S = slpca(X, varargin)">slpca</a>	SLPCA Learns a PCA model from training samples</li><li><a href="../../sltoolbox/subspace/slscatter.html" class="code" title="function S = slscatter(X, type, varargin)">slscatter</a>	SLSCATTER Compute the scatter matrix</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function v = slmean(M, w, hasbeenchecked)</a>
+0002 <span class="comment">%SLMEAN Compute the mean vector of samples</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - v = slmean(M)</span>
+0006 <span class="comment">%   - v = slmean(M, w)</span>
+0007 <span class="comment">%   - v = slmean(M, w, true)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $ Arguments $</span>
+0010 <span class="comment">%   - M:        the matrix of sample vectors stored as columns</span>
+0011 <span class="comment">%   - w:        the weights of the vectors</span>
+0012 <span class="comment">%   - v:        the computed mean vector</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - v = slmean(M) computes the mean vector of column vectors in M.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%   - v = slmean(M, w) computes the weighted mean vector of column vectors</span>
+0018 <span class="comment">%     in M. w is the weights of the samples. if w is empty, the normal</span>
+0019 <span class="comment">%     mean vector would be computed.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%   - v = slmean(M, w, true) indicates that the size consistency has been</span>
+0022 <span class="comment">%     checked by invoker. Then in this function, it will not be checked</span>
+0023 <span class="comment">%     again. This syntax is designed for the sake of efficiency.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% $ Remarks $</span>
+0026 <span class="comment">%   - M should be a 2D matrix (d x n), then w should be a 1 x n row vector,</span>
+0027 <span class="comment">%     v would be a d x 1 column vector.</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% $ History $</span>
+0030 <span class="comment">%   - Created by Dahua Lin on Apr 22nd, 2006</span>
+0031 <span class="comment">%   - Modified by Dahua Lin on Sep 10th, 2006</span>
+0032 <span class="comment">%       - replace slmul by slmulvec to increase efficiency</span>
+0033 <span class="comment">%</span>
+0034 
+0035 <span class="comment">%% parse and verify input arguments</span>
+0036 
+0037 <span class="keyword">if</span> nargin &lt; 3 || ~hasbeenchecked
+0038 
+0039     <span class="keyword">if</span> ndims(M) ~= 2
+0040         error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="string">'M should be a 2D matrix'</span>);
+0041     <span class="keyword">end</span>
+0042 
+0043     n = size(M, 2); <span class="comment">% number of samples</span>
+0044     <span class="keyword">if</span> nargin &lt; 2 || isempty(w)
+0045         is_weighted = false;
+0046     <span class="keyword">else</span>
+0047         is_weighted = true;
+0048 
+0049         <span class="comment">% check size consistency</span>
+0050         [wd1, wd2] = size(w);
+0051         <span class="keyword">if</span> ndims(w) ~= 2 || wd1 ~= 1 || wd2 ~= n;
+0052             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0053                 <span class="string">'w is not a valid row vector consistent with M'</span>);
+0054         <span class="keyword">end</span>    
+0055     <span class="keyword">end</span>
+0056     
+0057 <span class="keyword">else</span>  
+0058     n = size(M, 2); <span class="comment">% number of samples</span>
+0059     is_weighted = ~isempty(w);
+0060 <span class="keyword">end</span>
+0061 
+0062 
+0063 <span class="comment">%% compute</span>
+0064 
+0065 <span class="keyword">if</span> ~is_weighted    
+0066     v = sum(M, 2) / n;    
+0067 <span class="keyword">else</span>
+0068     
+0069     <span class="comment">% normalize the weights</span>
+0070     w = w / sum(w);    
+0071     v = sum(<a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(M, w, 2), 2);    
+0072 <span class="keyword">end</span>
+0073</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

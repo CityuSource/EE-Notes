@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcorrectrate_blks</title>
+  <meta name="keywords" content="slcorrectrate_blks">
+  <meta name="description" content="SLCORRECTRATE_BLKS Computes the correct rate based on blockwise scores">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">perfeval</a> &gt; slcorrectrate_blks.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\perfeval&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcorrectrate_blks
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCORRECTRATE_BLKS Computes the correct rate based on blockwise scores</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function cr = slcorrectrate_blks(scores, blocks, clabels, qlabels, op, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCORRECTRATE_BLKS Computes the correct rate based on blockwise scores
+
+ $ Syntax $
+   - cr = slcorrectrate_blks(scores, blocks, clabels, qlabels, op, ...)
+
+ $ Arguments $
+   - scores:       the score matrix
+   - blocks:       the cell array of block limits
+   - clabels:      the class labels of reference samples
+   - qlabels:      the query labels of query samples
+   - op:           the score attribute  
+   - cr:           the computed classification correct rate
+
+ $ Remarks $
+   - An extension of slcorrectrate to support blockwise scores
+
+ $ History $
+   - Created by Dahua Lin, on Aug 9th, 2006
+   - Modified by Dahua Lin on Aug 16th, 2006
+     - Based on new slclassify to support multiple schemes</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slclassify_blks.html" class="code" title="function [decisions, decscores] = slclassify_blks(scores, n, blocks, clabels, op, varargin)">slclassify_blks</a>	SLCLASSIFY_BLKS Classifies samples according to blockwise scores</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function cr = slcorrectrate_blks(scores, blocks, clabels, qlabels, op, varargin)</a>
+0002 <span class="comment">%SLCORRECTRATE_BLKS Computes the correct rate based on blockwise scores</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - cr = slcorrectrate_blks(scores, blocks, clabels, qlabels, op, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - scores:       the score matrix</span>
+0009 <span class="comment">%   - blocks:       the cell array of block limits</span>
+0010 <span class="comment">%   - clabels:      the class labels of reference samples</span>
+0011 <span class="comment">%   - qlabels:      the query labels of query samples</span>
+0012 <span class="comment">%   - op:           the score attribute</span>
+0013 <span class="comment">%   - cr:           the computed classification correct rate</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ Remarks $</span>
+0016 <span class="comment">%   - An extension of slcorrectrate to support blockwise scores</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $ History $</span>
+0019 <span class="comment">%   - Created by Dahua Lin, on Aug 9th, 2006</span>
+0020 <span class="comment">%   - Modified by Dahua Lin on Aug 16th, 2006</span>
+0021 <span class="comment">%     - Based on new slclassify to support multiple schemes</span>
+0022 <span class="comment">%</span>
+0023 
+0024 <span class="comment">%% parse and verify input arguments</span>
+0025 
+0026 <span class="keyword">if</span> nargin &lt; 5
+0027     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slcorrectrate_blks'</span>, 5);
+0028 <span class="keyword">end</span>
+0029 
+0030 
+0031 <span class="comment">%% Make decision</span>
+0032 
+0033 n = length(qlabels);
+0034 decisions = <a href="../../sltoolbox/utils/slclassify_blks.html" class="code" title="function [decisions, decscores] = slclassify_blks(scores, n, blocks, clabels, op, varargin)">slclassify_blks</a>(scores, n, blocks, clabels, op, varargin{:});
+0035 
+0036 <span class="comment">%% Evaluate correct rate</span>
+0037 
+0038 qlabels = qlabels(:)';
+0039 cr = sum(decisions == qlabels) / length(qlabels);
+0040 
+0041 
+0042</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

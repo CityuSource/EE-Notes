@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slwhiten_from_cov</title>
+  <meta name="keywords" content="slwhiten_from_cov">
+  <meta name="description" content="SLWHITEN_FROM_COV Compute the whitening transform from covariance matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slwhiten_from_cov.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slwhiten_from_cov
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLWHITEN_FROM_COV Compute the whitening transform from covariance matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function W = slwhiten_from_cov(C, method, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLWHITEN_FROM_COV Compute the whitening transform from covariance matrix
+
+ $ Syntax $
+   - W = slwhiten_from_cov(C)
+   - W = slwhiten_from_cov(C, method, ...)
+
+ $ Arguments $
+   - C:        the covariance matrix
+   - method:   the method for computing the whitening transform
+   - W:        the computed whitening transform matrix
+
+ $ Description $
+   - W = slwhiten_from_cov(C) computes the whitening matrix from C using 
+     default method ('std').
+   - W = slwhiten_from_cov(C, method, r) computes the whitening matrix 
+     from C using specific method and the extra parameters. Please
+     refer to slinvevals for the available methods and corresponding
+     parameters.
+
+ $ Remarks $
+   - C should be a positive semidefinite matrix.
+
+ $ History $
+   - Created by Dahua Lin on Apr 30th, 2006
+   - Modified by Dahua Lin on Sep 10, 2006
+       - replace slmul by slmulvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="slinvevals.html" class="code" title="function revs = slinvevals(evals, method, r)">slinvevals</a>	SLINVEVALS Compute the reciprocals of eigenvalues in a robust way</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/manifold/slgembed.html" class="code" title="function [Y, spectrum] = slgembed(G, Gc, d, fm, varargin)">slgembed</a>	SLGEMBED Solves the general graph-based embedding</li><li><a href="../../sltoolbox/subspace/sldlda.html" class="code" title="function T = sldlda(X, nums, varargin)">sldlda</a>	SLDLDA Performs Direct Linear Discriminant Analysis</li><li><a href="../../sltoolbox/subspace/slfld.html" class="code" title="function T = slfld(X, nums, varargin)">slfld</a>	SLFLD Performs Fisher Linear Discriminant Analysis</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function W = slwhiten_from_cov(C, method, varargin)</a>
+0002 <span class="comment">%SLWHITEN_FROM_COV Compute the whitening transform from covariance matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - W = slwhiten_from_cov(C)</span>
+0006 <span class="comment">%   - W = slwhiten_from_cov(C, method, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - C:        the covariance matrix</span>
+0010 <span class="comment">%   - method:   the method for computing the whitening transform</span>
+0011 <span class="comment">%   - W:        the computed whitening transform matrix</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - W = slwhiten_from_cov(C) computes the whitening matrix from C using</span>
+0015 <span class="comment">%     default method ('std').</span>
+0016 <span class="comment">%   - W = slwhiten_from_cov(C, method, r) computes the whitening matrix</span>
+0017 <span class="comment">%     from C using specific method and the extra parameters. Please</span>
+0018 <span class="comment">%     refer to slinvevals for the available methods and corresponding</span>
+0019 <span class="comment">%     parameters.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% $ Remarks $</span>
+0022 <span class="comment">%   - C should be a positive semidefinite matrix.</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% $ History $</span>
+0025 <span class="comment">%   - Created by Dahua Lin on Apr 30th, 2006</span>
+0026 <span class="comment">%   - Modified by Dahua Lin on Sep 10, 2006</span>
+0027 <span class="comment">%       - replace slmul by slmulvec to increase efficiency</span>
+0028 <span class="comment">%</span>
+0029 
+0030 <span class="comment">%% parse and verify input arguments</span>
+0031 
+0032 <span class="keyword">if</span> ndims(C) ~= 2 || size(C, 1) ~= size(C, 2)
+0033     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="string">'C should be a square matrix'</span>);
+0034 <span class="keyword">end</span>
+0035 
+0036 <span class="keyword">if</span> nargin &lt; 2
+0037     method = <span class="string">'std'</span>;
+0038     params = {};
+0039 <span class="keyword">else</span>
+0040     params = varargin;
+0041 <span class="keyword">end</span>
+0042 
+0043 
+0044 <span class="comment">%% compute</span>
+0045 
+0046 [evs, U] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(C);
+0047 revs = <a href="slinvevals.html" class="code" title="function revs = slinvevals(evals, method, r)">slinvevals</a>(evs, method, params{:})';
+0048 
+0049 <span class="keyword">if</span> strcmp(method, <span class="string">'std'</span>) 
+0050     si = find(revs &gt; 0);
+0051     revs = revs(si);
+0052     U = U(:, si);
+0053 <span class="keyword">end</span>
+0054 
+0055 W = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(U, sqrt(revs), 2);
+0056 
+0057</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

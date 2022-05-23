@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slreevallearn</title>
+  <meta name="keywords" content="slreevallearn">
+  <meta name="description" content="SLREEVALLEARN Performs an iterative learning based on re-evaluation">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">learn</a> &gt; slreevallearn.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\learn&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slreevallearn
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLREEVALLEARN Performs an iterative learning based on re-evaluation</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [models, Q, info] = slreevallearn(models, Q, data, estfunctor, evalfunctor, cmpfunctor, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLREEVALLEARN Performs an iterative learning based on re-evaluation
+
+ $ Syntax $
+   - [models, Q] = slreevallearn(models, data, estfunctor, evalfunctor, cmpfunctor, ...)
+   - [models, Q, info] = slreevallearn(models, data, estfunctor, evalfunctor, cmpfunctor, ...)
+
+ $ Arguments $
+   - models:       the models to learn
+                   input one: the initial model
+                   output one: the learned model
+   - Q:            the evaluated quantities on the data
+   - data:         the data (samples) to learn from
+   - estfunctor:   the functor to estimate/update model, in the form:
+                   models = f(models, data, Q, ...)
+                   If the process is recorded, it is like:
+                   [models, rec] = f(models, data, Q, ...)
+   - evalfunctor:  the functor to evaluate/update the quantities, like:
+                   Q = f(models, data, Q, ...)
+   - cmpfunctor:   the functor to judge convergence, like:
+                   isconverged = f(models_prev, models, Q_prev, Q, ...)
+   - info:         The information of the iteration process
+
+ $ Description $
+   - [models, Q] = slreevallearn(models, data, estfunctor, evalfunctor, cmpfunctor, ...) 
+     implements a skeleton of learning procedure based on re-evaluation.
+     The procedure alternates the model estimation based on data and 
+     corresponding evaluated quantities, and the evaluation by applying
+     models to data to get quantities.
+     \*
+     \t   Table. The Properties of Re-evaluating Learning
+     \h    name        &amp;   description
+          'iter'       &amp; The iteration control properties. default = {}
+          'isrecorded' &amp; whether the model estimation is recorded
+                         default = false;
+          'verbose'    &amp; whether to show progress, default = true
+     \*
+   
+ $ Remarks $
+   - It is implemented based on sliterproc.
+
+   - It essentially serves as the core of many learning paradigms, 
+     such as E-M method of finite mixture model learning, AdaBoost,
+     K-means, robust subspace learning, etc.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 31, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sliterproc.html" class="code" title="function [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, varargin)">sliterproc</a>	SLITERPROC Runs a general iterative process</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>	SLEVALFUNCTOR Evaluates a functor</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li><li><a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>	SLSHAREDISP Displays message using a shared configuration</li><li><a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>	SLSHAREDISP_ATTACH Attachs to global display options</li><li><a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>	SLSHAREDISP_DETACH Detachs current function from global display</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/cluster/slkmeansex.html" class="code" title="function [centers, labels, info] = slkmeansex(X, n, estfunctor, clsfunctor, varargin)">slkmeansex</a>	SLKMEANSEX Performs Generalized K-means</li><li><a href="../../sltoolbox/stat/slfmm.html" class="code" title="function [S, cw, pp, info] = slfmm(X, n, estfunctor, evalfunctor, varargin)">slfmm</a>	SLFMM Learns a Finite Mixture Model (FMM)</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function varargout = reevallearn_iter(objects, estfunctor, evalfunctor, opts)</a></li><li><a href="#_sub2" class="code">function isconverged = reevallearn_cmp(objects_prev, objects, cmpfunctor)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [models, Q, info] = slreevallearn(models, Q, data, estfunctor, evalfunctor, cmpfunctor, varargin)</a>
+0002 <span class="comment">%SLREEVALLEARN Performs an iterative learning based on re-evaluation</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [models, Q] = slreevallearn(models, data, estfunctor, evalfunctor, cmpfunctor, ...)</span>
+0006 <span class="comment">%   - [models, Q, info] = slreevallearn(models, data, estfunctor, evalfunctor, cmpfunctor, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - models:       the models to learn</span>
+0010 <span class="comment">%                   input one: the initial model</span>
+0011 <span class="comment">%                   output one: the learned model</span>
+0012 <span class="comment">%   - Q:            the evaluated quantities on the data</span>
+0013 <span class="comment">%   - data:         the data (samples) to learn from</span>
+0014 <span class="comment">%   - estfunctor:   the functor to estimate/update model, in the form:</span>
+0015 <span class="comment">%                   models = f(models, data, Q, ...)</span>
+0016 <span class="comment">%                   If the process is recorded, it is like:</span>
+0017 <span class="comment">%                   [models, rec] = f(models, data, Q, ...)</span>
+0018 <span class="comment">%   - evalfunctor:  the functor to evaluate/update the quantities, like:</span>
+0019 <span class="comment">%                   Q = f(models, data, Q, ...)</span>
+0020 <span class="comment">%   - cmpfunctor:   the functor to judge convergence, like:</span>
+0021 <span class="comment">%                   isconverged = f(models_prev, models, Q_prev, Q, ...)</span>
+0022 <span class="comment">%   - info:         The information of the iteration process</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% $ Description $</span>
+0025 <span class="comment">%   - [models, Q] = slreevallearn(models, data, estfunctor, evalfunctor, cmpfunctor, ...)</span>
+0026 <span class="comment">%     implements a skeleton of learning procedure based on re-evaluation.</span>
+0027 <span class="comment">%     The procedure alternates the model estimation based on data and</span>
+0028 <span class="comment">%     corresponding evaluated quantities, and the evaluation by applying</span>
+0029 <span class="comment">%     models to data to get quantities.</span>
+0030 <span class="comment">%     \*</span>
+0031 <span class="comment">%     \t   Table. The Properties of Re-evaluating Learning</span>
+0032 <span class="comment">%     \h    name        &amp;   description</span>
+0033 <span class="comment">%          'iter'       &amp; The iteration control properties. default = {}</span>
+0034 <span class="comment">%          'isrecorded' &amp; whether the model estimation is recorded</span>
+0035 <span class="comment">%                         default = false;</span>
+0036 <span class="comment">%          'verbose'    &amp; whether to show progress, default = true</span>
+0037 <span class="comment">%     \*</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% $ Remarks $</span>
+0040 <span class="comment">%   - It is implemented based on sliterproc.</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">%   - It essentially serves as the core of many learning paradigms,</span>
+0043 <span class="comment">%     such as E-M method of finite mixture model learning, AdaBoost,</span>
+0044 <span class="comment">%     K-means, robust subspace learning, etc.</span>
+0045 <span class="comment">%</span>
+0046 <span class="comment">% $ History $</span>
+0047 <span class="comment">%   - Created by Dahua Lin, on Aug 31, 2006</span>
+0048 <span class="comment">%</span>
+0049 
+0050 <span class="comment">%% parse and verify input</span>
+0051 
+0052 <span class="keyword">if</span> nargin &lt; 6
+0053     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slreevallearn'</span>, 6);
+0054 <span class="keyword">end</span>
+0055 
+0056 opts.iter = {};
+0057 opts.isrecorded = false;
+0058 opts.verbose = true;
+0059 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0060 
+0061 <span class="comment">%% Main</span>
+0062 
+0063 <a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>(<span class="string">'slreevallearn'</span>, <span class="string">'show'</span>, opts.verbose);
+0064 
+0065 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'Learning by re-evaluation'</span>);
+0066 
+0067 objects = {models, data, Q};
+0068 iterfunctor = {@<a href="#_sub1" class="code" title="subfunction varargout = reevallearn_iter(objects, estfunctor, evalfunctor, opts)">reevallearn_iter</a>, estfunctor, evalfunctor, opts};
+0069 cmpfunctor = {@<a href="#_sub2" class="code" title="subfunction isconverged = reevallearn_cmp(objects_prev, objects, cmpfunctor)">reevallearn_cmp</a>, cmpfunctor};
+0070 <span class="keyword">if</span> nargout &lt; 2
+0071     objects = <span class="keyword">...</span>
+0072         <a href="sliterproc.html" class="code" title="function [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, varargin)">sliterproc</a>(objects, iterfunctor, cmpfunctor, opts.isrecorded, opts.iter{:});
+0073 <span class="keyword">else</span>
+0074     [objects, info] = <span class="keyword">...</span>
+0075         <a href="sliterproc.html" class="code" title="function [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, varargin)">sliterproc</a>(objects, iterfunctor, cmpfunctor, opts.isrecorded, opts.iter{:});
+0076 <span class="keyword">end</span>
+0077 
+0078 models = objects{1};
+0079 Q = objects{3};
+0080 
+0081 <a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>();
+0082 
+0083 
+0084 <span class="comment">%% Iteration functors</span>
+0085 
+0086 <a name="_sub1" href="#_subfunctions" class="code">function varargout = reevallearn_iter(objects, estfunctor, evalfunctor, opts)</a>
+0087 <span class="comment">% objects = {models, data, Q}</span>
+0088 
+0089 [models, data, Q] = deal(objects{:});
+0090 
+0091 <span class="keyword">if</span> ~opts.isrecorded
+0092     models = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(estfunctor, models, data, Q);
+0093 <span class="keyword">else</span>
+0094     [models, info] = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(estfunctor, models, data, Q);
+0095 <span class="keyword">end</span>
+0096 Q = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(evalfunctor, models, data, Q);
+0097 
+0098 objects = {models, data, Q};
+0099 
+0100 <span class="keyword">if</span> ~opts.isrecorded
+0101     varargout = {objects};
+0102 <span class="keyword">else</span>
+0103     varargout = {objects, info};
+0104 <span class="keyword">end</span>
+0105 
+0106 
+0107 <a name="_sub2" href="#_subfunctions" class="code">function isconverged = reevallearn_cmp(objects_prev, objects, cmpfunctor)</a>
+0108 
+0109 models_prev = objects_prev{1};
+0110 Q_prev = objects_prev{3};
+0111 models = objects{1};
+0112 Q = objects{3};
+0113 
+0114 isconverged = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(cmpfunctor, models_prev, models, Q_prev, Q);
+0115 
+0116 
+0117 
+0118 
+0119 
+0120 
+0121 
+0122 
+0123 
+0124 
+0125</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

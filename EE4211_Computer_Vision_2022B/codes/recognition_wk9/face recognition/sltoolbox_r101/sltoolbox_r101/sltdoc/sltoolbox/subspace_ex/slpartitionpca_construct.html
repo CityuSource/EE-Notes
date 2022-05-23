@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpartitionpca_construct</title>
+  <meta name="keywords" content="slpartitionpca_construct">
+  <meta name="description" content="SLPARTITIONPCA_CONSTRUCT Constructs the array from features">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace_ex</a> &gt; slpartitionpca_construct.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace_ex&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpartitionpca_construct
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPARTITIONPCA_CONSTRUCT Constructs the array from features</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function A = slpartitionpca_construct(S, modeldir, feas) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPARTITIONPCA_CONSTRUCT Constructs the array from features 
+
+ $ Syntax $
+   - A = slpartitionpca_construct(S, modeldir, feas)
+
+ $ Arguments $
+   - S:            the partition-based PCA model struct or model core file
+   - modeldir:     the directory path of the projection files
+   - feas:         the partition PCA features
+   - A:            the constructed arrays in original space
+
+ $ Description $
+   - A = slpartitionpca_construct(S, modeldir, feas) constructs the 
+     array units in the original space from the extracted partiton PCA
+     features. Here, S can be a struct loaded from core file or the core 
+     filename. modeldir is the directory of the corefile and the related 
+     projection matrix files.
+
+ $ Remarks $
+   - When the combined model is learned, the dimension of features can be
+     lower than the dimension of feature subspace of the PCA model. In 
+     this case, only the first k principal components are used.
+
+ $ History $
+   - Created by Dahua Lin, on Jul 30th, 2006
+   - Modified by Dahua Lin, on Sep 10, 2006
+       - replace sladd by sladdvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>	SLREADARRAY Reads an array from an array file</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>	SLADDPATH Adds dirpath to precede the filenames</li><li><a href="../../sltoolbox/utils/slrange2indcells.html" class="code" title="function C = slrange2indcells(range)">slrange2indcells</a>	SLRANGE2INDCELLS Converts a range array to indices cell array</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function A = slpartitionpca_construct(S, modeldir, feas)</a>
+0002 <span class="comment">%SLPARTITIONPCA_CONSTRUCT Constructs the array from features</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - A = slpartitionpca_construct(S, modeldir, feas)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - S:            the partition-based PCA model struct or model core file</span>
+0009 <span class="comment">%   - modeldir:     the directory path of the projection files</span>
+0010 <span class="comment">%   - feas:         the partition PCA features</span>
+0011 <span class="comment">%   - A:            the constructed arrays in original space</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - A = slpartitionpca_construct(S, modeldir, feas) constructs the</span>
+0015 <span class="comment">%     array units in the original space from the extracted partiton PCA</span>
+0016 <span class="comment">%     features. Here, S can be a struct loaded from core file or the core</span>
+0017 <span class="comment">%     filename. modeldir is the directory of the corefile and the related</span>
+0018 <span class="comment">%     projection matrix files.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $ Remarks $</span>
+0021 <span class="comment">%   - When the combined model is learned, the dimension of features can be</span>
+0022 <span class="comment">%     lower than the dimension of feature subspace of the PCA model. In</span>
+0023 <span class="comment">%     this case, only the first k principal components are used.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% $ History $</span>
+0026 <span class="comment">%   - Created by Dahua Lin, on Jul 30th, 2006</span>
+0027 <span class="comment">%   - Modified by Dahua Lin, on Sep 10, 2006</span>
+0028 <span class="comment">%       - replace sladd by sladdvec to increase efficiency</span>
+0029 <span class="comment">%</span>
+0030 
+0031 <span class="comment">%% parse and verify input arguments</span>
+0032 
+0033 <span class="keyword">if</span> nargin &lt; 3
+0034     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slpartitionpca_apply'</span>, 3);
+0035 <span class="keyword">end</span>
+0036 
+0037 <span class="keyword">if</span> ischar(S)
+0038     S = load(S);
+0039 <span class="keyword">elseif</span> ~isstruct(S)
+0040     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0041         <span class="string">'The S should be the filename of the core file or the core struct'</span>);
+0042 <span class="keyword">end</span>
+0043 
+0044 [k, n] = size(feas);
+0045 <span class="keyword">if</span> k &gt; S.diminfo.feadim
+0046     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0047         <span class="string">'k is larger than the dimension of feature space'</span>);
+0048 <span class="keyword">elseif</span> k &lt; S.diminfo.feadim &amp;&amp; isempty(S.combprojfile)
+0049     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0050         <span class="string">'When the combined model is not learned, k should be exactly the same as the dimension of feature space'</span>);
+0051 <span class="keyword">end</span>
+0052 
+0053 <span class="comment">%% Construct Intermediate features</span>
+0054 
+0055 <span class="keyword">if</span> ~isempty(S.combprojfile)
+0056    
+0057     combprojpath = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(S.combprojfile, modeldir);
+0058     P = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(combprojpath);
+0059     <span class="keyword">if</span> k &lt; S.diminfo.feadim
+0060         P = P(:, 1:k);
+0061     <span class="keyword">end</span>
+0062     intfeas = P * feas;
+0063     clear P;
+0064     
+0065 <span class="keyword">else</span>
+0066     intfeas = feas;
+0067     
+0068 <span class="keyword">end</span>
+0069     
+0070 <span class="comment">%% Construct Array Units</span>
+0071 
+0072 A = zeros([size(S.meanarr), n]);
+0073 NBlks = numel(S.blocks);
+0074 projpaths = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(S.projfiles, modeldir);
+0075 
+0076 dc = 0;
+0077 <span class="keyword">for</span> ib = 1 : NBlks
+0078     
+0079     curblock = S.blocks{ib};
+0080     rgncell = <a href="../../sltoolbox/utils/slrange2indcells.html" class="code" title="function C = slrange2indcells(range)">slrange2indcells</a>(curblock);
+0081     
+0082     cursiz = curblock(2,:) - curblock(1,:) + 1;
+0083     curdim = prod(cursiz);
+0084     cursubdim = S.diminfo.subdims(ib);
+0085     
+0086     curfeasec = intfeas(dc+1:dc+cursubdim, :);        
+0087     curproj = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(projpaths{ib});
+0088     
+0089     localmean = S.meanarr(rgncell{:});
+0090     localmean = reshape(localmean, [curdim, 1]);
+0091     
+0092     localarr = curproj * curfeasec;
+0093     clear curproj;
+0094     
+0095     localarr = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(localarr, localmean, 1);
+0096     localarr = reshape(localarr, [cursiz, n]);
+0097     
+0098     A(rgncell{:}, :) = localarr;    
+0099     
+0100     clear localarr localmean;
+0101     
+0102     dc = dc + cursubdim;
+0103     
+0104 <span class="keyword">end</span>
+0105 
+0106 
+0107 
+0108 
+0109     
+0110</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

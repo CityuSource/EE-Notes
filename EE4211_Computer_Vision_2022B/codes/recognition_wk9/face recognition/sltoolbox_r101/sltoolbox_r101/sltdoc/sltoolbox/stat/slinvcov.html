@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slinvcov</title>
+  <meta name="keywords" content="slinvcov">
+  <meta name="description" content="SLINVCOV Compute the inverse of an covariance matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slinvcov.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slinvcov
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLINVCOV Compute the inverse of an covariance matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function R = slinvcov(C, method, r) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLINVCOV Compute the inverse of an covariance matrix
+
+ $ Syntax $
+   - R = slinvcov(C)
+   - R = slinvcov(C, method, r)
+
+ $ Arguments $
+   - C:        the covariance matrix (matrices)
+   - method:   the method of inverse calculation
+   - r:        the additional parameter for computation
+   - R:        the computed inverse matrix
+
+ $ Description $
+   - R = slinvcov(C) computes the inverse of C using default method. If
+     C is d x d x ... array, then R would be an array of the same size.
+     Each page of R is the inverse matrix of the corresponding covariance
+     matrix in C.
+
+   - R = slinvcov(C, method, r) computes the inverse of C using specific
+     method. For some method, extra parameters are needed, which can be
+     given subsequently. The method can be either 'direct', i.e. directly
+     invoke inv for inverse computing or the names specified in
+     slinvevals. For the latter cases, we adopt the following formula
+     for computation:
+       C^(-1) = U * diag(1 ./ evals) * U^T
+     while the reciprocals of eigenvalues are computed in a robust way
+     by the methods available in slinvevals. The default method is
+     'direct'.
+
+ $ Remarks $
+   - C should be a symmetric and positive semidefinite matrix.
+
+ $ History $
+   - Created by Dahua Lin on Apr 22, 2006
+   - Modified by Dahua Lin on Apr 30, 2006
+     - Base on the slinvevals function to eigenvalue processing.
+     - Re-organize the code in a clearer way</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="slinvevals.html" class="code" title="function revs = slinvevals(evals, method, r)">slinvevals</a>	SLINVEVALS Compute the reciprocals of eigenvalues in a robust way</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/regression/sllinreg.html" class="code" title="function A = sllinreg(X, Y, varargin)">sllinreg</a>	SLLINREG Performs Multivariate Linear Regression and Ridge Regression</li><li><a href="slgaussinv.html" class="code" title="function R = slgaussinv(GS, fn, invparams)">slgaussinv</a>	SLGAUSSINV Computes the inverse of variance/covariance in Gaussian model</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function R = frmroutine_for_getinv(C, fh, params)</a></li><li><a href="#_sub2" class="code">function R = compinv_evd_based(C, method, r)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function R = slinvcov(C, method, r)</a>
+0002 <span class="comment">%SLINVCOV Compute the inverse of an covariance matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - R = slinvcov(C)</span>
+0006 <span class="comment">%   - R = slinvcov(C, method, r)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - C:        the covariance matrix (matrices)</span>
+0010 <span class="comment">%   - method:   the method of inverse calculation</span>
+0011 <span class="comment">%   - r:        the additional parameter for computation</span>
+0012 <span class="comment">%   - R:        the computed inverse matrix</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - R = slinvcov(C) computes the inverse of C using default method. If</span>
+0016 <span class="comment">%     C is d x d x ... array, then R would be an array of the same size.</span>
+0017 <span class="comment">%     Each page of R is the inverse matrix of the corresponding covariance</span>
+0018 <span class="comment">%     matrix in C.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">%   - R = slinvcov(C, method, r) computes the inverse of C using specific</span>
+0021 <span class="comment">%     method. For some method, extra parameters are needed, which can be</span>
+0022 <span class="comment">%     given subsequently. The method can be either 'direct', i.e. directly</span>
+0023 <span class="comment">%     invoke inv for inverse computing or the names specified in</span>
+0024 <span class="comment">%     slinvevals. For the latter cases, we adopt the following formula</span>
+0025 <span class="comment">%     for computation:</span>
+0026 <span class="comment">%       C^(-1) = U * diag(1 ./ evals) * U^T</span>
+0027 <span class="comment">%     while the reciprocals of eigenvalues are computed in a robust way</span>
+0028 <span class="comment">%     by the methods available in slinvevals. The default method is</span>
+0029 <span class="comment">%     'direct'.</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% $ Remarks $</span>
+0032 <span class="comment">%   - C should be a symmetric and positive semidefinite matrix.</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">% $ History $</span>
+0035 <span class="comment">%   - Created by Dahua Lin on Apr 22, 2006</span>
+0036 <span class="comment">%   - Modified by Dahua Lin on Apr 30, 2006</span>
+0037 <span class="comment">%     - Base on the slinvevals function to eigenvalue processing.</span>
+0038 <span class="comment">%     - Re-organize the code in a clearer way</span>
+0039 <span class="comment">%</span>
+0040 
+0041 <span class="comment">%% parse and verify input arguments</span>
+0042 
+0043 <span class="keyword">if</span> size(C, 1) ~= size(C, 2)
+0044     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'C should be symmetric matrix (matrices)'</span>);
+0045 <span class="keyword">end</span>
+0046 
+0047 <span class="comment">% for method</span>
+0048 <span class="keyword">if</span> nargin &lt; 2 || isempty(method)
+0049     method = <span class="string">'direct'</span>;
+0050 <span class="keyword">end</span>
+0051 
+0052 <span class="keyword">if</span> nargin &lt; 3
+0053     r = [];
+0054 <span class="keyword">end</span>
+0055 
+0056 
+0057 <span class="comment">%% delegate to the computation routine</span>
+0058 
+0059 <span class="keyword">switch</span> method
+0060     <span class="keyword">case</span> <span class="string">'direct'</span>
+0061         R = <a href="#_sub1" class="code" title="subfunction R = frmroutine_for_getinv(C, fh, params)">frmroutine_for_getinv</a>(C, @inv, {});
+0062     <span class="keyword">case</span> {<span class="string">'pseudo'</span>, <span class="string">'std'</span>}
+0063         R = <a href="#_sub1" class="code" title="subfunction R = frmroutine_for_getinv(C, fh, params)">frmroutine_for_getinv</a>(C, @<a href="#_sub2" class="code" title="subfunction R = compinv_evd_based(C, method, r)">compinv_evd_based</a>, {<span class="string">'std'</span>, r});
+0064     <span class="keyword">case</span> <span class="string">'reg'</span>
+0065         R = <a href="#_sub1" class="code" title="subfunction R = frmroutine_for_getinv(C, fh, params)">frmroutine_for_getinv</a>(C, @<a href="#_sub2" class="code" title="subfunction R = compinv_evd_based(C, method, r)">compinv_evd_based</a>, {<span class="string">'reg'</span>, r});
+0066     <span class="keyword">case</span> <span class="string">'bound'</span>
+0067         R = <a href="#_sub1" class="code" title="subfunction R = frmroutine_for_getinv(C, fh, params)">frmroutine_for_getinv</a>(C, @<a href="#_sub2" class="code" title="subfunction R = compinv_evd_based(C, method, r)">compinv_evd_based</a>, {<span class="string">'bound'</span>, r});
+0068     <span class="keyword">case</span> <span class="string">'gapprox'</span>
+0069         R = <a href="#_sub1" class="code" title="subfunction R = frmroutine_for_getinv(C, fh, params)">frmroutine_for_getinv</a>(C, @<a href="#_sub2" class="code" title="subfunction R = compinv_evd_based(C, method, r)">compinv_evd_based</a>, {<span class="string">'gapprox'</span>, r});
+0070 <span class="keyword">end</span>
+0071 
+0072 
+0073 <span class="comment">%% the framework routine to compute</span>
+0074 <a name="_sub1" href="#_subfunctions" class="code">function R = frmroutine_for_getinv(C, fh, params)</a>
+0075 <span class="comment">% fh is the function handle for computing single inverse</span>
+0076 
+0077 <span class="keyword">if</span> ndims(C) == 2  <span class="comment">% single matrix</span>
+0078     M = 0.5 * (C + C');  <span class="comment">% enforce symmetry</span>
+0079     R = fh(M, params{:});
+0080 <span class="keyword">else</span>
+0081     siz = size(C);
+0082     n = prod(siz(3:end));
+0083     R = zeros(siz);
+0084     
+0085     <span class="keyword">for</span> i = 1 : n
+0086         M = C(:,:,i);
+0087         M = 0.5 * (M + M');  <span class="comment">% enforce symmetry</span>
+0088         R(:,:,i) = fh(M, params{:});
+0089     <span class="keyword">end</span>
+0090 <span class="keyword">end</span>
+0091 
+0092 
+0093 <span class="comment">%% the general routine for the inverse computation based on eigen-decompose</span>
+0094 <a name="_sub2" href="#_subfunctions" class="code">function R = compinv_evd_based(C, method, r)</a>
+0095 
+0096 <span class="comment">% eigen-decompose</span>
+0097 [ev, V] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(C);
+0098 
+0099 <span class="comment">% compute the reciprocals of the eigenvalues</span>
+0100 ev = <a href="slinvevals.html" class="code" title="function revs = slinvevals(evals, method, r)">slinvevals</a>(ev, method, r);
+0101 D = diag(ev);
+0102 
+0103 <span class="comment">% construct the inverse matrix</span>
+0104 R = V * D * V';
+0105 
+0106 
+0107</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

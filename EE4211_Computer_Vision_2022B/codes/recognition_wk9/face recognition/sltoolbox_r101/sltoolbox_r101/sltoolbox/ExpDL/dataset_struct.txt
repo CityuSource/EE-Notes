@@ -1,0 +1,60 @@
+The specification of the class representing a dataset from DSDML
+(DSDML = DataSet Description Markup Language)
+
+The structed is tagged as an object of class 'dataset'.
+
+The struct contains following fields
+
+The header fields
+- version:      the version of the DSDML Language 
+                a char string in the form 'major version.minor version'
+- name:         the name of the data set, a char string
+- unittype:     the string telling unit type: 'Sample' or 'SampleGroup'
+- format:       the format of the data, a char string
+- author:       the char string giving the author list
+- description:  the char string describing the data set.
+- attribs:      the other attributes of the data set 
+                these fields will exist only when the XML element
+                contains the attributes
+
+The data fields
+- units:        the struct array of all units (samples or samplegroups)
+
+The sample struct contains the following fields
+- class_id:     the id identifying which class it belongs to
+- filename:     the (main) filename of the sample
+- attribs
+
+The sample group struct contains the following fields
+- class_id:     the id identifying which class it belongs to 
+- samples:      the struct array of the group of samples
+- attribs
+
+The properties for dataset
+All fields can be got/set as properties, including:
+    - version
+    - name
+    - unittype
+    - format
+    - author
+    - description
+    - attribs
+In addition, the other attributes can be directly got/set by their names.
+Furthermore, we can retrieve(get) following derived properties:
+- numsamples:   the total number of samples
+- numgroups:    the total number of groups
+- numunits:     the total number of units
+- samples:      the struct array of all sample structs
+- groups:       the struct array of all sample groups
+- class_ids:    the integer array of all class ids of samples
+- filenames:    the string array of all filenames
+- nums:         the numbers of samples for each class_id
+                (precondition: the samples of the same class are arranged together)
+- numspergrp:   the numbers of samples per groups 
+- grpnums:      the numbers of groups per class
+- grpclass_ids: the integer array of all sample groups
+(All these properties are given in form of column array)
+
+
+
+       

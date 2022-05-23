@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpcarecon</title>
+  <meta name="keywords" content="slpcarecon">
+  <meta name="description" content="SLPCARECON Reconstructs the samples in original space">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace</a> &gt; slpcarecon.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpcarecon
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPCARECON Reconstructs the samples in original space</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function X = slpcarecon(S, Y) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPCARECON Reconstructs the samples in original space
+
+ $ Syntax $
+   - Xr = slpcarecon(S, Y)
+
+ $ Arguments $
+   - S:        the PCA model struct
+   - Y:        the principal component features
+   - Xr:       the reconstructed samples
+
+ $ Description $
+   - Xr = slpcarecon(S, Y) reconstructs the original samples approximately
+     using the principal components Y. If the dimension of Y is less than
+     the subspace dimension, the leading space dimensions will be used.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 17, 2006
+   - Modified by Dahua Lin, on Sep 10, 2006
+       - replace sladd by sladdvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function X = slpcarecon(S, Y)</a>
+0002 <span class="comment">%SLPCARECON Reconstructs the samples in original space</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - Xr = slpcarecon(S, Y)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - S:        the PCA model struct</span>
+0009 <span class="comment">%   - Y:        the principal component features</span>
+0010 <span class="comment">%   - Xr:       the reconstructed samples</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - Xr = slpcarecon(S, Y) reconstructs the original samples approximately</span>
+0014 <span class="comment">%     using the principal components Y. If the dimension of Y is less than</span>
+0015 <span class="comment">%     the subspace dimension, the leading space dimensions will be used.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $ History $</span>
+0018 <span class="comment">%   - Created by Dahua Lin, on Aug 17, 2006</span>
+0019 <span class="comment">%   - Modified by Dahua Lin, on Sep 10, 2006</span>
+0020 <span class="comment">%       - replace sladd by sladdvec to increase efficiency</span>
+0021 <span class="comment">%</span>
+0022 
+0023 <span class="comment">%% parse and verify input</span>
+0024 
+0025 <span class="keyword">if</span> ~isstruct(S)
+0026     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0027         <span class="string">'S should be a PCA model struct'</span>);
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="keyword">if</span> ~isnumeric(Y) || ndims(Y) ~= 2
+0031     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0032         <span class="string">'The features Y should be a 2D numeric matrix'</span>);
+0033 <span class="keyword">end</span>
+0034 
+0035 dy = size(Y, 1);
+0036 <span class="keyword">if</span> dy &gt; S.feadim
+0037     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0038         <span class="string">'The feature dimension of Y exceeds the subspace dimension preserved in model'</span>);
+0039 <span class="keyword">end</span>
+0040 
+0041 <span class="comment">%% reconstruct</span>
+0042 
+0043 <span class="keyword">if</span> dy == S.feadim
+0044     X = S.P * Y;
+0045 <span class="keyword">else</span>
+0046     X = S.P(:, 1:dy) * Y;
+0047 <span class="keyword">end</span>
+0048 
+0049 X = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, S.vmean, 1);
+0050 
+0051 
+0052 
+0053</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

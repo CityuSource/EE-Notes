@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slsharedisp</title>
+  <meta name="keywords" content="slsharedisp">
+  <meta name="description" content="SLSHAREDISP Displays message using a shared configuration">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">utils</a> &gt; slsharedisp.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\utils&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slsharedisp
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLSHAREDISP Displays message using a shared configuration</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function slsharedisp(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLSHAREDISP Displays message using a shared configuration
+
+ $ Syntax $
+   - slsharedisp(...)
+
+ $ Description $
+   - slsharedisp(...) is to tackle the problem of sharing displaying
+     configuration across different level of functions. It uses a
+     global struct to record the displaying options, and the options
+     can be tuned by each function and passed the invoked ones. 
+     The struct is encapsulated, the user should use the following
+     function to manipulate the options.
+       - slsharedisp_attach:    attach current function to global display
+       - slsharedisp_detach:    detach current function from it
+       - slsharedisp_incindent: increase the indent of global display
+       - slsharedisp_decindent: decrease the indent of global display
+       - slsharedisp_reset:     reset the global display
+     This function is to display message using current option. 
+     The input can be either a string or follow the regulation of
+     sprintf.
+
+ $ Remarks $
+   - The global display should be attached by some functions before
+     being used to display message.
+   - The action of attaching or detaching should be in pair. 
+   - If the global display is not detached due to occurrence of error,
+     it can be reset.
+   - when no function is attached to the global display, it will be
+     automatically cleared.
+   
+ $ History $
+   - Created by Dahua Lin, on Aug 29, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>	DISP displays the dataset fields</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/cluster/slkmeansex.html" class="code" title="function [centers, labels, info] = slkmeansex(X, n, estfunctor, clsfunctor, varargin)">slkmeansex</a>	SLKMEANSEX Performs Generalized K-means</li><li><a href="../../sltoolbox/learn/sliterproc.html" class="code" title="function [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, varargin)">sliterproc</a>	SLITERPROC Runs a general iterative process</li><li><a href="../../sltoolbox/learn/slproglearn.html" class="code" title="function [models, info] = slproglearn(source, getter, learnfunctor, varargin)">slproglearn</a>	SLPROGLEARN Performs Progressive Learning from sample source</li><li><a href="../../sltoolbox/learn/slreevallearn.html" class="code" title="function [models, Q, info] = slreevallearn(models, Q, data, estfunctor, evalfunctor, cmpfunctor, varargin)">slreevallearn</a>	SLREEVALLEARN Performs an iterative learning based on re-evaluation</li><li><a href="../../sltoolbox/stat/slfmm.html" class="code" title="function [S, cw, pp, info] = slfmm(X, n, estfunctor, evalfunctor, varargin)">slfmm</a>	SLFMM Learns a Finite Mixture Model (FMM)</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function slsharedisp(varargin)</a>
+0002 <span class="comment">%SLSHAREDISP Displays message using a shared configuration</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - slsharedisp(...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Description $</span>
+0008 <span class="comment">%   - slsharedisp(...) is to tackle the problem of sharing displaying</span>
+0009 <span class="comment">%     configuration across different level of functions. It uses a</span>
+0010 <span class="comment">%     global struct to record the displaying options, and the options</span>
+0011 <span class="comment">%     can be tuned by each function and passed the invoked ones.</span>
+0012 <span class="comment">%     The struct is encapsulated, the user should use the following</span>
+0013 <span class="comment">%     function to manipulate the options.</span>
+0014 <span class="comment">%       - slsharedisp_attach:    attach current function to global display</span>
+0015 <span class="comment">%       - slsharedisp_detach:    detach current function from it</span>
+0016 <span class="comment">%       - slsharedisp_incindent: increase the indent of global display</span>
+0017 <span class="comment">%       - slsharedisp_decindent: decrease the indent of global display</span>
+0018 <span class="comment">%       - slsharedisp_reset:     reset the global display</span>
+0019 <span class="comment">%     This function is to display message using current option.</span>
+0020 <span class="comment">%     The input can be either a string or follow the regulation of</span>
+0021 <span class="comment">%     sprintf.</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% $ Remarks $</span>
+0024 <span class="comment">%   - The global display should be attached by some functions before</span>
+0025 <span class="comment">%     being used to display message.</span>
+0026 <span class="comment">%   - The action of attaching or detaching should be in pair.</span>
+0027 <span class="comment">%   - If the global display is not detached due to occurrence of error,</span>
+0028 <span class="comment">%     it can be reset.</span>
+0029 <span class="comment">%   - when no function is attached to the global display, it will be</span>
+0030 <span class="comment">%     automatically cleared.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% $ History $</span>
+0033 <span class="comment">%   - Created by Dahua Lin, on Aug 29, 2006</span>
+0034 <span class="comment">%</span>
+0035 
+0036 <span class="keyword">global</span> GLOBAL_SHARE_DISPLAYER;
+0037 <span class="keyword">global</span> GLOBAL_SHARE_DISPLAYER_LINEBREAK;
+0038 
+0039 <span class="keyword">if</span> isempty(GLOBAL_SHARE_DISPLAYER)
+0040     error(<span class="string">'sltoolbox:gdisperr'</span>, <span class="keyword">...</span>
+0041         <span class="string">'The global displayer is not open'</span>);
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="keyword">if</span> isempty(GLOBAL_SHARE_DISPLAYER_LINEBREAK)
+0045     GLOBAL_SHARE_DISPLAYER_LINEBREAK = true;
+0046 <span class="keyword">end</span>
+0047 
+0048 s = GLOBAL_SHARE_DISPLAYER(end);
+0049 
+0050 <span class="keyword">if</span> s.show &amp;&amp; ~isempty(varargin)
+0051     nblanks = s.indent * s.indentstep;
+0052     <span class="keyword">if</span> length(varargin) == 1
+0053         strmsg = varargin{1};
+0054     <span class="keyword">else</span>
+0055         strmsg = sprintf(varargin{:});
+0056     <span class="keyword">end</span>
+0057     <span class="keyword">if</span> nblanks &gt; 0 &amp;&amp; GLOBAL_SHARE_DISPLAYER_LINEBREAK
+0058         strmsg = [blanks(nblanks), strmsg];
+0059     <span class="keyword">end</span>
+0060     <a href="../../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>(strmsg);
+0061 <span class="keyword">end</span>
+0062 
+0063 GLOBAL_SHARE_DISPLAYER_LINEBREAK = true;    
+0064     
+0065</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

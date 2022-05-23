@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sltrace2x2</title>
+  <meta name="keywords" content="sltrace2x2">
+  <meta name="description" content="SLTRACE2X2 Computes the trace of 2 x 2 matrices in a fast way">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">smallmat</a> &gt; sltrace2x2.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\smallmat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sltrace2x2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLTRACE2X2 Computes the trace of 2 x 2 matrices in a fast way</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function r = sltrace2x2(Ms) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLTRACE2X2 Computes the trace of 2 x 2 matrices in a fast way
+
+ $ Syntax $
+   - r = sltrace2x2(Ms)
+
+ $ Arguments $
+   - Ms:       the 2 x 2 matrix (matrices)
+   - r:        the resultant trace(s)
+
+ $ Description $
+   - r = sltrace2x2(Ms) computes the trace of 2x2 matrices. If Ms is
+     a 2 x 2 matrix, then r is a scalar representing its trace. 
+     Or, if Ms is a 2 x 2 x ... array, then r would be a ... array 
+     storing the trace of all 2 x 2 matrices.
+
+ $ Remarks $
+   - The function uses the following formula for fast calculation of
+     trace of 2 x 2 matrices:
+       det = a11 + a22
+
+ $ History $
+   - Created by Dahua Lin on Apr 22nd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function r = sltrace2x2(Ms)</a>
+0002 <span class="comment">%SLTRACE2X2 Computes the trace of 2 x 2 matrices in a fast way</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - r = sltrace2x2(Ms)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - Ms:       the 2 x 2 matrix (matrices)</span>
+0009 <span class="comment">%   - r:        the resultant trace(s)</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - r = sltrace2x2(Ms) computes the trace of 2x2 matrices. If Ms is</span>
+0013 <span class="comment">%     a 2 x 2 matrix, then r is a scalar representing its trace.</span>
+0014 <span class="comment">%     Or, if Ms is a 2 x 2 x ... array, then r would be a ... array</span>
+0015 <span class="comment">%     storing the trace of all 2 x 2 matrices.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $ Remarks $</span>
+0018 <span class="comment">%   - The function uses the following formula for fast calculation of</span>
+0019 <span class="comment">%     trace of 2 x 2 matrices:</span>
+0020 <span class="comment">%       det = a11 + a22</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% $ History $</span>
+0023 <span class="comment">%   - Created by Dahua Lin on Apr 22nd, 2006</span>
+0024 <span class="comment">%</span>
+0025 
+0026 <span class="comment">%% parse and verify input arguments</span>
+0027 
+0028 <span class="keyword">if</span> size(Ms, 1) ~= 2 || size(Ms, 2) ~= 2
+0029     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'Ms should be set of 2 x 2 matrices'</span>);
+0030 <span class="keyword">end</span>
+0031 
+0032 <span class="comment">%% compute</span>
+0033 
+0034 <span class="keyword">if</span> ndims(Ms) == 2       <span class="comment">% single matrix</span>
+0035     r = Ms(1) + Ms(4);
+0036     
+0037 <span class="keyword">else</span>                    <span class="comment">% a set of matrices</span>
+0038     r = Ms(1,1,:) + Ms(2,2,:);
+0039     
+0040     siz = size(Ms);
+0041     
+0042     <span class="keyword">if</span> ndims(Ms) == 3
+0043         siz_r = [siz(3), 1];
+0044     <span class="keyword">else</span>
+0045         siz_r = siz(3:end);
+0046     <span class="keyword">end</span>
+0047     
+0048     r = reshape(r, siz_r);
+0049     
+0050 <span class="keyword">end</span>
+0051</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

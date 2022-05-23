@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sllabelinds</title>
+  <meta name="keywords" content="sllabelinds">
+  <meta name="description" content="SLLABELINDS Extract indices corresponding to specified labels">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">utils</a> &gt; sllabelinds.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\utils&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sllabelinds
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLLABELINDS Extract indices corresponding to specified labels</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function Inds = sllabelinds(labels, labelset) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLLABELINDS Extract indices corresponding to specified labels
+
+ $ Syntax $
+   - Inds = sllabelinds(labels, labelset)
+
+ $ Arguments $
+   - labels:       The labels of samples
+   - labelset:     The set of labels whose indices to be extracted
+   - Inds:         The cell array of indices extracted for labelset
+
+ $ Description $
+   - Inds = sllabelinds(labels, labelset) extracts the indices 
+     corresponding to the labels specified in labelset. Suppose the
+     labelset is given by [l1, l2, ...], then Inds would be like
+     {[i11, i12, ...], [i21, i22, ...], ...}, where [i11, i12, ...] is
+     a row vector of indices corresponding to l1, so that 
+     labels(i11) = labels(i12) = ... = l1.
+   
+ $ History $
+   - Created by Dahua Lin, on Aug 31, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slcount.html" class="code" title="function [nums, U] = slcount(A)">slcount</a>	SLCOUNT Count the number of sum entities</li><li><a href="slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>	SLNUMS2BOUNDS Compute the index-boundaries from section sizes</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/cluster/slkmeans.html" class="code" title="function [means, labels] = slkmeans(X, varargin)">slkmeans</a>	SLKMEANS Performs K-Means Clustering on samples</li><li><a href="../../sltoolbox/core/sllabeledsum.html" class="code" title="function S = sllabeledsum(X, labels, labelset, w)">sllabeledsum</a>	SLLABELEDSUM Sums the numbers according to labels</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function Inds = sllabelinds(labels, labelset)</a>
+0002 <span class="comment">%SLLABELINDS Extract indices corresponding to specified labels</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - Inds = sllabelinds(labels, labelset)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - labels:       The labels of samples</span>
+0009 <span class="comment">%   - labelset:     The set of labels whose indices to be extracted</span>
+0010 <span class="comment">%   - Inds:         The cell array of indices extracted for labelset</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - Inds = sllabelinds(labels, labelset) extracts the indices</span>
+0014 <span class="comment">%     corresponding to the labels specified in labelset. Suppose the</span>
+0015 <span class="comment">%     labelset is given by [l1, l2, ...], then Inds would be like</span>
+0016 <span class="comment">%     {[i11, i12, ...], [i21, i22, ...], ...}, where [i11, i12, ...] is</span>
+0017 <span class="comment">%     a row vector of indices corresponding to l1, so that</span>
+0018 <span class="comment">%     labels(i11) = labels(i12) = ... = l1.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $ History $</span>
+0021 <span class="comment">%   - Created by Dahua Lin, on Aug 31, 2006</span>
+0022 <span class="comment">%</span>
+0023 
+0024 <span class="comment">%% parse and verify input</span>
+0025 
+0026 <span class="keyword">if</span> ~isvector(labels) || ~isnumeric(labels)
+0027     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0028         <span class="string">'labels should be a numeric vector'</span>);
+0029 <span class="keyword">end</span>
+0030 
+0031 <span class="keyword">if</span> size(labels, 1) ~= 1
+0032     labels = labels(:)';
+0033 <span class="keyword">end</span>
+0034 
+0035 <span class="comment">%% re-arrange</span>
+0036 
+0037 [labels, si] = sort(labels, 2, <span class="string">'ascend'</span>);
+0038 [nums, labelfound] = <a href="slcount.html" class="code" title="function [nums, U] = slcount(A)">slcount</a>(labels);
+0039 [sinds, einds] = <a href="slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>(nums);
+0040 [sfound, smap] = ismember(labelset, labelfound);
+0041 
+0042 <span class="comment">%% extract</span>
+0043 
+0044 c = length(labelset);
+0045 Inds = cell(1, c);
+0046 <span class="keyword">for</span> i = 1 : c
+0047     <span class="keyword">if</span> sfound(i)
+0048         mi = smap(i);
+0049         curinds = si(sinds(mi):einds(mi));
+0050         Inds{i} = curinds;
+0051     <span class="keyword">else</span>
+0052         Inds{i} = [];
+0053     <span class="keyword">end</span>
+0054 <span class="keyword">end</span>
+0055 
+0056 
+0057 
+0058 
+0059 
+0060 
+0061</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

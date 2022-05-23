@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sllinrega</title>
+  <meta name="keywords" content="sllinrega">
+  <meta name="description" content="SLLINREGA Performs Augmented Multivariate Linear Regression">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">regression</a> &gt; sllinrega.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\regression&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sllinrega
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLLINREGA Performs Augmented Multivariate Linear Regression</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [A, b] = sllinrega(X, Y, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLLINREGA Performs Augmented Multivariate Linear Regression
+
+ $ Syntax $
+   - [A, b] = sllinrega(X, Y, ...)
+
+ $ Arguments $
+   - X:        The sample matrix of x
+   - Y:        The sample matrix of y
+   - A:        The solved transform matrix
+   - b:        The solved shift vector
+
+ $ Description $
+   - [A, b] = sllinrega(X, Y, ...) solves the regression problem given
+     by the following formula:
+           y = A * x + b
+     in least square error sense. The samples are stored in X and Y
+     in column-wise manner.
+     You can specify properties for regression as in sllinreg.
+
+ $ Remarks $
+   - The implementation is based on sllinreg with an augmented 
+     formulation as follows:
+           y = [A, b] * [x; 1]
+
+ $ History $
+   - Created by Dahua Lin, on Sep 15th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sllinreg.html" class="code" title="function A = sllinreg(X, Y, varargin)">sllinreg</a>	SLLINREG Performs Multivariate Linear Regression and Ridge Regression</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [A, b] = sllinrega(X, Y, varargin)</a>
+0002 <span class="comment">%SLLINREGA Performs Augmented Multivariate Linear Regression</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [A, b] = sllinrega(X, Y, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X:        The sample matrix of x</span>
+0009 <span class="comment">%   - Y:        The sample matrix of y</span>
+0010 <span class="comment">%   - A:        The solved transform matrix</span>
+0011 <span class="comment">%   - b:        The solved shift vector</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - [A, b] = sllinrega(X, Y, ...) solves the regression problem given</span>
+0015 <span class="comment">%     by the following formula:</span>
+0016 <span class="comment">%           y = A * x + b</span>
+0017 <span class="comment">%     in least square error sense. The samples are stored in X and Y</span>
+0018 <span class="comment">%     in column-wise manner.</span>
+0019 <span class="comment">%     You can specify properties for regression as in sllinreg.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% $ Remarks $</span>
+0022 <span class="comment">%   - The implementation is based on sllinreg with an augmented</span>
+0023 <span class="comment">%     formulation as follows:</span>
+0024 <span class="comment">%           y = [A, b] * [x; 1]</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">% $ History $</span>
+0027 <span class="comment">%   - Created by Dahua Lin, on Sep 15th, 2006</span>
+0028 <span class="comment">%</span>
+0029 
+0030 <span class="comment">%% parse and verify input arguments</span>
+0031 
+0032 <span class="keyword">if</span> nargin &lt; 2
+0033     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sllinrega'</span>, 2);
+0034 <span class="keyword">end</span>
+0035 
+0036 <span class="keyword">if</span> ~isnumeric(X) || ~isnumeric(Y) || ndims(X) ~= 2 || ndims(Y) ~= 2
+0037     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0038         <span class="string">'The X and Y should be both 2D numeric matrices'</span>);
+0039 <span class="keyword">end</span>
+0040 
+0041 <span class="comment">%% main</span>
+0042 
+0043 <span class="comment">% augment formulation</span>
+0044 [dx, nx] = size(X);
+0045 Xa = [X; ones(1, nx)];
+0046 
+0047 <span class="comment">% solve</span>
+0048 Aa = <a href="sllinreg.html" class="code" title="function A = sllinreg(X, Y, varargin)">sllinreg</a>(Xa, Y, varargin{:});
+0049 clear Xa;
+0050 
+0051 <span class="comment">% extract</span>
+0052 A = Aa(:, 1:dx);
+0053 b = Aa(:, dx+1);
+0054 
+0055 
+0056 
+0057 
+0058 
+0059 
+0060</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

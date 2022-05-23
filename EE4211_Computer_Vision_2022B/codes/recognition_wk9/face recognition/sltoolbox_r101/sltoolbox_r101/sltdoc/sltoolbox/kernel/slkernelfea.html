@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slkernelfea</title>
+  <meta name="keywords" content="slkernelfea">
+  <meta name="description" content="SLKERNELFEA Extracts kernelized mapped features">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">kernel</a> &gt; slkernelfea.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\kernel&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slkernelfea
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLKERNELFEA Extracts kernelized mapped features</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function Y = slkernelfea(X, X0, kparams, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLKERNELFEA Extracts kernelized mapped features
+
+ $ Syntax $
+   - Y = slkernelfea(X, X0, kparams)
+   - Y = slkernelfea(X, X0, kparams, ...)
+
+ $ Arguments $
+   - X:            the target sample matrix.
+   - X0:           the referenced sample set.
+   - kparams:      the cell containing the parameters for kernel
+                   computation. 
+   - Y:            the feature matrix.
+
+ $ Description $
+   - Y = slkernelfea(X, X0, kparams) computes the empirical kernel maps
+     for the samples X. kparams is a cell of parameters specifying
+     the computation of kernels, which is given in the form:
+     {kernel_type, ...} and input to slkernel function.
+
+   - Y = slkernelfea(X, X0, kparams, ...) computes kernel mapped features
+     according to the specified properties.
+     \*
+     \t   Table 1. Properties for Kernelized Feature Extraction \\
+     \h    name    &amp;       description                          \\
+           'cen'   &amp;  Whether to centralize the features. default = false.
+                      Note that, typically if centralization is applied
+                      in training stage, it should be also applied in
+                      testing stage for consistency.            \\
+           'proj'  &amp;  The further projection coefficient matrix. 
+                      default = []. If an non-empty projection matrix
+                      is given, it will takes a further projection step.
+                      The projection matrix is of size n0 x d, where n0
+                      is the number of the referenced samples (i.e. the
+                      dimension of empirical kernel mapping), d is the 
+                      dimension of projected subspace.          \\
+           'gram'  &amp;  The gram matrix of the referenced sample set. It
+                      will be used for centralization. When used, if it
+                      is not specified, the function will compute it from
+                      X0. However, it is more efficient to offer it
+                      when it is available and centralization is 
+                      required. default = []. \\
+         'weights' &amp;  The weights of referenced samples. If specified, it
+                      will be used by centralization for mean feature
+                      computation. default = []. \\
+           'kfunc' &amp;  The function for kernel computing. By default, it 
+                      is set to empty, which indicates to use slkernel
+                      for kernel computing. The user can supply its
+                      owned kernel computing function, which should
+                      follow the syntax as f(X0, X, ...). \\
+     \*
+
+ $ History $
+   - Created by Dahua Lin on May 2nd, 2005</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slcenkernel.html" class="code" title="function KC = slcenkernel(K0, K, w)">slcenkernel</a>	SLCENKERNEL Compute the centralized kernel matrix</li><li><a href="slkernel.html" class="code" title="function K = slkernel(varargin)">slkernel</a>	SLKERNEL Computes the kernel for samples</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function Y = slkernelfea(X, X0, kparams, varargin)</a>
+0002 <span class="comment">%SLKERNELFEA Extracts kernelized mapped features</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - Y = slkernelfea(X, X0, kparams)</span>
+0006 <span class="comment">%   - Y = slkernelfea(X, X0, kparams, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - X:            the target sample matrix.</span>
+0010 <span class="comment">%   - X0:           the referenced sample set.</span>
+0011 <span class="comment">%   - kparams:      the cell containing the parameters for kernel</span>
+0012 <span class="comment">%                   computation.</span>
+0013 <span class="comment">%   - Y:            the feature matrix.</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ Description $</span>
+0016 <span class="comment">%   - Y = slkernelfea(X, X0, kparams) computes the empirical kernel maps</span>
+0017 <span class="comment">%     for the samples X. kparams is a cell of parameters specifying</span>
+0018 <span class="comment">%     the computation of kernels, which is given in the form:</span>
+0019 <span class="comment">%     {kernel_type, ...} and input to slkernel function.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%   - Y = slkernelfea(X, X0, kparams, ...) computes kernel mapped features</span>
+0022 <span class="comment">%     according to the specified properties.</span>
+0023 <span class="comment">%     \*</span>
+0024 <span class="comment">%     \t   Table 1. Properties for Kernelized Feature Extraction \\</span>
+0025 <span class="comment">%     \h    name    &amp;       description                          \\</span>
+0026 <span class="comment">%           'cen'   &amp;  Whether to centralize the features. default = false.</span>
+0027 <span class="comment">%                      Note that, typically if centralization is applied</span>
+0028 <span class="comment">%                      in training stage, it should be also applied in</span>
+0029 <span class="comment">%                      testing stage for consistency.            \\</span>
+0030 <span class="comment">%           'proj'  &amp;  The further projection coefficient matrix.</span>
+0031 <span class="comment">%                      default = []. If an non-empty projection matrix</span>
+0032 <span class="comment">%                      is given, it will takes a further projection step.</span>
+0033 <span class="comment">%                      The projection matrix is of size n0 x d, where n0</span>
+0034 <span class="comment">%                      is the number of the referenced samples (i.e. the</span>
+0035 <span class="comment">%                      dimension of empirical kernel mapping), d is the</span>
+0036 <span class="comment">%                      dimension of projected subspace.          \\</span>
+0037 <span class="comment">%           'gram'  &amp;  The gram matrix of the referenced sample set. It</span>
+0038 <span class="comment">%                      will be used for centralization. When used, if it</span>
+0039 <span class="comment">%                      is not specified, the function will compute it from</span>
+0040 <span class="comment">%                      X0. However, it is more efficient to offer it</span>
+0041 <span class="comment">%                      when it is available and centralization is</span>
+0042 <span class="comment">%                      required. default = []. \\</span>
+0043 <span class="comment">%         'weights' &amp;  The weights of referenced samples. If specified, it</span>
+0044 <span class="comment">%                      will be used by centralization for mean feature</span>
+0045 <span class="comment">%                      computation. default = []. \\</span>
+0046 <span class="comment">%           'kfunc' &amp;  The function for kernel computing. By default, it</span>
+0047 <span class="comment">%                      is set to empty, which indicates to use slkernel</span>
+0048 <span class="comment">%                      for kernel computing. The user can supply its</span>
+0049 <span class="comment">%                      owned kernel computing function, which should</span>
+0050 <span class="comment">%                      follow the syntax as f(X0, X, ...). \\</span>
+0051 <span class="comment">%     \*</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">% $ History $</span>
+0054 <span class="comment">%   - Created by Dahua Lin on May 2nd, 2005</span>
+0055 <span class="comment">%</span>
+0056 
+0057 <span class="comment">%% parse and verify input arguments</span>
+0058 
+0059 <span class="keyword">if</span> nargin &lt; 3
+0060     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slkernelfea'</span>, 3);
+0061 <span class="keyword">end</span>
+0062 
+0063 <span class="comment">% for X</span>
+0064 <span class="keyword">if</span> ndims(X) ~= 2
+0065     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0066         <span class="string">'The sample matrix X should be a 2D matrix'</span>);
+0067 <span class="keyword">end</span>
+0068 d = size(X, 1);
+0069 
+0070 <span class="comment">% for X0</span>
+0071 <span class="keyword">if</span> ndims(X0) ~= 2
+0072     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0073         <span class="string">'The sample matrix X0 should be a 2D matrix'</span>);
+0074 <span class="keyword">end</span>
+0075 <span class="keyword">if</span> size(X0, 1) ~= d
+0076     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0077         <span class="string">'Size inconsistency between X and X0'</span>);
+0078 <span class="keyword">end</span>
+0079 n0 = size(X0, 2);
+0080 
+0081 <span class="comment">% for kparams</span>
+0082 <span class="keyword">if</span> ~iscell(kparams)
+0083     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0084         <span class="string">'kernel parameters should be given by cell array'</span>);
+0085 <span class="keyword">end</span>
+0086 
+0087 <span class="comment">% for options</span>
+0088 opts.cen = false;
+0089 opts.proj = [];
+0090 opts.gram = [];
+0091 opts.kfunc = [];
+0092 opts.weights = [];
+0093 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0094 
+0095 <span class="comment">% for projection matrix</span>
+0096 <span class="keyword">if</span> isempty(opts.proj)
+0097     need_proj = false;
+0098 <span class="keyword">else</span>
+0099     <span class="keyword">if</span> ndims(opts.proj) ~= 2
+0100         error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0101             <span class="string">'The projection coefficient matrix should be 2D'</span>);
+0102     <span class="keyword">end</span>
+0103     need_proj = true;
+0104     A = opts.proj;
+0105     <span class="keyword">if</span> size(A, 1) ~= n0
+0106         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0107             <span class="string">'Size inconsistency between X0 and A, the projection matrix A should be an n0 x d matrix'</span>);
+0108     <span class="keyword">end</span>
+0109 <span class="keyword">end</span>
+0110 
+0111 <span class="comment">% for gram matrix K0</span>
+0112 <span class="keyword">if</span> isempty(opts.gram)
+0113     has_gram = false;
+0114 <span class="keyword">else</span>
+0115     has_gram = true;
+0116     K0 = opts.gram;
+0117     <span class="keyword">if</span> ~isequal(size(K0), [n0, n0])
+0118         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0119             <span class="string">'Invalid size of gram matrix, which should be n0 x n0'</span>);
+0120     <span class="keyword">end</span>
+0121 <span class="keyword">end</span>
+0122 
+0123 <span class="comment">% for kernel computing function</span>
+0124 <span class="keyword">if</span> <span class="keyword">...</span>
+0125         isempty(opts.kfunc) || <span class="keyword">...</span>
+0126         isequal(opts.kfunc, @<a href="slkernel.html" class="code" title="function K = slkernel(varargin)">slkernel</a>) || <span class="keyword">...</span>
+0127         strcmpi(opts.kfunc, <span class="string">'slkernel'</span>)
+0128     
+0129     use_special_kfunc = false;
+0130 <span class="keyword">else</span>
+0131     use_special_kfunc = true;
+0132 <span class="keyword">end</span>
+0133 
+0134 <span class="comment">% for sample weights</span>
+0135 <span class="keyword">if</span> ~isempty(opts.weights)
+0136     <span class="keyword">if</span> ~isequal(size(opts.weights), [1, n0])
+0137         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0138             <span class="string">'The weights should be a 1 x n0 row vector'</span>);
+0139     <span class="keyword">end</span>
+0140 <span class="keyword">end</span>
+0141 
+0142 
+0143 <span class="comment">%% Compute</span>
+0144 
+0145 <span class="comment">%% Empirical Kernel Mapping</span>
+0146 
+0147 <span class="keyword">if</span> ~use_special_kfunc
+0148     Kx = <a href="slkernel.html" class="code" title="function K = slkernel(varargin)">slkernel</a>(X0, X, kparams{:});
+0149 <span class="keyword">else</span>
+0150     Kx = feval(opts.kfunc, X0, X, kparams{:});
+0151 <span class="keyword">end</span>
+0152 
+0153 <span class="comment">%% Centralization</span>
+0154 
+0155 <span class="keyword">if</span> opts.cen
+0156     
+0157     <span class="comment">% compute gram matrix</span>
+0158     <span class="keyword">if</span> ~has_gram
+0159         <span class="keyword">if</span> ~use_special_kfunc
+0160             K0 = <a href="slkernel.html" class="code" title="function K = slkernel(varargin)">slkernel</a>(X0, kparams{:});
+0161         <span class="keyword">else</span>
+0162             K0 = feval(opts.kfunc, X0, X0, kparams{:});
+0163         <span class="keyword">end</span>                    
+0164     <span class="keyword">end</span>
+0165     
+0166     <span class="comment">% centralize</span>
+0167     Kx = <a href="slcenkernel.html" class="code" title="function KC = slcenkernel(K0, K, w)">slcenkernel</a>(K0, Kx, opts.weights);    
+0168 <span class="keyword">end</span>
+0169 
+0170 <span class="comment">%% Projection and Output</span>
+0171 
+0172 <span class="keyword">if</span> need_proj    
+0173     Y = A' * Kx;     
+0174 <span class="keyword">else</span>
+0175     Y = Kx;
+0176 <span class="keyword">end</span>
+0177 
+0178</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

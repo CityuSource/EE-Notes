@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of edl_readctrlfile</title>
+  <meta name="keywords" content="edl_readctrlfile">
+  <meta name="description" content="EDL_READCTRLFILE Reads in a control file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">ExpDL</a> &gt; edl_readctrlfile.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>edl_readctrlfile
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>EDL_READCTRLFILE Reads in a control file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function C = edl_readctrlfile(filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">EDL_READCTRLFILE Reads in a control file 
+
+ $ Description $
+   - C = edl_readctrlfile(filename)
+
+ $ Arguments $
+   - filename:     the filename of the control file
+   - C:            the struct of the read information
+                   - guid:    the GUID string     
+                   - status:  the n x 1cell array of status
+
+ $ Description $
+   - C = edl_readctrlfile(filename) reads in a control file.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 14, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_check_internalindices.html" class="code" title="function cprops = edl_check_internalindices(props)">edl_check_internalindices</a>	EDL_CHECK_INTERNALINDICES Checks the consistency of internal indices</li><li><a href="edl_readprops.html" class="code" title="function S = edl_readprops(filename, nodetag)">edl_readprops</a>	EDL_READPROPS Reads properties from a property table XML file</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_batchexp.html" class="code" title="function edl_batchexp(expfun, scrpath, env, logger, filter, runopt)">edl_batchexp</a>	EDL_BATCHEXP Performs Batch experiments according to scheme</li><li><a href="edl_updatectrlfile.html" class="code" title="function edl_updatectrlfile(guid, filename, idx, status)">edl_updatectrlfile</a>	EDL_UPDATECTRLFILE Updates the status in a control file</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function C = edl_readctrlfile(filename)</a>
+0002 <span class="comment">%EDL_READCTRLFILE Reads in a control file</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Description $</span>
+0005 <span class="comment">%   - C = edl_readctrlfile(filename)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - filename:     the filename of the control file</span>
+0009 <span class="comment">%   - C:            the struct of the read information</span>
+0010 <span class="comment">%                   - guid:    the GUID string</span>
+0011 <span class="comment">%                   - status:  the n x 1cell array of status</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - C = edl_readctrlfile(filename) reads in a control file.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ History $</span>
+0017 <span class="comment">%   - Created by Dahua Lin, on Aug 14, 2006</span>
+0018 <span class="comment">%</span>
+0019 
+0020 <span class="comment">%% Read in file</span>
+0021 
+0022 doctag = <span class="string">'ExpControl'</span>;
+0023 nodetag = <span class="string">'Entry'</span>;
+0024 
+0025 S = <a href="edl_readprops.html" class="code" title="function S = edl_readprops(filename, nodetag)">edl_readprops</a>(filename, nodetag);
+0026 
+0027 <span class="comment">%% Post-Processing</span>
+0028 
+0029 <span class="comment">% doc tag</span>
+0030 <span class="keyword">if</span> ~strcmp(S.tag, doctag)
+0031     error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0032         <span class="string">'Invalid document tag %s for control file'</span>, S.tag);
+0033 <span class="keyword">end</span>
+0034 
+0035 <span class="comment">% doc attribs</span>
+0036 <span class="keyword">if</span> isempty(S.attribs)
+0037     error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0038         <span class="string">'The document element for control file has no attributes'</span>);
+0039 <span class="keyword">end</span>
+0040 
+0041 attrnames = {<span class="string">'guid'</span>};
+0042 tf = isfield(S.attribs, attrnames);
+0043 <span class="keyword">if</span> ~all(tf)
+0044     error(<span class="string">'edl:parserror'</span>, <span class="keyword">...</span>
+0045         <span class="string">'The required header %s does not exist'</span>, <span class="keyword">...</span>
+0046         attrnames{find(~tf, 1)});
+0047 <span class="keyword">end</span>
+0048 
+0049 C.guid = S.attribs.guid;
+0050 
+0051 <span class="comment">% entries</span>
+0052 
+0053 <a href="edl_check_internalindices.html" class="code" title="function cprops = edl_check_internalindices(props)">edl_check_internalindices</a>(S.(nodetag));
+0054 C.status = {S.(nodetag).status};
+0055 C.status = C.status(:)';
+0056 
+0057 
+0058</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

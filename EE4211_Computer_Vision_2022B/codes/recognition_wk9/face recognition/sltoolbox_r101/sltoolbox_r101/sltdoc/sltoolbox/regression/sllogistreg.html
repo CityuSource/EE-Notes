@@ -1,0 +1,359 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sllogistreg</title>
+  <meta name="keywords" content="sllogistreg">
+  <meta name="description" content="SLLOGISTREG Performs Multivariate Logistic Regression">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">regression</a> &gt; sllogistreg.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\regression&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sllogistreg
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLLOGISTREG Performs Multivariate Logistic Regression</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [A, b, props, info] = sllogistreg(X, nums, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLLOGISTREG Performs Multivariate Logistic Regression
+
+ $ Syntax $
+   - [A, b] = sllogistreg(X, nums, ...)
+   - [A, b, props] = sllogistreg(X, nums, ...)
+   - [A, b, props, info] = sllogistreg(X, nums, ...)
+
+ $ Arguments $
+   - X:            The input sample matrix
+   - nums:         The numbers of samples in different classes
+   - A:            The solved logistic coefficients
+   - b:            The solved logistic shift value
+   - props:        The probability values under the resultant model
+   - info:         The information of learning process
+                   - exitflag: The exitflag given by fminunc
+                   - numiters: The number of iterations
+                   - fval:     The final objective value
+
+ $ Description $
+   - [A, b] = sllogistreg(X, nums, ...) solves the multivariate logistic 
+     regression. Suppose there are n samples, from C classes, then C
+     models are learned for the C classes. The k-th model is characterized
+     by a coefficient vector a_k and a shift value b_k. Then a sample x,
+     the probability that it belongs to the k-th class is given by the
+     following formula:
+           p(x, k) = P_k * h_k(x) / sum_l (P_l * h_l(x))
+     here, we have
+           h_k(x) = a_k^T * x + b_k
+     The objective of logistic regression is to maximize the sum of 
+     the probabilities that the samples belong to its own class:
+           maximize sum_i p(x_i, c_i)
+     here, c_i is the class label corresponding to x_i.
+     In the input arguments, X should be a d x n matrix containing the
+     x samples with the samples from the same class gathering together,
+     nums should be a 1 x C row vector. 
+     In the output arguments, A should be a d x C matrix, and b is a
+     1 x C row vector. Each column in A together with the corresponding
+     shift value in b describe a model for one class.
+
+     You can specify the following parameter to control the numeric 
+     optimization process:
+       - 'weights':        The weights of the samples  (1 x n)
+                           default = []: means all weights are 1
+       - 'priors':         The priors of the classes (1 x C)
+                           default = []: means equal priors
+       - 'maxiter':        The maximum number of iterations
+                           default = 300
+       - 'tolF':           The tolerance of the change of objective func
+                           default = 1e-6
+       - 'tolX':           The tolerance of the change of parameters
+                           default = 1e-6
+       - 'display':        The level of display
+                           default = 'off'
+       - 'init':           A cell array as {A0, b0}
+                           default = {}, using random initialization
+
+   - [A, b, props] = sllogistreg(X, nums, ...) also output the 
+     probability values that the input samples belong to the true class.
+     It would be a 1 x n row vector.
+
+   - [A, b, props, info] = sllogistreg(X, nums, ...) outputs the info
+     about the optimization process
+ 
+ $ Remarks $
+   - This function is implemented based on the optimization function
+     fminunc and fmincon, and thus requires the optimization toolbox 
+     be installed.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 16, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/stat/slposteriori.html" class="code" title="function posteriori = slposteriori(condprops, priori, op)">slposteriori</a>	SLPOSTERIORI Computes the posterioris</li><li><a href="../../sltoolbox/stat/slposterioritrue.html" class="code" title="function posteriori = slposterioritrue(condprops, nums, priori, op)">slposterioritrue</a>	SLPOSTERIORITRUE Computes the posteriori that samples belong to true class</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slexpand.html" class="code" title="function A = slexpand(nums, U)">slexpand</a>	SLEXPAND Expand a set to multiple instance</li><li><a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>	SLNUMS2BOUNDS Compute the index-boundaries from section sizes</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [f, g] = logistic_objfun(v, Xa, nums, d, n, C, pri, w)</a></li><li><a href="#_sub2" class="code">function L = compute_logit(Aa, Xa)</a></li><li><a href="#_sub3" class="code">function M = make_indicatormap(nums, C, n)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [A, b, props, info] = sllogistreg(X, nums, varargin)</a>
+0002 <span class="comment">%SLLOGISTREG Performs Multivariate Logistic Regression</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [A, b] = sllogistreg(X, nums, ...)</span>
+0006 <span class="comment">%   - [A, b, props] = sllogistreg(X, nums, ...)</span>
+0007 <span class="comment">%   - [A, b, props, info] = sllogistreg(X, nums, ...)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $ Arguments $</span>
+0010 <span class="comment">%   - X:            The input sample matrix</span>
+0011 <span class="comment">%   - nums:         The numbers of samples in different classes</span>
+0012 <span class="comment">%   - A:            The solved logistic coefficients</span>
+0013 <span class="comment">%   - b:            The solved logistic shift value</span>
+0014 <span class="comment">%   - props:        The probability values under the resultant model</span>
+0015 <span class="comment">%   - info:         The information of learning process</span>
+0016 <span class="comment">%                   - exitflag: The exitflag given by fminunc</span>
+0017 <span class="comment">%                   - numiters: The number of iterations</span>
+0018 <span class="comment">%                   - fval:     The final objective value</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $ Description $</span>
+0021 <span class="comment">%   - [A, b] = sllogistreg(X, nums, ...) solves the multivariate logistic</span>
+0022 <span class="comment">%     regression. Suppose there are n samples, from C classes, then C</span>
+0023 <span class="comment">%     models are learned for the C classes. The k-th model is characterized</span>
+0024 <span class="comment">%     by a coefficient vector a_k and a shift value b_k. Then a sample x,</span>
+0025 <span class="comment">%     the probability that it belongs to the k-th class is given by the</span>
+0026 <span class="comment">%     following formula:</span>
+0027 <span class="comment">%           p(x, k) = P_k * h_k(x) / sum_l (P_l * h_l(x))</span>
+0028 <span class="comment">%     here, we have</span>
+0029 <span class="comment">%           h_k(x) = a_k^T * x + b_k</span>
+0030 <span class="comment">%     The objective of logistic regression is to maximize the sum of</span>
+0031 <span class="comment">%     the probabilities that the samples belong to its own class:</span>
+0032 <span class="comment">%           maximize sum_i p(x_i, c_i)</span>
+0033 <span class="comment">%     here, c_i is the class label corresponding to x_i.</span>
+0034 <span class="comment">%     In the input arguments, X should be a d x n matrix containing the</span>
+0035 <span class="comment">%     x samples with the samples from the same class gathering together,</span>
+0036 <span class="comment">%     nums should be a 1 x C row vector.</span>
+0037 <span class="comment">%     In the output arguments, A should be a d x C matrix, and b is a</span>
+0038 <span class="comment">%     1 x C row vector. Each column in A together with the corresponding</span>
+0039 <span class="comment">%     shift value in b describe a model for one class.</span>
+0040 <span class="comment">%</span>
+0041 <span class="comment">%     You can specify the following parameter to control the numeric</span>
+0042 <span class="comment">%     optimization process:</span>
+0043 <span class="comment">%       - 'weights':        The weights of the samples  (1 x n)</span>
+0044 <span class="comment">%                           default = []: means all weights are 1</span>
+0045 <span class="comment">%       - 'priors':         The priors of the classes (1 x C)</span>
+0046 <span class="comment">%                           default = []: means equal priors</span>
+0047 <span class="comment">%       - 'maxiter':        The maximum number of iterations</span>
+0048 <span class="comment">%                           default = 300</span>
+0049 <span class="comment">%       - 'tolF':           The tolerance of the change of objective func</span>
+0050 <span class="comment">%                           default = 1e-6</span>
+0051 <span class="comment">%       - 'tolX':           The tolerance of the change of parameters</span>
+0052 <span class="comment">%                           default = 1e-6</span>
+0053 <span class="comment">%       - 'display':        The level of display</span>
+0054 <span class="comment">%                           default = 'off'</span>
+0055 <span class="comment">%       - 'init':           A cell array as {A0, b0}</span>
+0056 <span class="comment">%                           default = {}, using random initialization</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">%   - [A, b, props] = sllogistreg(X, nums, ...) also output the</span>
+0059 <span class="comment">%     probability values that the input samples belong to the true class.</span>
+0060 <span class="comment">%     It would be a 1 x n row vector.</span>
+0061 <span class="comment">%</span>
+0062 <span class="comment">%   - [A, b, props, info] = sllogistreg(X, nums, ...) outputs the info</span>
+0063 <span class="comment">%     about the optimization process</span>
+0064 <span class="comment">%</span>
+0065 <span class="comment">% $ Remarks $</span>
+0066 <span class="comment">%   - This function is implemented based on the optimization function</span>
+0067 <span class="comment">%     fminunc and fmincon, and thus requires the optimization toolbox</span>
+0068 <span class="comment">%     be installed.</span>
+0069 <span class="comment">%</span>
+0070 <span class="comment">% $ History $</span>
+0071 <span class="comment">%   - Created by Dahua Lin, on Sep 16, 2006</span>
+0072 <span class="comment">%</span>
+0073 
+0074 <span class="comment">%% parse and verify input arguments</span>
+0075 
+0076 <span class="keyword">if</span> nargin &lt; 2
+0077     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sllogistreg'</span>, 2);
+0078 <span class="keyword">end</span>
+0079 
+0080 [d, n] = size(X);
+0081 <span class="keyword">if</span> ~isvector(nums) || size(nums, 1) ~= 1
+0082     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0083         <span class="string">'nums should be a 1 x C row vector'</span>);
+0084 <span class="keyword">end</span>
+0085 <span class="keyword">if</span> sum(nums) ~= n
+0086     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0087         <span class="string">'The numbers in nums are not consistent with the sample number'</span>);
+0088 <span class="keyword">end</span>
+0089 
+0090 C = length(nums);
+0091 
+0092 <span class="keyword">if</span> C &lt; 2
+0093     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0094         <span class="string">'There should be at least 2 classes.'</span>);
+0095 <span class="keyword">end</span>
+0096 
+0097 opts.weights = [];
+0098 opts.priors = [];
+0099 opts.maxiter = 300;
+0100 opts.tolF = 1e-6;
+0101 opts.tolX = 1e-6;
+0102 opts.display = <span class="string">'off'</span>;
+0103 opts.init = {};
+0104 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0105 
+0106 w = opts.weights;
+0107 <span class="keyword">if</span> ~isempty(w)
+0108     <span class="keyword">if</span> ~isequal(size(w), [1, n])
+0109         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0110             <span class="string">'w should be a 1 x n row vector'</span>);
+0111     <span class="keyword">end</span>
+0112 <span class="keyword">end</span>
+0113 
+0114 pri = opts.priors;
+0115 <span class="keyword">if</span> ~isempty(pri)
+0116     <span class="keyword">if</span> ~isequal(size(pri), [1, C])
+0117         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0118             <span class="string">'pri should be a 1 x C row vector'</span>);
+0119     <span class="keyword">end</span>
+0120 <span class="keyword">end</span>
+0121 
+0122 <span class="keyword">if</span> isempty(opts.init)
+0123     is_inited = false;
+0124 <span class="keyword">else</span>
+0125     A0 = opts.init{1};
+0126     b0 = opts.init{2};
+0127     <span class="keyword">if</span> ~isequal(size(A0), [d, C])
+0128         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="string">'A0 should be a d x C matrix'</span>);
+0129     <span class="keyword">end</span>
+0130     <span class="keyword">if</span> ~isequal(size(b0), [1, C])
+0131         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="string">'b0 should be a 1 x C row vector'</span>);
+0132     <span class="keyword">end</span>
+0133     is_inited = true;    
+0134 <span class="keyword">end</span>
+0135 
+0136 
+0137 <span class="comment">%% main</span>
+0138 
+0139 <span class="comment">%NOTE: we convert the problem of maximization to minimization of the</span>
+0140 <span class="comment">%      negative object</span>
+0141 
+0142 <span class="comment">% augment problem</span>
+0143 
+0144 Xa = [X; ones(1, n)];
+0145 
+0146 <span class="comment">% prepare for optimization</span>
+0147 optimfunc = @(v) <a href="#_sub1" class="code" title="subfunction [f, g] = logistic_objfun(v, Xa, nums, d, n, C, pri, w)">logistic_objfun</a>(v, Xa, nums, d, n, C, pri, w);
+0148 optimopts = optimset(optimset(<span class="string">'fminunc'</span>), <span class="keyword">...</span>
+0149     <span class="string">'LargeScale'</span>, <span class="string">'on'</span>, <span class="keyword">...</span>
+0150     <span class="string">'GradObj'</span>, <span class="string">'on'</span>, <span class="keyword">...</span>
+0151     <span class="string">'MaxIter'</span>, opts.maxiter, <span class="keyword">...</span>
+0152     <span class="string">'Display'</span>, opts.display, <span class="keyword">...</span>
+0153     <span class="string">'TolFun'</span>, opts.tolF, <span class="keyword">...</span>
+0154     <span class="string">'TolX'</span>, opts.tolX);
+0155     
+0156 <span class="comment">% initialization</span>
+0157 <span class="keyword">if</span> ~is_inited
+0158     v0 = rand((d+1)*C, 1);
+0159 <span class="keyword">else</span>
+0160     v0 = reshape([A0; b0], (d+1)*C, 1);
+0161 <span class="keyword">end</span>
+0162 
+0163 <span class="comment">% do optimization</span>
+0164 [v, fval, exitflag, optimoutput] = fminunc(optimfunc, v0, optimopts);
+0165 clear v0;
+0166 clear optimfunc;
+0167 clear Xa;
+0168 
+0169 <span class="comment">% make output</span>
+0170 v = reshape(v, d+1, C);
+0171 A = v(1:d, :);
+0172 b = v(d+1, :);
+0173 clear v;
+0174 
+0175 <span class="keyword">if</span> nargout &gt;= 3
+0176     L = <a href="#_sub2" class="code" title="subfunction L = compute_logit(Aa, Xa)">compute_logit</a>(A, X) ;
+0177     L = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(L, b', 1);
+0178     props = <a href="../../sltoolbox/stat/slposterioritrue.html" class="code" title="function posteriori = slposterioritrue(condprops, nums, priori, op)">slposterioritrue</a>(L, nums, pri, <span class="string">'log'</span>);            
+0179 <span class="keyword">end</span>
+0180 
+0181 <span class="keyword">if</span> nargout &gt;= 4
+0182     info.exitflag = exitflag;
+0183     info.numiters = optimoutput.iterations;
+0184     info.fval = -fval; 
+0185 <span class="keyword">end</span>
+0186 
+0187 
+0188 <span class="comment">%% The core functions for objective and gradient evaluation</span>
+0189 
+0190 <a name="_sub1" href="#_subfunctions" class="code">function [f, g] = logistic_objfun(v, Xa, nums, d, n, C, pri, w)</a>
+0191 <span class="comment">% v is a reshape version of Aa</span>
+0192 
+0193 <span class="comment">% get input</span>
+0194 Aa = reshape(v, d+1, C);
+0195 L = <a href="#_sub2" class="code" title="subfunction L = compute_logit(Aa, Xa)">compute_logit</a>(Aa, Xa);
+0196 clear Aa;
+0197 
+0198 <span class="comment">% compute f</span>
+0199 P = <a href="../../sltoolbox/stat/slposteriori.html" class="code" title="function posteriori = slposteriori(condprops, priori, op)">slposteriori</a>(L, pri, <span class="string">'log'</span>);
+0200 [sps, eps] = <a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>(nums);
+0201 pps = zeros(1, n);
+0202 <span class="keyword">for</span> k = 1 : C
+0203     sk = sps(k); ek = eps(k);
+0204     pps(sk:ek) = P(k, sk:ek);
+0205 <span class="keyword">end</span>
+0206 
+0207 <span class="keyword">if</span> isempty(w)
+0208     f = -sum(log(pps));
+0209 <span class="keyword">else</span>
+0210     f = -sum(log(pps) .* w);
+0211 <span class="keyword">end</span>
+0212 
+0213 <span class="comment">% compute g</span>
+0214 M = <a href="#_sub3" class="code" title="subfunction M = make_indicatormap(nums, C, n)">make_indicatormap</a>(nums, C, n);
+0215 M = M - P;
+0216 clear P;
+0217 <span class="keyword">if</span> ~isempty(w)
+0218     M = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(M, w, 2);
+0219 <span class="keyword">end</span>
+0220 g = Xa * M';
+0221 clear M;
+0222 g = -g(:);
+0223 
+0224 
+0225 <a name="_sub2" href="#_subfunctions" class="code">function L = compute_logit(Aa, Xa)</a>
+0226 <span class="comment">% L is the logit values (a_k' * x_i + b_k): C x n matrix</span>
+0227 L = Aa' * Xa;
+0228 
+0229 
+0230 <span class="comment">%% Auxiliary functions</span>
+0231 
+0232 <a name="_sub3" href="#_subfunctions" class="code">function M = make_indicatormap(nums, C, n)</a>
+0233 <span class="comment">% C x n</span>
+0234 <span class="comment">% C(i, j) = 1, when sample j belongs to class i</span>
+0235 
+0236 M = zeros(C, n);
+0237 I = <a href="../../sltoolbox/utils/slexpand.html" class="code" title="function A = slexpand(nums, U)">slexpand</a>(nums);
+0238 J = 1:n;
+0239 inds = sub2ind([C, n], I, J);
+0240 clear I J;
+0241 M(inds) = 1;
+0242</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

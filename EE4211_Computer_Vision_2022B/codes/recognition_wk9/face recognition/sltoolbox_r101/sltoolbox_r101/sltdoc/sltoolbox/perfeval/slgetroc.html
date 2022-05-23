@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slgetroc</title>
+  <meta name="keywords" content="slgetroc">
+  <meta name="description" content="SLGETROC Computes some point from ROC Curve">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">perfeval</a> &gt; slgetroc.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\perfeval&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slgetroc
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLGETROC Computes some point from ROC Curve</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [thr, fa, fr] = slgetroc(thrs, fars, frrs, item, itempara) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLGETROC Computes some point from ROC Curve
+
+ $ Syntax $
+   - [thr, fa, fr] = slgetroc(thrs, fars, frrs, item, itempara)
+
+ $ Arguments $
+   - thrs:         the sampled threshold values
+   - fars:         the false accept rates at the sampled thresholds
+   - frrs:         the false reject rates at the sampled thresholds
+   - item:         the items to be evaluated
+   - itempara:     the extra parameter for the item
+   - thr:          the threshold at which the specified point is reached
+   - fa:           the false accept rate at the selected point
+   - fr:           the false reject rate at the selected point
+   
+ $ Description $
+   [thr, fa, fr] = slgetroc(thrs, fars, frrs, item, itempara) Computes 
+   a required point from the ROC curves specified by thrs, fars, and 
+   frrs. The requirement on the point is specified by item and itempara.
+   \*
+   \t   Table 1.  The Items of ROC Retrieval    \\
+   \h      name     &amp;    description            \\
+          'ratio'   &amp;  solves the point where fr / fa = itempara   \\
+          'fixfa'   &amp;  solves the point where fa = itempara        \\
+          'fixfr'   &amp;  solves the point where fr = itempara        \\
+          'fixth'   &amp;  solves the point where threshold = itempara \\
+          'best'    &amp;  finds the point where 
+                       itempara * fa + (1 - itempara) * fr attains min. \\
+   \*
+
+ $ Remarks $
+   - To increase accuracy, inverse-interpolation technique is used.
+
+ $ History $
+   - Created by Dahua Lin on Jun 10th, 2005
+   - Modified by Dahua Lin on May 1st, 2006
+     - Base on the sltoolbox v4</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function f = make_mono(f)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [thr, fa, fr] = slgetroc(thrs, fars, frrs, item, itempara)</a>
+0002 <span class="comment">%SLGETROC Computes some point from ROC Curve</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [thr, fa, fr] = slgetroc(thrs, fars, frrs, item, itempara)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - thrs:         the sampled threshold values</span>
+0009 <span class="comment">%   - fars:         the false accept rates at the sampled thresholds</span>
+0010 <span class="comment">%   - frrs:         the false reject rates at the sampled thresholds</span>
+0011 <span class="comment">%   - item:         the items to be evaluated</span>
+0012 <span class="comment">%   - itempara:     the extra parameter for the item</span>
+0013 <span class="comment">%   - thr:          the threshold at which the specified point is reached</span>
+0014 <span class="comment">%   - fa:           the false accept rate at the selected point</span>
+0015 <span class="comment">%   - fr:           the false reject rate at the selected point</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $ Description $</span>
+0018 <span class="comment">%   [thr, fa, fr] = slgetroc(thrs, fars, frrs, item, itempara) Computes</span>
+0019 <span class="comment">%   a required point from the ROC curves specified by thrs, fars, and</span>
+0020 <span class="comment">%   frrs. The requirement on the point is specified by item and itempara.</span>
+0021 <span class="comment">%   \*</span>
+0022 <span class="comment">%   \t   Table 1.  The Items of ROC Retrieval    \\</span>
+0023 <span class="comment">%   \h      name     &amp;    description            \\</span>
+0024 <span class="comment">%          'ratio'   &amp;  solves the point where fr / fa = itempara   \\</span>
+0025 <span class="comment">%          'fixfa'   &amp;  solves the point where fa = itempara        \\</span>
+0026 <span class="comment">%          'fixfr'   &amp;  solves the point where fr = itempara        \\</span>
+0027 <span class="comment">%          'fixth'   &amp;  solves the point where threshold = itempara \\</span>
+0028 <span class="comment">%          'best'    &amp;  finds the point where</span>
+0029 <span class="comment">%                       itempara * fa + (1 - itempara) * fr attains min. \\</span>
+0030 <span class="comment">%   \*</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% $ Remarks $</span>
+0033 <span class="comment">%   - To increase accuracy, inverse-interpolation technique is used.</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% $ History $</span>
+0036 <span class="comment">%   - Created by Dahua Lin on Jun 10th, 2005</span>
+0037 <span class="comment">%   - Modified by Dahua Lin on May 1st, 2006</span>
+0038 <span class="comment">%     - Base on the sltoolbox v4</span>
+0039 <span class="comment">%</span>
+0040 
+0041 <span class="comment">%% Parse and Verify</span>
+0042 <span class="keyword">if</span> nargin &lt; 4
+0043     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slgetroc'</span>, 5);
+0044 <span class="keyword">end</span>
+0045 <span class="keyword">if</span> ~isequal(size(thrs), size(fars)) || ~isequal(size(thrs), size(frrs))
+0046     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0047         <span class="string">'The sizes of thrs, fars and frrs are not consistent'</span>);
+0048 <span class="keyword">end</span>
+0049 thrs = thrs(:);
+0050 fars = fars(:);
+0051 frrs = frrs(:);
+0052 
+0053 <span class="comment">% preprocessing (make it strictly monotonical)</span>
+0054 fars = <a href="#_sub1" class="code" title="subfunction f = make_mono(f)">make_mono</a>(fars);
+0055 frrs = <a href="#_sub1" class="code" title="subfunction f = make_mono(f)">make_mono</a>(frrs);
+0056 
+0057 <span class="comment">%% Compute</span>
+0058 usemethod = <span class="string">'linear'</span>;
+0059 <span class="keyword">switch</span> item
+0060     <span class="keyword">case</span> <span class="string">'ratio'</span>
+0061         ratios = frrs ./ max(fars, eps);
+0062         <span class="keyword">if</span> nargin &lt; 5 || isempty(itempara)
+0063             itempara = 1;
+0064         <span class="keyword">end</span>
+0065         thr = interp1(ratios, thrs, itempara, usemethod);
+0066     <span class="keyword">case</span> <span class="string">'fixfa'</span>
+0067         <span class="keyword">if</span> nargin &lt; 5 || isempty(itempara)
+0068             itempara = 0.1;
+0069         <span class="keyword">end</span>
+0070         thr = interp1(fars, thrs, itempara, usemethod);
+0071     <span class="keyword">case</span> <span class="string">'fixfr'</span>
+0072         <span class="keyword">if</span> nargin &lt; 5 || isempty(itempara)
+0073             itempara = 0.1;
+0074         <span class="keyword">end</span>
+0075         thr = interp1(frrs, thrs, itempara, usemethod);
+0076     <span class="keyword">case</span> <span class="string">'fixth'</span>
+0077         <span class="keyword">if</span> nargin &lt; 5 || isempty(itempara)
+0078             error(<span class="string">'You must specify the parameter for fixth item'</span>);
+0079         <span class="keyword">end</span> 
+0080         thr = itempara;
+0081     <span class="keyword">case</span> <span class="string">'best'</span>
+0082         <span class="keyword">if</span> nargin &lt; 5 || isempty(itempara)
+0083             itempara = 0.5;
+0084         <span class="keyword">end</span>
+0085         [mv, p] = min(itempara * fars + (1 - itempara) * frrs);
+0086         <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(mv);
+0087         thr = thrs(p);
+0088     <span class="keyword">otherwise</span>
+0089         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0090             <span class="string">'Invalid item %s for slgetroc'</span>, item);
+0091 <span class="keyword">end</span>
+0092 
+0093 fa = interp1(thrs, fars, thr, usemethod);
+0094 fr = interp1(thrs, frrs, thr, usemethod);
+0095 
+0096 
+0097 <a name="_sub1" href="#_subfunctions" class="code">function f = make_mono(f)</a>
+0098 
+0099 df = diff(f);
+0100 
+0101 <span class="keyword">if</span> f(end) &gt;= f(1)
+0102     df = max(df, eps);
+0103 <span class="keyword">else</span>
+0104     df = min(df, -eps);
+0105 <span class="keyword">end</span>
+0106 f = [f(1); f(1) + cumsum(df)];
+0107 
+0108 
+0109 
+0110 
+0111</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

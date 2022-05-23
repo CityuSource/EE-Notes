@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slgausstype</title>
+  <meta name="keywords" content="slgausstype">
+  <meta name="description" content="SLGAUSSTYPE Judges the type of a Gaussian model struct">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slgausstype.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slgausstype
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLGAUSSTYPE Judges the type of a Gaussian model struct</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function tyinfo = slgausstype(GS) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLGAUSSTYPE Judges the type of a Gaussian model struct
+
+ $ Syntax $
+   - tyinfo = slgausstype(GS)
+
+ $ Arguments $
+   - GS:       the Gaussian model struct
+   - tyinfo:   the type information structure with following fields
+               - varform:  the form of variance: 'univar'|'diagvar'|'covar'
+               - sharevar: whether the variance(covariance) is shared
+               - hasinv:   whether is invvars or invcovs exists
+               - hasmw:    whether the mixture weights exist
+
+ $ Remarks $
+   - The function will check the validity of the struct and will raise
+     an error for invalid models. So it can be used to check validity
+     even you don't need to know the type of the model.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 23rd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/slisfields.html" class="code" title="function tf = slisfields(S, fns)">slisfields</a>	SLISFIELDS Judges whether the specified fieldnames are fields of S</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slgaussmdist.html" class="code" title="function dists = slgaussmdist(GS, X)">slgaussmdist</a>	SLGAUSSMDIST Computes the Malanobis distance between samples and centers</li><li><a href="slgausspdf.html" class="code" title="function P = slgausspdf(GS, X, varargin)">slgausspdf</a>	SLGAUSSPDF Computes the probability density of Gaussian models</li><li><a href="slgaussrnd.html" class="code" title="function X = slgaussrnd(GS, nums)">slgaussrnd</a>	SLGAUSSRND Generates random samples from Gaussian models</li><li><a href="slgmm.html" class="code" title="function [GS, pp, info] = slgmm(X, varargin)">slgmm</a>	SLGMM Learns Gaussian Mixture model from samples</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function gs_argerror(errmsg)</a></li><li><a href="#_sub2" class="code">function gs_sizerror(errmsg)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function tyinfo = slgausstype(GS)</a>
+0002 <span class="comment">%SLGAUSSTYPE Judges the type of a Gaussian model struct</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - tyinfo = slgausstype(GS)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - GS:       the Gaussian model struct</span>
+0009 <span class="comment">%   - tyinfo:   the type information structure with following fields</span>
+0010 <span class="comment">%               - varform:  the form of variance: 'univar'|'diagvar'|'covar'</span>
+0011 <span class="comment">%               - sharevar: whether the variance(covariance) is shared</span>
+0012 <span class="comment">%               - hasinv:   whether is invvars or invcovs exists</span>
+0013 <span class="comment">%               - hasmw:    whether the mixture weights exist</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ Remarks $</span>
+0016 <span class="comment">%   - The function will check the validity of the struct and will raise</span>
+0017 <span class="comment">%     an error for invalid models. So it can be used to check validity</span>
+0018 <span class="comment">%     even you don't need to know the type of the model.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $ History $</span>
+0021 <span class="comment">%   - Created by Dahua Lin, on Aug 23rd, 2006</span>
+0022 <span class="comment">%</span>
+0023 
+0024 
+0025 <span class="comment">%% verify basic fields</span>
+0026 
+0027 <span class="keyword">if</span> ~isstruct(GS)
+0028     <a href="#_sub1" class="code" title="subfunction gs_argerror(errmsg)">gs_argerror</a>(<span class="string">'The Gaussian model should be a struct'</span>);
+0029 <span class="keyword">end</span>
+0030 
+0031 <span class="keyword">if</span> ~all(<a href="../../sltoolbox/utils/slisfields.html" class="code" title="function tf = slisfields(S, fns)">slisfields</a>(GS, {<span class="string">'dim'</span>, <span class="string">'nmodels'</span>, <span class="string">'means'</span>}))
+0032     <a href="#_sub1" class="code" title="subfunction gs_argerror(errmsg)">gs_argerror</a>(<span class="string">'The Gaussian model struct should have all of the fields: dim, nmodels and means'</span>);
+0033 <span class="keyword">end</span>
+0034 
+0035 d = GS.dim;
+0036 k = GS.nmodels;
+0037 
+0038 <span class="keyword">if</span> ~isequal(size(GS.means), [d k])
+0039     <a href="#_sub2" class="code" title="subfunction gs_sizerror(errmsg)">gs_sizerror</a>(<span class="string">'The means field should be an array of size d x k'</span>);
+0040 <span class="keyword">end</span>
+0041 
+0042 <span class="comment">%% verify variance/covariance field</span>
+0043 
+0044 <span class="keyword">if</span> isfield(GS, <span class="string">'vars'</span>)
+0045     sizvf = size(GS.vars);
+0046     <span class="keyword">if</span> isequal(sizvf, [1 1])
+0047         varform = <span class="string">'univar'</span>;
+0048         sharevar = true;
+0049     <span class="keyword">elseif</span> isequal(sizvf, [1 k])
+0050         varform = <span class="string">'univar'</span>;
+0051         sharevar = false;
+0052     <span class="keyword">elseif</span> isequal(sizvf, [d 1])
+0053         varform = <span class="string">'diagvar'</span>;
+0054         sharevar = true;
+0055     <span class="keyword">elseif</span> isequal(sizvf, [d k])
+0056         varform = <span class="string">'diagvar'</span>;
+0057         sharevar = false;
+0058     <span class="keyword">else</span>
+0059         gs_arrerror(<span class="string">'The size of vars is illegal'</span>);
+0060     <span class="keyword">end</span>
+0061     
+0062     hasinv = isfield(GS, <span class="string">'invvars'</span>);    
+0063     
+0064 <span class="keyword">elseif</span> isfield(GS, <span class="string">'covs'</span>)
+0065     
+0066     sizcvf = size(GS.covs);
+0067     <span class="keyword">if</span> isequal(sizcvf, [d d])
+0068         varform = <span class="string">'covar'</span>;
+0069         sharevar = true;
+0070     <span class="keyword">elseif</span> isequal(sizcvf, [d d k])
+0071         varform = <span class="string">'covar'</span>;
+0072         sharevar = false;
+0073     <span class="keyword">else</span>
+0074         gs_arrerror(<span class="string">'The size of covariance is illegal'</span>);
+0075     <span class="keyword">end</span>
+0076     
+0077     hasinv = isfield(GS, <span class="string">'invcovs'</span>); 
+0078     
+0079 <span class="keyword">else</span>
+0080     gs_arrerror(<span class="string">'The Gaussian struct lacks a field for variance/covariance'</span>);
+0081 <span class="keyword">end</span>
+0082 
+0083 
+0084 hasmw = isfield(GS, <span class="string">'mixweights'</span>);
+0085 
+0086 <span class="keyword">if</span> nargout &gt;= 1 
+0087     tyinfo = struct(<span class="keyword">...</span>
+0088         <span class="string">'varform'</span>, varform, <span class="keyword">...</span>
+0089         <span class="string">'sharevar'</span>, sharevar, <span class="keyword">...</span>
+0090         <span class="string">'hasinv'</span>, hasinv, <span class="keyword">...</span>
+0091         <span class="string">'hasmw'</span>, hasmw);
+0092 <span class="keyword">end</span>
+0093 
+0094 
+0095 
+0096 <a name="_sub1" href="#_subfunctions" class="code">function gs_argerror(errmsg)</a>
+0097 
+0098 error(<span class="string">'sltoolbox:invalidarg'</span>, errmsg);
+0099 
+0100 <a name="_sub2" href="#_subfunctions" class="code">function gs_sizerror(errmsg)</a>
+0101 
+0102 error(<span class="string">'sltoolbox:sizmismatch'</span>, errmsg);</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

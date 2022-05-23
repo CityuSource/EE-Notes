@@ -1,0 +1,20 @@
+npm start (default)
+
+open android studio and start a virtual device
+npm run android
+
+yarn add @react-navigation/native @react-navigation/native-stack react-native-safe-area-context react-native-screens @react-navigation/bottom-tabs
+
+https://www.byprogrammers.com/2021/02/lcrn-ep10-cryptocurrency-app/
+
+curl -d "node=127.0.0.1&com_port=5000" -X POST http://127.0.0.1:5001/register_node
+
+For server.py
+
+Some of the post functions return a value and they don't allow "GET" so added them to there's no errors
+
+whatever andy did in his zoom I tested and some of the works with the server.py
+- need to change node indicator from the port to something else
+- doing transactions right now in just takes in a string of an address without checking if its a valid address
+- if you wanna get address, i added /get_address which is basically just the wallet pub key initialized in the beginning of the server 
+- the balances seem to be hardcoded to 0.0 in the class (i hope im wrong)

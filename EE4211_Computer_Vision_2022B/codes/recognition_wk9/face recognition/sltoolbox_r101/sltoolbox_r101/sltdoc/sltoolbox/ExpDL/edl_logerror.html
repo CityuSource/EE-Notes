@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of edl_logerror</title>
+  <meta name="keywords" content="edl_logerror">
+  <meta name="description" content="EDL_LOGERROR Logs an error into logger">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">ExpDL</a> &gt; edl_logerror.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>edl_logerror
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>EDL_LOGERROR Logs an error into logger</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function edl_logerror(caller, err, logger, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">EDL_LOGERROR Logs an error into logger
+
+ $ Syntax $
+   - edl_logerror(caller, err, logger, ...)
+
+ $ Arguments $
+   - caller:       the name of caller (the agent that catches the error)
+   - err:          the error struct
+   - logger:       the logger
+ 
+ $ Description $
+   - edl_logerror(caller, err, logger, ...) logs the error caught into
+     a logger. The logged information may include error header, 
+     message, and runtime stack, depending on following properties
+       'header':   whether to log header info (default = true)
+       'message':  whether to log error message (default = true)
+       'stack':    whether to log run-time stack (default = true)
+
+ $ History $
+   - Created by Dahua Lin, on Aug 13, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/fileio/@sllog/incindent.html" class="code" title="function logger = incindent(logger, d)">incindent</a>	INCINDENT Increases the indent by a specified amount</li><li><a href="../../sltoolbox/fileio/@sllog/write.html" class="code" title="function write(logger, varargin)">write</a>	WRITE Writes message to a logger</li><li><a href="../../sltoolbox/fileio/@sllog/writeblank.html" class="code" title="function writeblank(logger)">writeblank</a>	WRITEBLANK Writes a blank line to log</li><li><a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>	WRITEINFO Writes information to logger without time-stamp</li><li><a href="../../sltoolbox/text/slstrsplit.html" class="code" title="function strs = slstrsplit(srcstr, delimiters)">slstrsplit</a>	SLSTRSPLIT splits a string into cell array of strings by delimiters</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_go.html" class="code" title="function edl_go(expdef, type, name, filter, runopt)">edl_go</a>	EDL_GO The Top interface for doing experiments in EDL</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function edl_logerror(caller, err, logger, varargin)</a>
+0002 <span class="comment">%EDL_LOGERROR Logs an error into logger</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - edl_logerror(caller, err, logger, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - caller:       the name of caller (the agent that catches the error)</span>
+0009 <span class="comment">%   - err:          the error struct</span>
+0010 <span class="comment">%   - logger:       the logger</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - edl_logerror(caller, err, logger, ...) logs the error caught into</span>
+0014 <span class="comment">%     a logger. The logged information may include error header,</span>
+0015 <span class="comment">%     message, and runtime stack, depending on following properties</span>
+0016 <span class="comment">%       'header':   whether to log header info (default = true)</span>
+0017 <span class="comment">%       'message':  whether to log error message (default = true)</span>
+0018 <span class="comment">%       'stack':    whether to log run-time stack (default = true)</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $ History $</span>
+0021 <span class="comment">%   - Created by Dahua Lin, on Aug 13, 2006</span>
+0022 <span class="comment">%</span>
+0023 
+0024 <span class="comment">%% Parse and verify input arguments</span>
+0025 
+0026 <span class="keyword">if</span> nargin &lt; 3
+0027     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'edl_logerror'</span>, 3);
+0028 <span class="keyword">end</span>
+0029 
+0030 opts.header = true;
+0031 opts.message = true;
+0032 opts.stack = true;
+0033 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0034 
+0035 
+0036 
+0037 <span class="comment">%% Logging</span>
+0038 
+0039 <span class="comment">% log header</span>
+0040 
+0041 <span class="keyword">if</span> opts.header
+0042     <span class="keyword">if</span> isempty(err.identifier)
+0043         <a href="../../sltoolbox/fileio/@sllog/write.html" class="code" title="function write(logger, varargin)">write</a>(logger, <span class="string">'%s catch error:'</span>, caller);
+0044     <span class="keyword">else</span>
+0045         <a href="../../sltoolbox/fileio/@sllog/write.html" class="code" title="function write(logger, varargin)">write</a>(logger, <span class="string">'%s catch error: %s:'</span>, caller, err.identifier);
+0046     <span class="keyword">end</span>
+0047 <span class="keyword">end</span>
+0048 
+0049 <span class="comment">% log message</span>
+0050 
+0051 <span class="keyword">if</span> opts.message    
+0052     msglines = <a href="../../sltoolbox/text/slstrsplit.html" class="code" title="function strs = slstrsplit(srcstr, delimiters)">slstrsplit</a>(err.message, sprintf(<span class="string">'\r\n'</span>));
+0053     nmlines = length(msglines);
+0054     <span class="keyword">for</span> i = 1 : nmlines
+0055         <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'%s'</span>, msglines{i});
+0056     <span class="keyword">end</span>
+0057     <a href="../../sltoolbox/fileio/@sllog/writeblank.html" class="code" title="function writeblank(logger)">writeblank</a>(logger);
+0058 <span class="keyword">end</span>
+0059 
+0060 <span class="comment">% log stack</span>
+0061 
+0062 <span class="keyword">if</span> opts.stack
+0063     <span class="keyword">if</span> ~isempty(err.stack)
+0064         es = err.stack;
+0065         <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'Runtime Stack:'</span>);
+0066         ns = length(es);
+0067         logger = <a href="../../sltoolbox/fileio/@sllog/incindent.html" class="code" title="function logger = incindent(logger, d)">incindent</a>(logger, 1);
+0068         <span class="keyword">for</span> k = 1 : ns
+0069             <span class="keyword">if</span> ~isempty(es(k).file)
+0070                 <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'%s ==&gt; (%d at %s)'</span>, es(k).name, es(k).line, es(k).file);
+0071             <span class="keyword">else</span>
+0072                 <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'%s ==&gt; (%d)'</span>, es(k).name, es(k).line);
+0073             <span class="keyword">end</span>
+0074         <span class="keyword">end</span>
+0075     <span class="keyword">end</span>
+0076     <a href="../../sltoolbox/fileio/@sllog/writeblank.html" class="code" title="function writeblank(logger)">writeblank</a>(logger);
+0077 <span class="keyword">end</span>
+0078</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

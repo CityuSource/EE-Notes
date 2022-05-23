@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sllocalcoordalign</title>
+  <meta name="keywords" content="sllocalcoordalign">
+  <meta name="description" content="SLLOCALCOORDALIGN Performs optimal local coordinate alignment">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">manifold</a> &gt; sllocalcoordalign.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\manifold&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sllocalcoordalign
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLLOCALCOORDALIGN Performs optimal local coordinate alignment</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [GC, spectrum, LT] = sllocalcoordalign(GM, LC, dg) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLLOCALCOORDALIGN Performs optimal local coordinate alignment
+
+ $ Syntax $
+   - [GC, spectrum, LT] = sllocalcoordalign(GM, LC)
+   - [GC, spectrum, LT] = sllocalcoordalign(GM, LC, dg)
+   - [GC, spectrum] = sllocalcoordalign(...)
+
+ $ Arguments $
+   - GM:       The index map graph (n x n)
+   - LC:       The matrix of all local coordinates (dl x nnz)
+   - GC:       The global coordinates in the embedding  (dg x n)
+   - spectrum: The eigenvalues of the embedding dimensions
+   - LT:       The local transforms of all local models (dl x dg x n)
+
+ $ Description $
+   - [GC, spectrum, LT] = sllocalcoordalign(GM, LC) performs optimal 
+     coordinate alignment in terms of minimizing L2 reconstruction error. 
+     This process will simultaneously resolves the optimal configuration 
+     of global coordinates in the embedded space and learns the linear
+     transforms for all sets of local coordinates to the global 
+     coordinate. By default the dimension of the global embedding will be
+     set to the same as the local dimension dl.
+     The GM is a neighborhood graph, with the neighborhood of each target
+     sample represented by the source nodes of the corresponding target
+     node. The value of the edges give the index of columns of the local
+     coordinates in LC. That is to say, LC stores all local coordinate
+     vectors obtained by applying each target model to its neighboring
+     samples and they are sorted according to the order of elements in 
+     GM. (GM should be a valued adjacency matrix)
+
+   - [GC, spectrum, LT] = sllocalcoordalign(GM, LC, dg) performs local 
+     coordinate alignment to a global embedding of the specified dimension 
+     dg.
+
+   - [GC, spectrum] = sllocalcoordalign(...) only pursues the global 
+     embedding coordinate without the need of learning local transforms.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 14, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdrowcols.html" class="code" title="function Y = sladdrowcols(X, vrow, vcol)">sladdrowcols</a>	SLADDROWCOLS Adds the vectors to all rows and all columns</li><li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>	SLGRAPHINFO Extracts basic information of a given graph representation</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slltsa.html" class="code" title="function [GC, spectrum, CTS] = slltsa(X, G, dl, dg)">slltsa</a>	SLLTSA Performs Local Tangent Space Alignment Learning</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function B = prepareBmat(GM, n)</a></li><li><a href="#_sub2" class="code">function B = postprocessBmat(B)</a></li><li><a href="#_sub3" class="code">function R = compute_pinv(u, s, v)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [GC, spectrum, LT] = sllocalcoordalign(GM, LC, dg)</a>
+0002 <span class="comment">%SLLOCALCOORDALIGN Performs optimal local coordinate alignment</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [GC, spectrum, LT] = sllocalcoordalign(GM, LC)</span>
+0006 <span class="comment">%   - [GC, spectrum, LT] = sllocalcoordalign(GM, LC, dg)</span>
+0007 <span class="comment">%   - [GC, spectrum] = sllocalcoordalign(...)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $ Arguments $</span>
+0010 <span class="comment">%   - GM:       The index map graph (n x n)</span>
+0011 <span class="comment">%   - LC:       The matrix of all local coordinates (dl x nnz)</span>
+0012 <span class="comment">%   - GC:       The global coordinates in the embedding  (dg x n)</span>
+0013 <span class="comment">%   - spectrum: The eigenvalues of the embedding dimensions</span>
+0014 <span class="comment">%   - LT:       The local transforms of all local models (dl x dg x n)</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - [GC, spectrum, LT] = sllocalcoordalign(GM, LC) performs optimal</span>
+0018 <span class="comment">%     coordinate alignment in terms of minimizing L2 reconstruction error.</span>
+0019 <span class="comment">%     This process will simultaneously resolves the optimal configuration</span>
+0020 <span class="comment">%     of global coordinates in the embedded space and learns the linear</span>
+0021 <span class="comment">%     transforms for all sets of local coordinates to the global</span>
+0022 <span class="comment">%     coordinate. By default the dimension of the global embedding will be</span>
+0023 <span class="comment">%     set to the same as the local dimension dl.</span>
+0024 <span class="comment">%     The GM is a neighborhood graph, with the neighborhood of each target</span>
+0025 <span class="comment">%     sample represented by the source nodes of the corresponding target</span>
+0026 <span class="comment">%     node. The value of the edges give the index of columns of the local</span>
+0027 <span class="comment">%     coordinates in LC. That is to say, LC stores all local coordinate</span>
+0028 <span class="comment">%     vectors obtained by applying each target model to its neighboring</span>
+0029 <span class="comment">%     samples and they are sorted according to the order of elements in</span>
+0030 <span class="comment">%     GM. (GM should be a valued adjacency matrix)</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%   - [GC, spectrum, LT] = sllocalcoordalign(GM, LC, dg) performs local</span>
+0033 <span class="comment">%     coordinate alignment to a global embedding of the specified dimension</span>
+0034 <span class="comment">%     dg.</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">%   - [GC, spectrum] = sllocalcoordalign(...) only pursues the global</span>
+0037 <span class="comment">%     embedding coordinate without the need of learning local transforms.</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% $ History $</span>
+0040 <span class="comment">%   - Created by Dahua Lin, on Sep 14, 2006</span>
+0041 <span class="comment">%</span>
+0042 
+0043 <span class="comment">%% parse and verify input arguments</span>
+0044 
+0045 <span class="keyword">if</span> nargin &lt; 2
+0046     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sllocalcoordalign'</span>, 2);
+0047 <span class="keyword">end</span>
+0048 
+0049 gi = <a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>(GM, {<span class="string">'adjmat'</span>, <span class="string">'square'</span>, <span class="string">'numeric'</span>});
+0050 n = gi.n;
+0051 
+0052 <span class="keyword">if</span> ~isnumeric(LC) || ndims(LC) ~= 2
+0053     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0054         <span class="string">'LC should be a 2D numeric matrix'</span>);
+0055 <span class="keyword">end</span>
+0056 [dl, ny] = size(LC);
+0057 <span class="keyword">if</span> ny ~= nnz(GM)
+0058     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0059         <span class="string">'The number of samples in LC does not match the non-zero entries in GM'</span>);
+0060 <span class="keyword">end</span>
+0061 
+0062 <span class="keyword">if</span> nargin &lt; 3
+0063     dg = dl;
+0064 <span class="keyword">end</span>
+0065 
+0066 <span class="keyword">if</span> nargout &gt;= 3
+0067     learnLT = true;
+0068 <span class="keyword">else</span>
+0069     learnLT = false;
+0070 <span class="keyword">end</span>
+0071 
+0072 
+0073 <span class="comment">%% Pursue optimal embedding (global coordinates)</span>
+0074 
+0075 <span class="comment">% prepare data structure</span>
+0076 B = <a href="#_sub1" class="code" title="subfunction B = prepareBmat(GM, n)">prepareBmat</a>(GM, n);
+0077 <span class="keyword">if</span> learnLT
+0078     LRs = cell(n, 1);
+0079 <span class="keyword">end</span>
+0080 
+0081 <span class="comment">% construct W matrices</span>
+0082 
+0083 <span class="keyword">for</span> i = 1 : n
+0084     
+0085     <span class="comment">% get local coords</span>
+0086     cinds = find(GM(:,i));
+0087     curlc = LC(:, GM(cinds, i));
+0088     
+0089     <span class="comment">% decompose</span>
+0090     cn = size(curlc, 2);
+0091     [cu, cs, cv] = svd(curlc, 0);
+0092     
+0093     <span class="comment">%decide rank</span>
+0094     cs = diag(cs);
+0095     rk = max(sum(cs &gt; eps(cs(1)) * cn), 1);
+0096     
+0097     <span class="comment">% compute W, M and add it to B</span>
+0098     <span class="keyword">if</span> rk &lt; cn              <span class="comment">% note that when rk == cn, the contribution of current model is zero</span>
+0099         cv = cv(:, 1:rk);
+0100         W = eye(cn) - cv * cv';     <span class="comment">% note that for W = I - VV^T, it always has that W = W * W</span>
+0101         vm = sum(W, 1) / cn;
+0102         M = <a href="../../sltoolbox/core/sladdrowcols.html" class="code" title="function Y = sladdrowcols(X, vrow, vcol)">sladdrowcols</a>(W, -vm, -vm') + sum(vm) / cn; 
+0103         B(cinds, cinds) = B(cinds, cinds) + M;                
+0104     <span class="keyword">end</span>
+0105     
+0106     <span class="comment">% prepare for learning local transforms (make use of u, s, v, so that</span>
+0107     <span class="comment">% we need not to do svd again</span>
+0108     <span class="keyword">if</span> learnLT
+0109         cLTR = <a href="#_sub3" class="code" title="subfunction R = compute_pinv(u, s, v)">compute_pinv</a>(cu(:, 1:rk), cs(1:rk), cv);
+0110         LRs{i} = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(cLTR, -sum(cLTR, 1)/cn);
+0111     <span class="keyword">end</span>
+0112     
+0113 <span class="keyword">end</span>
+0114 
+0115 <span class="comment">% post process B</span>
+0116 B = <a href="#_sub2" class="code" title="subfunction B = postprocessBmat(B)">postprocessBmat</a>(B);
+0117 
+0118 <span class="comment">% solve eigen-problem of B</span>
+0119 [spectrum, GC] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(B, dg+1, <span class="string">'ascend'</span>);
+0120 spectrum = spectrum(2:dg+1);
+0121 GC = GC(:, 2:dg+1)';
+0122 
+0123 
+0124 <span class="comment">%% Learn the local transforms</span>
+0125 LT = zeros(dl, dg, n);
+0126 
+0127 <span class="keyword">if</span> learnLT
+0128     <span class="keyword">for</span> i = 1 : n
+0129         cLR = LRs{i};            
+0130         cGC = GC(:, GM(:,i) ~= 0);
+0131         cLT = cGC * cLR;
+0132         LT(:,:,i) = cLT;
+0133     <span class="keyword">end</span>    
+0134 <span class="keyword">end</span>
+0135 
+0136 
+0137 
+0138 
+0139 <span class="comment">%% Auxiliary functions</span>
+0140 
+0141 <a name="_sub1" href="#_subfunctions" class="code">function B = prepareBmat(GM, n)</a>
+0142 <span class="comment">% estimate the number of non-zeros in B and prepare the most efficient</span>
+0143 <span class="comment">% storage.</span>
+0144 <span class="comment">% The strategy is</span>
+0145 <span class="comment">%   first allocate a logical array to record which elements may possibly</span>
+0146 <span class="comment">%   be set to zeros</span>
+0147 <span class="comment">% Then according to nnz,</span>
+0148 <span class="comment">%   if nnz &gt; n * n / 4, use full matrix, make an n x n zeros</span>
+0149 <span class="comment">%   otherwise use sparse matrix, make with all elements that would be used</span>
+0150 <span class="comment">%   set to 1 first. After all computation, these ones should be reduced</span>
+0151 <span class="comment">%   using postprocessBmat</span>
+0152 <span class="comment">%</span>
+0153 
+0154 <span class="comment">% estimate the maximum number of non-zeros</span>
+0155 nnzb = 0;
+0156 <span class="keyword">for</span> i = 1 : n
+0157     cnnb = nnz(GM(:,i));
+0158     nnzb = nnzb + cnnb * cnnb;
+0159 <span class="keyword">end</span>
+0160 nnzb = min(nnzb, n * n);
+0161 
+0162 <span class="comment">% prepare the indicator matrix</span>
+0163 <span class="keyword">if</span> n * n &gt; nnzb * 20
+0164     Z = sparse(1, 1, false, n, n, nnzb);
+0165 <span class="keyword">else</span>
+0166     Z = false(n, n);
+0167 <span class="keyword">end</span>
+0168 
+0169 <span class="comment">% set the indicators</span>
+0170 <span class="keyword">for</span> i = 1 : n
+0171     cinds = find(GM(:,i));
+0172     Z(cinds, cinds) = 1;
+0173 <span class="keyword">end</span>
+0174 
+0175 <span class="comment">% re-estimate the nnz accurately</span>
+0176 nnzb = nnz(Z);
+0177 
+0178 <span class="comment">% make B</span>
+0179 <span class="keyword">if</span> n * n &gt; nnzb * 4
+0180     B = zeros(n, n);
+0181 <span class="keyword">else</span>
+0182     [I, J] = find(Z);    
+0183     B = sparse(I, J, 1, n, n);
+0184 <span class="keyword">end</span>
+0185 
+0186 
+0187 <a name="_sub2" href="#_subfunctions" class="code">function B = postprocessBmat(B)</a>
+0188 
+0189 <span class="keyword">if</span> issparse(B)
+0190     B = spfun(@(x) x - 1, B);
+0191 <span class="keyword">end</span>
+0192 
+0193 
+0194 <a name="_sub3" href="#_subfunctions" class="code">function R = compute_pinv(u, s, v)</a>
+0195 
+0196 R = v * diag(1 ./ s) * u';
+0197 
+0198     
+0199 
+0200 
+0201 
+0202 
+0203 
+0204     
+0205     
+0206 
+0207 
+0208 
+0209     
+0210     
+0211 
+0212 
+0213 
+0214 
+0215 
+0216 
+0217</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slkfd</title>
+  <meta name="keywords" content="slkfd">
+  <meta name="description" content="SLKFD Perform Kernelized Fisher Discriminant Analysis">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">kernel</a> &gt; slkfd.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\kernel&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slkfd
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLKFD Perform Kernelized Fisher Discriminant Analysis</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function A = slkfd(K, nums, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLKFD Perform Kernelized Fisher Discriminant Analysis
+
+ $ Syntax $
+   - A = slkfd(K, nums, ...)
+
+ $ Arguments $
+   - K:        the kernel gram matrix of the training samples
+   - nums:     the numbers of samples in all classes
+   - A:        the projection coefficient matrix 
+ 
+ $ Description $
+   - A = slkfd(K, nums, ...) performs Kernerlized Fisher discriminant 
+     analysis on the samples X according to the specified properties. 
+     \*
+     \t   Table 1.  The properties of Fisher Discriminant Analysis   \\
+     \h     name     &amp;     description                                \\
+           'sol'     &amp;  The cell containing the arguments for solving
+                        the generalized eigen-problem by slsymgeig.  
+                        default = {}.                                 \\
+           'dimset'  &amp;  The cell containing the arguments for determining
+                        the output feature dimension. default = {}.
+                        (refer to sldim_by_eigval).                   \\
+           'Sb'      &amp;  The pre-computed kernelized between-class 
+                        scattering matrix or the cell containing 
+                        the arguments for computing the kernelized 
+                        scatter matrix in the form {type, ...}, 
+                        which is input to slkernelscatter.     \\
+           'Sw'      &amp;  The pre-computed kernelized within-class 
+                        scattering matrix or the cell containing 
+                        the arguments for computing the scatter 
+                        matrix in the form {type, ...}, which is 
+                        input to slkernelscatter.     \\
+         'weights'   &amp;  The sample weights. default = [].   \\
+     \*  
+
+ $ History $
+   - Created by Dahua Lin on May 03, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slsymgeig.html" class="code" title="function [evals, evecs] = slsymgeig(A, B, method, r)">slsymgeig</a>	SLSYMGEIG Solve the generalized eigen decomposition for symmetric matrices</li><li><a href="../../sltoolbox/subspace/sldim_by_eigval.html" class="code" title="function d = sldim_by_eigval(eigvals, sch, varargin)">sldim_by_eigval</a>	SLDIM_BY_EIGVAL Determines the dimension of principal subspace by eigenvalues</li><li><a href="../../sltoolbox/subspace/slscatter.html" class="code" title="function S = slscatter(X, type, varargin)">slscatter</a>	SLSCATTER Compute the scatter matrix</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function A = slkfd(K, nums, varargin)</a>
+0002 <span class="comment">%SLKFD Perform Kernelized Fisher Discriminant Analysis</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - A = slkfd(K, nums, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - K:        the kernel gram matrix of the training samples</span>
+0009 <span class="comment">%   - nums:     the numbers of samples in all classes</span>
+0010 <span class="comment">%   - A:        the projection coefficient matrix</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - A = slkfd(K, nums, ...) performs Kernerlized Fisher discriminant</span>
+0014 <span class="comment">%     analysis on the samples X according to the specified properties.</span>
+0015 <span class="comment">%     \*</span>
+0016 <span class="comment">%     \t   Table 1.  The properties of Fisher Discriminant Analysis   \\</span>
+0017 <span class="comment">%     \h     name     &amp;     description                                \\</span>
+0018 <span class="comment">%           'sol'     &amp;  The cell containing the arguments for solving</span>
+0019 <span class="comment">%                        the generalized eigen-problem by slsymgeig.</span>
+0020 <span class="comment">%                        default = {}.                                 \\</span>
+0021 <span class="comment">%           'dimset'  &amp;  The cell containing the arguments for determining</span>
+0022 <span class="comment">%                        the output feature dimension. default = {}.</span>
+0023 <span class="comment">%                        (refer to sldim_by_eigval).                   \\</span>
+0024 <span class="comment">%           'Sb'      &amp;  The pre-computed kernelized between-class</span>
+0025 <span class="comment">%                        scattering matrix or the cell containing</span>
+0026 <span class="comment">%                        the arguments for computing the kernelized</span>
+0027 <span class="comment">%                        scatter matrix in the form {type, ...},</span>
+0028 <span class="comment">%                        which is input to slkernelscatter.     \\</span>
+0029 <span class="comment">%           'Sw'      &amp;  The pre-computed kernelized within-class</span>
+0030 <span class="comment">%                        scattering matrix or the cell containing</span>
+0031 <span class="comment">%                        the arguments for computing the scatter</span>
+0032 <span class="comment">%                        matrix in the form {type, ...}, which is</span>
+0033 <span class="comment">%                        input to slkernelscatter.     \\</span>
+0034 <span class="comment">%         'weights'   &amp;  The sample weights. default = [].   \\</span>
+0035 <span class="comment">%     \*</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">% $ History $</span>
+0038 <span class="comment">%   - Created by Dahua Lin on May 03, 2006</span>
+0039 <span class="comment">%</span>
+0040 
+0041 <span class="comment">%% parse and verify input arguments</span>
+0042 
+0043 <span class="keyword">if</span> nargin &lt; 2
+0044     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slkfd'</span>, 2);
+0045 <span class="keyword">end</span>
+0046 
+0047 <span class="comment">% for K</span>
+0048 n = size(K, 1);
+0049 <span class="keyword">if</span> ~isequal(size(K), [n, n])
+0050     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0051         <span class="string">'K should be a square matrix'</span>);
+0052 <span class="keyword">end</span>
+0053 
+0054 <span class="comment">% for nums</span>
+0055 nc = length(nums);
+0056 <span class="keyword">if</span> ~isequal(size(nums), [1 nc])
+0057     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0058         <span class="string">'nums should be a 1 x nc row vector'</span>);
+0059 <span class="keyword">end</span>
+0060 
+0061 <span class="comment">% for options</span>
+0062 
+0063 opts.sol = {};
+0064 opts.dimset = {};
+0065 opts.Sb = {<span class="string">'Sb'</span>};
+0066 opts.Sw = {<span class="string">'Sw'</span>};
+0067 opts.weights = [];
+0068 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0069 
+0070 has_Sb = ~isempty(opts.Sb) &amp;&amp; isnumeric(opts.Sb);
+0071 has_Sw = ~isempty(opts.Sw) &amp;&amp; isnumeric(opts.Sw);
+0072 <span class="keyword">if</span> has_Sb
+0073     Sb = opts.Sb;
+0074     <span class="keyword">if</span> ~isequal(size(Sb), [n n])
+0075         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0076             <span class="string">'Sb should be a n x n matrix'</span>);
+0077     <span class="keyword">end</span>
+0078 <span class="keyword">end</span>
+0079 <span class="keyword">if</span> has_Sw
+0080     Sw = opts.Sw;
+0081     <span class="keyword">if</span> ~isequal(size(Sw), [n n])
+0082         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0083             <span class="string">'Sw should be a n x n matrix'</span>);
+0084     <span class="keyword">end</span>
+0085 <span class="keyword">end</span>
+0086 
+0087 <span class="keyword">if</span> ~isempty(opts.weights)
+0088     w = opts.weights;
+0089     <span class="keyword">if</span> ~isequal(size(w), [1 n])
+0090         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0091             <span class="string">'The weights should be a 1 x n row vector'</span>);
+0092     <span class="keyword">end</span>
+0093 <span class="keyword">else</span>
+0094     w = [];
+0095 <span class="keyword">end</span>
+0096 
+0097 
+0098 <span class="comment">%% Compute</span>
+0099 
+0100 <span class="comment">%% Step 1: Construct the eigen-problem</span>
+0101 
+0102 <span class="keyword">if</span> ~has_Sb
+0103     Sb = <a href="../../sltoolbox/subspace/slscatter.html" class="code" title="function S = slscatter(X, type, varargin)">slscatter</a>(K, opts.Sb{:}, <span class="string">'sweights'</span>, w, <span class="string">'nums'</span>, nums);
+0104 <span class="keyword">end</span>
+0105 
+0106 <span class="keyword">if</span> ~has_Sw
+0107     Sw = <a href="../../sltoolbox/subspace/slscatter.html" class="code" title="function S = slscatter(X, type, varargin)">slscatter</a>(K, opts.Sw{:}, <span class="string">'sweights'</span>, w, <span class="string">'nums'</span>, nums);
+0108 <span class="keyword">end</span>
+0109 
+0110 
+0111 <span class="comment">%% Step 2: Resolve the eigen-problem</span>
+0112 
+0113 [evs, A] = <a href="../../sltoolbox/core/slsymgeig.html" class="code" title="function [evals, evecs] = slsymgeig(A, B, method, r)">slsymgeig</a>(Sb, Sw, opts.sol{:});
+0114 
+0115 rk = <a href="../../sltoolbox/subspace/sldim_by_eigval.html" class="code" title="function d = sldim_by_eigval(eigvals, sch, varargin)">sldim_by_eigval</a>(evs, opts.dimset{:});
+0116 A = A(:, 1:rk);
+0117 
+0118</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

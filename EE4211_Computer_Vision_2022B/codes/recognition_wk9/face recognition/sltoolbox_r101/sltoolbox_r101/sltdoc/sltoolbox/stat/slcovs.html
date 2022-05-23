@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcovs</title>
+  <meta name="keywords" content="slcovs">
+  <meta name="description" content="SLCOVS Computes the sample covariance matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slcovs.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcovs
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCOVS Computes the sample covariance matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = slcovs(X, w, nums, M) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCOVS Computes the sample covariance matrix
+
+ $ Syntax $
+   - C = slcovs(X)
+   - C = slcovs(X, w)
+   - Cs = slcovs(X, [], nums)
+   - Cs = slcovs(X, w, nums)
+   - C = slcovs(X, w, [], M)
+   - Cs = slcovs(X, w, nums, M)
+   - [Cs, Cpool] = slcovs(...)
+
+ $ Arguments $
+   - X:           the sample matrix with each column representing a sample
+   - w:           the sample weights
+   - nums:        the number of samples in the groups
+   - M:           the means or related information
+   - C:           the overall covariance matrix
+   - Cs:          the covariance matrices for the groups
+   - Cpool:       the pooled covariance matrix
+
+ $ Description $
+   - C = slcovs(X) computes the covariance matrix for the samples in X.
+
+   - C = slcovs(X, w) computes the weighted covariance matrix for the 
+     samples in X, with weights specified in w.
+
+   - C = slcovs(X, [], nums) computes the covariance matrices for 
+     collections of samples, with the number of samples in each 
+     collections specified by the row vector nums.
+
+   - C = slcovs(X, w, nums) computes the weighted covariance matrices for
+     collections of samples, with the sample weights specified in w,
+     and the number of samples in collections specified in nums.
+
+   - C = slcovs(X, w, [], M) also provides mean information via M. M = 0
+     indicates that the mean vector is certainly zero vector. M can
+     also be a d x 1 row vector specifying the (weighted) mean vector
+     of X. If w is [], then all samples are treated equally.
+         
+   - Cs = slcovs(X, w, nums, M) computes the (weighted) covariance matrices 
+     for collections of vectors. When computing normal covariance without 
+     weighting you can set w = []. M = 0 indicates that the (weighted) mean 
+     vector for all groups of samples are zero vectors. M can be a 
+     d x k matrix storing the (weighted) mean vectors for all groups 
+     of samples.
+
+   - [Cs, Cpool] = slcovs(...) computes the pool covariance matrices for
+     all collections of vectors. If the samples is not groupped, then
+     Cpool is equal to Cs.
+
+ $ History $
+   - Created by Dahua Lin on Dec 18th, 2005</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>	SLCOV Compute the covariance matrix</li><li><a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>	SLNUMS2BOUNDS Compute the index-boundaries from section sizes</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function Cs = compute_groupwise_covariances(nums, d, k, X, w, M)</a></li><li><a href="#_sub2" class="code">function Cpool = compute_pooled_covariance(Cs, d, k, nums, w)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = slcovs(X, w, nums, M)</a>
+0002 <span class="comment">%SLCOVS Computes the sample covariance matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - C = slcovs(X)</span>
+0006 <span class="comment">%   - C = slcovs(X, w)</span>
+0007 <span class="comment">%   - Cs = slcovs(X, [], nums)</span>
+0008 <span class="comment">%   - Cs = slcovs(X, w, nums)</span>
+0009 <span class="comment">%   - C = slcovs(X, w, [], M)</span>
+0010 <span class="comment">%   - Cs = slcovs(X, w, nums, M)</span>
+0011 <span class="comment">%   - [Cs, Cpool] = slcovs(...)</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Arguments $</span>
+0014 <span class="comment">%   - X:           the sample matrix with each column representing a sample</span>
+0015 <span class="comment">%   - w:           the sample weights</span>
+0016 <span class="comment">%   - nums:        the number of samples in the groups</span>
+0017 <span class="comment">%   - M:           the means or related information</span>
+0018 <span class="comment">%   - C:           the overall covariance matrix</span>
+0019 <span class="comment">%   - Cs:          the covariance matrices for the groups</span>
+0020 <span class="comment">%   - Cpool:       the pooled covariance matrix</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% $ Description $</span>
+0023 <span class="comment">%   - C = slcovs(X) computes the covariance matrix for the samples in X.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%   - C = slcovs(X, w) computes the weighted covariance matrix for the</span>
+0026 <span class="comment">%     samples in X, with weights specified in w.</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">%   - C = slcovs(X, [], nums) computes the covariance matrices for</span>
+0029 <span class="comment">%     collections of samples, with the number of samples in each</span>
+0030 <span class="comment">%     collections specified by the row vector nums.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%   - C = slcovs(X, w, nums) computes the weighted covariance matrices for</span>
+0033 <span class="comment">%     collections of samples, with the sample weights specified in w,</span>
+0034 <span class="comment">%     and the number of samples in collections specified in nums.</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">%   - C = slcovs(X, w, [], M) also provides mean information via M. M = 0</span>
+0037 <span class="comment">%     indicates that the mean vector is certainly zero vector. M can</span>
+0038 <span class="comment">%     also be a d x 1 row vector specifying the (weighted) mean vector</span>
+0039 <span class="comment">%     of X. If w is [], then all samples are treated equally.</span>
+0040 <span class="comment">%</span>
+0041 <span class="comment">%   - Cs = slcovs(X, w, nums, M) computes the (weighted) covariance matrices</span>
+0042 <span class="comment">%     for collections of vectors. When computing normal covariance without</span>
+0043 <span class="comment">%     weighting you can set w = []. M = 0 indicates that the (weighted) mean</span>
+0044 <span class="comment">%     vector for all groups of samples are zero vectors. M can be a</span>
+0045 <span class="comment">%     d x k matrix storing the (weighted) mean vectors for all groups</span>
+0046 <span class="comment">%     of samples.</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">%   - [Cs, Cpool] = slcovs(...) computes the pool covariance matrices for</span>
+0049 <span class="comment">%     all collections of vectors. If the samples is not groupped, then</span>
+0050 <span class="comment">%     Cpool is equal to Cs.</span>
+0051 <span class="comment">%</span>
+0052 <span class="comment">% $ History $</span>
+0053 <span class="comment">%   - Created by Dahua Lin on Dec 18th, 2005</span>
+0054 <span class="comment">%</span>
+0055 
+0056 <span class="comment">%% parse and verify input arguments</span>
+0057 
+0058 <span class="comment">% basic</span>
+0059 <span class="keyword">if</span> ndims(X) ~= 2
+0060     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="string">'X should be a 2D matrix'</span>);
+0061 <span class="keyword">end</span>
+0062 [d, n] = size(X);
+0063 
+0064 <span class="comment">% for weights</span>
+0065 <span class="keyword">if</span> nargin &lt; 2 || isempty(w)
+0066     w = [];
+0067 <span class="keyword">else</span>
+0068     <span class="keyword">if</span> ~isequal(size(w), [1, n])
+0069         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0070             <span class="string">'the weight vector should be a 1 x n row vector'</span>);
+0071     <span class="keyword">end</span>
+0072 <span class="keyword">end</span>
+0073 
+0074 <span class="comment">% for groupping</span>
+0075 <span class="keyword">if</span> nargin &lt; 3 || isempty(nums)
+0076     isgrouped = false;
+0077     k = 1;
+0078 <span class="keyword">else</span>
+0079     isgrouped = true;
+0080     <span class="keyword">if</span> size(nums, 1) ~= 1 
+0081         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0082             <span class="string">'the nums vector should be a row vector'</span>);
+0083     <span class="keyword">end</span>
+0084     <span class="keyword">if</span> sum(nums) ~= n
+0085         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0086             <span class="string">'the nums vector does not match the total number of vectors'</span>);
+0087     <span class="keyword">end</span>    
+0088     k = length(nums);
+0089 <span class="keyword">end</span>
+0090 
+0091 <span class="comment">% for mean vectors</span>
+0092 <span class="keyword">if</span> nargin &lt; 4
+0093     M = [];
+0094 <span class="keyword">elseif</span> ~isempty(M) &amp;&amp; ~isequal(M, 0) 
+0095     <span class="keyword">if</span> ~isequal(size(M), [d, k])        
+0096         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0097             <span class="string">'the matrix of means should be a d x k matrix'</span>);
+0098     <span class="keyword">end</span>
+0099 <span class="keyword">end</span>
+0100 
+0101 
+0102 <span class="comment">%% compute the covariances</span>
+0103 
+0104 <span class="keyword">if</span> ~isgrouped      <span class="comment">% not groupped</span>
+0105     
+0106     <span class="comment">% compute the covariance</span>
+0107     C = <a href="slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X, w, M);
+0108     
+0109     <span class="comment">% output</span>
+0110     <span class="keyword">if</span> nargout == 1
+0111         varargout = {C};
+0112     <span class="keyword">elseif</span> nargout == 2
+0113         varargout = {C, C};
+0114     <span class="keyword">end</span>
+0115            
+0116 <span class="keyword">else</span>                <span class="comment">% groupped</span>
+0117     
+0118     <span class="comment">% compute groupwise covariances</span>
+0119     Cs = <a href="#_sub1" class="code" title="subfunction Cs = compute_groupwise_covariances(nums, d, k, X, w, M)">compute_groupwise_covariances</a>(nums, d, k, X, w, M);
+0120     
+0121     <span class="comment">% output</span>
+0122     <span class="keyword">if</span> nargout == 1        
+0123         varargout = {Cs};        
+0124     <span class="keyword">elseif</span> nargout == 2        
+0125         <span class="comment">% compute pooled covariance</span>
+0126         Cpool = <a href="#_sub2" class="code" title="subfunction Cpool = compute_pooled_covariance(Cs, d, k, nums, w)">compute_pooled_covariance</a>(Cs, d, k, nums, w);                        
+0127         varargout = {Cs, Cpool};
+0128     <span class="keyword">end</span>
+0129     
+0130 <span class="keyword">end</span>
+0131  
+0132 
+0133 <span class="comment">%% Sub functions</span>
+0134 
+0135 
+0136 <span class="comment">%% the function for computing group-wise covariance matrices</span>
+0137 <a name="_sub1" href="#_subfunctions" class="code">function Cs = compute_groupwise_covariances(nums, d, k, X, w, M)</a>
+0138 
+0139 [sp, ep] = <a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>(nums);
+0140 
+0141 <span class="comment">% prepare storage</span>
+0142 Cs = zeros(d, d, k);
+0143 
+0144 <span class="keyword">if</span> isempty(M)           <span class="comment">% no precomputed means</span>
+0145 
+0146     <span class="keyword">if</span> isempty(w)
+0147         <span class="keyword">for</span> i = 1 : k
+0148             Cs(:, :, i) = <a href="slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X(:, sp(i):ep(i)), [], []);
+0149         <span class="keyword">end</span>
+0150     <span class="keyword">else</span>
+0151         <span class="keyword">for</span> i = 1 : k
+0152             Cs(:, :, i) = <a href="slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X(:, sp(i):ep(i)), w(sp(i):ep(i)), []);
+0153         <span class="keyword">end</span>
+0154     <span class="keyword">end</span>
+0155    
+0156 <span class="keyword">elseif</span> isequal(M, 0)        <span class="comment">% pre centralized</span>
+0157 
+0158     <span class="keyword">if</span> isempty(w)
+0159         <span class="keyword">for</span> i = 1 : k
+0160             Cs(:, :, i) = <a href="slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X(:, sp(i):ep(i)), [], 0);
+0161         <span class="keyword">end</span>
+0162     <span class="keyword">else</span>
+0163         <span class="keyword">for</span> i = 1 : k
+0164             Cs(:, :, i) = <a href="slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X(:, sp(i):ep(i)), w(sp(i):ep(i)), 0);
+0165         <span class="keyword">end</span>
+0166     <span class="keyword">end</span>
+0167       
+0168 <span class="keyword">else</span>                        <span class="comment">% precomputed means</span>
+0169 
+0170     <span class="keyword">if</span> isempty(w)
+0171         <span class="keyword">for</span> i = 1 : k
+0172             Cs(:, :, i) = <a href="slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X(:, sp(i):ep(i)), [], M(:, i));
+0173         <span class="keyword">end</span>
+0174     <span class="keyword">else</span>
+0175         <span class="keyword">for</span> i = 1 : k
+0176             Cs(:, :, i) = <a href="slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X(:, sp(i):ep(i)), w(sp(i):ep(i)), M(:, i));
+0177         <span class="keyword">end</span>
+0178     <span class="keyword">end</span>
+0179 
+0180 <span class="keyword">end</span>
+0181 
+0182 
+0183 <span class="comment">%% the function for computing pooled covariance</span>
+0184 <a name="_sub2" href="#_subfunctions" class="code">function Cpool = compute_pooled_covariance(Cs, d, k, nums, w)</a>
+0185 
+0186 [sp, ep] = <a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>(nums);
+0187 
+0188 <span class="comment">% compute group weights</span>
+0189 <span class="keyword">if</span> isempty(w)
+0190     gw = nums;
+0191 <span class="keyword">else</span>
+0192     gw = zeros(1, k);
+0193     <span class="keyword">for</span> i = 1 : k
+0194         gw(i) = sum(w(sp(i):ep(i)));
+0195     <span class="keyword">end</span>
+0196 <span class="keyword">end</span>
+0197 gw = gw(:) / sum(gw);
+0198 
+0199 <span class="comment">% compute with reshape</span>
+0200 Cs = reshape(Cs, [d*d, k]);
+0201 Cpool = Cs * gw;
+0202 Cpool = reshape(Cpool, [d, d]);
+0203 
+0204 
+0205</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

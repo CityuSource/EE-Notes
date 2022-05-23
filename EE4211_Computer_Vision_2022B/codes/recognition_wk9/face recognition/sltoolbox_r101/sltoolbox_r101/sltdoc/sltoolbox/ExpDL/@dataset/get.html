@@ -1,0 +1,333 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of get</title>
+  <meta name="keywords" content="get">
+  <meta name="description" content="GET gets the properties of the dataset">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">sltoolbox</a> &gt; <a href="../index.html">ExpDL</a> &gt; <a href="index.html">@dataset</a> &gt; get.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL\@dataset&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>get
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>GET gets the properties of the dataset</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function R = get(DS, props) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">GET gets the properties of the dataset
+
+ $ Syntax $
+   - R = get(DS, propname)
+   - R = get(DS, propname cell array)
+
+ $ Description $   
+   - R = get(DS, propname) gets a property value with its name specified
+     by propname
+
+   - R = get(DS, propname cell array) gets a set of properties with the
+     names given in a cell array. Consequently, the property values are
+     returns through a cell array of the same size.
+
+ $ Remarks $
+   - The 
+ $ History $
+   - Created by Dahua Lin on Jul 23rd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="display.html" class="code" title="function display(DS)">display</a>	DISPLAY displays the dataset fields.</li><li><a href="subsref.html" class="code" title="function R = subsref(DS, ss)">subsref</a>	SUBSREF Get the properties by subscription</li><li><a href="../../../sltoolbox/fileio/@sllog/subsref.html" class="code" title="function R = subsref(logger, ss)">subsref</a>	SUBSREF Get the properties by subscription</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function R = getprop(S, propname)</a></li><li><a href="#_sub2" class="code">function R = getnumsamples(S)</a></li><li><a href="#_sub3" class="code">function R = getnumgroups(S)</a></li><li><a href="#_sub4" class="code">function R = getsamples(S)</a></li><li><a href="#_sub5" class="code">function R = getgroups(S)</a></li><li><a href="#_sub6" class="code">function R = getclass_ids(S)</a></li><li><a href="#_sub7" class="code">function R = getfilenames(S)</a></li><li><a href="#_sub8" class="code">function R = getnums(S)</a></li><li><a href="#_sub9" class="code">function R = getnumspergrp(S)</a></li><li><a href="#_sub10" class="code">function R = getgrpnums(S)</a></li><li><a href="#_sub11" class="code">function R = getgrpclass_ids(S)</a></li><li><a href="#_sub12" class="code">function invalid_utype(S)</a></li><li><a href="#_sub13" class="code">function nums = countnums(A)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function R = get(DS, props)</a>
+0002 <span class="comment">%GET gets the properties of the dataset</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - R = get(DS, propname)</span>
+0006 <span class="comment">%   - R = get(DS, propname cell array)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Description $</span>
+0009 <span class="comment">%   - R = get(DS, propname) gets a property value with its name specified</span>
+0010 <span class="comment">%     by propname</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%   - R = get(DS, propname cell array) gets a set of properties with the</span>
+0013 <span class="comment">%     names given in a cell array. Consequently, the property values are</span>
+0014 <span class="comment">%     returns through a cell array of the same size.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Remarks $</span>
+0017 <span class="comment">%   - The</span>
+0018 <span class="comment">% $ History $</span>
+0019 <span class="comment">%   - Created by Dahua Lin on Jul 23rd, 2006</span>
+0020 <span class="comment">%</span>
+0021 
+0022 <span class="comment">%% Skeleton</span>
+0023 
+0024 <span class="keyword">if</span> ischar(props)    
+0025     S = struct(DS);
+0026     R = <a href="#_sub1" class="code" title="subfunction R = getprop(S, propname)">getprop</a>(S, props);
+0027     
+0028 <span class="keyword">elseif</span> iscell(props)
+0029     S = struct(DS);
+0030     R = cell(size(props));
+0031     n = numel(R);
+0032     <span class="keyword">for</span> i = 1 : n
+0033         <span class="keyword">if</span> ~ischar(props{i})
+0034             error(<span class="string">'dsdml:invalidarg'</span>, <span class="keyword">...</span>
+0035                 <span class="string">'The property name should be a char string'</span>);
+0036         <span class="keyword">end</span>
+0037         R{i} = <a href="#_sub1" class="code" title="subfunction R = getprop(S, propname)">getprop</a>(S, props{i});
+0038     <span class="keyword">end</span>
+0039     
+0040 <span class="keyword">else</span>
+0041     error(<span class="string">'dsdml:invalidarg'</span>, <span class="keyword">...</span>
+0042         <span class="string">'The props should be a property name or a cell of property names'</span>);
+0043 <span class="keyword">end</span>
+0044 
+0045 
+0046 <span class="comment">%% Property getting function</span>
+0047 
+0048 <a name="_sub1" href="#_subfunctions" class="code">function R = getprop(S, propname)</a>
+0049 
+0050 <span class="keyword">if</span> isfield(S, propname)
+0051     R = S.(propname);
+0052 <span class="keyword">elseif</span> ~isempty(S.attribs) &amp;&amp; isfield(S.attribs, propname)
+0053     R = S.attribs.(propname);
+0054 <span class="keyword">else</span>
+0055     <span class="keyword">switch</span>(propname)
+0056         <span class="keyword">case</span> <span class="string">'numsamples'</span>
+0057             R = <a href="#_sub2" class="code" title="subfunction R = getnumsamples(S)">getnumsamples</a>(S);
+0058         <span class="keyword">case</span> <span class="string">'numgroups'</span>
+0059             R = <a href="#_sub3" class="code" title="subfunction R = getnumgroups(S)">getnumgroups</a>(S);
+0060         <span class="keyword">case</span> <span class="string">'numunits'</span>
+0061             R = length(S.units);
+0062             
+0063         <span class="keyword">case</span> <span class="string">'samples'</span>
+0064             R = <a href="#_sub4" class="code" title="subfunction R = getsamples(S)">getsamples</a>(S);
+0065         <span class="keyword">case</span> <span class="string">'groups'</span>
+0066             R = <a href="#_sub5" class="code" title="subfunction R = getgroups(S)">getgroups</a>(S);
+0067         <span class="keyword">case</span> <span class="string">'class_ids'</span>
+0068             R = <a href="#_sub6" class="code" title="subfunction R = getclass_ids(S)">getclass_ids</a>(S);
+0069         <span class="keyword">case</span> <span class="string">'filenames'</span>
+0070             R = <a href="#_sub7" class="code" title="subfunction R = getfilenames(S)">getfilenames</a>(S);
+0071         <span class="keyword">case</span> <span class="string">'nums'</span>
+0072             R = <a href="#_sub8" class="code" title="subfunction R = getnums(S)">getnums</a>(S);
+0073             
+0074         <span class="keyword">case</span> <span class="string">'numspergrp'</span>
+0075             R = <a href="#_sub9" class="code" title="subfunction R = getnumspergrp(S)">getnumspergrp</a>(S);
+0076         <span class="keyword">case</span> <span class="string">'grpnums'</span>
+0077             R = <a href="#_sub10" class="code" title="subfunction R = getgrpnums(S)">getgrpnums</a>(S);
+0078         <span class="keyword">case</span> <span class="string">'grpclass_ids'</span>
+0079             R = <a href="#_sub11" class="code" title="subfunction R = getgrpclass_ids(S)">getgrpclass_ids</a>(S);
+0080             
+0081         <span class="keyword">otherwise</span>
+0082             error(<span class="string">'dsdml:invalidarg'</span>, <span class="keyword">...</span>
+0083                 <span class="string">'Invalid property name of the dataset: %s'</span>, propname);
+0084     <span class="keyword">end</span>
+0085 <span class="keyword">end</span>
+0086 
+0087 
+0088 <span class="comment">%% Specific property getting functions</span>
+0089 
+0090 <a name="_sub2" href="#_subfunctions" class="code">function R = getnumsamples(S)</a>
+0091 
+0092 <span class="keyword">switch</span> S.unittype
+0093     <span class="keyword">case</span> <span class="string">'Sample'</span>
+0094         R = length(S.units);
+0095     <span class="keyword">case</span> <span class="string">'SampleGroup'</span>
+0096         R = 0;
+0097         ng = length(S.units);
+0098         <span class="keyword">for</span> i = 1 : ng
+0099             R = R + length(S.units(i).samples);
+0100         <span class="keyword">end</span>
+0101     <span class="keyword">otherwise</span>
+0102         <a href="#_sub12" class="code" title="subfunction invalid_utype(S)">invalid_utype</a>(S);
+0103 <span class="keyword">end</span>
+0104 
+0105 
+0106 <a name="_sub3" href="#_subfunctions" class="code">function R = getnumgroups(S)</a>
+0107 
+0108 <span class="keyword">switch</span> S.unittype
+0109     <span class="keyword">case</span> {<span class="string">'Sample'</span>, <span class="string">'SampleGroup'</span>}
+0110         R = length(S.units);
+0111     <span class="keyword">otherwise</span>
+0112         <a href="#_sub12" class="code" title="subfunction invalid_utype(S)">invalid_utype</a>(S);
+0113 <span class="keyword">end</span>
+0114 
+0115 
+0116 <a name="_sub4" href="#_subfunctions" class="code">function R = getsamples(S)</a>
+0117 
+0118 <span class="keyword">switch</span> S.unittype
+0119     <span class="keyword">case</span> <span class="string">'Sample'</span>
+0120         R = S.units;
+0121     <span class="keyword">case</span> <span class="string">'SampleGroup'</span>
+0122         R = vertcat(S.units.samples);
+0123     <span class="keyword">otherwise</span>
+0124         <a href="#_sub12" class="code" title="subfunction invalid_utype(S)">invalid_utype</a>(S);
+0125 <span class="keyword">end</span>
+0126 
+0127 
+0128 <a name="_sub5" href="#_subfunctions" class="code">function R = getgroups(S)</a>
+0129 
+0130 <span class="keyword">switch</span> S.unittype
+0131     <span class="keyword">case</span> <span class="string">'Sample'</span>
+0132         n = length(S.units);
+0133         U = S.units;
+0134         R = struct(<span class="keyword">...</span>
+0135             <span class="string">'class_id'</span>, cell(n, 1), <span class="keyword">...</span>
+0136             <span class="string">'samples'</span>, cell(n, 1), <span class="keyword">...</span>
+0137             <span class="string">'attribs'</span>, cell(n, 1));
+0138         <span class="keyword">for</span> i = 1 : n
+0139             R(i).class_id = U(i).class_id;
+0140             R(i).samples = U(i);
+0141         <span class="keyword">end</span>
+0142     <span class="keyword">case</span> <span class="string">'SampleGroup'</span>
+0143         R = S.units;
+0144     <span class="keyword">otherwise</span>
+0145         <a href="#_sub12" class="code" title="subfunction invalid_utype(S)">invalid_utype</a>(S);
+0146 <span class="keyword">end</span>
+0147 
+0148 
+0149 <a name="_sub6" href="#_subfunctions" class="code">function R = getclass_ids(S)</a>
+0150 
+0151 <span class="keyword">switch</span>(S.unittype)
+0152     <span class="keyword">case</span> <span class="string">'Sample'</span>
+0153         n = length(S.units);
+0154         R = zeros(n, 1);
+0155         <span class="keyword">for</span> i = 1 : n
+0156             R(i) = S.units(i).class_id;
+0157         <span class="keyword">end</span>
+0158     <span class="keyword">case</span> <span class="string">'SampleGroup'</span>
+0159         n = <a href="#_sub2" class="code" title="subfunction R = getnumsamples(S)">getnumsamples</a>(S);
+0160         R = zeros(n, 1);
+0161         c = 0;
+0162         ng = length(S.units);
+0163         <span class="keyword">for</span> i = 1 : ng
+0164             ns = length(S.units(i).samples);
+0165             R(c+1:c+ns) = S.units(i).class_id;
+0166             c = c + ns;
+0167         <span class="keyword">end</span>
+0168     <span class="keyword">otherwise</span>
+0169         <a href="#_sub12" class="code" title="subfunction invalid_utype(S)">invalid_utype</a>(S);
+0170 <span class="keyword">end</span>
+0171 
+0172 
+0173 <a name="_sub7" href="#_subfunctions" class="code">function R = getfilenames(S)</a>
+0174 
+0175 <span class="keyword">switch</span>(S.unittype)
+0176     <span class="keyword">case</span> <span class="string">'Sample'</span>
+0177         n = length(S.units);
+0178         R = cell(n, 1);
+0179         <span class="keyword">for</span> i = 1 : n
+0180             R{i} = S.units(i).filename;
+0181         <span class="keyword">end</span>
+0182     <span class="keyword">case</span> <span class="string">'SampleGroup'</span>
+0183         n = <a href="#_sub2" class="code" title="subfunction R = getnumsamples(S)">getnumsamples</a>(S);
+0184         R = cell(n, 1);
+0185         c = 0;
+0186         ng = length(S.units);
+0187         <span class="keyword">for</span> i = 1 : ng
+0188             ns = length(S.units(i).samples);
+0189             [R{c+1:c+ns}] = deal(S.units(i).samples.filename);
+0190             c = c + ns;
+0191         <span class="keyword">end</span>
+0192     <span class="keyword">otherwise</span>
+0193         <a href="#_sub12" class="code" title="subfunction invalid_utype(S)">invalid_utype</a>(S);
+0194 <span class="keyword">end</span>
+0195 
+0196 
+0197 <a name="_sub8" href="#_subfunctions" class="code">function R = getnums(S)</a>
+0198 
+0199 R = <a href="#_sub13" class="code" title="subfunction nums = countnums(A)">countnums</a>(<a href="#_sub6" class="code" title="subfunction R = getclass_ids(S)">getclass_ids</a>(S));
+0200 
+0201 
+0202 
+0203 <a name="_sub9" href="#_subfunctions" class="code">function R = getnumspergrp(S)</a>
+0204 
+0205 <span class="keyword">switch</span> (S.unittype)
+0206     <span class="keyword">case</span> <span class="string">'Sample'</span>
+0207         n = length(S.units);
+0208         R = ones(n, 1);
+0209         
+0210     <span class="keyword">case</span> <span class="string">'SampleGroup'</span>
+0211         n = length(S.units);
+0212         R = zeros(n, 1);
+0213         <span class="keyword">for</span> i = 1 : n
+0214             R(i) = length(S.units(i).samples);
+0215         <span class="keyword">end</span>
+0216         
+0217     <span class="keyword">otherwise</span>
+0218         <a href="#_sub12" class="code" title="subfunction invalid_utype(S)">invalid_utype</a>(S);
+0219 <span class="keyword">end</span>
+0220 
+0221 
+0222 <a name="_sub10" href="#_subfunctions" class="code">function R = getgrpnums(S)</a>
+0223 
+0224 R = <a href="#_sub13" class="code" title="subfunction nums = countnums(A)">countnums</a>(<a href="#_sub11" class="code" title="subfunction R = getgrpclass_ids(S)">getgrpclass_ids</a>(S));
+0225         
+0226 
+0227 <a name="_sub11" href="#_subfunctions" class="code">function R = getgrpclass_ids(S)</a>
+0228 
+0229 <span class="keyword">switch</span> (S.unittype)
+0230     <span class="keyword">case</span> {<span class="string">'Sample'</span>, <span class="string">'SampleGroup'</span>}
+0231         n = length(S.units);
+0232         R = zeros(n, 1);
+0233         <span class="keyword">for</span> i = 1 : n
+0234             R(i) = S.units(i).class_id;
+0235         <span class="keyword">end</span>
+0236         
+0237     <span class="keyword">otherwise</span>
+0238         <a href="#_sub12" class="code" title="subfunction invalid_utype(S)">invalid_utype</a>(S);
+0239 <span class="keyword">end</span>                                    
+0240 
+0241 
+0242 
+0243 <span class="comment">%% Auxiliary functions</span>
+0244 
+0245 <a name="_sub12" href="#_subfunctions" class="code">function invalid_utype(S)</a>
+0246 
+0247 error(<span class="string">'dsdml:invalidunittype'</span>, <span class="keyword">...</span>
+0248             <span class="string">'Invalid unit type: %s'</span>, S.unittype);
+0249 
+0250 
+0251 <a name="_sub13" href="#_subfunctions" class="code">function nums = countnums(A)</a>
+0252 
+0253 A = A(:);
+0254 difs = diff(A);
+0255 n = length(A);
+0256 nums = [0; find(difs ~= 0); n];
+0257 nums = diff(nums);
+0258 
+0259 
+0260 
+0261 
+0262 
+0263     
+0264 
+0265 
+0266 
+0267 
+0268</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

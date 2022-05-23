@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slmakeadjmat</title>
+  <meta name="keywords" content="slmakeadjmat">
+  <meta name="description" content="SLMAKEADJMAT Makes an adjacency matrix using edges and corresponing values">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">graph</a> &gt; slmakeadjmat.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\graph&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slmakeadjmat
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLMAKEADJMAT Makes an adjacency matrix using edges and corresponing values</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function A = slmakeadjmat(n, nt, edges, vals, islogic, isspar) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLMAKEADJMAT Makes an adjacency matrix using edges and corresponing values
+
+ $ Syntax $
+   - A = slmakeadjmat(n, nt, edges, vals, islogic, issparse)
+
+ $ Arguments $
+   - n:        The number of (source) nodes
+   - nt:       The number of (target) nodes
+   - edges:    The set of edges 
+   - vals:     The values associated with edges
+   - islogic:  whether to make a logical matrix
+   - isspar:   whether to make a sparse matrix
+   - A:        The constructed adjacency matrix
+
+ $ Description $
+   - A = slmakeadjmat(n, nt, edges, vals, islogic, isspar) makes an 
+     adjacency matrix using edges and corresponing values. Here, edges 
+     and vals have the following configurations, and the value type of 
+     the output matrix is determined by the configuration and the type 
+     of vals.
+       1. edges has 1 or 2 columns, vals is empty: a matrix with 
+          all elements corresponding to existent edges set to 1.
+       2. edges has 3 columns, vals is empty: a matrix with 
+          all elements set using the 3rd column of edges.
+       3. edges has 1 or 2 or 3 columns, vals has 1 column: a matrix 
+          the values in vals are set to the matrix. The value column 
+          in edges is ignored.
+     When edges has 1 column, it contains the linear index of the edge 
+     elements, when it has 2 columns, it contains the I and J subscripts
+     of the edge elements, when it has 3 columns, it contains the I and J
+     subscripts and the values.
+  
+ $ Remarks $
+   - It is an internal support function, no checking will be performed.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 9, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sledges2adjmat.html" class="code" title="function A = sledges2adjmat(n, nt, edges, varargin)">sledges2adjmat</a>	SLEDGES2ADJMAT Creates an adjacency matrix from edge set</li><li><a href="slnngraph.html" class="code" title="function G = slnngraph(X, X2, nnparams, varargin)">slnngraph</a>	SLNNGRAPH Constructs a nearest neighborhood based graph</li><li><a href="slpwgraph.html" class="code" title="function G = slpwgraph(Xs, Xt, n, nt, evalfunctor, varargin)">slpwgraph</a>	SLVALGRAPH Constructs a graph by computing values between nodes pairwisely</li><li><a href="slsymgraph.html" class="code" title="function As = slsymgraph(A, symmethod)">slsymgraph</a>	SLSYMGRAPH Forces symmetry of the adjacency matrix of a graph</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function A = make_emptymat(n, nt, ne, islogic, isspar)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function A = slmakeadjmat(n, nt, edges, vals, islogic, isspar)</a>
+0002 <span class="comment">%SLMAKEADJMAT Makes an adjacency matrix using edges and corresponing values</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - A = slmakeadjmat(n, nt, edges, vals, islogic, issparse)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - n:        The number of (source) nodes</span>
+0009 <span class="comment">%   - nt:       The number of (target) nodes</span>
+0010 <span class="comment">%   - edges:    The set of edges</span>
+0011 <span class="comment">%   - vals:     The values associated with edges</span>
+0012 <span class="comment">%   - islogic:  whether to make a logical matrix</span>
+0013 <span class="comment">%   - isspar:   whether to make a sparse matrix</span>
+0014 <span class="comment">%   - A:        The constructed adjacency matrix</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - A = slmakeadjmat(n, nt, edges, vals, islogic, isspar) makes an</span>
+0018 <span class="comment">%     adjacency matrix using edges and corresponing values. Here, edges</span>
+0019 <span class="comment">%     and vals have the following configurations, and the value type of</span>
+0020 <span class="comment">%     the output matrix is determined by the configuration and the type</span>
+0021 <span class="comment">%     of vals.</span>
+0022 <span class="comment">%       1. edges has 1 or 2 columns, vals is empty: a matrix with</span>
+0023 <span class="comment">%          all elements corresponding to existent edges set to 1.</span>
+0024 <span class="comment">%       2. edges has 3 columns, vals is empty: a matrix with</span>
+0025 <span class="comment">%          all elements set using the 3rd column of edges.</span>
+0026 <span class="comment">%       3. edges has 1 or 2 or 3 columns, vals has 1 column: a matrix</span>
+0027 <span class="comment">%          the values in vals are set to the matrix. The value column</span>
+0028 <span class="comment">%          in edges is ignored.</span>
+0029 <span class="comment">%     When edges has 1 column, it contains the linear index of the edge</span>
+0030 <span class="comment">%     elements, when it has 2 columns, it contains the I and J subscripts</span>
+0031 <span class="comment">%     of the edge elements, when it has 3 columns, it contains the I and J</span>
+0032 <span class="comment">%     subscripts and the values.</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">% $ Remarks $</span>
+0035 <span class="comment">%   - It is an internal support function, no checking will be performed.</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">% $ History $</span>
+0038 <span class="comment">%   - Created by Dahua Lin, on Sep 9, 2006</span>
+0039 <span class="comment">%</span>
+0040 
+0041 <span class="comment">%% Main skeleton</span>
+0042 
+0043 <span class="keyword">if</span> isempty(edges)
+0044     A = <a href="#_sub1" class="code" title="subfunction A = make_emptymat(n, nt, ne, islogic, isspar)">make_emptymat</a>(n, nt, 0, islogic, isspar);        
+0045 <span class="keyword">else</span>
+0046     [ne, ncols] = size(edges);
+0047     
+0048     <span class="comment">% decide indices</span>
+0049     inds = [];
+0050     <span class="keyword">if</span> isspar
+0051         <span class="keyword">if</span> ncols == 1
+0052             inds = edges;
+0053         <span class="keyword">else</span>
+0054             I = edges(:,1);
+0055             J = edges(:,2);
+0056         <span class="keyword">end</span>
+0057     <span class="keyword">else</span>
+0058         <span class="keyword">if</span> ncols == 1
+0059             inds = edges;
+0060         <span class="keyword">else</span>
+0061             inds = sub2ind([n, nt], edges(:,1), edges(:,2));
+0062         <span class="keyword">end</span>
+0063     <span class="keyword">end</span>
+0064     
+0065     <span class="comment">% decide values</span>
+0066     <span class="keyword">if</span> isempty(vals)
+0067         <span class="keyword">if</span> ncols == 1 || ncols == 2
+0068             <span class="keyword">if</span> islogic
+0069                 vals = true;
+0070             <span class="keyword">else</span>
+0071                 vals = 1;
+0072             <span class="keyword">end</span>
+0073         <span class="keyword">else</span>
+0074             <span class="keyword">if</span> islogic
+0075                 vals = (edges(:,3) ~= 0);
+0076             <span class="keyword">else</span>
+0077                 vals = edges(:,3);
+0078             <span class="keyword">end</span>
+0079         <span class="keyword">end</span>
+0080     <span class="keyword">else</span>
+0081         <span class="keyword">if</span> islogic
+0082             <span class="keyword">if</span> ~islogical(vals)
+0083                 vals = (vals ~= 0);
+0084             <span class="keyword">end</span>
+0085         <span class="keyword">else</span>
+0086             <span class="keyword">if</span> ~isa(vals, <span class="string">'double'</span>)
+0087                 vals = double(vals);
+0088             <span class="keyword">end</span>
+0089         <span class="keyword">end</span>
+0090     <span class="keyword">end</span>
+0091                 
+0092     
+0093     <span class="comment">% do construction</span>
+0094     <span class="keyword">if</span> isempty(inds)    <span class="comment">% use I and J to construct sparse matrix</span>
+0095         A = sparse(I, J, vals, n, nt);
+0096     <span class="keyword">else</span>                <span class="comment">% create empty matrix first then use linear indices to fill</span>
+0097         A = <a href="#_sub1" class="code" title="subfunction A = make_emptymat(n, nt, ne, islogic, isspar)">make_emptymat</a>(n, nt, ne, islogic, isspar);
+0098         A(inds) = vals;
+0099     <span class="keyword">end</span>                                          
+0100     
+0101 <span class="keyword">end</span>
+0102 
+0103 
+0104 <span class="comment">%% Auxiliary functions</span>
+0105 
+0106 <a name="_sub1" href="#_subfunctions" class="code">function A = make_emptymat(n, nt, ne, islogic, isspar)</a>
+0107 
+0108 <span class="keyword">if</span> isspar
+0109     <span class="keyword">if</span> islogic
+0110         <span class="keyword">if</span> ne &gt; 0
+0111             A = sparse(1, 1, false, n, nt, ne);
+0112         <span class="keyword">else</span>
+0113             A = sparse(1, 1, false, n, nt);
+0114         <span class="keyword">end</span>
+0115     <span class="keyword">else</span>
+0116         A = spalloc(n, nt, ne);
+0117     <span class="keyword">end</span>
+0118 <span class="keyword">else</span>
+0119     <span class="keyword">if</span> islogic
+0120         A = false(n, nt);
+0121     <span class="keyword">else</span>
+0122         A = zeros(n, nt);
+0123     <span class="keyword">end</span>
+0124 <span class="keyword">end</span>
+0125             
+0126 
+0127 
+0128     
+0129 
+0130 
+0131</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

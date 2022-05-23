@@ -1,0 +1,1482 @@
+net.optimized_memory = 0 
+mini_batch = 1, batch = 8, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 32032 K-images (500 Kilo-batches_64) 
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1000.jpg: Predicted in 518.297000 milli-seconds.
+bird: 89%	(left_x:   28   top_y:   45   width:  300   height:  418)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1001.jpg: Predicted in 61.965000 milli-seconds.
+bird: 98%	(left_x:   95   top_y:  111   width:  148   height:  109)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1002.jpg: Predicted in 57.938000 milli-seconds.
+bird: 98%	(left_x:   33   top_y:   89   width:  428   height:  269)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1003.jpg: Predicted in 56.322000 milli-seconds.
+bird: 96%	(left_x:  110   top_y:   90   width:  145   height:  379)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1004.jpg: Predicted in 55.792000 milli-seconds.
+bird: 85%	(left_x:  200   top_y:   -5   width:  158   height:  335)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1005.jpg: Predicted in 56.295000 milli-seconds.
+dog: 84%	(left_x:    2   top_y:   18   width:  222   height:  270)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1006.jpg: Predicted in 56.253000 milli-seconds.
+bird: 96%	(left_x:  100   top_y:  159   width:  194   height:  128)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1007.jpg: Predicted in 56.097000 milli-seconds.
+bird: 93%	(left_x:  248   top_y:   62   width:  215   height:  254)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1008.jpg: Predicted in 56.308000 milli-seconds.
+bird: 100%	(left_x:  118   top_y:   69   width:  275   height:  140)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1009.jpg: Predicted in 56.592000 milli-seconds.
+bird: 99%	(left_x:  244   top_y:   71   width:  206   height:  176)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1010.jpg: Predicted in 56.594000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1011.jpg: Predicted in 55.901000 milli-seconds.
+bird: 100%	(left_x:  123   top_y:   10   width:  327   height:  262)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1012.jpg: Predicted in 56.285000 milli-seconds.
+bird: 90%	(left_x:   87   top_y:   77   width:  264   height:  230)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1013.jpg: Predicted in 56.093000 milli-seconds.
+bird: 90%	(left_x:  111   top_y:   55   width:  243   height:  334)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1014.jpg: Predicted in 56.229000 milli-seconds.
+bird: 71%	(left_x:    6   top_y:  108   width:  430   height:  241)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1015.jpg: Predicted in 56.216000 milli-seconds.
+bird: 95%	(left_x:   74   top_y:   88   width:  277   height:  387)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1016.jpg: Predicted in 56.275000 milli-seconds.
+bird: 88%	(left_x:  129   top_y:   88   width:  157   height:  142)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1017.jpg: Predicted in 56.449000 milli-seconds.
+bird: 94%	(left_x:  212   top_y:  127   width:  225   height:  134)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1018.jpg: Predicted in 56.349000 milli-seconds.
+bird: 85%	(left_x:   27   top_y:   22   width:  220   height:  393)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1019.jpg: Predicted in 56.103000 milli-seconds.
+bird: 97%	(left_x:   31   top_y:   35   width:  293   height:  230)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1020.jpg: Predicted in 56.364000 milli-seconds.
+bird: 99%	(left_x:    6   top_y:  167   width:  190   height:  256)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1021.jpg: Predicted in 56.771000 milli-seconds.
+bird: 72%	(left_x:   -3   top_y:   30   width:  376   height:  209)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1022.jpg: Predicted in 56.462000 milli-seconds.
+bird: 94%	(left_x:  120   top_y:   48   width:  102   height:  188)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1023.jpg: Predicted in 56.592000 milli-seconds.
+bird: 85%	(left_x:  153   top_y:   27   width:  205   height:  346)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1024.jpg: Predicted in 56.564000 milli-seconds.
+bird: 98%	(left_x:  103   top_y:  147   width:  179   height:  138)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1025.jpg: Predicted in 56.101000 milli-seconds.
+bird: 86%	(left_x:   42   top_y:  172   width:  126   height:  206)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1026.jpg: Predicted in 56.132000 milli-seconds.
+bird: 97%	(left_x:  125   top_y:  122   width:  154   height:  239)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1027.jpg: Predicted in 56.282000 milli-seconds.
+bird: 96%	(left_x:   31   top_y:   61   width:  240   height:  140)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1028.jpg: Predicted in 56.934000 milli-seconds.
+bird: 99%	(left_x:  133   top_y:   81   width:  172   height:  179)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1029.jpg: Predicted in 56.628000 milli-seconds.
+bird: 88%	(left_x:   76   top_y:  100   width:  244   height:  207)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1030.jpg: Predicted in 56.729000 milli-seconds.
+bird: 95%	(left_x:   -9   top_y:   23   width:  519   height:  486)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1031.jpg: Predicted in 56.569000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1032.jpg: Predicted in 56.353000 milli-seconds.
+bird: 89%	(left_x:   15   top_y:   82   width:  431   height:  301)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1033.jpg: Predicted in 56.314000 milli-seconds.
+bird: 99%	(left_x:   21   top_y:   77   width:  308   height:  201)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1034.jpg: Predicted in 56.119000 milli-seconds.
+bird: 71%	(left_x:    2   top_y:  172   width:  191   height:  275)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1035.jpg: Predicted in 56.257000 milli-seconds.
+apple: 72%	(left_x:   63   top_y:  243   width:   70   height:   76)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1036.jpg: Predicted in 56.585000 milli-seconds.
+bird: 95%	(left_x:  188   top_y:  108   width:  230   height:  187)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1037.jpg: Predicted in 56.107000 milli-seconds.
+bird: 80%	(left_x:   97   top_y:   44   width:  185   height:  182)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1038.jpg: Predicted in 56.720000 milli-seconds.
+bird: 95%	(left_x:    5   top_y:  112   width:  339   height:  126)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1039.jpg: Predicted in 55.918000 milli-seconds.
+bird: 92%	(left_x:  126   top_y:   83   width:  174   height:  395)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1040.jpg: Predicted in 56.198000 milli-seconds.
+bird: 96%	(left_x:   83   top_y:  114   width:  341   height:  296)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1041.jpg: Predicted in 56.668000 milli-seconds.
+bird: 91%	(left_x:  255   top_y:  129   width:  156   height:  106)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1042.jpg: Predicted in 56.995000 milli-seconds.
+bird: 99%	(left_x:  206   top_y:  113   width:  232   height:  196)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1043.jpg: Predicted in 55.937000 milli-seconds.
+bird: 99%	(left_x:  119   top_y:   20   width:  358   height:  294)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1044.jpg: Predicted in 56.555000 milli-seconds.
+bird: 97%	(left_x:   -9   top_y:   61   width:  388   height:  439)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1045.jpg: Predicted in 55.985000 milli-seconds.
+bird: 92%	(left_x:   45   top_y:   25   width:  175   height:  153)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1046.jpg: Predicted in 57.160000 milli-seconds.
+bird: 63%	(left_x:  106   top_y:   78   width:  208   height:  253)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1047.jpg: Predicted in 56.234000 milli-seconds.
+bird: 99%	(left_x:  145   top_y:  156   width:  120   height:  100)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1048.jpg: Predicted in 56.678000 milli-seconds.
+bird: 75%	(left_x:   87   top_y:   35   width:  232   height:  186)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1049.jpg: Predicted in 56.645000 milli-seconds.
+bird: 99%	(left_x:  220   top_y:   84   width:  226   height:  287)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1050.jpg: Predicted in 56.198000 milli-seconds.
+bird: 98%	(left_x:   43   top_y:   37   width:  454   height:  334)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1051.jpg: Predicted in 56.593000 milli-seconds.
+bird: 99%	(left_x:   54   top_y:   86   width:  150   height:  135)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1052.jpg: Predicted in 56.344000 milli-seconds.
+bird: 95%	(left_x:  160   top_y:   67   width:  270   height:  257)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1053.jpg: Predicted in 56.163000 milli-seconds.
+bird: 91%	(left_x:   -1   top_y:   50   width:  491   height:  259)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1054.jpg: Predicted in 56.306000 milli-seconds.
+bird: 99%	(left_x:  104   top_y:  132   width:  387   height:  143)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1055.jpg: Predicted in 56.703000 milli-seconds.
+bird: 96%	(left_x:  102   top_y:   11   width:  292   height:  472)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1056.jpg: Predicted in 56.598000 milli-seconds.
+bird: 96%	(left_x:  190   top_y:  105   width:  153   height:  157)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1057.jpg: Predicted in 56.696000 milli-seconds.
+bird: 92%	(left_x:  163   top_y:   72   width:  154   height:  232)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1058.jpg: Predicted in 56.722000 milli-seconds.
+bird: 99%	(left_x:  171   top_y:   63   width:  122   height:  210)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1059.jpg: Predicted in 56.478000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1060.jpg: Predicted in 56.689000 milli-seconds.
+bird: 93%	(left_x:  111   top_y:   24   width:  222   height:  309)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1061.jpg: Predicted in 56.097000 milli-seconds.
+bird: 95%	(left_x:   64   top_y:   33   width:  333   height:  319)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1062.jpg: Predicted in 56.536000 milli-seconds.
+bird: 98%	(left_x:  190   top_y:  101   width:  111   height:   98)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1063.jpg: Predicted in 56.564000 milli-seconds.
+bird: 94%	(left_x:  156   top_y:   71   width:  241   height:  199)
+person: 69%	(left_x:  194   top_y:  171   width:  162   height:  204)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1064.jpg: Predicted in 56.121000 milli-seconds.
+bird: 99%	(left_x:  143   top_y:   62   width:  321   height:  251)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1065.jpg: Predicted in 56.111000 milli-seconds.
+bird: 87%	(left_x:  118   top_y:  108   width:  183   height:  377)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1066.jpg: Predicted in 56.173000 milli-seconds.
+bird: 97%	(left_x:   92   top_y:   46   width:  360   height:  409)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1067.jpg: Predicted in 56.724000 milli-seconds.
+bird: 96%	(left_x:   51   top_y:   80   width:  239   height:  187)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1068.jpg: Predicted in 56.488000 milli-seconds.
+bird: 93%	(left_x:   54   top_y:   68   width:  172   height:  193)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1069.jpg: Predicted in 56.776000 milli-seconds.
+bird: 95%	(left_x:  210   top_y:   95   width:  195   height:  223)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1070.jpg: Predicted in 56.393000 milli-seconds.
+bird: 98%	(left_x:   74   top_y:   89   width:  292   height:  280)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1071.jpg: Predicted in 56.744000 milli-seconds.
+bird: 94%	(left_x:   30   top_y:   63   width:  286   height:  231)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1072.jpg: Predicted in 56.858000 milli-seconds.
+bird: 94%	(left_x:   96   top_y:  167   width:  143   height:  232)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1073.jpg: Predicted in 56.534000 milli-seconds.
+bird: 93%	(left_x:   38   top_y:   56   width:  382   height:  249)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1074.jpg: Predicted in 56.831000 milli-seconds.
+bird: 99%	(left_x:   35   top_y:   40   width:  441   height:  255)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1075.jpg: Predicted in 56.688000 milli-seconds.
+bird: 99%	(left_x:   73   top_y:   85   width:  412   height:  322)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1076.jpg: Predicted in 57.029000 milli-seconds.
+bird: 98%	(left_x:  173   top_y:  108   width:  274   height:  220)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1077.jpg: Predicted in 56.602000 milli-seconds.
+bird: 98%	(left_x:   68   top_y:   48   width:  200   height:  190)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1078.jpg: Predicted in 56.433000 milli-seconds.
+bird: 99%	(left_x:  145   top_y:   85   width:  157   height:  202)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1079.jpg: Predicted in 56.340000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1080.jpg: Predicted in 56.489000 milli-seconds.
+bird: 84%	(left_x:   29   top_y:   66   width:  346   height:  284)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1081.jpg: Predicted in 56.770000 milli-seconds.
+bird: 100%	(left_x:  206   top_y:  117   width:  161   height:  153)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1082.jpg: Predicted in 56.200000 milli-seconds.
+bird: 86%	(left_x:  115   top_y:  100   width:  160   height:  189)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1083.jpg: Predicted in 56.669000 milli-seconds.
+bird: 99%	(left_x:  185   top_y:  134   width:  137   height:  217)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1084.jpg: Predicted in 56.557000 milli-seconds.
+bird: 100%	(left_x:   40   top_y:  117   width:  264   height:  155)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1085.jpg: Predicted in 56.726000 milli-seconds.
+bird: 59%	(left_x:  209   top_y:   96   width:   97   height:  119)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1086.jpg: Predicted in 56.721000 milli-seconds.
+bird: 98%	(left_x:  170   top_y:   88   width:  248   height:  146)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1087.jpg: Predicted in 56.666000 milli-seconds.
+bird: 83%	(left_x:   89   top_y:   64   width:  253   height:  333)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1088.jpg: Predicted in 56.787000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1089.jpg: Predicted in 56.193000 milli-seconds.
+bird: 98%	(left_x:   66   top_y:   97   width:  145   height:  298)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1090.jpg: Predicted in 56.895000 milli-seconds.
+bird: 88%	(left_x:   76   top_y:   56   width:  192   height:  140)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1091.jpg: Predicted in 56.377000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1092.jpg: Predicted in 56.584000 milli-seconds.
+bird: 99%	(left_x:  292   top_y:  130   width:  119   height:  132)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1093.jpg: Predicted in 56.782000 milli-seconds.
+bird: 51%	(left_x:  131   top_y:   87   width:  333   height:  208)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1094.jpg: Predicted in 56.847000 milli-seconds.
+bird: 71%	(left_x:  132   top_y:   17   width:  147   height:  354)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1095.jpg: Predicted in 56.886000 milli-seconds.
+bird: 97%	(left_x:   42   top_y:   79   width:  378   height:  311)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1096.jpg: Predicted in 56.284000 milli-seconds.
+bird: 94%	(left_x:   99   top_y:  145   width:  178   height:  222)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1097.jpg: Predicted in 56.914000 milli-seconds.
+bird: 90%	(left_x:   97   top_y:   78   width:  267   height:  251)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1098.jpg: Predicted in 56.289000 milli-seconds.
+bird: 98%	(left_x:   97   top_y:   67   width:  350   height:  197)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1099.jpg: Predicted in 56.822000 milli-seconds.
+bird: 95%	(left_x:   60   top_y:   53   width:  178   height:  199)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1100.jpg: Predicted in 57.000000 milli-seconds.
+bird: 95%	(left_x:   33   top_y:  110   width:  294   height:  395)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1101.jpg: Predicted in 56.436000 milli-seconds.
+bird: 61%	(left_x:  170   top_y:   61   width:  156   height:  311)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1102.jpg: Predicted in 56.987000 milli-seconds.
+bird: 84%	(left_x:  152   top_y:   70   width:  182   height:  332)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1103.jpg: Predicted in 56.329000 milli-seconds.
+bird: 67%	(left_x:   79   top_y:   62   width:  182   height:  263)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1104.jpg: Predicted in 57.086000 milli-seconds.
+bird: 99%	(left_x:   88   top_y:   61   width:  165   height:  126)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1105.jpg: Predicted in 56.664000 milli-seconds.
+bird: 99%	(left_x:  161   top_y:   42   width:  322   height:  249)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1106.jpg: Predicted in 56.526000 milli-seconds.
+bird: 92%	(left_x:   10   top_y:    9   width:  189   height:  204)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1107.jpg: Predicted in 57.188000 milli-seconds.
+bird: 80%	(left_x:  126   top_y:   40   width:  105   height:  117)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1108.jpg: Predicted in 56.753000 milli-seconds.
+bird: 97%	(left_x:   38   top_y:   82   width:  363   height:  154)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1109.jpg: Predicted in 56.670000 milli-seconds.
+bird: 96%	(left_x:  224   top_y:   50   width:  135   height:  365)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1110.jpg: Predicted in 56.547000 milli-seconds.
+bird: 97%	(left_x:  138   top_y:  112   width:  311   height:  139)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1111.jpg: Predicted in 56.644000 milli-seconds.
+bird: 99%	(left_x:  235   top_y:   54   width:  182   height:  162)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1112.jpg: Predicted in 56.310000 milli-seconds.
+bird: 91%	(left_x:  150   top_y:   93   width:  190   height:  165)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1113.jpg: Predicted in 56.625000 milli-seconds.
+bird: 88%	(left_x:  100   top_y:  101   width:  261   height:  351)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1114.jpg: Predicted in 56.936000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1115.jpg: Predicted in 56.491000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1116.jpg: Predicted in 56.657000 milli-seconds.
+bird: 93%	(left_x:  195   top_y:  218   width:   98   height:  162)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1117.jpg: Predicted in 56.116000 milli-seconds.
+bird: 73%	(left_x:   47   top_y:  121   width:  281   height:  251)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1118.jpg: Predicted in 56.861000 milli-seconds.
+bird: 98%	(left_x:  153   top_y:   46   width:  185   height:  271)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1119.jpg: Predicted in 56.447000 milli-seconds.
+bird: 99%	(left_x:   78   top_y:  135   width:  149   height:  297)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1120.jpg: Predicted in 56.347000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1121.jpg: Predicted in 56.597000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1122.jpg: Predicted in 56.823000 milli-seconds.
+bird: 73%	(left_x:  110   top_y:   37   width:  199   height:  204)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1123.jpg: Predicted in 56.833000 milli-seconds.
+bird: 82%	(left_x:  135   top_y:  106   width:  268   height:  151)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1124.jpg: Predicted in 56.278000 milli-seconds.
+bird: 99%	(left_x:   30   top_y:   69   width:  453   height:  260)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1125.jpg: Predicted in 56.493000 milli-seconds.
+bird: 73%	(left_x:  167   top_y:  157   width:  224   height:  121)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1126.jpg: Predicted in 56.436000 milli-seconds.
+bird: 84%	(left_x:  163   top_y:  159   width:  277   height:  174)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1127.jpg: Predicted in 56.981000 milli-seconds.
+bird: 94%	(left_x:   38   top_y:   30   width:  382   height:  422)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1128.jpg: Predicted in 56.403000 milli-seconds.
+bird: 98%	(left_x:  181   top_y:   19   width:  169   height:  332)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1129.jpg: Predicted in 56.937000 milli-seconds.
+bird: 97%	(left_x:   20   top_y:   86   width:  275   height:  393)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1130.jpg: Predicted in 57.086000 milli-seconds.
+bird: 85%	(left_x:   27   top_y:   39   width:  247   height:  272)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1131.jpg: Predicted in 56.511000 milli-seconds.
+bird: 92%	(left_x:  176   top_y:   45   width:  319   height:  330)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1132.jpg: Predicted in 56.717000 milli-seconds.
+bird: 98%	(left_x:  216   top_y:  115   width:  104   height:   99)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1133.jpg: Predicted in 56.628000 milli-seconds.
+bird: 99%	(left_x:  132   top_y:  109   width:  165   height:  137)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1134.jpg: Predicted in 56.950000 milli-seconds.
+bird: 90%	(left_x:   88   top_y:  102   width:  113   height:  238)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1135.jpg: Predicted in 56.176000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1136.jpg: Predicted in 56.820000 milli-seconds.
+bird: 96%	(left_x:   21   top_y:   52   width:  356   height:  348)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1137.jpg: Predicted in 56.747000 milli-seconds.
+apple: 78%	(left_x:  401   top_y:  228   width:   46   height:   40)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1138.jpg: Predicted in 56.639000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1139.jpg: Predicted in 56.932000 milli-seconds.
+bird: 55%	(left_x:  -21   top_y:   43   width:  431   height:  249)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1140.jpg: Predicted in 56.839000 milli-seconds.
+bird: 99%	(left_x:  219   top_y:   29   width:  178   height:  113)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1141.jpg: Predicted in 56.767000 milli-seconds.
+bird: 93%	(left_x:  180   top_y:   56   width:  170   height:  208)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1142.jpg: Predicted in 56.797000 milli-seconds.
+bird: 96%	(left_x:  152   top_y:  114   width:  247   height:  138)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1143.jpg: Predicted in 56.822000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1144.jpg: Predicted in 56.840000 milli-seconds.
+bird: 69%	(left_x:  165   top_y:   93   width:  100   height:  126)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1145.jpg: Predicted in 56.849000 milli-seconds.
+bird: 58%	(left_x:  197   top_y:   68   width:  148   height:  247)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1146.jpg: Predicted in 56.560000 milli-seconds.
+bird: 99%	(left_x:  193   top_y:   65   width:  241   height:  236)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1147.jpg: Predicted in 56.466000 milli-seconds.
+bird: 92%	(left_x:  163   top_y:   88   width:  186   height:  235)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1148.jpg: Predicted in 56.988000 milli-seconds.
+bird: 79%	(left_x:  164   top_y:  143   width:  150   height:  321)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1149.jpg: Predicted in 56.598000 milli-seconds.
+bird: 99%	(left_x:   67   top_y:   31   width:  428   height:  348)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1150.jpg: Predicted in 56.234000 milli-seconds.
+bird: 98%	(left_x:   15   top_y:  181   width:  188   height:  161)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1151.jpg: Predicted in 56.400000 milli-seconds.
+bird: 61%	(left_x:  224   top_y:  140   width:  247   height:  220)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1152.jpg: Predicted in 56.899000 milli-seconds.
+bird: 88%	(left_x:  160   top_y:   32   width:  118   height:  271)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1153.jpg: Predicted in 56.950000 milli-seconds.
+bird: 95%	(left_x:  162   top_y:    3   width:  177   height:  376)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1154.jpg: Predicted in 57.040000 milli-seconds.
+bird: 89%	(left_x:   63   top_y:   25   width:  267   height:  353)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1155.jpg: Predicted in 57.051000 milli-seconds.
+bird: 93%	(left_x:   74   top_y:   71   width:  411   height:  309)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1156.jpg: Predicted in 56.767000 milli-seconds.
+bird: 96%	(left_x:   26   top_y:   72   width:  381   height:  227)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1157.jpg: Predicted in 56.792000 milli-seconds.
+bird: 98%	(left_x:  139   top_y:  182   width:  163   height:  167)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1158.jpg: Predicted in 56.718000 milli-seconds.
+bird: 95%	(left_x:  122   top_y:  104   width:  162   height:   98)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1159.jpg: Predicted in 56.856000 milli-seconds.
+bird: 97%	(left_x:  145   top_y:   80   width:  165   height:  246)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1160.jpg: Predicted in 56.987000 milli-seconds.
+bird: 99%	(left_x:  139   top_y:  107   width:  169   height:  163)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1161.jpg: Predicted in 56.622000 milli-seconds.
+bird: 98%	(left_x:   49   top_y:   16   width:  174   height:  256)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1162.jpg: Predicted in 56.724000 milli-seconds.
+bird: 60%	(left_x:  153   top_y:  100   width:  191   height:  183)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1163.jpg: Predicted in 56.149000 milli-seconds.
+bird: 99%	(left_x:   34   top_y:   15   width:  376   height:  337)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1164.jpg: Predicted in 56.794000 milli-seconds.
+bird: 99%	(left_x:   13   top_y:   30   width:  266   height:  400)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1165.jpg: Predicted in 56.298000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1166.jpg: Predicted in 56.679000 milli-seconds.
+bird: 92%	(left_x:   41   top_y:   31   width:  208   height:  325)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1167.jpg: Predicted in 57.235000 milli-seconds.
+bird: 60%	(left_x:   58   top_y:   39   width:  136   height:   83)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1168.jpg: Predicted in 57.005000 milli-seconds.
+bird: 91%	(left_x:  179   top_y:  125   width:  159   height:   97)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1169.jpg: Predicted in 57.137000 milli-seconds.
+bird: 90%	(left_x:   63   top_y:  127   width:  321   height:  276)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1170.jpg: Predicted in 56.488000 milli-seconds.
+bird: 99%	(left_x:  133   top_y:   53   width:  303   height:  262)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1171.jpg: Predicted in 57.186000 milli-seconds.
+bird: 96%	(left_x:  142   top_y:   23   width:  215   height:  337)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1172.jpg: Predicted in 56.999000 milli-seconds.
+bird: 90%	(left_x:  120   top_y:   88   width:  258   height:  378)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1173.jpg: Predicted in 56.810000 milli-seconds.
+bird: 99%	(left_x:  117   top_y:  102   width:  228   height:  307)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1174.jpg: Predicted in 56.224000 milli-seconds.
+bird: 61%	(left_x:   14   top_y:   40   width:  193   height:  267)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1175.jpg: Predicted in 56.485000 milli-seconds.
+bird: 97%	(left_x:  111   top_y:   54   width:  347   height:  274)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1176.jpg: Predicted in 56.663000 milli-seconds.
+bird: 62%	(left_x:   79   top_y:   38   width:  124   height:  127)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1177.jpg: Predicted in 56.456000 milli-seconds.
+bird: 76%	(left_x:  117   top_y:  113   width:  174   height:  272)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1178.jpg: Predicted in 56.786000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1179.jpg: Predicted in 56.332000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1180.jpg: Predicted in 56.843000 milli-seconds.
+bird: 94%	(left_x:  173   top_y:  187   width:  202   height:  173)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1181.jpg: Predicted in 56.258000 milli-seconds.
+bird: 90%	(left_x:   37   top_y:   61   width:  292   height:  429)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1182.jpg: Predicted in 56.984000 milli-seconds.
+bird: 87%	(left_x:  122   top_y:  117   width:  281   height:  314)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1183.jpg: Predicted in 57.302000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1184.jpg: Predicted in 56.873000 milli-seconds.
+bird: 84%	(left_x:    4   top_y:   95   width:  255   height:  365)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1185.jpg: Predicted in 56.863000 milli-seconds.
+bird: 99%	(left_x:   89   top_y:   89   width:  200   height:  156)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1186.jpg: Predicted in 56.457000 milli-seconds.
+bird: 99%	(left_x:  159   top_y:   39   width:  181   height:  375)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1187.jpg: Predicted in 56.908000 milli-seconds.
+bird: 91%	(left_x:    6   top_y:   16   width:  334   height:  370)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1188.jpg: Predicted in 57.239000 milli-seconds.
+bird: 98%	(left_x:   79   top_y:  137   width:  305   height:  175)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1189.jpg: Predicted in 56.994000 milli-seconds.
+bird: 98%	(left_x:  243   top_y:  133   width:  134   height:   93)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1190.jpg: Predicted in 56.335000 milli-seconds.
+bird: 98%	(left_x:  154   top_y:   75   width:  251   height:  220)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1191.jpg: Predicted in 56.735000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1192.jpg: Predicted in 56.928000 milli-seconds.
+bird: 99%	(left_x:   80   top_y:   39   width:  215   height:  124)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1193.jpg: Predicted in 56.884000 milli-seconds.
+bird: 97%	(left_x:  132   top_y:   51   width:  248   height:  192)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1194.jpg: Predicted in 56.718000 milli-seconds.
+bird: 58%	(left_x:  151   top_y:  119   width:  135   height:  123)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1195.jpg: Predicted in 57.369000 milli-seconds.
+bird: 90%	(left_x:   78   top_y:  168   width:  153   height:  100)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1196.jpg: Predicted in 57.178000 milli-seconds.
+bird: 82%	(left_x:   25   top_y:  133   width:  444   height:  138)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1197.jpg: Predicted in 56.691000 milli-seconds.
+bird: 99%	(left_x:   57   top_y:   94   width:  135   height:  147)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1198.jpg: Predicted in 56.882000 milli-seconds.
+bird: 99%	(left_x:  139   top_y:  102   width:  149   height:  148)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1199.jpg: Predicted in 56.767000 milli-seconds.
+apple: 56%	(left_x:   -1   top_y:  181   width:   63   height:  140)
+bird: 59%	(left_x:   -0   top_y:  187   width:   63   height:  158)
+bird: 79%	(left_x:  119   top_y:  133   width:  302   height:  145)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1200.jpg: Predicted in 57.304000 milli-seconds.
+bird: 95%	(left_x:   28   top_y:  133   width:  175   height:  228)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1201.jpg: Predicted in 57.088000 milli-seconds.
+bird: 75%	(left_x:   -9   top_y:   56   width:  398   height:  326)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1202.jpg: Predicted in 57.115000 milli-seconds.
+bird: 92%	(left_x:   35   top_y:   36   width:  200   height:  441)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1203.jpg: Predicted in 56.706000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1204.jpg: Predicted in 56.998000 milli-seconds.
+bird: 95%	(left_x:  181   top_y:   95   width:  258   height:  183)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1205.jpg: Predicted in 57.167000 milli-seconds.
+cat: 68%	(left_x:    7   top_y:   -1   width:  127   height:  141)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1206.jpg: Predicted in 56.912000 milli-seconds.
+bird: 87%	(left_x:  295   top_y:   99   width:  103   height:  137)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1207.jpg: Predicted in 59.458000 milli-seconds.
+bird: 60%	(left_x:  218   top_y:   70   width:  211   height:  191)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1208.jpg: Predicted in 57.464000 milli-seconds.
+bird: 99%	(left_x:  121   top_y:   99   width:  149   height:  204)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1209.jpg: Predicted in 56.959000 milli-seconds.
+bird: 96%	(left_x:   95   top_y:   25   width:  243   height:  313)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1210.jpg: Predicted in 56.965000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1211.jpg: Predicted in 56.955000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1212.jpg: Predicted in 57.086000 milli-seconds.
+bird: 93%	(left_x:   71   top_y:   93   width:  240   height:  125)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1213.jpg: Predicted in 56.547000 milli-seconds.
+bird: 97%	(left_x:  141   top_y:  152   width:  198   height:  153)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1214.jpg: Predicted in 56.407000 milli-seconds.
+bird: 98%	(left_x:  102   top_y:  246   width:  153   height:  185)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1215.jpg: Predicted in 56.886000 milli-seconds.
+bird: 93%	(left_x:  135   top_y:   50   width:  177   height:  193)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1216.jpg: Predicted in 56.696000 milli-seconds.
+bird: 60%	(left_x:  144   top_y:  127   width:  265   height:  116)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1217.jpg: Predicted in 56.954000 milli-seconds.
+bird: 82%	(left_x:   97   top_y:   23   width:  311   height:  375)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1218.jpg: Predicted in 56.365000 milli-seconds.
+bird: 79%	(left_x:   22   top_y:   18   width:  315   height:  266)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1219.jpg: Predicted in 57.342000 milli-seconds.
+bird: 88%	(left_x:   82   top_y:   73   width:  239   height:  355)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1220.jpg: Predicted in 57.329000 milli-seconds.
+bird: 95%	(left_x:   58   top_y:   70   width:  237   height:  206)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1221.jpg: Predicted in 57.106000 milli-seconds.
+bird: 93%	(left_x:   22   top_y:  115   width:  271   height:  327)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1222.jpg: Predicted in 56.196000 milli-seconds.
+bird: 79%	(left_x:  169   top_y:   60   width:  254   height:  253)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1223.jpg: Predicted in 56.987000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1224.jpg: Predicted in 56.833000 milli-seconds.
+bird: 96%	(left_x:  120   top_y:   38   width:  223   height:  285)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1225.jpg: Predicted in 56.531000 milli-seconds.
+bird: 95%	(left_x:  221   top_y:  134   width:  116   height:   74)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1226.jpg: Predicted in 56.708000 milli-seconds.
+bird: 93%	(left_x:   20   top_y:   45   width:  370   height:  179)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1227.jpg: Predicted in 56.492000 milli-seconds.
+bird: 99%	(left_x:   89   top_y:   58   width:  130   height:  268)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1228.jpg: Predicted in 56.709000 milli-seconds.
+bird: 99%	(left_x:  177   top_y:  173   width:  155   height:  170)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1229.jpg: Predicted in 56.481000 milli-seconds.
+bird: 53%	(left_x:  262   top_y:   23   width:  174   height:  283)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1230.jpg: Predicted in 56.735000 milli-seconds.
+bird: 95%	(left_x:    6   top_y:   80   width:  299   height:  130)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1231.jpg: Predicted in 56.370000 milli-seconds.
+bird: 99%	(left_x:  215   top_y:   99   width:  235   height:  281)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1232.jpg: Predicted in 56.526000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1233.jpg: Predicted in 56.802000 milli-seconds.
+bird: 77%	(left_x:  148   top_y:   52   width:  296   height:  271)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1234.jpg: Predicted in 57.203000 milli-seconds.
+bird: 97%	(left_x:   38   top_y:   66   width:  184   height:  211)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1235.jpg: Predicted in 57.063000 milli-seconds.
+bird: 63%	(left_x:  139   top_y:  141   width:  139   height:  117)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1236.jpg: Predicted in 56.762000 milli-seconds.
+bird: 89%	(left_x:   66   top_y:   90   width:  141   height:  387)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1237.jpg: Predicted in 56.980000 milli-seconds.
+bird: 99%	(left_x:   49   top_y:   27   width:  450   height:  326)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1238.jpg: Predicted in 56.789000 milli-seconds.
+bird: 88%	(left_x:   95   top_y:  114   width:  250   height:  179)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1239.jpg: Predicted in 56.834000 milli-seconds.
+bird: 100%	(left_x:  113   top_y:  131   width:  229   height:  136)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1240.jpg: Predicted in 56.564000 milli-seconds.
+bird: 91%	(left_x:  178   top_y:  160   width:  200   height:  104)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1241.jpg: Predicted in 57.133000 milli-seconds.
+bird: 70%	(left_x:  146   top_y:   78   width:  312   height:  320)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1242.jpg: Predicted in 57.534000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1243.jpg: Predicted in 56.458000 milli-seconds.
+bird: 70%	(left_x:   39   top_y:   81   width:  433   height:  274)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1244.jpg: Predicted in 56.827000 milli-seconds.
+bird: 94%	(left_x:  173   top_y:  139   width:  112   height:  134)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1245.jpg: Predicted in 56.157000 milli-seconds.
+bird: 60%	(left_x:   -2   top_y:   12   width:  241   height:  257)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1246.jpg: Predicted in 56.568000 milli-seconds.
+bird: 77%	(left_x:  174   top_y:  108   width:  188   height:  196)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1247.jpg: Predicted in 56.812000 milli-seconds.
+bird: 97%	(left_x:    5   top_y:   69   width:  336   height:  407)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1248.jpg: Predicted in 57.234000 milli-seconds.
+bird: 99%	(left_x:   49   top_y:   54   width:  222   height:  295)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1249.jpg: Predicted in 58.536000 milli-seconds.
+bird: 95%	(left_x:  216   top_y:  121   width:  219   height:  146)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1250.jpg: Predicted in 56.527000 milli-seconds.
+bird: 80%	(left_x:   41   top_y:  154   width:  275   height:  248)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1251.jpg: Predicted in 56.376000 milli-seconds.
+bird: 76%	(left_x:   50   top_y:  185   width:  224   height:   81)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1252.jpg: Predicted in 57.113000 milli-seconds.
+bird: 99%	(left_x:  124   top_y:  134   width:  122   height:  281)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1253.jpg: Predicted in 56.994000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1254.jpg: Predicted in 56.881000 milli-seconds.
+bird: 100%	(left_x:  138   top_y:  112   width:  182   height:  206)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1255.jpg: Predicted in 57.357000 milli-seconds.
+bird: 99%	(left_x:  173   top_y:  114   width:  258   height:  184)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1256.jpg: Predicted in 56.392000 milli-seconds.
+bird: 81%	(left_x:  154   top_y:   74   width:  336   height:  227)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1257.jpg: Predicted in 56.763000 milli-seconds.
+bird: 99%	(left_x:   30   top_y:   99   width:  386   height:  215)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1258.jpg: Predicted in 56.749000 milli-seconds.
+bird: 99%	(left_x:  143   top_y:  128   width:  172   height:  136)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1259.jpg: Predicted in 57.043000 milli-seconds.
+bird: 51%	(left_x:  105   top_y:   69   width:  125   height:  270)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1260.jpg: Predicted in 57.324000 milli-seconds.
+bird: 98%	(left_x:   28   top_y:   69   width:  384   height:  231)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1261.jpg: Predicted in 57.237000 milli-seconds.
+bird: 98%	(left_x:   71   top_y:   67   width:  145   height:  228)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1262.jpg: Predicted in 56.907000 milli-seconds.
+bird: 77%	(left_x:  138   top_y:   53   width:  344   height:  150)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1263.jpg: Predicted in 56.574000 milli-seconds.
+bird: 97%	(left_x:  242   top_y:  126   width:  131   height:  111)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1264.jpg: Predicted in 56.797000 milli-seconds.
+cat: 52%	(left_x:  131   top_y:  116   width:  177   height:  105)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1265.jpg: Predicted in 56.546000 milli-seconds.
+bird: 74%	(left_x:  130   top_y:   88   width:  140   height:  324)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1266.jpg: Predicted in 56.809000 milli-seconds.
+bird: 90%	(left_x:  161   top_y:   44   width:  107   height:  136)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1267.jpg: Predicted in 56.847000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1268.jpg: Predicted in 56.864000 milli-seconds.
+bird: 76%	(left_x:  107   top_y:   45   width:  336   height:  206)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1269.jpg: Predicted in 57.709000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1270.jpg: Predicted in 57.006000 milli-seconds.
+bird: 93%	(left_x:  115   top_y:   72   width:  193   height:  400)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1271.jpg: Predicted in 57.114000 milli-seconds.
+bird: 98%	(left_x:  168   top_y:   98   width:  195   height:  280)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1272.jpg: Predicted in 56.714000 milli-seconds.
+bird: 68%	(left_x:  144   top_y:   95   width:  223   height:  139)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1273.jpg: Predicted in 56.694000 milli-seconds.
+bird: 78%	(left_x:  156   top_y:  134   width:   93   height:  141)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1274.jpg: Predicted in 56.797000 milli-seconds.
+bird: 98%	(left_x:   58   top_y:  128   width:  277   height:  158)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1275.jpg: Predicted in 57.171000 milli-seconds.
+bird: 99%	(left_x:   37   top_y:   86   width:  243   height:  320)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1276.jpg: Predicted in 56.737000 milli-seconds.
+bird: 95%	(left_x:   20   top_y:   13   width:  193   height:  301)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1277.jpg: Predicted in 56.604000 milli-seconds.
+bird: 62%	(left_x:   46   top_y:  106   width:  248   height:  183)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1278.jpg: Predicted in 57.185000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1279.jpg: Predicted in 56.653000 milli-seconds.
+bird: 84%	(left_x:   74   top_y:   25   width:  155   height:  171)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1280.jpg: Predicted in 56.758000 milli-seconds.
+bird: 98%	(left_x:   38   top_y:   48   width:  204   height:  131)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1281.jpg: Predicted in 57.275000 milli-seconds.
+bird: 92%	(left_x:  152   top_y:  181   width:  285   height:  165)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1282.jpg: Predicted in 57.130000 milli-seconds.
+bird: 98%	(left_x:  192   top_y:  143   width:  221   height:  168)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1283.jpg: Predicted in 57.041000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1284.jpg: Predicted in 57.282000 milli-seconds.
+bird: 99%	(left_x:  208   top_y:  116   width:  280   height:  216)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1285.jpg: Predicted in 56.993000 milli-seconds.
+bird: 98%	(left_x:  184   top_y:  111   width:  155   height:  215)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1286.jpg: Predicted in 57.258000 milli-seconds.
+bird: 99%	(left_x:   99   top_y:  127   width:  190   height:  201)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1287.jpg: Predicted in 56.527000 milli-seconds.
+bird: 98%	(left_x:   49   top_y:  140   width:  336   height:  246)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1288.jpg: Predicted in 56.760000 milli-seconds.
+bird: 99%	(left_x:  115   top_y:   73   width:  154   height:  128)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1289.jpg: Predicted in 56.422000 milli-seconds.
+bird: 98%	(left_x:  163   top_y:   93   width:  319   height:  298)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1290.jpg: Predicted in 56.643000 milli-seconds.
+bird: 95%	(left_x:   32   top_y:   62   width:  428   height:  174)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1291.jpg: Predicted in 56.651000 milli-seconds.
+bird: 99%	(left_x:   20   top_y:   16   width:  306   height:  370)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1292.jpg: Predicted in 56.915000 milli-seconds.
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1293.jpg: Predicted in 56.592000 milli-seconds.
+bird: 69%	(left_x:    8   top_y:   76   width:  425   height:  182)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1294.jpg: Predicted in 56.809000 milli-seconds.
+bird: 99%	(left_x:   70   top_y:   77   width:  248   height:  176)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1295.jpg: Predicted in 56.751000 milli-seconds.
+bird: 97%	(left_x:  193   top_y:   93   width:  159   height:  208)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1296.jpg: Predicted in 56.659000 milli-seconds.
+bird: 99%	(left_x:  152   top_y:   94   width:  132   height:  127)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1297.jpg: Predicted in 56.573000 milli-seconds.
+bird: 98%	(left_x:   83   top_y:   44   width:  158   height:  154)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1298.jpg: Predicted in 57.259000 milli-seconds.
+bird: 98%	(left_x:   46   top_y:   16   width:  339   height:  300)
+Enter Image Path:  Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+data/Test/1299.jpg: Predicted in 57.415000 milli-seconds.
+bird: 99%	(left_x:  179   top_y:   79   width:  124   height:  209)
+Enter Image Path: 

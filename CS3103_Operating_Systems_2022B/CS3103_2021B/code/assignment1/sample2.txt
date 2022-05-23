@@ -1,0 +1,190 @@
+
+//Basic instructions for mini-shell:
+Tab Key:        Files suggestion
+Arrow Key Up:   Previous arguments
+Arrow Key Down: Next arguments
+
+//Supported Commands (basic):
+fg: Run process in background
+bg: Run process in foreground
+list: List all running or stopped processes
+ls: Same as "list"
+exit: Exit program and terminate all running processes
+ex: Same as "exit"
+
+//Supported Commands (supplementary):
+clear: Clear terminal screen
+cls: Same as "clear"
+date: Check current date and time
+g++ver: Check the version of g++ installed
+
+//*Command demos//
+
+//Run the code
+$ g++ 56046680.cpp -lreadline -lpthread -o 56046680 && ./56046680
+Mini-Shell build by c++
+sh >
+
+//Type fg
+sh >fg ./test hello 2 5
+...(output from test)...
+sh >
+
+//Type bg
+sh >bg ./test hello 2 5
+sh >...(output from test)...
+(input here)
+
+//list or ls (when no running or stopped processes)
+sh >list
+sh >
+
+//exit or ex (when no running process)
+sh >exit
+Mini Shell will be terminated
+sh >
+
+//date
+sh >date
+Thu Feb 18 06:37:22 HKT 2021
+sh >
+
+//g++ver
+sh >g++ver
+g++ (Ubuntu 9.3.0-10ubuntu2) 9.3.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+sh >
+
+//*Unexpected input//
+
+//incorrect execvp
+sh >fg ./ls
+Error: execvp() failed!
+Process 16632 completed
+sh >
+
+//incorrect fork
+sh >???? (I personally never meet this problem)
+Error: fork() failed!
+sh >
+
+//Type fg without arguments
+sh >fg
+Usage: fg [path of executable file] [a list of arguments]
+sh >
+
+//Type bg without arguments
+sh >bg
+Usage: bg [path of executable file] [a list of arguments]
+sh >
+
+//Not supported command
+sh >test
+test :command not found
+sh >
+
+//Empty arguments
+sh >
+No input arguments
+sh >
+
+//*possible outputs//
+
+//"fg"
+sh >fg ./test hello 1 5
+hello
+hello
+hello
+hello
+hello
+Process 59976 completed
+sh >
+
+//"fg" with "CTRL + C" after second "hello"
+sh >fg ./test hello 2 5
+hello
+hello
+^C
+sh >Process 59977 terminated
+sh >
+
+//"fg" with "CTRL + Z" after the second "hello"
+sh >fg ./test hello 2 5
+hello
+hello
+^Z
+sh >Process 78832 stopped
+sh >
+
+//"fg" two times with "CTRL + Z" after the second "hello"
+//"list"
+sh >fg ./test hello 2 5
+hello
+hello
+^Z
+sh >Process 16478 stopped
+sh >fg ./test hello 2 5
+hello
+hello
+^Z
+sh >Process 16479 stopped
+sh >ls
+16478: stopped ./test hello 2 5
+16479: stopped ./test hello 2 5
+sh >
+
+//"bg" two times
+//"list"
+//"fg" with "CTRL + C"
+//"fg" with "CTRL + Z"
+//"list"
+//"exit"
+sh >bg ./test test1 60 5
+sh >bg ./test test2 30 5
+sh >list
+16584: running ./test test1 60 5
+16585: running ./test test2 30 5
+sh >fg ./test test3 2 5
+^C
+sh >Process 16586 terminated
+sh >fg ./test test4 5 10
+^Z
+sh >Process 16587 stopped
+sh >list
+16584: running ./test test1 60 5
+16585: running ./test test2 30 5
+16587: stopped ./test test4 5 10
+sh >exit
+Process 16584 terminated
+Process 16585 terminated
+Mini Shell will be terminated
+
+//More output examples
+sh >fg ./test hello 1 3
+hello
+^Z
+sh >Process 16935 stopped
+sh >fg ./test hello2 1 5
+hello2
+^Z
+sh >Process 16936 stopped
+sh >bg ./test t1 30 30
+sh >bg ./test t2 30 31
+sh >bg ./test t3 45 65
+sh >bg ./test t4 15 10
+sh >bg ./test t4 11 12
+sh >ls
+16935: stopped ./test hello 1 3
+16936: stopped ./test hello2 1 5
+16937: running ./test t1 30 30
+16938: running ./test t2 30 31
+16939: running ./test t3 45 65
+16940: running ./test t4 15 10
+16941: running ./test t4 11 12
+sh >ex
+Process 16937 terminated
+Process 16938 terminated
+Process 16939 terminated
+Process 16940 terminated
+Process 16941 terminated
+Mini Shell will be terminated

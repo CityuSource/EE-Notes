@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slmetric_cp</title>
+  <meta name="keywords" content="slmetric_cp">
+  <meta name="description" content="SLMETRIC_CP Computes the metrics between corresponding pairs of samples">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">core</a> &gt; slmetric_cp.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\core&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slmetric_cp
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLMETRIC_CP Computes the metrics between corresponding pairs of samples</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function M = slmetric_cp(X1, X2, mtype, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLMETRIC_CP Computes the metrics between corresponding pairs of samples
+
+ $ Syntax $
+   - M = slmetric_cp(X1, X2, mtype, ...);
+
+ $ Arguments $
+   - X1, X2:       The sample matrices with each column being a sample
+   - mtype:        The metric type
+   - M:            The computed results
+
+ $ Arguments $
+   - M = slmetric_cp(X1, X2, mtype, ...) computes the metrics between
+     corresponding pairs of samples given in X1 and X2. X1 and X2 should
+     have the same number of columns, say n. Then M would be a 1 x n
+     row vector. 
+
+    - The supported metrics of this function are listed as follows:
+      \*
+      \t  Table 1. The supported metrics                             \\
+      \h     name     &amp;       description                            \\
+          'eucdist'   &amp;  Euclidean distance: ||x - y||               \\         
+          'sqdist'    &amp;  Square of Euclidean distance: ||x - y||^2   \\
+          'dotprod'   &amp;  Canonical dot product: &lt;x,y&gt; = x^T * y      \\
+          'nrmcorr'   &amp;  Normalized correlation (cosine angle):
+                         (x^T * y ) / (||x|| * ||y||)                \\
+          'angle'     &amp;  Angle between two vectors (in radian)       \\
+          'quadfrm'   &amp;  Quadratic form:  x^T * Q * y                
+                         Q is specified in the 1st extra parameter   \\
+          'quaddiff'  &amp;  Quadratic form of difference:
+                         (x - y)^T * Q * (x - y),                
+                         Q is specified in the 1st extra parameter   \\
+          'cityblk'   &amp;  City block distance (abssum of difference)  \\
+          'maxdiff'   &amp;  Maximum absolute difference                 \\
+          'mindiff'   &amp;  Minimum absolute difference                 \\
+          'wsqdist'   &amp;  Weighted square of Euclidean distance       \\
+                         \sum_i w_i (x_i - y_i)^2,  w = (w_1, ..., w_d)                     
+                         the weights w is specified in 1st extra parameter 
+                         as a length-d column vector                  \\
+      \*
+
+ $ History $
+   - Created by Dahua Lin, on Sep 4th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/discrete/slhistmetric_cp.html" class="code" title="function D = slhistmetric_cp(H1, H2, mtype, varargin)">slhistmetric_cp</a>	SLHISTMETRIC_CP Computes the metrics between corresponding pairs of histograms</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function d = check_samedim(X1, X2)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function M = slmetric_cp(X1, X2, mtype, varargin)</a>
+0002 <span class="comment">%SLMETRIC_CP Computes the metrics between corresponding pairs of samples</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - M = slmetric_cp(X1, X2, mtype, ...);</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X1, X2:       The sample matrices with each column being a sample</span>
+0009 <span class="comment">%   - mtype:        The metric type</span>
+0010 <span class="comment">%   - M:            The computed results</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Arguments $</span>
+0013 <span class="comment">%   - M = slmetric_cp(X1, X2, mtype, ...) computes the metrics between</span>
+0014 <span class="comment">%     corresponding pairs of samples given in X1 and X2. X1 and X2 should</span>
+0015 <span class="comment">%     have the same number of columns, say n. Then M would be a 1 x n</span>
+0016 <span class="comment">%     row vector.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%    - The supported metrics of this function are listed as follows:</span>
+0019 <span class="comment">%      \*</span>
+0020 <span class="comment">%      \t  Table 1. The supported metrics                             \\</span>
+0021 <span class="comment">%      \h     name     &amp;       description                            \\</span>
+0022 <span class="comment">%          'eucdist'   &amp;  Euclidean distance: ||x - y||               \\</span>
+0023 <span class="comment">%          'sqdist'    &amp;  Square of Euclidean distance: ||x - y||^2   \\</span>
+0024 <span class="comment">%          'dotprod'   &amp;  Canonical dot product: &lt;x,y&gt; = x^T * y      \\</span>
+0025 <span class="comment">%          'nrmcorr'   &amp;  Normalized correlation (cosine angle):</span>
+0026 <span class="comment">%                         (x^T * y ) / (||x|| * ||y||)                \\</span>
+0027 <span class="comment">%          'angle'     &amp;  Angle between two vectors (in radian)       \\</span>
+0028 <span class="comment">%          'quadfrm'   &amp;  Quadratic form:  x^T * Q * y</span>
+0029 <span class="comment">%                         Q is specified in the 1st extra parameter   \\</span>
+0030 <span class="comment">%          'quaddiff'  &amp;  Quadratic form of difference:</span>
+0031 <span class="comment">%                         (x - y)^T * Q * (x - y),</span>
+0032 <span class="comment">%                         Q is specified in the 1st extra parameter   \\</span>
+0033 <span class="comment">%          'cityblk'   &amp;  City block distance (abssum of difference)  \\</span>
+0034 <span class="comment">%          'maxdiff'   &amp;  Maximum absolute difference                 \\</span>
+0035 <span class="comment">%          'mindiff'   &amp;  Minimum absolute difference                 \\</span>
+0036 <span class="comment">%          'wsqdist'   &amp;  Weighted square of Euclidean distance       \\</span>
+0037 <span class="comment">%                         \sum_i w_i (x_i - y_i)^2,  w = (w_1, ..., w_d)</span>
+0038 <span class="comment">%                         the weights w is specified in 1st extra parameter</span>
+0039 <span class="comment">%                         as a length-d column vector                  \\</span>
+0040 <span class="comment">%      \*</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">% $ History $</span>
+0043 <span class="comment">%   - Created by Dahua Lin, on Sep 4th, 2006</span>
+0044 <span class="comment">%</span>
+0045 
+0046 <span class="comment">%% Parse and verify input arguments</span>
+0047 
+0048 <span class="keyword">if</span> nargin &lt; 3
+0049     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slmetric_cp'</span>, 3);
+0050 <span class="keyword">end</span>
+0051 
+0052 <span class="keyword">if</span> ~isnumeric(X1) || ~isnumeric(X2) || ndims(X1) ~= 2 || ndims(X2) ~= 2
+0053     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0054         <span class="string">'The X1 and X2 should be numeric 2D matrix'</span>);
+0055 <span class="keyword">end</span>
+0056 
+0057 n = size(X1, 2);
+0058 <span class="keyword">if</span> size(X2, 2) ~= n
+0059     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0060         <span class="string">'X1 and X2 have different numbers of samples'</span>);
+0061 <span class="keyword">end</span>
+0062 
+0063 <span class="comment">%% Main skeleton</span>
+0064 
+0065 <span class="keyword">switch</span> mtype
+0066     <span class="keyword">case</span> {<span class="string">'eucdist'</span>, <span class="string">'sqdist'</span>}
+0067         <a href="#_sub1" class="code" title="subfunction d = check_samedim(X1, X2)">check_samedim</a>(X1, X2);
+0068         D = X1 - X2;
+0069         M = sum(D .* D, 1);
+0070         M(M &lt; 0) = 0;
+0071         <span class="keyword">if</span> strcmp(mtype, <span class="string">'eucdist'</span>)
+0072             M = sqrt(M);
+0073         <span class="keyword">end</span>
+0074         
+0075     <span class="keyword">case</span> <span class="string">'dotprod'</span>
+0076         <a href="#_sub1" class="code" title="subfunction d = check_samedim(X1, X2)">check_samedim</a>(X1, X2);
+0077         M = sum(X1 .* X2, 1);
+0078         
+0079     <span class="keyword">case</span> {<span class="string">'nrmcorr'</span>, <span class="string">'angle'</span>}
+0080         <a href="#_sub1" class="code" title="subfunction d = check_samedim(X1, X2)">check_samedim</a>(X1, X2);
+0081         M = sum(X1 .* X2, 1);
+0082         N1 = sum(X1 .* X1, 1);
+0083         N2 = sum(X2 .* X2, 1);
+0084         N1(N1 &lt; 0) = 0;
+0085         N2(N2 &lt; 0) = 0;
+0086         M = M ./ (sqrt(N1) .* sqrt(N2));
+0087         <span class="keyword">if</span> strcmp(mtype, <span class="string">'angle'</span>)
+0088             M = real(acos(M));
+0089         <span class="keyword">end</span>
+0090         
+0091     <span class="keyword">case</span> <span class="string">'quadfrm'</span>
+0092         d1 = size(X1, 1);
+0093         d2 = size(X2, 1);
+0094         Q = varargin{1};
+0095         <span class="keyword">if</span> ~isequal(size(Q), [d1, d2])
+0096             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0097                 <span class="string">'The size of Q is not consistent with the samples'</span>);
+0098         <span class="keyword">end</span>
+0099         QX2 = Q * X2;
+0100         M = sum(X1 .* QX2, 1);
+0101         
+0102     <span class="keyword">case</span> <span class="string">'quaddiff'</span>
+0103         d = <a href="#_sub1" class="code" title="subfunction d = check_samedim(X1, X2)">check_samedim</a>(X1, X2);
+0104         Q = varargin{1};
+0105         <span class="keyword">if</span> ~isequal(size(Q), [d, d])
+0106             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0107                 <span class="string">'The size of Q is not consistent with the samples'</span>);
+0108         <span class="keyword">end</span>
+0109         D = X1 - X2;
+0110         QD = Q * D;
+0111         M = sum(D .* QD, 1);
+0112         
+0113     <span class="keyword">case</span> <span class="string">'cityblk'</span>
+0114         <a href="#_sub1" class="code" title="subfunction d = check_samedim(X1, X2)">check_samedim</a>(X1, X2);
+0115         D = X1 - X2;
+0116         M = sum(abs(D), 1);
+0117         
+0118     <span class="keyword">case</span> <span class="string">'maxdiff'</span>
+0119         <a href="#_sub1" class="code" title="subfunction d = check_samedim(X1, X2)">check_samedim</a>(X1, X2);
+0120         D = X1 - X2;
+0121         M = max(abs(D), [], 1);
+0122         
+0123     <span class="keyword">case</span> <span class="string">'mindiff'</span>
+0124         <a href="#_sub1" class="code" title="subfunction d = check_samedim(X1, X2)">check_samedim</a>(X1, X2);
+0125         D = X1 - X2;
+0126         M = min(abs(D), [], 1);
+0127             
+0128     <span class="keyword">case</span> <span class="string">'wsqdist'</span>
+0129         d = <a href="#_sub1" class="code" title="subfunction d = check_samedim(X1, X2)">check_samedim</a>(X1, X2);
+0130         w = varargin{1};
+0131         <span class="keyword">if</span> ~isequal(size(w), [d, 1])
+0132             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0133                 <span class="string">'w should be a d x 1 vector'</span>);
+0134         <span class="keyword">end</span>
+0135         D = X1 - X2;
+0136         D2 = D .* D;
+0137         clear D;
+0138         D2 = <a href="slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(D2, w, 1);
+0139         M = sum(D2, 1);      
+0140         
+0141     <span class="keyword">otherwise</span>
+0142         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0143             <span class="string">'Unknown metric type: %s'</span>, mtype);
+0144         
+0145 <span class="keyword">end</span>
+0146 
+0147 
+0148 <span class="comment">%% Auxiliary functions</span>
+0149 
+0150 <a name="_sub1" href="#_subfunctions" class="code">function d = check_samedim(X1, X2)</a>
+0151 
+0152 d = size(X1, 1);
+0153 <span class="keyword">if</span> d ~= size(X2, 1)
+0154     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0155         <span class="string">'X1 and X2 have different dimensions'</span>);
+0156 <span class="keyword">end</span>
+0157 
+0158 
+0159 
+0160 
+0161 
+0162 
+0163 
+0164 
+0165 
+0166 
+0167</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slvechist</title>
+  <meta name="keywords" content="slvechist">
+  <meta name="description" content="SLVECHIST Makes the histogram on prototype vectors by voting">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">discrete</a> &gt; slvechist.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\discrete&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slvechist
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLVECHIST Makes the histogram on prototype vectors by voting</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function H = slvechist(X0, X, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLVECHIST Makes the histogram on prototype vectors by voting
+
+ $ Syntax $
+   - H = slvechist(X0, X, ...)
+
+ $ Arguments $
+   - X0:       The sample matrix of the prototypes (be voted)
+   - X:        The samples to vote (voters)
+   - H:        The resultant histogram 
+
+ $ Description $
+   - H = slvechist(X0, X, ...) makes the histogram on vectors by counting
+     how many of X belong to each of X0, or evaluating the confidences
+     of the ownership. If there are m samples in X0, then H would be a
+     m x 1 column vector. The process consists of two stages: first, it
+     evaluates which sample belongs to which prototype and also the 
+     confidences if necessary, this stage is called voting, then the 
+     histogram would be built based on the voting results.
+     You can specify the following properties to control the process:
+       - 'countrule':      The rule of counting the votes (default = 'nm')
+                           Please refer to slcountvote for a list of
+                           available counting rules.
+       - 'clsmethod':      The method of classifying the vectors to 
+                           the prototypes. (default = 'pwcomp')
+                           - 'pwcomp': computing the metrics between 
+                             all samples and all prototypes pairwisely.
+                             then select the most close ones
+                           - 'kdtree': using KD-tree to select the most
+                             close ones.
+                           This property only takes effect when countrule
+                           is 'nm' or 'nmx'.
+       - 'nnparams'        The parameters to find the neighboring 
+                           prototypes in the form {method, ...}. Please
+                           refer to slfindnn for details.
+                           This property only takes effect when countrule
+                           is 'mmc', 'mms' or 'mmns'.
+                           (default = [], means to use all prototypes as
+                            contributive neighbors)
+       - 'metric'          The type of distances to compare vectors.
+                           It can be a string representing the name of
+                           the metric type, or a cell array of
+                           parameters given as {method, ...} for 
+                           parameterized metric computation. Please refer
+                           to slmetric_pw for a list of available methods
+                           and the specification of the parameters.
+                           You can also define your own distance by using 
+                           a distance computing function handle here, it
+                           is invoked using the syntax:
+                               D = f(X1, X2) 
+                           to compute pairwise distances. 
+                           (default = 'eucdist')
+       - 'cfunc'           The functor to evaluate likelihood (confidence)
+                           values based on metric values.
+                           This property only takes effect when countrule
+                           uses confidences values. 
+                               C = f(V)
+                           when countrule is 'nmx', the input V is a 1 x n                          
+                           row vector, otherwise the input V is a m x n 
+                           matrix (or sparse matrix). The output should
+                           be of the same size as V, and translate the
+                           metric values to the confidence values in the
+                           corresponding positions. 
+                           Please note that the input to f contains all
+                           metric values, actually you can use their 
+                           integral attributes and relationship in the
+                           computation of confidence values.
+                           (default = [], for the countrule using 
+                           confidences, it must be specified. If you 
+                           would like to just use the metric values as
+                           confidences just set cfunc to 'um')
+       - 'evalfunctor'     The user-supplied functor to do voting. If
+                           it is specified the function just invokes the
+                           functor to do voting and ignore other options.
+                           It would be invoked as
+                               V = f(X0, X, ...)
+                           (default = [])
+       - 'weights':        The weights of samples. They will be multiplied
+                           to the contributions of the samples. 
+                           (default = [], if specified, it is 1 x n row)
+       - 'normalized':     Whether to normalize the histogram so that the
+                           sum of the votings to all bins are normalized
+                           to 1. (default = false)
+ 
+ $ Remarks $
+   - The metric specification will not take effect for KD-tree (ANN) based
+     methods, they can only use Euclidean distances.
+
+   - When counting rule uses one-best-prototype strategy, such as 'nm'
+     and 'nmx', the function uses clsmethod to classify samples to 
+     the best prototypes, otherwise, it uses multi-best-prototype strategy
+     the function uses nnparams to construct the neighborhood graph.
+     When nnparams is [], all prototypes will be considered as
+     neighborhood of all samples, then all pairwise relationship will be
+     utilized.
+
+ $ History $
+   - Created by Dahua Lin on Sep 18th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/ann/annsearch.html" class="code" title="function [nnidx, dists] = annsearch(X0, X, k, varargin)">annsearch</a>	ANNSEARCH Approximate Nearest Neighbor Search</li><li><a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>	SLMETRIC_PW Compute the metric between column vectors pairwisely</li><li><a href="slvote.html" class="code" title="function H = slvote(models, m, samples, n, evalfunctor, countrule, varargin)">slvote</a>	SLVOTE Builds histogram by voting (or fuzzy voting)</li><li><a href="../../sltoolbox/graph/slnngraph.html" class="code" title="function G = slnngraph(X, X2, nnparams, varargin)">slnngraph</a>	SLNNGRAPH Constructs a nearest neighborhood based graph</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function V = do_vote(X0, X, fvote, cvf, Vform)</a></li><li><a href="#_sub2" class="code">function V = evaldist_one(X0, X, usecvalue, clsmethod, fhmetric)</a></li><li><a href="#_sub3" class="code">function V = evaldist_multi(X0, X, usecvalue, nnparams, fhmetric)</a></li><li><a href="#_sub4" class="code">function V = evaldist_all(X0, X, usecvalue, fhmetric)</a></li><li><a href="#_sub5" class="code">function fh = get_metricfunc(m)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function H = slvechist(X0, X, varargin)</a>
+0002 <span class="comment">%SLVECHIST Makes the histogram on prototype vectors by voting</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - H = slvechist(X0, X, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X0:       The sample matrix of the prototypes (be voted)</span>
+0009 <span class="comment">%   - X:        The samples to vote (voters)</span>
+0010 <span class="comment">%   - H:        The resultant histogram</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - H = slvechist(X0, X, ...) makes the histogram on vectors by counting</span>
+0014 <span class="comment">%     how many of X belong to each of X0, or evaluating the confidences</span>
+0015 <span class="comment">%     of the ownership. If there are m samples in X0, then H would be a</span>
+0016 <span class="comment">%     m x 1 column vector. The process consists of two stages: first, it</span>
+0017 <span class="comment">%     evaluates which sample belongs to which prototype and also the</span>
+0018 <span class="comment">%     confidences if necessary, this stage is called voting, then the</span>
+0019 <span class="comment">%     histogram would be built based on the voting results.</span>
+0020 <span class="comment">%     You can specify the following properties to control the process:</span>
+0021 <span class="comment">%       - 'countrule':      The rule of counting the votes (default = 'nm')</span>
+0022 <span class="comment">%                           Please refer to slcountvote for a list of</span>
+0023 <span class="comment">%                           available counting rules.</span>
+0024 <span class="comment">%       - 'clsmethod':      The method of classifying the vectors to</span>
+0025 <span class="comment">%                           the prototypes. (default = 'pwcomp')</span>
+0026 <span class="comment">%                           - 'pwcomp': computing the metrics between</span>
+0027 <span class="comment">%                             all samples and all prototypes pairwisely.</span>
+0028 <span class="comment">%                             then select the most close ones</span>
+0029 <span class="comment">%                           - 'kdtree': using KD-tree to select the most</span>
+0030 <span class="comment">%                             close ones.</span>
+0031 <span class="comment">%                           This property only takes effect when countrule</span>
+0032 <span class="comment">%                           is 'nm' or 'nmx'.</span>
+0033 <span class="comment">%       - 'nnparams'        The parameters to find the neighboring</span>
+0034 <span class="comment">%                           prototypes in the form {method, ...}. Please</span>
+0035 <span class="comment">%                           refer to slfindnn for details.</span>
+0036 <span class="comment">%                           This property only takes effect when countrule</span>
+0037 <span class="comment">%                           is 'mmc', 'mms' or 'mmns'.</span>
+0038 <span class="comment">%                           (default = [], means to use all prototypes as</span>
+0039 <span class="comment">%                            contributive neighbors)</span>
+0040 <span class="comment">%       - 'metric'          The type of distances to compare vectors.</span>
+0041 <span class="comment">%                           It can be a string representing the name of</span>
+0042 <span class="comment">%                           the metric type, or a cell array of</span>
+0043 <span class="comment">%                           parameters given as {method, ...} for</span>
+0044 <span class="comment">%                           parameterized metric computation. Please refer</span>
+0045 <span class="comment">%                           to slmetric_pw for a list of available methods</span>
+0046 <span class="comment">%                           and the specification of the parameters.</span>
+0047 <span class="comment">%                           You can also define your own distance by using</span>
+0048 <span class="comment">%                           a distance computing function handle here, it</span>
+0049 <span class="comment">%                           is invoked using the syntax:</span>
+0050 <span class="comment">%                               D = f(X1, X2)</span>
+0051 <span class="comment">%                           to compute pairwise distances.</span>
+0052 <span class="comment">%                           (default = 'eucdist')</span>
+0053 <span class="comment">%       - 'cfunc'           The functor to evaluate likelihood (confidence)</span>
+0054 <span class="comment">%                           values based on metric values.</span>
+0055 <span class="comment">%                           This property only takes effect when countrule</span>
+0056 <span class="comment">%                           uses confidences values.</span>
+0057 <span class="comment">%                               C = f(V)</span>
+0058 <span class="comment">%                           when countrule is 'nmx', the input V is a 1 x n</span>
+0059 <span class="comment">%                           row vector, otherwise the input V is a m x n</span>
+0060 <span class="comment">%                           matrix (or sparse matrix). The output should</span>
+0061 <span class="comment">%                           be of the same size as V, and translate the</span>
+0062 <span class="comment">%                           metric values to the confidence values in the</span>
+0063 <span class="comment">%                           corresponding positions.</span>
+0064 <span class="comment">%                           Please note that the input to f contains all</span>
+0065 <span class="comment">%                           metric values, actually you can use their</span>
+0066 <span class="comment">%                           integral attributes and relationship in the</span>
+0067 <span class="comment">%                           computation of confidence values.</span>
+0068 <span class="comment">%                           (default = [], for the countrule using</span>
+0069 <span class="comment">%                           confidences, it must be specified. If you</span>
+0070 <span class="comment">%                           would like to just use the metric values as</span>
+0071 <span class="comment">%                           confidences just set cfunc to 'um')</span>
+0072 <span class="comment">%       - 'evalfunctor'     The user-supplied functor to do voting. If</span>
+0073 <span class="comment">%                           it is specified the function just invokes the</span>
+0074 <span class="comment">%                           functor to do voting and ignore other options.</span>
+0075 <span class="comment">%                           It would be invoked as</span>
+0076 <span class="comment">%                               V = f(X0, X, ...)</span>
+0077 <span class="comment">%                           (default = [])</span>
+0078 <span class="comment">%       - 'weights':        The weights of samples. They will be multiplied</span>
+0079 <span class="comment">%                           to the contributions of the samples.</span>
+0080 <span class="comment">%                           (default = [], if specified, it is 1 x n row)</span>
+0081 <span class="comment">%       - 'normalized':     Whether to normalize the histogram so that the</span>
+0082 <span class="comment">%                           sum of the votings to all bins are normalized</span>
+0083 <span class="comment">%                           to 1. (default = false)</span>
+0084 <span class="comment">%</span>
+0085 <span class="comment">% $ Remarks $</span>
+0086 <span class="comment">%   - The metric specification will not take effect for KD-tree (ANN) based</span>
+0087 <span class="comment">%     methods, they can only use Euclidean distances.</span>
+0088 <span class="comment">%</span>
+0089 <span class="comment">%   - When counting rule uses one-best-prototype strategy, such as 'nm'</span>
+0090 <span class="comment">%     and 'nmx', the function uses clsmethod to classify samples to</span>
+0091 <span class="comment">%     the best prototypes, otherwise, it uses multi-best-prototype strategy</span>
+0092 <span class="comment">%     the function uses nnparams to construct the neighborhood graph.</span>
+0093 <span class="comment">%     When nnparams is [], all prototypes will be considered as</span>
+0094 <span class="comment">%     neighborhood of all samples, then all pairwise relationship will be</span>
+0095 <span class="comment">%     utilized.</span>
+0096 <span class="comment">%</span>
+0097 <span class="comment">% $ History $</span>
+0098 <span class="comment">%   - Created by Dahua Lin on Sep 18th, 2006</span>
+0099 <span class="comment">%</span>
+0100 
+0101 <span class="comment">%% parse and verify input arguments</span>
+0102 
+0103 <span class="keyword">if</span> nargin &lt; 2
+0104     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slvechist'</span>, 2);
+0105 <span class="keyword">end</span>
+0106 
+0107 <span class="keyword">if</span> ~isnumeric(X0) || ndims(X0) ~= 2
+0108     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'X0 should be a 2D numeric matrix'</span>);
+0109 <span class="keyword">end</span>
+0110 <span class="keyword">if</span> ~isnumeric(X) || ndims(X) ~= 2
+0111     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'X should be a 2D numeric matrix'</span>);
+0112 <span class="keyword">end</span>
+0113 
+0114 [d, m] = size(X0);
+0115 [d2, n] = size(X);
+0116 <span class="keyword">if</span> d ~= d2
+0117     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="string">'The dimensions of X and X0 are mismatched'</span>);
+0118 <span class="keyword">end</span>
+0119 
+0120     
+0121 opts.countrule = <span class="string">'nm'</span>;
+0122 opts.clsmethod = <span class="string">'pwcomp'</span>;
+0123 opts.nnparams = [];
+0124 opts.metric = <span class="string">'eucdist'</span>;
+0125 opts.cfunc = [];
+0126 opts.evalfunctor = [];
+0127 opts.weights = [];
+0128 opts.normalized = false;
+0129 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0130 
+0131 
+0132 <span class="comment">%% main skeleton</span>
+0133 
+0134 <span class="comment">% decide scheme</span>
+0135 <span class="comment">% Vform:</span>
+0136 <span class="comment">%   - 0:    1 x n or 2 x n matrix</span>
+0137 <span class="comment">%   - 1:    m x n sparse graph</span>
+0138 <span class="comment">%   - 2:    m x n full</span>
+0139 <span class="comment">%</span>
+0140 
+0141 <span class="keyword">if</span> isempty(opts.evalfunctor)
+0142 
+0143     <span class="keyword">switch</span> opts.countrule
+0144         <span class="keyword">case</span> {<span class="string">'nm'</span>, <span class="string">'nmx'</span>}
+0145             Vform = 0;
+0146             usecvalue = strcmp(opts.countrule, <span class="string">'nmx'</span>);
+0147             fhmetric = <a href="#_sub5" class="code" title="subfunction fh = get_metricfunc(m)">get_metricfunc</a>(opts.metric);
+0148             fvote = @(x, y) <a href="#_sub2" class="code" title="subfunction V = evaldist_one(X0, X, usecvalue, clsmethod, fhmetric)">evaldist_one</a>(x, y, usecvalue, opts.clsmethod, fhmetric);
+0149 
+0150         <span class="keyword">case</span> {<span class="string">'mmc'</span>, <span class="string">'mms'</span>, <span class="string">'mmns'</span>}
+0151             usecvalue = ~strcmp(opts.countrule, <span class="string">'mmc'</span>);
+0152             fhmetric = <a href="#_sub5" class="code" title="subfunction fh = get_metricfunc(m)">get_metricfunc</a>(opts.metric);
+0153             <span class="keyword">if</span> isempty(opts.nnparams)
+0154                 Vform = 2;
+0155                 fvote = @(x, y) <a href="#_sub4" class="code" title="subfunction V = evaldist_all(X0, X, usecvalue, fhmetric)">evaldist_all</a>(x, y, usecvalue, fhmetric);
+0156             <span class="keyword">else</span>
+0157                 Vform = 1;
+0158                 fvote = @(x, y) <a href="#_sub3" class="code" title="subfunction V = evaldist_multi(X0, X, usecvalue, nnparams, fhmetric)">evaldist_multi</a>(x, y, usecvalue, opts.nnparams, fhmetric);
+0159             <span class="keyword">end</span>
+0160 
+0161         <span class="keyword">otherwise</span>
+0162             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0163                 <span class="string">'Unknown counting rule: %s'</span>, opts.countrule);
+0164     <span class="keyword">end</span>    
+0165 
+0166     <span class="keyword">if</span> usecvalue
+0167         <span class="keyword">if</span> isempty(opts.cfunc)
+0168             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0169                 <span class="string">'In current rule, the confidence function is required.'</span>);
+0170         <span class="keyword">end</span>
+0171         <span class="keyword">if</span> ischar(opts.cfunc) &amp;&amp; strcmp(opts.cfunc, <span class="string">'um'</span>)
+0172             cvf = [];
+0173         <span class="keyword">elseif</span> isa(opts.cfunc, <span class="string">'function_handle'</span>)
+0174             cvf = opts.cfunc;
+0175         <span class="keyword">else</span>
+0176             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'Illegal form of cfunc'</span>);
+0177         <span class="keyword">end</span>
+0178     <span class="keyword">else</span>
+0179         cvf = [];
+0180     <span class="keyword">end</span>
+0181 
+0182     evalfunctor = {@<a href="#_sub1" class="code" title="subfunction V = do_vote(X0, X, fvote, cvf, Vform)">do_vote</a>, fvote, cvf, Vform};
+0183     
+0184 <span class="keyword">else</span>
+0185     evalfunctor = opts.evalfunctor;
+0186 <span class="keyword">end</span>
+0187         
+0188 <span class="comment">% Do voting</span>
+0189 H = <a href="slvote.html" class="code" title="function H = slvote(models, m, samples, n, evalfunctor, countrule, varargin)">slvote</a>(X0, m, X, n, evalfunctor, opts.countrule, <span class="keyword">...</span>
+0190     <span class="string">'weights'</span>, opts.weights, <span class="keyword">...</span>
+0191     <span class="string">'normalized'</span>, opts.normalized);
+0192 
+0193 
+0194 <span class="comment">%% Core functions</span>
+0195 
+0196 <a name="_sub1" href="#_subfunctions" class="code">function V = do_vote(X0, X, fvote, cvf, Vform)</a>
+0197 
+0198 V = fvote(X0, X);
+0199 <span class="keyword">if</span> ~isempty(cvf)
+0200     <span class="keyword">if</span> Vform == 0
+0201         V(2,:) = cvf(V(2,:));
+0202     <span class="keyword">else</span>
+0203         V = cvf(V);
+0204     <span class="keyword">end</span>
+0205 <span class="keyword">end</span>
+0206 
+0207 
+0208 <a name="_sub2" href="#_subfunctions" class="code">function V = evaldist_one(X0, X, usecvalue, clsmethod, fhmetric)</a>
+0209 
+0210 <span class="keyword">switch</span> clsmethod
+0211     <span class="keyword">case</span> <span class="string">'pwcomp'</span>
+0212         D = fhmetric(X0, X);
+0213         [vals, si] = min(D, [], 1);
+0214     <span class="keyword">case</span> <span class="string">'kdtree'</span>
+0215         [si, vals] = <a href="../../sltoolbox/ann/annsearch.html" class="code" title="function [nnidx, dists] = annsearch(X0, X, k, varargin)">annsearch</a>(X0, X, 1);
+0216     <span class="keyword">otherwise</span>
+0217         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0218             <span class="string">'Invalid clsmethod: %s'</span>, clsmethod);
+0219 <span class="keyword">end</span>
+0220 
+0221 <span class="keyword">if</span> ~usecvalue
+0222     V = si;    
+0223 <span class="keyword">else</span>
+0224     V = [si; vals];
+0225 <span class="keyword">end</span>
+0226 
+0227 
+0228 <a name="_sub3" href="#_subfunctions" class="code">function V = evaldist_multi(X0, X, usecvalue, nnparams, fhmetric)</a>
+0229        
+0230 <span class="keyword">switch</span> nnparams{1}
+0231     <span class="keyword">case</span> {<span class="string">'knn'</span>, <span class="string">'eps'</span>}
+0232         use_nnparams = [nnparams, {<span class="string">'metric'</span>, fhmetric}];
+0233     <span class="keyword">case</span> <span class="string">'ann'</span>
+0234         use_nnparams = nnparams;
+0235     <span class="keyword">otherwise</span>
+0236         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0237             <span class="string">'Invalid neighborhood finding method: %s'</span>, nnparams{1});
+0238 <span class="keyword">end</span>
+0239 
+0240 <span class="keyword">if</span> usecvalue
+0241     valtype = <span class="string">'numeric'</span>;
+0242 <span class="keyword">else</span>
+0243     valtype = <span class="string">'logical'</span>;
+0244 <span class="keyword">end</span>
+0245 
+0246 V = <a href="../../sltoolbox/graph/slnngraph.html" class="code" title="function G = slnngraph(X, X2, nnparams, varargin)">slnngraph</a>(X0, X, use_nnparams, <span class="string">'sparse'</span>, true, <span class="string">'valtype'</span>, valtype);
+0247 
+0248 
+0249 <a name="_sub4" href="#_subfunctions" class="code">function V = evaldist_all(X0, X, usecvalue, fhmetric)</a>
+0250 
+0251 V = fhmetric(X0, X);
+0252 
+0253 <span class="keyword">if</span> ~usecvalue
+0254     V = (V ~= 0);
+0255 <span class="keyword">end</span>
+0256 
+0257 
+0258 
+0259 <span class="comment">%% Auxiliary functions</span>
+0260 
+0261 <a name="_sub5" href="#_subfunctions" class="code">function fh = get_metricfunc(m)</a>
+0262 
+0263 <span class="keyword">if</span> ischar(m)
+0264     fh = @(X, Y) <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(X, Y, m);
+0265 <span class="keyword">elseif</span> iscell(m)
+0266     fh = @(X, Y) <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(X, Y, m{:});
+0267 <span class="keyword">elseif</span> isa(m, <span class="string">'function_handle'</span>)
+0268     fh = m;
+0269 <span class="keyword">else</span>
+0270     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'The metric is specified incorrectly'</span>);
+0271 <span class="keyword">end</span>
+0272 
+0273 
+0274 
+0275 
+0276</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

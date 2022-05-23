@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slgaussmdist</title>
+  <meta name="keywords" content="slgaussmdist">
+  <meta name="description" content="SLGAUSSMDIST Computes the Malanobis distance between samples and centers">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slgaussmdist.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slgaussmdist
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLGAUSSMDIST Computes the Malanobis distance between samples and centers</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function dists = slgaussmdist(GS, X) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLGAUSSMDIST Computes the Malanobis distance between samples and centers
+
+ $ Syntax $
+   - dists = slgaussmdist(GS, X)
+
+ $ Arguments $
+   - GS:       the Gaussian models
+   - X:        the sample matrix
+   - dists:    the distances of samples to the model centers
+       
+ $ Description $
+   - dists = slgaussmdist(GS, X) computes the distances from the samples
+     in X and the model centers of GS. If there are n samples in X, and
+     k models in GS, then dists is a k x n matrix. Each column of dists
+     is the distances from the corresponding sample to all model centers.
+     The distances for each model is computed based on the variances or
+     covariances of that model.
+ 
+ $ History $
+   - Created by Dahua Lin, on Aug 28, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>	SLMETRIC_PW Compute the metric between column vectors pairwisely</li><li><a href="slgausstype.html" class="code" title="function tyinfo = slgausstype(GS)">slgausstype</a>	SLGAUSSTYPE Judges the type of a Gaussian model struct</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slgausspdf.html" class="code" title="function P = slgausspdf(GS, X, varargin)">slgausspdf</a>	SLGAUSSPDF Computes the probability density of Gaussian models</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function dists = compmdist_univar(M, X, invvar)</a></li><li><a href="#_sub2" class="code">function dists = compmdist_diagvar(M, X, invvars)</a></li><li><a href="#_sub3" class="code">function dists = compmdist_covar(M, X, invcovs)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function dists = slgaussmdist(GS, X)</a>
+0002 <span class="comment">%SLGAUSSMDIST Computes the Malanobis distance between samples and centers</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - dists = slgaussmdist(GS, X)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - GS:       the Gaussian models</span>
+0009 <span class="comment">%   - X:        the sample matrix</span>
+0010 <span class="comment">%   - dists:    the distances of samples to the model centers</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - dists = slgaussmdist(GS, X) computes the distances from the samples</span>
+0014 <span class="comment">%     in X and the model centers of GS. If there are n samples in X, and</span>
+0015 <span class="comment">%     k models in GS, then dists is a k x n matrix. Each column of dists</span>
+0016 <span class="comment">%     is the distances from the corresponding sample to all model centers.</span>
+0017 <span class="comment">%     The distances for each model is computed based on the variances or</span>
+0018 <span class="comment">%     covariances of that model.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $ History $</span>
+0021 <span class="comment">%   - Created by Dahua Lin, on Aug 28, 2006</span>
+0022 <span class="comment">%</span>
+0023 
+0024 <span class="comment">%% parse and verify input arguments</span>
+0025 
+0026 <span class="keyword">if</span> nargin &lt; 2
+0027     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slgaussmdist'</span>, 2);
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="keyword">if</span> ~isnumeric(X) || ndims(X) ~= 2
+0031     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0032         <span class="string">'The X should be a 2D numeric matrix'</span>);
+0033 <span class="keyword">end</span>
+0034 
+0035 tyi = <a href="slgausstype.html" class="code" title="function tyinfo = slgausstype(GS)">slgausstype</a>(GS);
+0036 
+0037 <span class="keyword">if</span> ~tyi.hasinv
+0038     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0039         <span class="string">'GS should have inverse variance/covariance computed'</span>);
+0040 <span class="keyword">end</span>
+0041 
+0042 [d, n] = size(X);
+0043 <span class="keyword">if</span> d ~= GS.dim
+0044     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0045         <span class="string">'The dimension of samples does not match that of the models'</span>);
+0046 <span class="keyword">end</span>
+0047 
+0048 k = GS.nmodels;
+0049 
+0050 <span class="comment">%% Main skeleton</span>
+0051 
+0052 <span class="keyword">switch</span> tyi.varform
+0053     <span class="keyword">case</span> <span class="string">'univar'</span>
+0054         <span class="keyword">if</span> tyi.sharevar
+0055             dists = <a href="#_sub1" class="code" title="subfunction dists = compmdist_univar(M, X, invvar)">compmdist_univar</a>(GS.means, X, GS.invvars);
+0056         <span class="keyword">else</span>
+0057             dists = zeros(k, n);
+0058             <span class="keyword">for</span> i = 1 : k
+0059                 dists(i, :) = <a href="#_sub1" class="code" title="subfunction dists = compmdist_univar(M, X, invvar)">compmdist_univar</a>(GS.means(:,i), X, GS.invvars(i));
+0060             <span class="keyword">end</span>
+0061         <span class="keyword">end</span>
+0062     <span class="keyword">case</span> <span class="string">'diagvar'</span>
+0063         <span class="keyword">if</span> tyi.sharevar
+0064             dists = <a href="#_sub2" class="code" title="subfunction dists = compmdist_diagvar(M, X, invvars)">compmdist_diagvar</a>(GS.means, X, GS.invvars);
+0065         <span class="keyword">else</span>
+0066             dists = zeros(k, n);
+0067             <span class="keyword">for</span> i = 1 : k
+0068                 dists(i, :) = <a href="#_sub2" class="code" title="subfunction dists = compmdist_diagvar(M, X, invvars)">compmdist_diagvar</a>(GS.means(:,i), X, GS.invvars(:,i));
+0069             <span class="keyword">end</span>
+0070         <span class="keyword">end</span>
+0071     <span class="keyword">case</span> <span class="string">'covar'</span>
+0072         <span class="keyword">if</span> tyi.sharevar
+0073             dists = <a href="#_sub3" class="code" title="subfunction dists = compmdist_covar(M, X, invcovs)">compmdist_covar</a>(GS.means, X, GS.invcovs);
+0074         <span class="keyword">else</span>
+0075             dists = zeros(k, n);
+0076             <span class="keyword">for</span> i = 1 : k
+0077                 dists(i, :) = <a href="#_sub3" class="code" title="subfunction dists = compmdist_covar(M, X, invcovs)">compmdist_covar</a>(GS.means(:,i), X, GS.invcovs(:,:,i));
+0078             <span class="keyword">end</span>
+0079         <span class="keyword">end</span>
+0080 <span class="keyword">end</span>
+0081 
+0082 
+0083 <span class="comment">%% Core computation routines</span>
+0084 
+0085 <a name="_sub1" href="#_subfunctions" class="code">function dists = compmdist_univar(M, X, invvar)</a>
+0086 
+0087 dists = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(M, X, <span class="string">'sqdist'</span>);
+0088 dists = dists * invvar;
+0089 dists = sqrt(max(dists, 0));
+0090 
+0091 <a name="_sub2" href="#_subfunctions" class="code">function dists = compmdist_diagvar(M, X, invvars)</a>
+0092 
+0093 dists = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(M, X, <span class="string">'wsqdist'</span>, invvars);
+0094 dists = sqrt(max(dists, 0));
+0095 
+0096 <a name="_sub3" href="#_subfunctions" class="code">function dists = compmdist_covar(M, X, invcovs)</a>
+0097 
+0098 dists = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(M, X, <span class="string">'quaddiff'</span>, invcovs);
+0099 dists = sqrt(max(dists, 0));
+0100 
+0101 
+0102 
+0103 
+0104 
+0105</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>
