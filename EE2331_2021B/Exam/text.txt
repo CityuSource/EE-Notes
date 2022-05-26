@@ -1,8 +1,0 @@
-B1: failed to slove
-
-B2: removed line: delete last
-
-B3: change from
-return distanceRootToX(root->left, x) + distanceRootToX(root->left, y); etc
-to 
-return distanceXToY(root->left, x, y);

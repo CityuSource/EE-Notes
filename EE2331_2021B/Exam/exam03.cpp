@@ -9,9 +9,6 @@
  * 3. Some test cases are provided for testing but not exhaustive. You may need to design additional test cases by yourself.
  * 4. Write down your full name and student ID below.
  *
- * Student Name: Leung Chun Wai
- * Student ID: 56046680
- *
  */
 
 #include <cstdlib>
@@ -87,7 +84,7 @@ void printTree(treeNode<T> *p, int indent)
 }
 
 /*
- * Build a binary tree based on the array representation, where -1 represents 
+ * Build a binary tree based on the array representation, where -1 represents
  * an empty tree node.
  */
 treeNode<int> *buildTree(int *array, int index, int size)

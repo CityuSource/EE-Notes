@@ -9,9 +9,6 @@
  * 3. Some test cases are provided for testing but not exhaustive. You may need to design additional test cases by yourself.
  * 4. Write down your full name and student ID below.
  *
- * Student Name: Ryan Loe Suwandi
- * Student ID: 55724681
- *
  */
 
 #include <cstdlib>
@@ -37,9 +34,9 @@ struct treeNode
 //-------------------------- functions to be implemented by you --------------------------
 
 /**
- * Check if the given binary tree is a min tree. 
+ * Check if the given binary tree is a min tree.
  * This function returns true if the tree is a min tree. Otherwise, it returns false.
- * 
+ *
  */
 bool isMinTree(treeNode<int> *root)
 {
@@ -88,7 +85,7 @@ void printTree(treeNode<Type> *p, int indent)
 }
 
 /*
- * Build a binary tree based on the array representation, where -1 represents 
+ * Build a binary tree based on the array representation, where -1 represents
  * an empty tree node.
  */
 treeNode<int> *buildTree(int *array, int index, int size)

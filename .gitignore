@@ -13,9 +13,9 @@
 # Ext
 *.ini
 *.exe
-*.rdata
+# *.rdata
 *.Rhistory
 
 # Large file
-_unlisted
+/_unlisted
 

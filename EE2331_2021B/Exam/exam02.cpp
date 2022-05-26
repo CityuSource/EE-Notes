@@ -9,9 +9,6 @@
  * 3. Some test cases are provided for testing but not exhaustive. You may need to design additional test cases by yourself.
  * 4. Write down your full name and student ID below.
  *
- * Student Name: Leung Chun Wai
- * Student ID: 56046680
- *
  */
 
 #include <cstdio>

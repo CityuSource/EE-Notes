@@ -9,9 +9,6 @@
  * 3. Some test cases are provided for testing but not exhaustive. You may need to design additional test cases by yourself.
  * 4. Write down your full name and student ID below.
  *
- * Student Name: Leung Chun Wai
- * Student ID: 56046680
- *
  */
 
 #include <cstdio>
@@ -36,10 +33,10 @@ node *merge(node *list1, node *list2);
 //-------------------------- functions to be implemented by you --------------------------
 
 /*
- * The function applies merge sort algorithm to sort the input linked list. 
+ * The function applies merge sort algorithm to sort the input linked list.
  * It returns a pointer pointing to the head of the sorted list.
- * You are required to implement this function using an iterative approach (non-recursive). 
- * You can use a queue to store the divided sublists for further merging. You can also use 
+ * You are required to implement this function using an iterative approach (non-recursive).
+ * You can use a queue to store the divided sublists for further merging. You can also use
  * the merge() function provided in the template.
  */
 node *mergesort(node *list)
@@ -97,8 +94,8 @@ node *merge(node *list1, node *list2)
 }
 
 /*
-  * Helper class for creating/printing a list from an array.
-  */
+ * Helper class for creating/printing a list from an array.
+ */
 class ListHelper
 {
 public:
@@ -116,7 +113,7 @@ public:
 		return dummy.link; // without dummy header
 	}
 
-	//print nodes in a given linked list
+	// print nodes in a given linked list
 	static void printList(node *list)
 	{
 		while (list != NULL)
@@ -127,7 +124,7 @@ public:
 		cout << "NULL" << endl;
 	}
 
-	//delete nodes in a given linked list
+	// delete nodes in a given linked list
 	static void deleteList(node *list)
 	{
 		node *temp;

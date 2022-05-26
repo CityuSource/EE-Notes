@@ -9,9 +9,6 @@
  * 3. Some test cases are provided for testing but not exhaustive. You may need to design additional test cases by yourself.
  * 4. Write down your full name and student ID below.
  *
- * Student Name: Ryan Loe Suwandi
- * Student ID: 55724681
- *
  */
 
 #include <cstdio>
@@ -31,9 +28,9 @@ using namespace std;
  * This function compares the precedence of two operators and returns true if op1 has a higher
  * precedence than op2. Otherwise it returns false.
  *
- * Precondition: 
+ * Precondition:
  * - operators are limited to +, -, * and / only
- * 
+ *
  */
 bool hasHigherPrecedence(char op1, char op2)
 {

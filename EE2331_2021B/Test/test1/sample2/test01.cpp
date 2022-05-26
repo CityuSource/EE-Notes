@@ -1,15 +1,12 @@
 /*
- * 
+ *
  * Instructions:
- * 
- * 1. Only complete the functions specified below. 
+ *
+ * 1. Only complete the functions specified below.
  *    - Do not create any additional function.
  *    - Do not include any additional header or library.
  * 2. Use Visual Studio 2019 to build, test and run your code.
  * 3. Write down your full name and student ID below.
- * 
- * Student Name: Suwandi Ryan Loe
- * Student ID: 55724681
  *
  */
 
@@ -35,7 +32,7 @@ struct node
 
 /*
  * Given a linked list representing a non-negative integer in reverse order, find the next greater number that has same set of digits.
- * 
+ *
  * - The function cannot create additional nodes.
  * - The function cannot modify any node's data.
  * - The function generates the next greater number by reordering the nodes.
@@ -46,7 +43,7 @@ struct node
  *
  * Time Complexity Requirement: O(n)
  * Space Complexity Requirement: O(1)
- * 
+ *
  * Example:
  * Given number	(1234 in reverse order):			[4]-> [3]-> [2]-> [1]-> NULL
  * Next greater number (1243 in reverse order):		[3]-> [4]-> [2]-> [1]-> NULL
@@ -127,7 +124,7 @@ node *buildReverseList(char *number)
 class ListHelper
 {
 public:
-	//print nodes in a given linked list
+	// print nodes in a given linked list
 	static void printList(node *list)
 	{
 		while (list != NULL)
@@ -138,7 +135,7 @@ public:
 		cout << "NULL" << endl;
 	}
 
-	//delete nodes in a given linked list
+	// delete nodes in a given linked list
 	static void deleteList(node *list)
 	{
 		node *temp;
