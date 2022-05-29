@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc,fixuphtml" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pattern Matching for switch</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../resources/jdk-default.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="../resources/spec-changes.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pattern Matching for <code>switch</code></h1>
+<p class="subtitle">Changes to the Java® Language Specification • Version 17.0.1+12-LTS-39</p>
+</header>
+<nav id="TOC" title="Table Of Contents">
+<ul>
+<li><a href="#jls-6">Chapter 6: Names</a><ul>
+<li><a href="#jls-6.3">6.3 Scope of a Declaration</a><ul>
+<li><a href="#jls-6.3.1">6.3.1 Scope for Pattern Variables in Expressions</a><ul>
+<li><a href="#jls-6.3.1.6">6.3.1.6 <code>switch</code> Expressions</a></li>
+</ul></li>
+<li><a href="#jls-6.3.2">6.3.2 Scope for Pattern Variables in Statements</a><ul>
+<li><a href="#jls-6.3.2.6">6.3.2.6 <code>switch</code> Statements</a></li>
+</ul></li>
+<li><a href="#jls-6.3.3"><strong>6.3.3 Scope for Pattern Variables in Patterns</strong></a><ul>
+<li><a href="#jls-6.3.3.1"><strong>6.3.3.1 Guarded Pattern</strong></a></li>
+</ul></li>
+<li><a href="#jls-6.3.4"><strong>6.3.4 Scope for Pattern Variables in Switch Labels</strong></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#jls-14">Chapter 14: Blocks and Statements</a><ul>
+<li><a href="#jls-14.11">14.11 The <code>switch</code> Statement</a><ul>
+<li><a href="#jls-14.11.1">14.11.1 Switch Blocks</a></li>
+<li><a href="#jls-14.11.2">14.11.2 The Switch Block of a <code>switch</code> Statement</a></li>
+<li><a href="#jls-14.11.3">14.11.3 Execution of a <code>switch</code> Statement</a></li>
+</ul></li>
+<li><a href="#jls-14.30">14.30 Patterns</a><ul>
+<li><a href="#jls-14.30.1">14.30.1 Kinds of Patterns</a></li>
+<li><a href="#jls-14.30.2">14.30.2 Pattern Matching</a></li>
+<li><a href="#jls-14.30.3"><strong>14.30.3 Pattern Totality and Dominance</strong></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#jls-15">Chapter 15: Expressions</a><ul>
+<li><a href="#jls-15.20">15.20 Relational Operators</a><ul>
+<li><a href="#jls-15.20.2">15.20.2 The <code>instanceof</code> Operator</a></li>
+</ul></li>
+<li><a href="#jls-15.28">15.28 <code>switch</code> Expressions</a><ul>
+<li><a href="#jls-15.28.1">15.28.1 The Switch Block of a <code>switch</code> Expression</a></li>
+<li><a href="#jls-15.28.2">15.28.2 Run-Time Evaluation of <code>switch</code> Expressions</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#jls-16">Chapter 16: Definite Assignment</a><ul>
+<li><a href="#jls-16.2">16.2 Definite Assignment and Statements</a><ul>
+<li><a href="#jls-16.2.9">16.2.9 <code>switch</code> Statements</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<main><p>This document describes changes to the <a href="https://docs.oracle.com/javase/specs/jls/se16/html">Java Language Specification</a> to support <em>Pattern Matching for <code>switch</code></em>, a preview feature of Java SE 17. See <a href="https://openjdk.java.net/jeps/406">JEP 406</a> for an overview of the feature.</p>
+<p>Changes are described with respect to existing sections of the JLS. New text is indicated <strong>like this</strong> and deleted text is indicated <del>like this</del>. Explanation and discussion, as needed, is set aside in grey boxes.</p>
+<div class="editorial">
+<p><a href="https://openjdk.java.net/jeps/409">JEP 409</a> proposes making <code>sealed</code> classes a final feature in Java SE 17. This impacts on conditions imposed on switch blocks of <code>switch</code> statements and expressions. The details accounting for <code>sealed</code> classes are included here for completeness.</p>
+</div>
+<div class="editorial">
+<p>Changelog:</p>
+<p>2021-06-08:</p>
+<ul>
+<li><p>Fixed errors in the definition of a switch block covering a type.</p></li>
+<li><p>Renamed &quot;complete&quot; to &quot;exhaustive&quot;.</p></li>
+</ul>
+<p>2021-05-27:</p>
+<ul>
+<li><p>Clarified restriction on <code>instanceof</code> patterns</p></li>
+<li><p>Added missing restriction that a switch label can not have both a constant case label and a pattern case label, e.g. <code>case &quot;42&quot;, String s</code>.</p></li>
+<li><p>Added missing rule that a total pattern switch label dominates a null switch label</p></li>
+</ul>
+<p>2021-05-14:</p>
+<ul>
+<li><p>Added missing details of pattern matching completing abruptly.</p></li>
+<li><p>Added a new &quot;any&quot; pattern (which is currently not denotable in the language, but is used in the specification)</p></li>
+<li><p>Added new concept of a pattern <em>resolving</em> at a type to capture the semantics of type patterns wrt null values (this removes requirement to make the runtime notion of pattern matching dependent on a compile-time type). Patterns in switch labels are also resolved, resulting in a resolved switch block. In other words, evaluation of a pattern <code>instanceof</code> is always wrt a resolved pattern. Execution of a <code>switch</code> statement or <code>switch</code> expression is also always wrt to a resolved switch block.</p></li>
+<li><p>A pattern case label element that is total for the type of the selector expression will now match all values including <code>null</code>.</p></li>
+<li><p>A <code>switch</code> statement that uses the new features of this JEP is now required to be exhaustive (the same notion that all <code>switch</code> expressions require)</p></li>
+</ul>
+<p>2021-04-30:</p>
+<ul>
+<li><p>Added missing changes to Definite Assignment and <code>switch</code> statements (<a href="#jls-16.2.9">16.2.9</a>)</p></li>
+<li><p>Moved definition of switch block covering a type from <a href="#jls-15.28">15.28</a> to <a href="#jls-14.11.1">14.11.1</a>.</p></li>
+</ul>
+</div>
+<h2 id="jls-6">Chapter 6: Names</h2>
+<h3 id="jls-6.3">6.3 Scope of a Declaration</h3>
+<h4 id="jls-6.3.1">6.3.1 Scope for Pattern Variables in Expressions</h4>
+<h5 id="jls-6.3.1.6">6.3.1.6 <code>switch</code> Expressions</h5>
+<p>The following <del>rule applies</del> <strong>rules apply</strong> to a <code>switch</code> expression (<a href="#jls-15.28">15.28</a>) <strong>with a switch block consisting of switch rules (<a href="#jls-14.11.1">14.11.1</a>)</strong>:</p>
+<div class="inserted">
+<ul>
+<li><p>A pattern variable introduced by a switch label is definitely matched in the associated switch rule expression, switch rule block or switch rule <code>throw</code> statement.</p>
+<p>It is a compile-time error if any pattern variable introduced by a switch label is already in scope at the associated switch rule expression, switch rule block or switch rule <code>throw</code> statement.</p></li>
+</ul>
+<p>The following rules apply to a switch expression with a switch block consisting of switch labeled statement groups (<a href="#jls-14.11.1">14.11.1</a>):</p>
+<ul>
+<li><p>A pattern variable introduced by a switch label is definitely matched in all the statements of the switch labeled statement group.</p>
+<p>It is a compile-time error if any pattern variable introduced by a switch label is already in scope at the statements of the switch labeled statement group.</p></li>
+</ul>
+</div>
+<ul>
+<li>A pattern variable introduced by a statement <em>S</em> contained in a switch labeled statement group <del>(<a href="#jls-14.11.1">14.11.1</a>)</del> is definitely matched at all the statements following <em>S</em>, if any, in the switch labeled statement group.</li>
+</ul>
+<h4 id="jls-6.3.2">6.3.2 Scope for Pattern Variables in Statements</h4>
+<h5 id="jls-6.3.2.6">6.3.2.6 <code>switch</code> Statements</h5>
+<p>The following <del>rule applies</del> <strong>rules apply</strong> to a <code>switch</code> statement (<a href="#jls-14.11">14.11</a>) <strong>with a switch block consisting of switch rules (<a href="#jls-14.11.1">14.11.1</a>)</strong>:</p>
+<div class="inserted">
+<ul>
+<li><p>A pattern variable introduced by a switch label is definitely matched in the associated switch rule expression, switch rule block or switch rule <code>throw</code> statement.</p>
+<p>It is a compile-time error if any pattern variable introduced by a switch label is already in scope at the associated switch rule expression, switch rule block or switch rule <code>throw</code> statement.</p></li>
+</ul>
+<p>The following rules apply to a switch expression with a switch block consisting of switch labeled statement groups (<a href="#jls-14.11.1">14.11.1</a>):</p>
+<ul>
+<li><p>A pattern variable introduced by a switch label is definitely matched in all the statements of the switch labeled statement group.</p>
+<p>It is a compile-time error if any pattern variable introduced by a switch label is already in scope at the statements of the switch labeled statement group.</p></li>
+</ul>
+</div>
+<ul>
+<li>A pattern variable introduced by a labeled statement <em>S</em> contained in a switch block statement group <del>(<a href="#jls-14.11.1">14.11.1</a>)</del> is definitely matched at all the statements following <em>S</em>, if any, in the switch block statement group.</li>
+</ul>
+<h4 id="jls-6.3.3"><strong>6.3.3 Scope for Pattern Variables in Patterns</strong></h4>
+<h5 id="jls-6.3.3.1"><strong>6.3.3.1 Guarded Pattern</strong></h5>
+<div class="inserted">
+<p>The following rule applies to a guarded pattern <code>p &amp;&amp; e</code>:</p>
+<ul>
+<li><p>A pattern variable declared by <code>p</code> is definitely matched in <code>e</code>.</p>
+<p>It is a compile-time error if a pattern variable declared by <code>p</code> is already in scope at <code>e</code>.</p></li>
+</ul>
+</div>
+<h4 id="jls-6.3.4"><strong>6.3.4 Scope for Pattern Variables in Switch Labels</strong></h4>
+<div class="inserted">
+<p>Pattern variables can be introduced by switch labels that have patterns, and are in scope for the relevant parts of the associated <code>switch</code> expression (<a href="#jls-6.3.1.6">6.3.1.6</a>) or <code>switch</code> statement (<a href="#jls-6.3.2.6">6.3.2.6</a>).</p>
+<p>The following rule applies to a switch label:</p>
+<ul>
+<li>A pattern variable is introduced by a switch label that has a pattern case label element with pattern <em>p</em> if it is declared by <em>p</em>.</li>
+</ul>
+</div>
+<h2 id="jls-14">Chapter 14: Blocks and Statements</h2>
+<h3 id="jls-14.11">14.11 The <code>switch</code> Statement</h3>
+<p>The <code>switch</code> statement transfers control to one of several statements or expressions, depending on the value of an expression.</p>
+<dl>
+<dt><em>SwitchStatement:</em></dt>
+<dd><code>switch</code> <code>(</code> <em>Expression</em> <code>)</code> <em>SwitchBlock</em>
+</dd>
+</dl>
+<p>The <em>Expression</em> is called the <em>selector expression</em>. <del>The type of the selector expression must be <code>char</code>, <code>byte</code>, <code>short</code>, <code>int</code>, <code>Character</code>, <code>Byte</code>, <code>Short</code>, <code>Integer</code>, <code>String</code>, or an enum type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.9">8.9</a>), or a compile-time error occurs.</del></p>
+<div class="editorial">
+<p>These restrictions on the type of the selector expression are now included in the notion of a switch block being <em>compatible</em> with a selector expression, defined in the following section.</p>
+</div>
+<h4 id="jls-14.11.1">14.11.1 Switch Blocks</h4>
+<p>The body of both a <code>switch</code> statement and a <code>switch</code> expression (<a href="#jls-15.28">15.28</a>) is called a <em>switch block</em>. This subsection presents general rules which apply to all switch blocks, whether they appear in <code>switch</code> statements or <code>switch</code> expressions. Other subsections present additional rules which apply either to switch blocks in <code>switch</code> statements (<a href="#jls-14.11.2">14.11.2</a>) or to switch blocks in <code>switch</code> expressions (<a href="#jls-15.28.1">15.28.1</a>).</p>
+<dl>
+<dt><em>SwitchBlock:</em></dt>
+<dd><code>{</code> <em>SwitchRule</em> {<em>SwitchRule</em>} <code>}</code>
+</dd>
+<dd><code>{</code> {<em>SwitchBlockStatementGroup</em>} {<em>SwitchLabel</em> <code>:</code>} <code>}</code>
+</dd>
+<dt><em>SwitchRule:</em></dt>
+<dd><em>SwitchLabel</em> <code>-&gt;</code> <em>Expression</em> <code>;</code>
+</dd>
+<dd><em>SwitchLabel</em> <code>-&gt;</code> <em>Block</em>
+</dd>
+<dd><em>SwitchLabel</em> <code>-&gt;</code> <em>ThrowStatement</em>
+</dd>
+<dt><em>SwitchBlockStatementGroup:</em></dt>
+<dd><em>SwitchLabel</em> <code>:</code> <del>{<em>SwitchLabel</em> <code>:</code>}</del> <em>BlockStatements</em>
+</dd>
+</dl>
+<div class="deleted">
+<dl>
+<dt><em>SwitchLabel:</em></dt>
+<dd><code>case</code> <em>CaseConstant</em> {<code>,</code> <em>CaseConstant</em>}
+</dd>
+<dd><code>default</code>
+</dd>
+</dl>
+</div>
+<div class="inserted">
+<dl>
+<dt><em>SwitchLabel</em>:</dt>
+<dd><em>CaseOrDefaultLabel</em> {<code>:</code> <em>CaseOrDefaultLabel</em> }
+</dd>
+<dt><em>CaseOrDefaultLabel:</em></dt>
+<dd><code>case</code> <em>CaseLabelElement</em> {<code>,</code> <em>CaseLabelElement</em> }
+</dd>
+<dd><code>default</code>
+</dd>
+<dt><em>CaseLabelElement</em>:</dt>
+<dd><em>CaseConstant</em>
+</dd>
+<dd><em>Pattern</em>
+</dd>
+<dd><code>null</code>
+</dd>
+<dd><code>default</code>
+</dd>
+</dl>
+</div>
+<dl>
+<dt><em>CaseConstant:</em></dt>
+<dd><em>ConditionalExpression</em>
+</dd>
+</dl>
+<p>A switch block can consist of either:</p>
+<ul>
+<li><p><em>Switch rules</em>, which use <code>-&gt;</code> to introduce either a <em>switch rule expression</em>, a <em>switch rule block</em>, or a <em>switch rule <code>throw</code> statement</em>; or</p></li>
+<li><p><em>Switch labeled statement groups</em>, which use <code>:</code> to introduce <em>switch labeled block statements</em>.</p></li>
+</ul>
+<p>Every switch rule and switch labeled statement group starts with a <em>switch label</em>, which <del>is either a <code>case</code> label or a <code>default</code> label.</del> <strong>uses one or more <code>case</code> or <code>default</code> labels. A <code>case</code> label has one or more case label elements.</strong> <del>Multiple switch labels are permitted for a switch labeled statement group.</del> <strong>A switch label has a case label element, if it uses a <code>case</code> label that has that case label element.</strong></p>
+<div class="deleted">
+<p>A <code>case</code> label has one or more <code>case</code> constants. Every <code>case</code> constant must be either a constant expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.29">15.29</a>) or the name of an enum constant (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.9.1">8.9.1</a>), or a compile-time error occurs.</p>
+<p>Switch labels and their <code>case</code> constants are said to be <em>associated</em> with the switch block. No two of the <code>case</code> constants associated with a switch block may have the same value, or a compile-time error occurs.</p>
+</div>
+<div class="inserted">
+<p>If a switch label appears at the end of a switch block, it is a compile-time error if it consists of more than one <code>case</code> or <code>default</code> label.</p>
+<p>It is a compile-time error if the switch label of a switch rule consists of more than one <code>case</code> or <code>default</code> label.</p>
+<blockquote>
+<p>This means that <code>case 1: case 2 -&gt; ...</code> is not a valid switch rule, but can be written as <code>case 1, 2 -&gt; ...</code>.</p>
+</blockquote>
+<p>For every switch label in a switch block, all of the following must be true, otherwise a compile-time error occurs:</p>
+<ul>
+<li><p>If a switch label has a constant case label element then it is either a constant expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.29">15.29</a>) or the name of an enum constant (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.9.1">8.9.1</a>).</p></li>
+<li><p>A switch label may not have more than one constant case label element with the same value.</p></li>
+<li><p>If a switch label has a constant case label element then if the switch label also has other case element labels they must be either a constant case label element, the <code>default</code> case label element, or the <code>null</code> case label element.</p></li>
+<li><p>A switch label may not use more than one <code>default</code> label.</p></li>
+<li><p>A switch label may not have more than one <code>default</code> case label element.</p></li>
+<li><p>A switch label may not have both a <code>default</code> case label element and use a <code>default</code> label.</p></li>
+<li><p>A switch label may not have more than one <code>null</code> case label element.</p></li>
+<li><p>If a switch label has a <code>null</code> case label element then if the switch label also has any pattern case element labels, they must be type patterns (<a href="#jls-14.30.1">14.30.1</a>).</p></li>
+<li><p>A switch label may not have a pattern case label element where the pattern is an any pattern.</p>
+<blockquote>
+<p>Any patterns may only appear in switch labels as the result of resolving the switch block.</p>
+</blockquote></li>
+<li><p>A switch label may not have more than one pattern case label element.</p></li>
+<li><p>A switch label may not both have a pattern case label element and use a <code>default</code> label.</p></li>
+<li><p>A switch label may not have both a pattern case label element and a <code>default</code> case label element.</p></li>
+</ul>
+<blockquote>
+<p>These rules restrict the form of switch labels. Much of the complication is due to supporting the two ways of combining case label elements in switch labels for statement groups (for example <code>case 1: case 2</code> and <code>case 1,2</code>). <!--
+An
+alternative, more cumbersome grammar could enumerate all the possibilities
+more concretely: 
+
+*SwitchLabelForBlockStatementGroup*:
+: `case` *CaseConstant* {`,` *CaseConstant* } { `:` `case` *CaseConstant* {`,` *CaseConstant* } }
+: `case` *Pattern*
+: `case` *TypePattern*`, null`
+: `case` *TypePattern*`: case null`
+: `case null, ` *TypePattern*
+: `case null: case` *TypePattern*
+: `case default, null`
+: `default: case null`
+: `case null, default`
+: `case null: default`
+: `default`
+--></p>
+</blockquote>
+<p>A switch label is called a <em>default</em> switch label if it either uses a <code>default</code> label or has a <code>default</code> case label element.</p>
+<!--
+A switch label is called a *null-matching* switch label if it contains a `null`
+case label element. 
+-->
+</div>
+<div class="inserted">
+<p>A switch label is said to <em>dominate</em> another switch label if there are values for which both apply and there is not an obvious preference. The rules for determining dominance are as follows:</p>
+<ul>
+<li><p>A switch label that has a constant case label element dominates another switch label that has the same constant case label element.</p>
+<blockquote>
+<p>This rules out examples such as the following where it would otherwise be unclear which switch label matches when the value of the selector expression is <code>2</code>.</p>
+<pre><code>int i = ...;
+switch (i) {
+    case 1, 2 -&gt; System.out.println(&quot;1 or 2&quot;);
+    case 2, 3 -&gt; System.out.println(&quot;2 or 3&quot;); // Error!
+}</code></pre>
+</blockquote></li>
+<li><p>A switch label that has a pattern case label element <em>p</em> dominates another switch label that has a pattern case label element <em>q</em> if <em>p</em> dominates <em>q</em> (<a href="#jls-14.30.3">14.30.3</a>).</p>
+<blockquote>
+<p>The definition of a pattern dominating another pattern is based on their type. For example, the following results in a compile-time error:</p>
+<pre><code>Object o = ...
+switch (o) {
+    case Object obj -&gt; 
+        System.out.println(&quot;Object&quot;);
+    case String s   -&gt; 
+        System.out.println(&quot;String&quot;);   // Error - dominated switch label
+}    </code></pre>
+<p>More precisely, dominance is defined in terms of the <em>erasure</em> of the types of the patterns. For example, the type pattern <code>List&lt;String&gt; ls</code> dominates the type pattern <code>List&lt;Integer&gt; li</code> and vice versa. This means that, for example, the following switch block results in a compile-time error:</p>
+<pre><code>Object o = ...;
+switch (o) {
+    case List&lt;Integer&gt; li -&gt; ...
+    case List&lt;String&gt;  ls  -&gt; ...   // Error - dominated switch label
+    ...
+}</code></pre>
+<p>Dominance permits a guarded pattern to be followed by its unguarded form:</p>
+<pre><code>Object o = ...;
+switch (o) {
+    case List l &amp;&amp; l.length() &gt; 2 -&gt; ...
+    case List l                   -&gt; ...   // List of length &lt;= 2
+    ...
+}</code></pre>
+</blockquote></li>
+<li><p>A switch label that has a pattern case label element <em>p</em> that is total for the type of the selector expression of the enclosing <code>switch</code> statement or <code>switch</code> expression dominates a switch label that has a <code>null</code> case label element.</p></li>
+<li>A switch label that has a pattern case label element <em>p</em> dominates another switch label that has a constant case label element <em>c</em> if either of the following is true:
+<ul>
+<li>the type of <em>c</em> is a primitive type and its wrapper class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.1.7">5.1.7</a>) is a subtype of the erasure of the type of <em>p</em>.</li>
+<li>the type of <em>c</em> is a reference type and is a subtype of the erasure of the type of <em>p</em>.</li>
+</ul></li>
+</ul>
+<p>It is a compile-time error if a switch label in a switch block dominates any switch label that follows it in the switch block.</p>
+<p>It is a compile-time error if there is a statement in a switch block that consists of switch-labeled statement groups for which both of the following are true:</p>
+<ol type="1">
+<li><p>It is labeled with a switch label that has a pattern case label element whose pattern introduces a pattern variable.</p></li>
+<li><p>There is a statement preceding it in the switch block and that statement can completely normally (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.22">14.22</a>).</p></li>
+</ol>
+<blockquote>
+<p>This condition is required to exclude the possibility of a switch labeled statement being reached for which a pattern variable declared in its switch label is in scope but without the pattern matching having succeeded. For example, the statement labeled by the switch label that has the type pattern <code>Integer i</code> could be reached from the preceding statement group, and so the pattern variable <code>i</code> will not be initialized:</p>
+<pre><code>Object o = &quot;Hello&quot;;
+switch (o) {
+    case String s:  
+        System.out.println(&quot;String: &quot; + s ); 
+    case Integer i: 
+        System.out.println(i + 1);    // Error! Can be reached 
+                                      // without matching switch label
+}</code></pre>
+</blockquote>
+</div>
+<!--
+A switch block can be classified according to the switch labels in
+it as follows:
+
+- An *equality switch block* is a switch block where no switch label contains a
+  pattern case label element. 
+  
+- A *pattern switch block* is a switch block with at least one switch label that
+  is not a default switch label and contains a pattern case label element.
+  
+Every switch block must be either an equality switch block or a pattern switch
+block, or a compile-time error occurs.
+
+> This requirement ensures that a switch block of a `switch` statement or a
+> `switch` expression either compares the value of the selector expression with
+> the switch labels using equality of `case` constants or `null`, or by pattern
+> matching, but never using a mix of both. 
+> 
+> The only cases where this is not apparent from the form of the switch labels
+> is the following degenerate case:
+> 
+> ```
+> switch(i) {  // empty switch block
+> }
+> ```
+> 
+> This switch block is an equality switch block. 
+-->
+<p>The switch block of a <code>switch</code> statement or a <code>switch</code> expression is <em>compatible</em> with the <del>type of the</del> selector expression, <del><em>T</em></del> <em>e</em>, if <del>both of the following are true</del> <strong>all the <code>case</code> labels used by the switch labels in the switch block are compatible with <em>e</em>. A <code>case</code> label is compatible with <em>e</em> if every case label element it has is compatible with <em>e</em>, as follows</strong>:</p>
+<ul>
+<li><p><strong>A constant case label element <em>c</em> is compatible with <em>e</em> if exactly one of the following is true:</strong></p>
+<ul>
+<li><p>If <strong>the type of <em>e</em>,</strong> <em>T</em><strong>,</strong> is <del>not an enum type,</del> <strong><code>char</code>, <code>byte</code>, <code>short</code>, <code>int</code>, <code>Character</code>, <code>Byte</code>, <code>Short</code>, <code>Integer</code>, or <code>String</code>,</strong> then <em>c</em> <del>every <code>case</code> constant associated with the switch block</del> is assignment compatible with <em>T</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.2">5.2</a>).</p></li>
+<li><p>If <strong>the type of <em>e</em>,</strong> <em>T</em><strong>,</strong> is an enum type, then <em>c</em> <del>every <code>case</code> constant associated with the switch block</del> is an enum constant of type <em>T</em>.</p></li>
+</ul></li>
+</ul>
+<div class="inserted">
+<ul>
+<li><p>A <code>null</code> case label element is compatible with <em>e</em> if the type of <em>e</em> is a reference type.</p></li>
+<li><p>A <code>default</code> case label element is always compatible with <em>e</em>.</p></li>
+<li><p>A pattern case label element <em>p</em> is compatible with <em>e</em> if <em>e</em> is compatible with <em>p</em> (<a href="#jls-14.30.1">14.30.1</a>).</p></li>
+</ul>
+</div>
+<p>The switch block of a <code>switch</code> statement or a <code>switch</code> expression must be compatible with the <del>type of the</del> selector expression, or a compile-time error occurs.</p>
+<div class="inserted">
+<p>It is a compile-time error if both of the following are true for a <code>switch</code> expression or a <code>switch</code> statement:</p>
+<ol type="1">
+<li><p>There is a default switch label in the switch block, and</p></li>
+<li><p>There is a switch label in the switch block that has a pattern case label element whose pattern is total for the type of the selector expression (<a href="#jls-14.30.3">14.30.3</a>).</p></li>
+</ol>
+<blockquote>
+<p>A pattern that is total for the type of the selector expression will match every value, and so behaves much like a default switch label.</p>
+</blockquote>
+<div class="editorial">
+<p>The following definitions assume the existence of <code>sealed</code> classes, a feature proposed by <a href="https://openjdk.java.net/jeps/409">JEP 409</a> to be finalized in Java SE 17.</p>
+</div>
+<p>A type <em>T</em> <em>supports</em> a <code>sealed</code> class or interface <em>C</em> if and only if one of the following holds:</p>
+<ul>
+<li><p><em>T</em> is a class type that names <em>C</em>, and the class <em>C</em> is both <code>sealed</code> and <code>abstract</code>.</p></li>
+<li><p><em>T</em> is an interface type that names <em>C</em>, and the interface <em>C</em> is <code>sealed</code>.</p></li>
+<li><p><em>T</em> is a type variable, and its upper bound supports <em>C</em>.</p></li>
+<li><p><em>T</em> is an intersection type <em>T<sub>1</sub></em> <code>&amp;</code> ... <code>&amp;</code> <em>T<sub>n</sub></em>, and a type <em>T<sub>i</sub></em> supports <em>C</em> (1 <em>≤</em> <em>i</em> <em>≤</em> <em>n</em>).</p></li>
+</ul>
+<p>A switch block <em>covers</em> a type <em>T</em> if one of the following is true:</p>
+<ul>
+<li><p><em>T</em> names an enum class <em>E</em> and all of the enum constants of <em>E</em> appear as constant switch label elements in the switch block.</p>
+<blockquote>
+<p>Note that a default switch label is permitted, but not required in the case where all the enum constants appear in the switch labels. For example:</p>
+<pre><code>enum E {
+    F, G, H
+}
+
+static int testEnumCoverage(E e) {
+    return switch(e) {
+        case F -&gt; 0;
+        case G -&gt; 1;
+        case H -&gt; 2;    // No default required!
+    };
+}</code></pre>
+</blockquote></li>
+<li><p><em>T</em> supports a <code>sealed</code> class or interface <em>C</em>, and the switch block covers all of the permitted direct subclasses and subinterfaces of <em>C</em>.</p>
+<blockquote>
+<p>Note that a default switch label is permitted, but not required in the case where all the permited direct subclasses and subinterfaces of a <code>sealed</code> class or interface are covered by the switch block. For example:</p>
+<pre><code>sealed interface I permits A, B, C {}
+final class A   implements I {}
+final class B   implements I {}
+record C(int j) implements I {}  // Implicitly final
+
+static int testSealedCoverage(I i) {
+    return switch(i) {
+        case A a -&gt; 0;
+        case B b -&gt; 1;
+        case C c -&gt; 2;           // No default required!
+    };
+}</code></pre>
+</blockquote></li>
+<li><p>A switch label in the switch block has a pattern case label element <em>p</em> where the pattern <em>p</em> is total for <em>T</em> (<a href="#jls-14.30.3">14.30.3</a>).</p></li>
+<li><p>There is a default switch label in the switch block.</p></li>
+</ul>
+<p>A <code>switch</code> statement or expression is <em>exhaustive</em> if the switch block covers the type of the selector expression.</p>
+<p>As the meaning of some patterns is determined by the type of the expression that are being matching against, patterns appearing in switch labels must be resolved (<a href="#jls-14.30.2">14.30.2</a>).</p>
+<p>A switch block is <em>resolved</em> at type <em>U</em> resulting in a identical switch block except where every pattern case label element <em>p</em> is replaced with a pattern case label element whose pattern is the result of resolving pattern <em>p</em> at type <em>U</em>.</p>
+</div>
+<p>Both the execution of a <code>switch</code> statement (<a href="#jls-14.11.3">14.11.3</a>) and the evaluation of a <code>switch</code> expression (<a href="#jls-15.28.2">15.28.2</a>) need to determine if a switch label <strong>in a resolved switch block</strong> <del><em>matches</em></del> <strong><em>applies</em> to</strong> the value of the selector expression. <del>To determine</del> <strong>Determining</strong> whether a switch label in a <strong>resolved</strong> switch block <del>matches</del> <strong>applies to</strong> a given value<del>, the value is compared with the <code>case</code> constants associated with the switch block</del> is as follows: <del>Then:</del></p>
+<div class="inserted">
+<ul>
+<li><p>If the value is the null reference, then we determine the first (if any) switch label in the switch block that applies to the value as follows:</p>
+<ol type="1">
+<li><p>A switch label that has a <code>null</code> case label element <em>applies</em>. In addition, any pattern variables declared by patterns appearing in the switch label are initialized to the null reference.</p></li>
+<li><p>A switch label that has a pattern case label element <em>p</em> where <em>p</em> is an any pattern <em>applies</em>. In addition, the pattern variable declared by the any pattern is initialized to the null reference.</p></li>
+</ol>
+<blockquote>
+<p>It is possible for a single resolved switch label to have both a <code>null</code> case label and an any pattern. In this case, both rules are identical and either one can be used.</p>
+</blockquote></li>
+</ul>
+</div>
+<!--
+-   **If the value is the null reference, then a null-matching switch label
+    *matches*. In addition, any pattern variables declared by
+    patterns contained by the switch label are initialized to the null reference**. 
+
+    > **A switch block may have at most one null-matching switch label. If a
+    > null-matching switch label also contains pattern case label elements then
+    > these patterns must be type patterns.**
+-->
+<ul>
+<li><p><strong>If the value is not the null reference, then we determine the first (if any) switch label in the switch block that applies to the value as follows:</strong></p>
+<ul>
+<li><p><strong>A switch label that has a constant case label element <em>c</em> <em>applies</em> if both of the following are true:</strong></p>
+<ol type="1">
+<li><p><strong>If the type of the value is <code>Character</code>, <code>Byte</code>, <code>Short</code>, or <code>Integer</code>, then the value is first subjected to unboxing conversion (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.1.8">5.1.8</a>). If this conversion completes abruptly, then we say that applying completes abruptly for the same reason. If this conversion completes normally then the switch label applies if the constant <em>c</em> is equal to the unboxed value.</strong> <del>If one of the <code>case</code> constants is equal to the value, then we say that the <code>case</code> label which contains the <code>case</code> constant <em>matches</em></del>.</p></li>
+<li><p><strong>If the type of the value is not <code>Character</code>, <code>Byte</code>, <code>Short</code>, or <code>Integer</code>, then the switch label applies if the constant <em>c</em> is equal to the value.</strong></p></li>
+</ol>
+<p><del>Equality</del> <strong>In both cases, equality</strong> is defined in terms of the <code>==</code> operator (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.21">15.21</a>) unless the value is a <code>String</code>, in which case equality is defined in terms of the <code>equals</code> method of class <code>String</code>.</p></li>
+<li><p><strong>A switch label that has a pattern case label element <em>p</em> <em>applies</em> if the value matches the pattern <em>p</em>. If pattern matching completes abruptly then applying completes abruptly for the same reason.</strong></p></li>
+<li><p>If no <strong>switch</strong> <del><code>case</code></del> label <strong>that is not a default switch label</strong> <del>matches</del> <strong>applies</strong><br />
+but there is a <del><code>default</code></del> <strong>default switch</strong> label, then the <del><code>default</code></del> <strong>default switch</strong> label <em>applies</em>.</p>
+<blockquote>
+<p><strong>A switch block may have at most one default switch label.</strong></p>
+</blockquote></li>
+</ul></li>
+</ul>
+<blockquote>
+<p>A <del><code>case</code></del> <strong>switch</strong> label can <del>contain</del> <strong>have</strong> several <del><code>case</code> constants</del> <strong>constant case label elements</strong>. The label <del>matches</del> <strong>applies to</strong> the value of the selector expression if any one of its constants <del>matches</del> <strong>is equal to</strong> the value of the selector expression. For example, in the following code, the <del><code>case</code></del> <strong>switch</strong> label matches if the enum variable <code>day</code> is either one of the enum constants shown:</p>
+<pre><code>switch (day) {
+    ...
+    case SATURDAY, SUNDAY :
+        System.out.println(&quot;It&#39;s the weekend!&quot;);
+        break;
+    ...
+}</code></pre>
+</blockquote>
+<div class="deleted">
+<blockquote>
+<p><code>null</code> cannot be used as a <code>case</code> constant because it is not a constant expression. Even if <code>case</code> <code>null</code> was allowed, it would be undesirable because the code in that <code>case</code> can never be executed. Namely, if the selector expression is of a reference type (that is, <code>String</code> or a boxed primitive type or an enum type), then an exception will occur if the selector expression evaluates to <code>null</code> at run time. In the judgment of the designers of the Java programming language, propagating the exception is a better outcome than either having no <code>case</code> label match, or having the <code>default</code> label match.</p>
+</blockquote>
+</div>
+<blockquote>
+<p>In C and C++ the body of a <code>switch</code> statement can be a statement and statements with <code>case</code> labels do not have to be immediately contained by that statement. Consider the simple loop:</p>
+<pre><code>for (i = 0; i &lt; n; ++i) foo();</code></pre>
+<p>where <code>n</code> is known to be positive. A trick known as <em>Duff's device</em> can be used in C or C++ to unroll the loop, but this is not valid code in the Java programming language:</p>
+<pre><code>int q = (n+7)/8;
+switch (n%8) {
+    case 0: do { foo();    // Great C hack, Tom,
+    case 7:      foo();    // but it&#39;s not valid here.
+    case 6:      foo();
+    case 5:      foo();
+    case 4:      foo();
+    case 3:      foo();
+    case 2:      foo();
+    case 1:      foo();
+            } while (--q &gt; 0);
+}</code></pre>
+<p>Fortunately, this trick does not seem to be widely known or used. Moreover, it is less needed nowadays; this sort of code transformation is properly in the province of state-of-the-art optimizing compilers.</p>
+</blockquote>
+<h4 id="jls-14.11.2">14.11.2 The Switch Block of a <code>switch</code> Statement</h4>
+<p>In addition to the general rules for switch blocks (<a href="#jls-14.11.1">14.11.1</a>), there are further rules for switch blocks in <code>switch</code> statements.</p>
+<p><strong>An <em>enhanced</em> <code>switch</code> statement is one where either (i) the type of the selector expression is not <code>char</code>, <code>byte</code>, <code>short</code>, <code>int</code>, <code>Character</code>, <code>Byte</code>, <code>Short</code>, <code>Integer</code>, <code>String</code>, or an enum type, or (ii) at least one of the switch labels has a pattern case label element or a <code>null</code> case label element.</strong></p>
+<p><del>Namely, all</del> <strong>All</strong> of the following must be true for the switch block of a <code>switch</code> statement, or a compile-time error occurs:</p>
+<ul>
+<li><p><del>No more than one <code>default</code> label is associated with the <code>switch</code> block.</del></p></li>
+<li><p>Every switch rule expression in the switch block is a statement expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.8">14.8</a>).</p>
+<blockquote>
+<p><code>switch</code> statements differ from <code>switch</code> expressions in terms of which expressions may appear to the right of an arrow (<code>-&gt;</code>) in the switch block, that is, which expressions may be used as <em>switch rule expressions</em>. In a <code>switch</code> statement, only a statement expression may be used as a switch rule expression, but in a <code>switch</code> expression, any expression may be used (<a href="#jls-15.28.1">15.28.1</a>).</p>
+</blockquote></li>
+<li><p><strong>If the <code>switch</code> statement is an enhanced <code>switch</code> statement, then it must be exhaustive.</strong></p></li>
+</ul>
+<div class="inserted">
+<blockquote>
+<p>Prior to Java SE 17, <code>switch</code> statements (and <code>switch</code> expressions) were limited in two ways: (i) the type of the selector expression was restricted to an integral type, an enum type, or <code>String</code>; and (ii) only constant case label elements were supported. Moreover, unlike <code>switch</code> expressions, <code>switch</code> statements did not have to be exhaustive. This is often the cause of difficult to detect bugs, where no switch label applies and the <code>switch</code> statement will silently do nothing. For example:</p>
+<pre><code>enum E { A, B, C}
+
+E e = ...;
+switch (e) {
+   case A -&gt; System.out.println(&quot;A&quot;);
+   case B -&gt; System.out.println(&quot;B&quot;);
+   // No case for C!
+}</code></pre>
+<p>With Java SE 17, <code>switch</code> statements have been enhanced in the sense that the two limitations listed above have been lifted. The designers of the Java programming language decided that enhanced <code>switch</code> statements should align with <code>switch</code> expressions and be required to be exhaustive. This is often achieved with the addition of a trivial default switch label. For example, the following enhanced <code>switch</code> statement is not exhaustive:</p>
+<pre><code>Object o = ...;
+switch (o) {    // Error - non-exhaustive switch!
+    case String s -&gt; System.out.println(&quot;A string!&quot;);
+}</code></pre>
+<p>but it can easily be made exhaustive:</p>
+<pre><code>Object o = ...;
+switch (o) {    
+    case String s -&gt; System.out.println(&quot;A string!&quot;);
+    default -&gt; {}
+}</code></pre>
+<p>For compatibility reasons, <code>switch</code> statements that are not an enhanced <code>switch</code> statement are not required to be exhaustive.</p>
+</blockquote>
+</div>
+<h4 id="jls-14.11.3">14.11.3 Execution of a <code>switch</code> Statement</h4>
+<p><strong>Execution of a <code>switch</code> statement is always with respect to a resolved switch block (<a href="#jls-14.11.1">14.11.1</a>). The switch block is resolved at type <em>T</em>, where <em>T</em> is the type of the selector expression.</strong></p>
+<p>A <code>switch</code> statement is executed by first evaluating the selector expression. Then:</p>
+<ul>
+<li><p>If evaluation of the selector expression completes abruptly, then the entire <code>switch</code> statement completes abruptly for the same reason.</p></li>
+<li><p>Otherwise, if the result of evaluating the selector expression is <code>null</code>, <strong>and no switch label in the resolved switch block applies</strong> then a <code>NullPointerException</code> is thrown and the entire <code>switch</code> statement completes abruptly for that reason. <strong>If applying completes abruptly, then the entire <code>switch</code> statement completes abruptly for the same reason.</strong></p></li>
+</ul>
+<div class="deleted">
+<ul>
+<li>Otherwise, if the result of evaluating the selector expression is of type <code>Character</code>, <code>Byte</code>, <code>Short</code>, or <code>Integer</code>, it is subjected to unboxing conversion (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.1.8">5.1.8</a>). If this conversion completes abruptly, the entire <code>switch</code> statement completes abruptly for the same reason.</li>
+</ul>
+</div>
+<p>If evaluation of the selector expression completes normally <del>and the result is non-<code>null</code>, and the subsequent unboxing conversion (if any) completes normally,</del> then execution of the <code>switch</code> statement continues by determining if a switch label <del>associated with</del> <strong>in</strong> the <strong>resolved</strong> switch block <del>matches</del> <strong>applies to</strong> the value of the selector expression (<a href="#jls-14.11.1">14.11.1</a>). Then:</p>
+<ul>
+<li><p><strong>If applying completes abruptly, then the entire <code>switch</code> statement completes abruptly for the same reason.</strong></p></li>
+<li><p>If no switch label <del>matches</del> <strong>applies then if the <code>switch</code> statement is an enhanced <code>switch</code> statement an <code>IncompatibleClassChangeError</code> is thrown and the entire <code>switch</code> statement completes abruptly for that reason; otherwise,</strong> the entire <code>switch</code> statement completes normally.</p></li>
+<li><p>If a switch label <del>matches</del> <strong>applies</strong>, then one of the following <del>applies</del> <strong>holds</strong>:</p>
+<ul>
+<li><p>If it is the switch label for a switch rule expression, then the switch rule expression is necessarily a statement expression (<a href="#jls-14.11.2">14.11.2</a>). The statement expression is evaluated. If the evaluation completes normally, then the <code>switch</code> statement completes normally. If the result of evaluation is a value, it is discarded.</p></li>
+<li><p>If it is the switch label for a switch rule block, then the block is executed. If this block completes normally, then the <code>switch</code> statement completes normally.</p></li>
+<li><p>If it is the switch label for a switch rule <code>throw</code> statement, then the <code>throw</code> statement is executed.</p></li>
+<li><p>If it is the switch label for a switch labeled statement group, then all the statements in the switch block that follow the switch label are executed in order. If these statements complete normally, then the <code>switch</code> statement completes normally.</p></li>
+<li><p>Otherwise, there are no statements that follow the <del>matched</del> switch label <strong>that applies</strong> in the switch block, and the <code>switch</code> statement completes normally.</p></li>
+</ul></li>
+</ul>
+<p>If execution of any statement or expression in the switch block completes abruptly, it is handled as follows:</p>
+<ul>
+<li><p>If execution of a statement completes abruptly because of a <code>break</code> with no label, then no further action is taken and the <code>switch</code> statement completes normally.</p>
+<blockquote>
+<p>Abrupt completion because of a <code>break</code> with a label is handled by the general rule for labeled statements (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.7">14.7</a>).</p>
+</blockquote></li>
+<li><p>If execution of a statement or expression completes abruptly for any other reason, then the <code>switch</code> statement completes abruptly for the same reason.</p>
+<blockquote>
+<p>Abrupt completion because of a <code>yield</code> statement is handled by the general rule for switch expressions (<a href="#jls-15.28.2">15.28.2</a>).</p>
+</blockquote></li>
+</ul>
+<div class="example">
+<p>Example 14.11.3-1. Fall-Through in the <code>switch</code> Statement</p>
+<p>When a <del>selector expression matches a switch label</del> <strong>switch label applies, and that switch label is</strong> for a switch rule, the switch rule expression or statement introduced by the switch label is executed, and nothing else. In the case of a switch label for a statement group, all the block statements in the switch block that follow the switch label are executed, including those that appear after subsequent switch labels. The effect is that, as in C and C++, execution of statements can &quot;fall through labels.&quot;</p>
+<p>For example, the program:</p>
+<pre><code>class TooMany {
+    static void howMany(int k) {
+        switch (k) {
+            case 1: System.out.print(&quot;one &quot;);
+            case 2: System.out.print(&quot;too &quot;);
+            case 3: System.out.println(&quot;many&quot;);
+        }
+    }
+    public static void main(String[] args) {
+        howMany(3);
+        howMany(2);
+        howMany(1);
+    }
+}</code></pre>
+<p>contains a <code>switch</code> block in which the code for each <code>case</code> falls through into the code for the next <code>case</code>. As a result, the program prints:</p>
+<pre><code>many
+too many
+one too many</code></pre>
+<p>Fall through can be the cause of subtle bugs. If code is not to fall through <code>case</code> to <code>case</code> in this manner, then <code>break</code> statements can be used to indicate when control should be transferred, or switch rules can be used, as in the program:</p>
+<pre><code>class TwoMany {
+    static void howMany(int k) {
+        switch (k) {
+            case 1: System.out.println(&quot;one&quot;);
+                    break;  // exit the switch
+            case 2: System.out.println(&quot;two&quot;);
+                    break;  // exit the switch
+            case 3: System.out.println(&quot;many&quot;);
+                    break;  // not needed, but good style
+        }
+    }
+    static void howManyAgain(int k) {
+        switch (k) {
+            case 1 -&gt; System.out.println(&quot;one&quot;);
+            case 2 -&gt; System.out.println(&quot;two&quot;);
+            case 3 -&gt; System.out.println(&quot;many&quot;);
+        }
+    }
+    public static void main(String[] args) {
+        howMany(1);
+        howMany(2);
+        howMany(3);
+        howManyAgain(1);
+        howManyAgain(2);
+        howManyAgain(3);    
+    }
+}</code></pre>
+<p>This program prints:</p>
+<pre><code>one
+two
+many
+one
+two
+many</code></pre>
+</div>
+<h3 id="jls-14.30">14.30 Patterns</h3>
+<p>A <em>pattern</em> describes a test that can be performed on a value. Patterns appear as operands of statements and expressions, which provide the values to be tested. Patterns declare local variables, known as <em>pattern variables</em>.</p>
+<p>The process of testing a value against a pattern is known as <em>pattern matching</em>. If a value successfully matches a pattern, then the process of pattern matching initializes the pattern variable declared by the pattern.</p>
+<p>Pattern variables are only in scope (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.3">6.3</a>) where pattern matching succeeds and thus the pattern variables will have been initialized. It is not possible to use a pattern variable that has not been initialized.</p>
+<h4 id="jls-14.30.1">14.30.1 Kinds of Patterns</h4>
+<p><strong>Primary patterns are the simplest forms of patterns, from which all others are constructed.</strong> A <em>type pattern</em> is used to test whether a value is an instance of the type appearing in the pattern. <strong>A parenthesized pattern is also treated syntactically as a primary pattern.</strong></p>
+<p><strong>A <em>guarded pattern</em> consists of a contained primary pattern and a contained guarding expression and is used to test whether a value matches the pattern and additionally that the guarding boolean expression is <code>true</code>.</strong></p>
+<div class="deleted">
+<dl>
+<dt><em>Pattern:</em></dt>
+<dd><em>TypePattern</em>
+</dd>
+</dl>
+</div>
+<div class="inserted">
+<dl>
+<dt><em>Pattern</em>:</dt>
+<dd><em>PrimaryPattern</em>
+</dd>
+<dd><em>GuardedPattern</em>
+</dd>
+<dt><em>GuardedPattern</em>:</dt>
+<dd><em>PrimaryPattern</em> <code>&amp;&amp;</code> <em>ConditionalAndExpression</em>
+</dd>
+<dt><em>PrimaryPattern</em>:</dt>
+<dd><em>TypePattern</em>
+</dd>
+<dd><code>(</code> <em>Pattern</em> <code>)</code>
+</dd>
+</dl>
+</div>
+<dl>
+<dt><em>TypePattern</em>:</dt>
+<dd><em>LocalVariableDeclaration</em>
+</dd>
+</dl>
+<!--
+:::inserted
+
+*AnyPattern*:
+: {*VariableModifier*} `var` *Identifier*
+
+:::
+--->
+<blockquote>
+<p>The following productions from <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.3">4.3</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.3">8.3</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.1">8.4.1</a>, and <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.4">14.4</a> are shown here for convenience:</p>
+</blockquote>
+<blockquote>
+<dl>
+<dt><em>LocalVariableDeclaration:</em></dt>
+<dd>{<em>VariableModifier</em>} <em>LocalVariableType</em> <em>VariableDeclaratorList</em>
+</dd>
+<dt><em>VariableModifier:</em></dt>
+<dd><em>Annotation</em>
+</dd>
+<dd><code>final</code>
+</dd>
+<dt><em>LocalVariableType:</em></dt>
+<dd><em>UnannType</em>
+</dd>
+<dd><code>var</code>
+</dd>
+<dt><em>VariableDeclaratorList:</em></dt>
+<dd><em>VariableDeclarator</em> {<code>,</code> <em>VariableDeclarator</em>}
+</dd>
+<dt><em>VariableDeclarator:</em></dt>
+<dd><em>VariableDeclaratorId</em> [<code>=</code> <em>VariableInitializer</em>]
+</dd>
+<dt><em>VariableDeclaratorId:</em></dt>
+<dd><em>Identifier</em> [<em>Dims</em>]
+</dd>
+<dt><em>Dims:</em></dt>
+<dd>{<em>Annotation</em>} <code>[</code> <code>]</code> {{<em>Annotation</em>} <code>[</code> <code>]</code>}
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<p>See <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.3">8.3</a> for <em>UnannType</em>.</p>
+</blockquote>
+<div class="inserted">
+<p>There is also a special <em>any pattern</em>, which is a pattern that arises from the process of resolving a pattern (<a href="#jls-14.30.2">14.30.2</a>).</p>
+<blockquote>
+<p>Currently, any patterns may not appear in a pattern <code>instanceof</code> expression, or in a pattern label of a <code>switch</code> expression or <code>switch</code> statement. It is possible that future versions of the Java programming language may relax this restriction.</p>
+</blockquote>
+</div>
+<!-- Details about type patterns -->
+<p>A type pattern declares one local variable, known as a pattern variable. The <em>Identifier</em> in the local variable declaration specifies the name of the pattern variable.</p>
+<!-- A type pattern that does not appear as an argument in a record pattern is called a **top-level pattern**. -->
+<p>The rules for a local variable declared in a type pattern are specified in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.4">14.4</a>. In addition, all of the following must be true, or a compile-time error occurs:</p>
+<ul>
+<li><p>The <em>LocalVariableType</em> denotes a reference type (and furthermore is not <code>var</code>).</p></li>
+<li><p>The <em>VariableDeclaratorList</em> consists of a single <em>VariableDeclarator</em>.</p></li>
+<li><p>The <em>VariableDeclarator</em> has no initializer.</p></li>
+<li><p>The <em>VariableDeclaratorId</em> has no bracket pairs.</p></li>
+</ul>
+<p>The type of a pattern variable is the reference type denoted by <em>LocalVariableType</em>.</p>
+<!-- 
+The type of a pattern variable where the *LocalVariableType* is not `var` is the
+reference type denoted by *LocalVariableType*. 
+A pattern variable where the *LocalVariableType* is `var` appears in a type
+pattern that is an argument to a record pattern. The type of such a pattern
+variable is given by the type of the corresponding record component.
+
+-->
+<p>The type of a type pattern is the type of its pattern variable.</p>
+<!-- Details about parenthesized patterns -->
+<div class="inserted">
+<p>A parenthesized pattern declares the local variables that are declared by the contained pattern.</p>
+<p>The type of a parenthesized pattern is the type of the contained pattern.</p>
+</div>
+<!-- Details about Any patterns -->
+<div class="inserted">
+<p>An any pattern declares one local variable, known as a pattern variable.</p>
+<p>The pattern variable of an any pattern has a type, which is a reference type.</p>
+<p>The type of an any pattern is the type of its pattern variable.</p>
+</div>
+<!-- Details about guarded patterns -->
+<div class="inserted">
+<p>A pattern variable is declared by a guarded pattern <code>p&amp;&amp;e</code> if one of the following is true:</p>
+<ul>
+<li><p>The pattern variable is declared by the pattern <code>p</code></p></li>
+<li><p>The pattern variable is introduced by <code>e</code> when true (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.3.1">6.3.1</a>).</p></li>
+</ul>
+<p>It is a compile-time error if any pattern variable is both declared by the contained pattern and by the guarding expression of a guarded pattern when true.</p>
+<p>Any variable that is used but not declared in the guarding expression of a guarded pattern must either be <code>final</code> or effectively final (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.12.4">4.12.4</a>).</p>
+<p>The type of a guarded pattern is the type of the contained pattern.</p>
+</div>
+<p><del>An expression <em>e</em> is <em>compatible</em> with a pattern of type <em>T</em> if <em>e</em> is downcast compatible with <em>T</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.5">5.5</a>).</del></p>
+<div class="inserted">
+<p>An expression <em>e</em> is <em>compatible</em> with a pattern if one of the following is true:</p>
+<ul>
+<li>The pattern is an any pattern; or</li>
+<li>The pattern is of type <em>T</em> and <em>e</em> is downcast compatible with <em>T</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.5">5.5</a>).</li>
+</ul>
+</div>
+<blockquote>
+<p>Compatibility of an expression with a pattern is used by the <code>instanceof</code> pattern match operator (<a href="#jls-15.20.2">15.20.2</a>) <strong>and a <code>switch</code> expression or <code>switch</code> statement using patterns in a switch label (<a href="#jls-14.11.1">14.11.1</a>)</strong>.</p>
+</blockquote>
+<h4 id="jls-14.30.2">14.30.2 Pattern Matching</h4>
+<p><em>Pattern matching</em> is the process of testing a value against a pattern at run time. Pattern matching is distinct from statement execution (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.1">14.1</a>) and expression evaluation (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.1">15.1</a>).</p>
+<div class="inserted">
+<p>Before pattern matching is performed, patterns are first <em>resolved</em> with respect to the type of the expression that they are to be matched against, resulting in a possibly amended pattern.</p>
+<p>The rules for resolving a pattern at type <em>U</em> are as follows:</p>
+<ul>
+<li><p>A guarded pattern, with contained pattern <em>p</em>, that is total for <em>U</em>, is resolved to the result of resolving <em>p</em> at type <em>U</em>. A guarded pattern, with contained pattern <em>p</em> and guarding expression <em>e</em>, that is not total for <em>U</em> is resolved to a guarded pattern where the contained pattern is the result of resolving <em>p</em> at type <em>U</em>, and the guarding expression is <em>e</em>.</p></li>
+<li><p>A type pattern, <em>p</em>, declaring a pattern variable <em>x</em> of type <em>T</em>, that is total for <em>U</em>, is resolved to an any pattern that declares <em>x</em> of type <em>T</em>; otherwise it is resolved to <em>p</em>.</p></li>
+<li><p>A parenthesized pattern, with contained pattern <em>p</em>, is resolved to a parenthesized pattern whose contained pattern is the result of resolving <em>p</em> at type <em>U</em>.</p></li>
+<li><p>An any pattern, <em>p</em>, is resolved to <em>p</em>.</p></li>
+</ul>
+<blockquote>
+<p>This process of resolving a pattern addresses a problem that arises when matching a null reference value against a type pattern. Checking whether a value matches a type pattern of type <em>U</em> involves checking (at runtime) whether the value can be cast to <em>U</em>. But the null reference can be cast to any reference type without any checks. If an expression of type <em>V</em> ultimately evaluates to the null reference, we'd still expect the match to only succeed if <em>V</em> was a subtype of the type of the type pattern.</p>
+<p>This suggests that pattern matching needs to involve compile-time types. Rather than directly defining the runtime process of pattern matching with reference to compile-time types, we instead observe that pattern matching should satisfy the following property: the value of any expression whose static type is <em>T</em> always matches a type pattern of type <em>S</em>, where <em>T</em> is a subtype of <em>S</em>.</p>
+<p>Thus, at compile-time we &quot;resolve&quot; the pattern with respect to the (compile-time) type of the expression being pattern matched. If it can be determined at compile-time that a pattern will always match, it is translated, or resolved, to a special any pattern (which, by definition, all values match without any examination of runtime types). This ensures the expected behavior when the value being matched is the null reference. In the other cases, resolving a pattern leaves the pattern untouched.</p>
+</blockquote>
+</div>
+<p><strong>Some patterns contain expressions which are evaluated during pattern matching. Pattern matching is said to <em>complete abruptly</em> if evaluation of a contained expression completes abruptly. An abrupt completion always has an associated reason, which is always a <code>throw</code> with a given value. Pattern matching is said to <em>complete normally</em> if it does not complete abruptly.</strong></p>
+<p>The rules for determining whether a value matches a pattern, and for initializing pattern variables, are as follows:</p>
+<ul>
+<li><p><strong>A value <em>v</em> (including the null reference) <em>matches</em> an any pattern.</strong></p>
+<p><strong>The pattern variable declared by the any pattern is initialized to <em>v</em>.</strong></p></li>
+<li><p><strong>The null reference <em>does not match</em> a type pattern.</strong></p>
+<p><strong>In this case, the pattern variable declared by the type pattern is not initialized.</strong></p></li>
+<li><p>A value <em>v</em> that is not the null reference <em>matches</em> a type pattern of type <em>T</em> if <em>v</em> can be cast to <em>T</em> without raising a <code>ClassCastException</code>; and <em>does not match</em> otherwise.</p>
+<p>If <em>v</em> matches, then the pattern variable declared by the type pattern is initialized to <em>v</em>.</p>
+<p>If <em>v</em> does not match, then the pattern variable declared by the type pattern is not initialized.</p></li>
+</ul>
+<div class="deleted">
+<blockquote>
+<p>There is no rule to cover a value that <em>is</em> the null reference. This is because the solitary construct that performs pattern matching, the <code>instanceof</code> pattern match operator (<a href="#jls-15.20.2">15.20.2</a>), only does so when a value is <em>not</em> the null reference. It is possible that future versions of the Java programming language will allow pattern matching in other expressions and statements.</p>
+</blockquote>
+</div>
+<ul>
+<li><p><strong>A value <em>matches</em> a guarded pattern if (i) it matches the contained pattern, and (ii) the guarding expression evaluates to <code>true</code>; and <em>does not match</em> otherwise, provided all steps complete normally. If pattern matching the value with the contained pattern completes abruptly, or the value does not match the contained pattern, then no attempt is made to evaluate the guarding expression. If either step completes abruptly then pattern matching completes abruptly for the same reason.</strong></p>
+<blockquote>
+<p>Note that the process of a value matching the contained pattern may initialize pattern variables that can be used in the guarding expression, e.g.</p>
+<pre><code>if (o instanceof String s &amp;&amp; s.length() &gt; 2) {
+    System.out.println(&quot;A string containing at least two characters&quot;);
+}</code></pre>
+</blockquote></li>
+<li><p><strong>A value <em>matches</em> a parenthesized pattern if it matches the contained pattern; and <em>does not match</em> otherwise. If pattern matching the value with the contained pattern completes abruptly then pattern matching completes abruptly for the same reason.</strong></p></li>
+</ul>
+<h4 id="jls-14.30.3"><strong>14.30.3 Pattern Totality and Dominance</strong></h4>
+<div class="inserted">
+<p>A pattern is said to be <em>total</em> for a type <em>T</em> as follows:</p>
+<ul>
+<li><p>A guarded pattern is <em>total</em> for <em>T</em> if (i) the contained pattern is total for <em>T</em> and (ii) the guarding expression is a constant expression whose value is <code>true</code>.</p></li>
+<li><p>A type pattern of type <em>S</em> is <em>total</em> for <em>T</em> if the erasure of <em>T</em> is a subtype of the erasure of <em>S</em>.</p></li>
+<li><p>A parenthesized pattern is <em>total</em> for <em>T</em> if the contained pattern is total for <em>T</em>.</p></li>
+<li><p>An any pattern is <em>total</em> for any <em>T</em>.</p></li>
+</ul>
+<p>A pattern <em>p</em> is said to <em>dominate</em> a pattern <em>q</em> if every value that matches <em>q</em> also matches <em>p</em>, and is defined as follows:</p>
+<ul>
+<li><p>A pattern <em>p</em> dominates a type pattern of type <em>T</em> if <em>p</em> is total for <em>T</em>.</p></li>
+<li><p>A pattern <em>p</em> dominates a guarded pattern with contained pattern <em>q</em> if <em>p</em> dominates <em>q</em>.</p></li>
+<li><p>A pattern <em>p</em> dominates a parenthesized pattern with contained pattern <em>q</em> if <em>p</em> dominates <em>q</em>.</p></li>
+<li><p>A pattern <em>p</em> dominates an any pattern of type <em>T</em> is <em>p</em> is total for <em>T</em>.</p></li>
+</ul>
+</div>
+<h2 id="jls-15">Chapter 15: Expressions</h2>
+<h3 id="jls-15.20">15.20 Relational Operators</h3>
+<h4 id="jls-15.20.2">15.20.2 The <code>instanceof</code> Operator</h4>
+<p>An <code>instanceof</code> expression may perform either type comparison or pattern matching.</p>
+<dl>
+<dt><em>InstanceofExpression:</em></dt>
+<dd><em>RelationalExpression</em> <code>instanceof</code> <em>ReferenceType</em>
+</dd>
+<dd><em>RelationalExpression</em> <code>instanceof</code> <del><em>Pattern</em></del> <strong><em>PrimaryPattern</em></strong>
+</dd>
+</dl>
+<p>If the operand to the right of the <code>instanceof</code> keyword is a <em>ReferenceType</em>, then the <code>instanceof</code> keyword is the <em>type comparison operator</em>.</p>
+<p>If the operand to the right of the <code>instanceof</code> keyword is a <em>Pattern</em>, then the <code>instanceof</code> keyword is the <em>pattern match operator</em>.</p>
+<p>The following rules apply when <code>instanceof</code> is the type comparison operator:</p>
+<ul>
+<li><p>The type of the expression <em>RelationalExpression</em> must be a reference type or the null type, or a compile-time error occurs.</p></li>
+<li><p>The <em>RelationalExpression</em> must be downcast compatible with the <em>ReferenceType</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.5">5.5</a>), or a compile-time error occurs.</p></li>
+<li><p>At run time, the result of the type comparison operator is determined as follows:</p>
+<ul>
+<li><p>If the value of the <em>RelationalExpression</em> is the null reference (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.1">4.1</a>), then the result is <code>false</code>.</p></li>
+<li><p>If the value of the <em>RelationalExpression</em> is not the null reference, then the result is <code>true</code> if the value could be cast to the <em>ReferenceType</em> without raising a <code>ClassCastException</code>, and <code>false</code> otherwise.</p></li>
+</ul></li>
+</ul>
+<p>The following rules apply when <code>instanceof</code> is the pattern match operator:</p>
+<ul>
+<li><p>The type of the expression <em>RelationalExpression</em> must be a reference type or the null type, or a compile-time error occurs.</p></li>
+<li><p>The <em>RelationalExpression</em> must be compatible with the <em>Pattern</em> (<a href="#jls-14.30.1">14.30.1</a>), or a compile-time error occurs.</p></li>
+<li><p><del>If the type of the <em>RelationalExpression</em> is a subtype of the type of the <em>Pattern</em>, then a compile-time error occurs.</del></p></li>
+<li><p><strong>If the <em>Pattern</em> is total for the type of the expression <em>RelationalExpression</em> (<a href="#jls-14.30.3">14.30.3</a>), then a compile-time error occurs.</strong></p>
+<blockquote>
+<p>This requirement eliminates pointless pattern matching <code>instanceof</code> expressions:</p>
+<pre><code>String s = ...
+if (s instanceof Object o) // Compile-time error!
+    System.out.println(&quot;Everything is an object!&quot;);</code></pre>
+<p>It additionally means that the pattern in an <code>instanceof</code> expression, can not be an any pattern:</p>
+<pre><code>String s = ...
+if (s instanceof var obj) // Compile-time error!
+   System.out.println(&quot;Pointless!&quot;);</code></pre>
+</blockquote></li>
+<li><p>At run time, the result of the pattern match operator is determined as follows <strong>(where <em>p</em> is the pattern resulting from resolving the <em>Pattern</em> with the type of the <em>RelationalExpression</em> (<a href="#jls-14.30.2">14.30.2</a>))</strong>:</p>
+<ul>
+<li><p>If the value of the <em>RelationalExpression</em> is the null reference, then the result is <code>false</code>.</p></li>
+<li><p>If the value of the <em>RelationalExpression</em> is not the null reference, then the result is <code>true</code> if the value matches <del>the <em>Pattern</em></del> <strong>the resolved pattern <em>p</em></strong> (<a href="#jls-14.30.2">14.30.2</a>), and <code>false</code> otherwise. <strong>If pattern matching the value with the resolved pattern <em>p</em> completes abruptly, then the <code>instanceof</code> expression completes abruptly for the same reason.</strong></p>
+<blockquote>
+<p>A side effect of a <code>true</code> result is that pattern variables declared in <del><em>Pattern</em></del> <strong>the resolved pattern <em>p</em></strong> will be initialized.</p>
+</blockquote></li>
+</ul></li>
+</ul>
+<div class="example">
+<p>Example 15.20.2-1. The Type Comparison Operator</p>
+<pre><code>class Point   { int x, y; }
+class Element { int atomicNumber; }
+class Test {
+    public static void main(String[] args) {
+        Point   p = new Point();
+        Element e = new Element();
+        if (e instanceof Point) {  // compile-time error
+            System.out.println(&quot;I get your point!&quot;);
+            p = (Point)e;  // compile-time error
+        }
+    }
+}</code></pre>
+<p>This program results in two compile-time errors. The cast <code>(Point)e</code> is incorrect because no instance of <code>Element</code> or any of its possible subclasses (none are shown here) could possibly be an instance of any subclass of <code>Point</code>. The <code>instanceof</code> expression is incorrect for exactly the same reason. If, on the other hand, the class <code>Point</code> were a subclass of <code>Element</code> (an admittedly strange notion in this example):</p>
+<pre><code>class Point extends Element { int x, y; }</code></pre>
+<p>then the cast would be possible, though it would require a run-time check, and the <code>instanceof</code> expression would then be sensible and valid. The cast <code>(Point)e</code> would never raise an exception because it would not be executed if the value of <code>e</code> could not correctly be cast to type <code>Point</code>.</p>
+<p>Prior to Java SE 16, the <em>ReferenceType</em> operand of a type comparison operator was required to be reifiable (<a href="https://docs.oracle.com/javase/specs/jls/se15/html/jls-4.html#jls-4.7">4.7</a>). This prevented the use of a parameterized type unless all its type arguments were wildcards. The requirement was lifted in Java SE 16 to allow more parameterized types to be used. For example, in the following program, it is legal to test whether the method parameter <code>x</code>, with static type <code>List&lt;Integer&gt;</code>, has a more &quot;refined&quot; parameterized type <code>ArrayList&lt;Integer&gt;</code> at run time:</p>
+<pre><code>import java.util.ArrayList;
+import java.util.List;
+
+class Test2 {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; x = new ArrayList&lt;Integer&gt;();
+    
+        if (x instanceof ArrayList&lt;Integer&gt;) {  // OK
+            System.out.println(&quot;ArrayList of Integers&quot;);
+        }
+        if (x instanceof ArrayList&lt;String&gt;) {  // error
+            System.out.println(&quot;ArrayList of Strings&quot;);
+        }
+        if (x instanceof ArrayList&lt;Object&gt;) {  // error
+            System.out.println(&quot;ArrayList of Objects&quot;);
+        }
+    }
+}</code></pre>
+<p>The first <code>instanceof</code> expression is legal because there is a casting conversion from <code>List&lt;Integer&gt;</code> to <code>ArrayList&lt;Integer&gt;</code>. However, the second and third <code>instanceof</code> expressions both cause a compile-time error because there is no casting conversion from <code>List&lt;Integer&gt;</code> to <code>ArrayList&lt;String&gt;</code> or <code>ArrayList&lt;Object&gt;</code>.</p>
+</div>
+<h3 id="jls-15.28">15.28 <code>switch</code> Expressions</h3>
+<p>A <code>switch</code> expression transfers control to one of several statements or expressions, depending on the value of an expression; all possible values of that expression must be handled, and all of the several statements and expressions must produce a value for the result of the <code>switch</code> expression.</p>
+<dl>
+<dt><em>SwitchExpression:</em></dt>
+<dd><code>switch</code> <code>(</code> <em>Expression</em> <code>)</code> <em>SwitchBlock</em>
+</dd>
+</dl>
+<p>The <em>Expression</em> is called the <em>selector expression</em>. <del>The type of the selector expression must be <code>char</code>, <code>byte</code>, <code>short</code>, <code>int</code>, <code>Character</code>, <code>Byte</code>, <code>Short</code>, <code>Integer</code>, <code>String</code>, or an enum type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.9">8.9</a>), or a compile-time error occurs.</del></p>
+<blockquote>
+<p>The body of both a <code>switch</code> expression and a <code>switch</code> statement (<a href="#jls-14.11">14.11</a>) is called a <em>switch block</em>. General rules which apply to all switch blocks, whether they appear in <code>switch</code> expressions or <code>switch</code> statements, are given in <a href="#jls-14.11.1">14.11.1</a>. The following productions from <a href="#jls-14.11.1">14.11.1</a> are shown here for convenience:</p>
+<dl>
+<dt><em>SwitchBlock:</em></dt>
+<dd><code>{</code> <em>SwitchRule</em> {<em>SwitchRule</em>} <code>}</code>
+</dd>
+<dd><code>{</code> {<em>SwitchBlockStatementGroup</em>} {<em>SwitchLabel</em> <code>:</code>} <code>}</code>
+</dd>
+<dt><em>SwitchRule:</em></dt>
+<dd><em>SwitchLabel</em> <code>-&gt;</code> <em>Expression</em> <code>;</code>
+</dd>
+<dd><em>SwitchLabel</em> <code>-&gt;</code> <em>Block</em>
+</dd>
+<dd><em>SwitchLabel</em> <code>-&gt;</code> <em>ThrowStatement</em>
+</dd>
+<dt><em>SwitchBlockStatementGroup:</em></dt>
+<dd><em>SwitchLabel</em> <code>:</code> <del>{<em>SwitchLabel</em> <code>:</code>}</del> <em>BlockStatements</em>
+</dd>
+</dl>
+<div class="deleted">
+<dl>
+<dt><em>SwitchLabel:</em></dt>
+<dd><code>case</code> <em>CaseConstant</em> {<code>,</code> <em>CaseConstant</em>}
+</dd>
+<dd><code>default</code>
+</dd>
+</dl>
+</div>
+<div class="inserted">
+<dl>
+<dt><em>SwitchLabel</em>:</dt>
+<dd><em>CaseOrDefaultLabel</em> {<code>:</code> <em>CaseOrDefaultLabel</em> }
+</dd>
+<dt><em>CaseOrDefaultLabel:</em></dt>
+<dd><code>case</code> <em>CaseLabelElement</em> {<code>,</code> <em>CaseLabelElement</em> }
+</dd>
+<dd><code>default</code>
+</dd>
+<dt><em>CaseLabelElement</em>:</dt>
+<dd><em>CaseConstant</em>
+</dd>
+<dd><em>Pattern</em>
+</dd>
+<dd><code>null</code>
+</dd>
+<dd><code>default</code>
+</dd>
+</dl>
+</div>
+<dl>
+<dt><em>CaseConstant:</em></dt>
+<dd><em>ConditionalExpression</em>
+</dd>
+</dl>
+</blockquote>
+<h4 id="jls-15.28.1">15.28.1 The Switch Block of a <code>switch</code> Expression</h4>
+<p>In addition to the general rules for switch blocks (<a href="#jls-14.11.1">14.11.1</a>), there are further rules for switch blocks in <code>switch</code> expressions. Namely, all of the following must be true for the switch block of a <code>switch</code> expression, or a compile-time error occurs:</p>
+<div class="deleted">
+<ul>
+<li><p>If the type of the selector expression is not an enum type, then there is exactly one <code>default</code> label associated with the switch block.</p></li>
+<li><p>If the type of the selector expression is an enum type, then (i) the set of the <code>case</code> constants associated with the switch block includes every enum constant of the enum type, and (ii) at most one <code>default</code> label is associated with the switch block.</p>
+<blockquote>
+<p>A <code>default</code> label is permitted, but not required, when the <code>case</code> labels cover all the enum constants.</p>
+</blockquote></li>
+</ul>
+</div>
+<ul>
+<li><p>If the switch block consists of switch rules, then any switch rule block cannot complete normally (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.22">14.22</a>).</p></li>
+<li><p>If the switch block consists of switch labeled statement groups, then the last statement in the switch block cannot complete normally, and the switch block does not have any switch labels after the last switch labeled statement group.</p></li>
+</ul>
+<blockquote>
+<p><code>switch</code> expressions cannot have empty switch blocks, unlike <code>switch</code> statements. Furthermore, <code>switch</code> expressions differ from <code>switch</code> statements in terms of which expressions may appear to the right of an arrow (<code>-&gt;</code>) in the switch block, that is, which expressions may be used as <em>switch rule expressions</em>. In a <code>switch</code> expression, any expression may be used as a switch rule expression, but in a <code>switch</code> statement, only a statement expression may be used (<a href="#jls-14.11.1">14.11.1</a>).</p>
+</blockquote>
+<p><strong>A <code>switch</code> expression must be exhaustive (<a href="#jls-14.11.1">14.11.1</a>), or a compile-time error occurs.</strong></p>
+<p>The <em>result expressions</em> of a <code>switch</code> expression are determined as follows:</p>
+<ul>
+<li><p>If the switch block consists of switch rules, then each switch rule is considered in turn:</p>
+<ul>
+<li><p>If the switch rule is of the form <code>...</code> <code>-&gt;</code> <em>Expression</em> then <em>Expression</em> is a result expression of the <code>switch</code> expression.</p></li>
+<li><p>If the switch rule is of the form <code>...</code> <code>-&gt;</code> <em>Block</em> then every expression which is immediately contained in a <code>yield</code> statement in <em>Block</em> whose yield target is the given <code>switch</code> expression, is a result expression of the <code>switch</code> expression.</p></li>
+</ul></li>
+<li><p>If the switch block consists of switch labeled statement groups, then every expression immediately contained in a <code>yield</code> statement in the switch block whose yield target is the given <code>switch</code> expression, is a result expression of the <code>switch</code> expression.</p></li>
+</ul>
+<p>It is a compile-time error if a <code>switch</code> expression has no result expressions.</p>
+<p>A <code>switch</code> expression is a poly expression if it appears in an assignment context or an invocation context (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.2">5.2</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.3">5.3</a>). Otherwise, it is a standalone expression.</p>
+<p>Where a poly <code>switch</code> expression appears in a context of a particular kind with target type <em>T</em>, its result expressions similarly appear in a context of the same kind with target type <em>T</em>.</p>
+<p>A poly <code>switch</code> expression is compatible with a target type <em>T</em> if each of its result expressions is compatible with <em>T</em>.</p>
+<p>The type of a poly <code>switch</code> expression is the same as its target type.</p>
+<p>The type of a standalone <code>switch</code> expression is determined as follows:</p>
+<ul>
+<li><p>If the result expressions all have the same type (which may be the null type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.1">4.1</a>)), then that is the type of the <code>switch</code> expression.</p></li>
+<li><p>Otherwise, if the type of each result expression is <code>boolean</code> or <code>Boolean</code>, then an unboxing conversion (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.1.8">5.1.8</a>) is applied to each result expression of type <code>Boolean</code>, and the <code>switch</code> expression has type <code>boolean</code>.</p></li>
+<li><p>Otherwise, if the type of each result expression is convertible to a numeric type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.1.8">5.1.8</a>), then the type of the <code>switch</code> expression is the result of general numeric promotion (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.6">5.6</a>) applied to the result expressions.</p></li>
+<li><p>Otherwise, boxing conversion (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.1.7">5.1.7</a>) is applied to each result expression that has a primitive type, after which the type of the <code>switch</code> expression is the result of applying capture conversion (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.1.10">5.1.10</a>) to the least upper bound (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.10.4">4.10.4</a>) of the types of the result expressions.</p></li>
+</ul>
+<h4 id="jls-15.28.2">15.28.2 Run-Time Evaluation of <code>switch</code> Expressions</h4>
+<p><strong>Evaluation of a <code>switch</code> expression is always with respect to a resolved switch block (<a href="#jls-14.11.1">14.11.1</a>). The switch block is resolved at type <em>T</em>, where <em>T</em> is the type of the selector expression.</strong></p>
+<p>A <code>switch</code> expression is evaluated by first evaluating the selector expression. Then:</p>
+<ul>
+<li><p>If evaluation of the selector expression completes abruptly, then the <code>switch</code> expression completes abruptly for the same reason.</p></li>
+<li><p>Otherwise, if the result of evaluating the selector expression is <code>null</code>, <strong>and no switch label in the resolved switch block applies</strong> then a <code>NullPointerException</code> is thrown and the entire <code>switch</code> expression completes abruptly for that reason. <strong>If applying completes abruptly, then the entire <code>switch</code> expression completes abruptly for the same reason.</strong></p></li>
+</ul>
+<div class="deleted">
+<ul>
+<li>Otherwise, if the result of evaluating the selector expression is <strong>non-<code>null</code>, and</strong> of type <code>Character</code>, <code>Byte</code>, <code>Short</code>, or <code>Integer</code>, it is subjected to unboxing conversion (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.1.8">5.1.8</a>). If this conversion completes abruptly, then the entire <code>switch</code> expression completes abruptly for the same reason.</li>
+</ul>
+</div>
+<p>If evaluation of the selector expression completes normally <del>and the result is non-<code>null</code>, and the subsequent unboxing conversion (if any) completes normally,</del> then evaluation of the <code>switch</code> expression continues by determining if a switch label <del>associated with</del> <strong>in</strong> the <strong>resolved</strong> switch block <del>matches</del> <strong>applies to</strong> the value of the selector expression (<a href="#jls-14.11.1">14.11.1</a>). Then:</p>
+<ul>
+<li><p><strong>If applying completes abruptly, then the entire <code>switch</code> expression completes abruptly for the same reason.</strong></p></li>
+<li><p>If no switch label <del>matches</del> <strong>applies</strong>, then an <code>IncompatibleClassChangeError</code> is thrown and the entire <code>switch</code> expression completes abruptly for that reason.</p></li>
+<li><p>If a switch label <del>matches</del> <strong>applies</strong>, then one of the following <del>applies</del> <strong>holds</strong>:</p>
+<ul>
+<li><p>If it is the switch label for a switch rule expression, then the expression is evaluated. If the result of evaluation is a value, then the <code>switch</code> expression completes normally with the same value.</p></li>
+<li><p>If it is the switch label for a switch rule block, then the block is executed. If this block completes normally, then the <code>switch</code> expression completes normally.</p></li>
+<li><p>If it is the switch label for a switch rule <code>throw</code> statement, then the <code>throw</code> statement is executed.</p></li>
+<li><p>Otherwise, all the statements in the switch block after the <del>matching</del> switch label <strong>that applies</strong> are executed in order. If these statements complete normally, then the <code>switch</code> expression completes normally.</p></li>
+</ul></li>
+</ul>
+<p>If execution of any statement or expression in the switch block completes abruptly, it is handled as follows:</p>
+<ul>
+<li><p>If execution of an expression completes abruptly, then the <code>switch</code> expression completes abruptly for the same reason.</p></li>
+<li><p>If execution of a statement completes abruptly because of a <code>yield</code> with value <em>V</em>, then the <code>switch</code> expression completes normally and the value of the <code>switch</code> expression is <em>V</em>.</p></li>
+<li><p>If execution of a statement completes abruptly for any reason other than a <code>yield</code> with a value, then the <code>switch</code> expression completes abruptly for the same reason.</p></li>
+</ul>
+<h2 id="jls-16">Chapter 16: Definite Assignment</h2>
+<h3 id="jls-16.2">16.2 Definite Assignment and Statements</h3>
+<h4 id="jls-16.2.9">16.2.9 <code>switch</code> Statements</h4>
+<ul>
+<li><p><em>V</em> is [un]assigned after a <code>switch</code> statement (<a href="#jls-14.11">14.11</a>) iff all of the following are true:</p>
+<ul>
+<li><p><em>V</em> is [un]assigned before every <code>break</code> statement (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.15">14.15</a>) that may exit the <code>switch</code> statement.</p></li>
+<li><p>For each switch rule (<a href="#jls-14.11.1">14.11.1</a>) in the switch block, <em>V</em> is [un]assigned after the switch rule expression, switch rule block, or switch rule <code>throw</code> statement introduced by the switch rule.</p></li>
+<li><p>If there is a switch labeled statement group in the switch block, then <em>V</em> is [un]assigned after the last block statement of the last switch labeled statement group.</p></li>
+<li><p>If <del>there is no <code>default</code> label in the switch block</del> <strong>the switch block covers the type of the selector expression</strong>, or if the switch block ends with a switch label followed by the <code>}</code> separator, then <em>V</em> is [un]assigned after the selector expression.</p></li>
+</ul></li>
+<li><p><em>V</em> is [un]assigned before the selector expression of a <code>switch</code> statement iff <em>V</em> is [un]assigned before the <code>switch</code> statement.</p></li>
+<li><p><em>V</em> is [un]assigned before the switch rule expression, switch rule block, or switch rule <code>throw</code> statement introduced by a switch rule in the switch block iff <em>V</em> is [un]assigned after the selector expression of the <code>switch</code> statement.</p></li>
+<li><p><em>V</em> is [un]assigned before the first block statement of a switch labeled statement group in the switch block iff both of the following are true:</p>
+<ul>
+<li><p><em>V</em> is [un]assigned after the selector expression of the <code>switch</code> statement.</p></li>
+<li><p>If the switch labeled statement group is not the first in the switch block, <em>V</em> is [un]assigned after the last block statement of the preceding switch labeled statement group.</p></li>
+</ul></li>
+<li><p><em>V</em> is [un]assigned before a block statement that is not the first of a switch labeled statement group in the switch block iff <em>V</em> is [un]assigned after the preceding block statement.</p></li>
+</ul>
+</main><footer class="legal-footer"><hr/><a href="../legal/copyright.html">Copyright</a> &copy; 1993, 2021, Oracle and/or its affiliates, 500 Oracle Parkway, Redwood Shores, CA 94065 USA.<br>All rights reserved. Use is subject to <a href="https://www.oracle.com/java/javase/terms/license/java17.0.1speclicense.html">license terms</a> and the <a href="https://www.oracle.com/technetwork/java/redist-137594.html">documentation redistribution policy</a>. <!-- Version 17.0.1+12-LTS-39 --></footer>
+</body>
+</html>

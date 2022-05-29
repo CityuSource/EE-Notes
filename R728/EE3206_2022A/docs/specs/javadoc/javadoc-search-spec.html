@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc,fixuphtml" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Javadoc Search Specification (JDK 17)</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../../resources/jdk-default.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<main><h1 id="javadoc-search-specification">Javadoc Search Specification</h1>
+<p>This document specifies the behaviour of the Javadoc search feature for JDK 17.</p>
+<h2 id="overview">Overview</h2>
+<p>The Javadoc search feature was introduced in JDK 9 with <a href="https://openjdk.java.net/jeps/225">JEP 225</a>. However, the initial specification only contained a very basic description of the search algorithm. As a consequence, selection and ranking of search results sometimes left a bit to be desired.</p>
+<p>The purpose of this additional specification is to improve on the initial implementation by defining better rules for the selection and ranking of search results.</p>
+<h2 id="definitions">Definitions</h2>
+<p>The term <code>entity</code> is used to describe an artifact of the documented code, which includes code elements as well as additional search tags.</p>
+<p>The term <code>signature</code> is used to describe how an entity is represented in Javadoc search.</p>
+<p>The terms <code>name</code> and <code>identifier</code> are used as defined in <a href="https://docs.oracle.com/javase/specs/jls/se17/html/">Java Language Specification</a>, <a href="https://docs.oracle.com/javase/specs/jls/se17/html/jls-6.html#jls-6.2">Section 6.2</a>.</p>
+<p>The terms <code>white space</code> and <code>separator</code> are used as defined in <a href="https://docs.oracle.com/javase/specs/jls/se17/html/">Java Language Specification</a>, <a href="https://docs.oracle.com/javase/specs/jls/se17/html/jls-3.html#jls-3.6">Section 3.6</a> and <a href="https://docs.oracle.com/javase/specs/jls/se17/html/jls-3.html#jls-3.11">Section 3.11</a>.</p>
+<p>The term <code>camel-case</code> is used to describe mixed case identifiers that make use of uppercase letters to mark word boundaries within the identifier.</p>
+<p>The term <code>query string</code> is used to describe the characters entered in the search input box by the user.</p>
+<p>All examples in the following sections refer to or are taken from the standard OpenJDK class libraries.</p>
+<h2 id="searchable-entities">Searchable Entities</h2>
+<p>The list below describes the entities of documented code and how their signatures are built. For some elements, the signature consists of just the entity's name, while for others it contains information about containing entities or types of parameters.</p>
+<h3 id="modules">Modules</h3>
+<p>The signature of a module equals the module name.</p>
+<p>Example: - <code>java.base</code></p>
+<h3 id="packages">Packages</h3>
+<p>The signature of a package consists of the package name.</p>
+<p>If the package belongs to a named module, the module name is prepended to the signature separated by <code>/</code> and can be included in the search.</p>
+<p>Example: - <code>java.base/java.util.concurrent</code></p>
+<h3 id="types">Types</h3>
+<p>The signature of a type (classes, interfaces, enums, annotation types) consists of the type name.</p>
+<p>If the type is a nested type, names of parent types are prepended to the signature separated by <code>.</code> and can be included in the search.</p>
+<p>If the type is contained in a package, the package name is prepended to the signature separated by <code>.</code> and can be included in the search.</p>
+<p>Examples: - <code>java.lang.Object</code> - <code>java.util.Map.Entry</code></p>
+<h3 id="members">Members</h3>
+<p>The signature of a member (methods, constructors, fields) consists of the member name prepended with its defining type, separated by <code>.</code>.</p>
+<p>If the member is a method or constructor, the type names of parameters are appended to the name enclosed between <code>(</code> and <code>)</code> and separated by <code>,</code> to identify overloaded methods.</p>
+<p>Examples: - <code>java.lang.Object.wait(long, int)</code> - <code>java.lang.String.String(String)</code> - <code>java.lang.Byte.MAX_VALUE</code></p>
+<h3 id="search-tags">Search Tags</h3>
+<p>Search Tags are arbitrary searchable items defined using the <span class="citation" data-cites="index">@index</span> tag anywhere in a Javadoc comment of the documented source code.</p>
+<p>Examples: - <code>{@index &quot;Java Collections Framework&quot;}</code> - <code>{@index jrt jrt}</code></p>
+<h2 id="matching-rules">Matching Rules</h2>
+<p>The following sections describe the special rules under which the query string is matched against the entity signatures.</p>
+<h3 id="case-sensitivity">Case Sensitivity</h3>
+<p>If the search string contains any uppercase characters, a case-sensitive search as described in the &quot;Camel Case Matches&quot; section below is performed. If the camel case search yields no or very few results, an additional case-insensitive search is performed and its results are appended to the results of the camel case search, if any. This fallback to case-insensitive search is performed per category.</p>
+<p>If the search string does not contain any uppercase characters, only a case-insensitive search is performed.</p>
+<p>Examples:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Query String</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>Object</code></th>
+<td>type <code>java.lang.Object</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>object</code></th>
+<td>type <code>java.lang.Object</code></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>obJECT</code></th>
+<td>type <code>java.lang.Object</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>MAX_VALUE</code></th>
+<td>member <code>java.lang.Byte.MAX_VALUE</code></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>max_value</code></th>
+<td>member <code>java.lang.Byte.MAX_VALUE</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>max_VALUE</code></th>
+<td>member <code>java.lang.Byte.MAX_VALUE</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="left-boundaries">Left Boundaries</h3>
+<p>The beginning of the query string must match a left word boundary, or a separator preceding a left word boundary.</p>
+<p>The following are considered left word boundaries:</p>
+<ul>
+<li>The beginning of an identifier</li>
+<li>An uppercase letter within a camel-case identifier</li>
+<li>The character following a <code>_</code> within an identifier</li>
+</ul>
+<p>Examples:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Query String</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>base</code></th>
+<td>module <code>java.base</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>.util</code></th>
+<td>package <code>java.util</code></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>map</code></th>
+<td>types <code>java.util.Map</code> and <code>java.util.HashMap</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>Map</code></th>
+<td>types <code>java.util.Map</code> and <code>java.util.HashMap</code></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>MAP</code></th>
+<td>types <code>java.util.Map</code> and <code>java.util.HashMap</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>.map</code></th>
+<td>type <code>java.util.Map</code></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>value</code></th>
+<td>member <code>java.lang.Byte.MAX_VALUE</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="partial-matches">Partial Matches</h3>
+<p>The query string matches an identifier even if characters at the end of a name identifiers are missing, as long as the query string matches the beginning of the identifier.</p>
+<p>Examples:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Query String</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>j.l.o</code></th>
+<td>type <code>java.lang.Object</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>j.lang.Obj</code></th>
+<td>type <code>java.lang.Object</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="camel-case-matches">Camel Case Matches</h3>
+<p>The rule for partial matches also applies to uppercase characters followed by any number of lowercase or non-letter characters within a camel-case identifier.</p>
+<p>An uppercase character in the query string followed by zero or more lowercase or non-letter characters matches the exact same character sequence in an entity's signature, followed by zero or more lowercase or non-letter characters.</p>
+<p>Examples:</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Query String</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>j.io.FileInStr</code></th>
+<td>type <code>java.io.FileInputStream</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>j.io.FIS</code></th>
+<td>type <code>java.io.FileInputStream</code></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>j.io.FileInpS</code></th>
+<td>type <code>java.io.FileInputStream</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>j.io.FilEINPS</code></th>
+<td>no match</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>FileInStr(FiD</code></th>
+<td>member <code>java.io.FileInputStream.FileInputStream(FileDescriptor)</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>FIS(FD</code></th>
+<td>member <code>java.io.FileInputStream.FileInputStream(FileDescriptor)</code></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>FINPS(FD</code></th>
+<td>no match</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core-and-peripheral-matches">Core and Peripheral Matches</h3>
+<p>The part of an entity's signature that represents the entity's name is considered the core component of the signature, while any other parts of the signature are considered peripheral components.</p>
+<p>An entity will only be included in the search result if the query string contains and matches at least part of its core component.</p>
+<p>Examples:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Query String</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>java.lang</code></th>
+<td>package <code>java.lang</code> but not type <code>java.lang.Object</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>java.util.Map</code></th>
+<td>type <code>java.util.Map</code> but not type <code>java.util.Map.Entry</code></td>
+</tr>
+</tbody>
+</table>
+<p>Although the parameter types of a method or constructor are not considered a core component of its signature, it is possible to search for methods or constructors with specific parameter types by starting the search string with <code>(</code>.</p>
+<p>Example:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Query String</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>(int</code></th>
+<td>methods and constructors with <code>int</code> as first parameter type</td>
+</tr>
+</tbody>
+</table>
+<h3 id="accessing-child-elements">Accessing Child Elements</h3>
+<p>A query string that matches a code element can be turned into a search string that matches the element's child elements by appending the separator used to connect the two levels of code elements.</p>
+<p>Examples:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Query String</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>java.base</code></th>
+<td>module <code>java.base</code> but not the packages contained therein</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>java.base/</code></th>
+<td>the packages contained in module <code>java.base</code></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>java.lang</code></th>
+<td>package <code>java.lang</code> but not the types contained therein</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>java.lang.</code></th>
+<td>the types contained in package <code>java.lang</code></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>Object</code></th>
+<td>type <code>java.lang.Object</code> but not its members</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>Object.</code></th>
+<td>the members of type <code>java.lang.Object</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ranking-of-results">Ranking of Results</h3>
+<p>A result that matches a whole identifier is ranked higher than a match that covers only part of an identifier, such as a segment of a camel-case identifier starting with a capital letter, or the beginning of an identifier. The result matching the whole identifier will appear higher up in the list of search results.</p>
+<p>Examples:</p>
+<ul>
+<li>Query string <code>set</code> matches types <code>java.util.Set</code> and <code>java.util.HashSet</code> but the former is ranked higher than the latter.</li>
+<li>Query string <code>java.lang.ref</code> matches both packages <code>java.lang.ref</code> and <code>java.lang.reflect</code> but the former is ranked higher than the latter because it matches the whole package name.</li>
+</ul>
+<p>Results from case-sensitive searches are ranked higher than results from case-insensitive searches when both a case-sensitive and a case-insensitive search is performed.</p>
+<h3 id="white-space">White Space</h3>
+<p>White space in the query string is treated depending on context.</p>
+<ul>
+<li>White space that separates two identifiers is considered significant. A matching signature must contain white space at the corresponding position.</li>
+<li>White space preceding or following a separator, or at the beginning or the end of the query string, is ignored. A matching signature may or may not contain white space at the corresponding position.</li>
+</ul>
+<p>White space is matched regardless of the actual number of space characters in the query string or signature. One or more space characters in the query string matches one or more space characters in the signature.</p>
+<p>If the query string consists entirely of white space no search is performed.</p>
+<p>Examples:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Query String</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>obj.equals(o,o</code></th>
+<td>method <code>java.util.Objects.equals(Object, Object)</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>obj .equals ( o ,  o</code></th>
+<td>method <code>java.util.Objects.equals(Object, Object)</code></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>java coll</code></th>
+<td>search tag <code>Java Collections Framework</code></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>lang obj</code></th>
+<td>no match</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row"><code>ob j.eq</code></th>
+<td>no match</td>
+</tr>
+</tbody>
+</table>
+<h2 id="supported-browsers">Supported Browsers</h2>
+<p>The search feature is supported in the following browsers:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Browser</th>
+<th>Version</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row">Apple Safari</th>
+<td>tbd</td>
+<td>MacOS</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row">Google Chrome</th>
+<td>tbd</td>
+<td>All supported OSs</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row">Microsoft Internet Explorer</th>
+<td>11</td>
+<td>Windows OSs</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align:left;"  scope="row">Microsoft Edge</th>
+<td>tbd</td>
+<td>Windows OSs</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align:left;"  scope="row">Mozilla Firefox</th>
+<td>tbd</td>
+<td>All supported OSs</td>
+</tr>
+</tbody>
+</table>
+</main><footer class="legal-footer"><hr/><a href="../../legal/copyright.html">Copyright</a> &copy; 1993, 2021, Oracle and/or its affiliates, 500 Oracle Parkway, Redwood Shores, CA 94065 USA.<br>All rights reserved. Use is subject to <a href="https://www.oracle.com/java/javase/terms/license/java17.0.1speclicense.html">license terms</a> and the <a href="https://www.oracle.com/technetwork/java/redist-137594.html">documentation redistribution policy</a>. <!-- Version 17.0.1+12-LTS-39 --></footer>
+</body>
+</html>

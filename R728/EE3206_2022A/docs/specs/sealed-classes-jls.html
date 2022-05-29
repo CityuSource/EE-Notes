@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc,fixuphtml" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Sealed Classes</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../resources/jdk-default.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="../resources/spec-changes.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Sealed Classes</h1>
+<p class="subtitle">Changes to the Java® Language Specification • Version 17.0.1+12-LTS-39</p>
+</header>
+<nav id="TOC" title="Table Of Contents">
+<ul>
+<li><a href="#jls-3">Chapter 3: Lexical Structure</a><ul>
+<li><a href="#jls-3.8">3.8 Identifiers</a></li>
+<li><a href="#jls-3.9">3.9 Keywords</a></li>
+</ul></li>
+<li><a href="#jls-5">Chapter 5: Conversions and Contexts</a><ul>
+<li><a href="#jls-5.1">5.1 Kinds of Conversion</a><ul>
+<li><a href="#jls-5.1.6.1">5.1.6.1 Allowed Narrowing Reference Conversion</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#jls-6">Chapter 6: Names</a><ul>
+<li><a href="#jls-6.1">6.1 Declarations</a></li>
+<li><a href="#jls-6.5">6.5 Determining the Meaning of a Name</a><ul>
+<li><a href="#jls-6.5.1">6.5.1 Syntactic Classification of a Name According to Context</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#jls-8">Chapter 8: Classes</a><ul>
+<li><a href="#jls-8.1">8.1 Class Declarations</a><ul>
+<li><a href="#jls-8.1.1">8.1.1 Class Modifiers</a><ul>
+<li><a href="#jls-8.1.1.2">8.1.1.2 <strong><code>sealed</code> and</strong> <code>final</code> Classes</a></li>
+</ul></li>
+<li><a href="#jls-8.1.4">8.1.4 Superclasses</a></li>
+<li><a href="#jls-8.1.5">8.1.5 Superinterfaces</a></li>
+<li><a href="#jls-8.1.6"><strong>8.1.6 Permitted Direct Subclasses</strong></a></li>
+</ul></li>
+<li><a href="#jls-8.9">8.9 Enum Classes</a><ul>
+<li><a href="#jls-8.9.1">8.9.1 Enum Constants</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#jls-9">Chapter 9: Interfaces</a><ul>
+<li><a href="#jls-9.1">9.1 Interface Declarations</a><ul>
+<li><a href="#jls-9.1.1">9.1.1 Interface Modifiers</a><ul>
+<li><a href="#jls-9.1.1.4"><strong>9.1.1.4 <code>sealed</code> Interfaces</strong></a></li>
+</ul></li>
+<li><a href="#jls-9.1.3">9.1.3 Superinterfaces</a></li>
+<li><a href="#jls-9.1.4"><strong>9.1.4 Permitted Direct Subclasses and Subinterfaces</strong></a></li>
+</ul></li>
+<li><a href="#jls-9.6">9.6 Annotation Interfaces</a></li>
+<li><a href="#jls-9.8">9.8 Functional Interfaces</a></li>
+</ul></li>
+<li><a href="#jls-13">Chapter 13: Binary Compatibility</a><ul>
+<li><a href="#jls-13.4">13.4 Evolution of Classes</a><ul>
+<li><a href="#jls-13.4.2">13.4.2 <strong><code>sealed</code>, <code>non-sealed</code> and</strong> <code>final</code> Classes</a><ul>
+<li><a href="#jls-13.4.2.1"><strong>13.4.2.1 <code>sealed</code> Classes</strong></a></li>
+<li><a href="#jls-13.4.2.2"><strong>13.4.2.2 <code>non-sealed</code> Classes</strong></a></li>
+<li><a href="#jls-13.4.2.3"><strong>13.4.2.3 <code>final</code> Classes</strong></a></li>
+</ul></li>
+<li><a href="#jls-13.4.5"><strong>13.4.5 Permitted Direct Subclasses</strong></a></li>
+</ul></li>
+<li><a href="#jls-13.5">13.5 Evolution of Interfaces</a><ul>
+<li><a href="#jls-13.5.2">13.5.2 <strong><code>sealed</code> and <code>non-sealed</code> Interfaces</strong></a></li>
+<li><a href="#jls-13.5.4">13.5.4 <strong>Permitted Direct Subclasses and Subinterfaces</strong></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#jls-14">Chapter 14: Blocks and Statements</a><ul>
+<li><a href="#jls-14.3">14.3 Local Class and Interface Declarations</a></li>
+</ul></li>
+<li><a href="#jls-15">Chapter 15: Expressions</a><ul>
+<li><a href="#jls-15.9">15.9 Class Instance Creation Expressions</a><ul>
+<li><a href="#jls-15.9.1">15.9.1 Determining the Class being Instantiated</a></li>
+<li><a href="#jls-15.9.5">15.9.5 Anonymous Class Declarations</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<main><p>This document describes changes to the <a href="https://docs.oracle.com/javase/specs/jls/se16/html">Java Language Specification</a> as modified by the specification change document <a href="contextual-keywords-jls.html">Contextual Keywords</a>, to support <em>sealed classes and interfaces</em>, a feature of Java SE 17. See <a href="http://openjdk.java.net/jeps/409">JEP 409</a> for an overview of the feature.</p>
+<p>The changes are the same as those in the <a href="https://docs.oracle.com/javase/specs/jls/se16/preview/specs/sealed-classes-jls.html">second preview</a> of Sealed Classes in Java SE 16, except for minor editorial changes and the following:</p>
+<ul>
+<li><a href="#jls-3.8">3.8</a> Added missing text that <code>sealed</code> and <code>permits</code> are not valid type identifiers.</li>
+</ul>
+<p>A <a href="sealed-classes-jvms.html">companion specification change document</a> describes the changes needed to the <a href="https://docs.oracle.com/javase/specs/jvms/se16/html">Java Virtual Machine Specification</a> to support sealed classes and interfaces.</p>
+<p>Changes are described with respect to existing sections of the JLS. New text is indicated <strong>like this</strong> and deleted text is indicated <del>like this</del>. Explanation and discussion, as needed, is set aside in grey boxes.</p>
+<h2 id="jls-3">Chapter 3: Lexical Structure</h2>
+<h3 id="jls-3.8">3.8 Identifiers</h3>
+<p>An <em>identifier</em> is an unlimited-length sequence of <em>Java letters</em> and <em>Java digits</em>, the first of which must be a <em>Java letter</em>.</p>
+<dl>
+<dt><em>Identifier:</em></dt>
+<dd><em>IdentifierChars</em> <em>but not a</em> <em>Keyword</em> <em>or</em> <em>BooleanLiteral</em> <em>or</em> <em>NullLiteral</em>
+</dd>
+<dt><em>IdentifierChars:</em></dt>
+<dd><em>JavaLetter</em> {<em>JavaLetterOrDigit</em>}
+</dd>
+<dt><em>JavaLetter:</em></dt>
+<dd><em>any Unicode character that is a &quot;Java letter&quot;</em>
+</dd>
+<dt><em>JavaLetterOrDigit:</em></dt>
+<dd><em>any Unicode character that is a &quot;Java letter-or-digit&quot;</em>
+</dd>
+</dl>
+<p>A &quot;Java letter&quot; is a character for which the method <code>Character.isJavaIdentifierStart(int)</code> returns true.</p>
+<p>A &quot;Java letter-or-digit&quot; is a character for which the method <code>Character.isJavaIdentifierPart(int)</code> returns true.</p>
+<blockquote>
+<p>The &quot;Java letters&quot; include uppercase and lowercase ASCII Latin letters <code>A-Z</code> (<code>\u0041-\u005a</code>), and <code>a-z</code> (<code>\u0061-\u007a</code>), and, for historical reasons, the ASCII dollar sign (<code>$</code>, or <code>\u0024</code>) and underscore (<code>_</code>, or <code>\u005f</code>). The dollar sign should be used only in mechanically generated source code or, rarely, to access pre-existing names on legacy systems. The underscore may be used in identifiers formed of two or more characters, but it cannot be used as a one-character identifier due to being a keyword.</p>
+</blockquote>
+<blockquote>
+<p>The &quot;Java digits&quot; include the ASCII digits <code>0-9</code> (<code>\u0030-\u0039</code>).</p>
+</blockquote>
+<p>Letters and digits may be drawn from the entire Unicode character set, which supports most writing scripts in use in the world today, including the large sets for Chinese, Japanese, and Korean. This allows programmers to use identifiers in their programs that are written in their native languages.</p>
+<p>A sequence of input characters does not represent an identifier if (in a particular context) it represents a keyword (<a href="#jls-3.9">3.9</a>), a boolean literal (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-3.html#jls-3.10.3">3.10.3</a>), or the null literal (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-3.html#jls-3.10.8">3.10.8</a>).</p>
+<p>Two identifiers are the same only if, after ignoring characters that are ignorable, the identifiers have the same Unicode character for each letter or digit. An ignorable character is a character for which the method <code>Character.isIdentifierIgnorable(int)</code> returns true. Identifiers that have the same external appearance may yet be different.</p>
+<blockquote>
+<p>For example, the identifiers consisting of the single letters LATIN CAPITAL LETTER A (<code>A</code>, <code>\u0041</code>), LATIN SMALL LETTER A (<code>a</code>, <code>\u0061</code>), GREEK CAPITAL LETTER ALPHA (<code>A</code>, <code>\u0391</code>), CYRILLIC SMALL LETTER A (<code>a</code>, <code>\u0430</code>) and MATHEMATICAL BOLD ITALIC SMALL A (<code>a</code>, <code>\ud835\udc82</code>) are all different.</p>
+<p>Unicode composite characters are different from their canonical equivalent decomposed characters. For example, a LATIN CAPITAL LETTER A ACUTE (<code>Á</code>, <code>\u00c1</code>) is different from a LATIN CAPITAL LETTER A (<code>A</code>, <code>\u0041</code>) immediately followed by a NON-SPACING ACUTE (<code>´</code>, <code>\u0301</code>) in identifiers. See The Unicode Standard, Section 3.11 &quot;Normalization Forms&quot;.</p>
+</blockquote>
+<blockquote>
+<p>Examples of identifiers are:</p>
+<ul>
+<li><code>String</code></li>
+<li><code>i3</code></li>
+<li>αρετη</li>
+<li><code>MAX_VALUE</code></li>
+<li><code>isLetterOrDigit</code></li>
+</ul>
+</blockquote>
+<p>In some contexts, to facilitate the recognition of contextual keywords (<a href="#jls-3.9">3.9</a>), the syntactic grammar disallows certain identifiers by defining a production in terms of a subset of identifiers. These subsets are defined as follows:</p>
+<dl>
+<dt><em>TypeIdentifier:</em></dt>
+<dd><em>Identifier</em> <em>but not</em> <del><code>var</code>, <code>yield</code>, or <code>record</code></del> <strong><code>permits</code>, <code>record</code>, <code>sealed</code>, <code>var</code> or <code>yield</code></strong>
+</dd>
+</dl>
+<blockquote>
+<p>A <em>TypeIdentifier</em> is used in certain contexts involving the declaration or use of types. For example, the name of a class must be a <em>TypeIdentifier</em>, so it is illegal to declare a class named <del><code>var</code>, <code>yield</code>,or <code>record</code></del> <strong><code>permits</code>, <code>record</code>, <code>sealed</code>, <code>var</code> or <code>yield</code></strong> (<a href="#jls-8.1">8.1</a>).</p>
+</blockquote>
+<dl>
+<dt><em>UnqualifiedMethodIdentifier:</em></dt>
+<dd><em>Identifier</em> <em>but not</em> <code>yield</code>
+</dd>
+</dl>
+<blockquote>
+<p><strong>An <em>UnqualifiedMethodIdentifier</em> is used when referencing a method with a single identifier. An invocation of a method named <code>yield</code> must be qualified, to distinguish the invocation from a <code>yield</code> statement.</strong></p>
+</blockquote>
+<h3 id="jls-3.9">3.9 Keywords</h3>
+<p>51 character sequences, formed from ASCII characters, are reserved for use as keywords and cannot be used as identifiers (<a href="#jls-3.8">3.8</a>). Another <del>12</del> <strong>15</strong> character sequences, also formed from ASCII characters, <em>may</em> be interpreted as keywords, depending on the context in which they appear.</p>
+<dl>
+<dt><em>Keyword:</em></dt>
+<dd><em>ReservedKeyword</em>
+</dd>
+<dd><em>ContextualKeyword</em>
+</dd>
+<dt><em>ReservedKeyword:</em></dt>
+<dd>(one of)
+</dd>
+<dd><code>abstract continue for new switch</code><br />
+<code>assert default if package synchronized</code><br />
+<code>boolean do goto private this</code><br />
+<code>break double implements protected throw</code><br />
+<code>byte else import public throws</code><br />
+<code>case enum instanceof return transient</code><br />
+<code>catch extends int short try</code><br />
+<code>char final interface static void</code><br />
+<code>class finally long strictfp volatile</code><br />
+<code>const float native super while</code><br />
+<code>_</code> (underscore)
+</dd>
+<dt>ContextualKeyword:</dt>
+<dd>(one of)
+</dd>
+<dd><code>exports opens to var</code><br />
+
+</dd>
+<dd><code>module provides transitive with</code><br />
+
+</dd>
+<dd><code>open requires uses yield</code><br />
+
+</dd>
+<dd><strong><code>sealed non-sealed permits</code></strong>
+</dd>
+</dl>
+<blockquote>
+<p>The keywords <code>const</code> and <code>goto</code> are reserved, even though they are not currently used. This may allow a Java compiler to produce better error messages if these C++ keywords incorrectly appear in programs. The keyword <code>_</code> (underscore) is reserved for possible future use in parameter declarations.</p>
+</blockquote>
+<p>A character sequence matching a contextual keyword is not treated as a keyword if any part of the sequence can be combined with the immediately preceding or following characters to form a different token.</p>
+<blockquote>
+<p>So the character sequence <code>openmodule</code> is interpreted as a single identifier rather than two contextual keywords, even at the start of a <em>ModuleDeclaration</em>. If two keywords are intended, they must be separated by whitespace or a comment.</p>
+</blockquote>
+<p>Any other character sequence matching a contextual keyword is treated as a keyword if and only if it appears in one of the following contexts of the syntactic grammar:</p>
+<ul>
+<li><p>For <code>open</code> and <code>module</code>, when appearing as specified as a terminal in a <em>ModuleDeclaration</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.7">7.7</a>)</p></li>
+<li><p>For <code>requires</code>, <code>exports</code>, <code>opens</code>, <code>uses</code>, <code>provides</code>, <code>to</code>, and <code>with</code>, when appearing as specified as a terminal in a <em>ModuleDirective</em></p></li>
+<li><p>For <code>transitive</code>, when appearing as specified as a terminal in a <em>RequiresModifier</em></p>
+<blockquote>
+<p>The directive <code>requires transitive;</code> does not make use of <em>RequiresModifier</em>, and so in this case <code>transitive</code> is interpreted as an identifier.</p>
+</blockquote></li>
+<li><p>For <code>var</code>, when appearing as specified as a terminal in a <em>LocalVariableType</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.4">14.4</a>) or a <em>LambdaParameterType</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.27.1">15.27.1</a>)</p>
+<blockquote>
+<p>In many other contexts, attempting to use the character sequence <code>var</code> as an identifier will cause an error, because <code>var</code> is not a valid <em>TypeIdentifier</em> (<a href="#jls-3.8">3.8</a>).</p>
+</blockquote></li>
+<li><p>For <code>yield</code>, when appearing as specified as a terminal in a <em>YieldStatement</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.21">14.21</a>)</p>
+<blockquote>
+<p>In many other contexts, attempting to use the character sequence <code>yield</code> as an identifier will cause an error, because <code>yield</code> is neither a valid <em>TypeIdentifier</em> nor a valid <em>UnqualifiedMethodIdentifier</em>.</p>
+</blockquote></li>
+<li><p><strong>For <code>sealed</code>, <code>non-sealed</code> and <code>permits</code>, when appearing as specified as non-terminals in a <em>NormalClassDeclaration</em> (<a href="#jls-8.1">8.1</a>) or <em>NormalInterfaceDeclaration</em> (<a href="#jls-9.1">9.1</a>)</strong></p></li>
+</ul>
+<blockquote>
+<p>While these rules depend on details of the syntactic grammar, a compiler for the Java Programming Language can implement them without fully parsing the input program. For example, a heuristic could be used to track the contextual state of the tokenizer, as long as the heuristic guarantees that valid uses of contextual keywords are tokenized as keywords, and valid uses of identifiers are tokenized as identifiers. Or the compiler could always tokenize a contextual keyword as an identifier, leaving it to later stages to recognize special uses of these identifiers.</p>
+</blockquote>
+<blockquote>
+<p>A variety of character sequences are sometimes assumed, incorrectly, to be keywords:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li><p><code>true</code> and <code>false</code> are not keywords, but rather boolean literals (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-3.html#jls-3.10.3">3.10.3</a>).</p></li>
+<li><p><code>null</code> is not a keyword, but rather the null literal (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-3.html#jls-3.10.8">3.10.8</a>).</p></li>
+</ul>
+</blockquote>
+<h2 id="jls-5">Chapter 5: Conversions and Contexts</h2>
+<h3 id="jls-5.1">5.1 Kinds of Conversion</h3>
+<h5 id="jls-5.1.6.1">5.1.6.1 Allowed Narrowing Reference Conversion</h5>
+<p>A narrowing reference conversion exists from reference type <em>S</em> to reference type <em>T</em> if all of the following are true:</p>
+<ul>
+<li><p><em>S</em> is not a subtype of <em>T</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.10">4.10</a>)</p></li>
+<li><p>If there exists a parameterized type <em>X</em> that is a supertype of <em>T</em>, and a parameterized type <em>Y</em> that is a supertype of <em>S</em>, such that the erasures of <em>X</em> and <em>Y</em> are the same, then <em>X</em> and <em>Y</em> are not provably distinct (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.5">4.5</a>).</p>
+<blockquote>
+<p>Using types from the <code>java.util</code> package as an example, no narrowing reference conversion exists from <code>ArrayList&lt;String&gt;</code> to <code>ArrayList&lt;Object&gt;</code>, or vice versa, because the type arguments <code>String</code> and <code>Object</code> are provably distinct. For the same reason, no narrowing reference conversion exists from <code>ArrayList&lt;String&gt;</code> to <code>List&lt;Object&gt;</code>, or vice versa. The rejection of provably distinct types is a simple static gate to prevent &quot;stupid&quot; narrowing reference conversions.</p>
+</blockquote></li>
+<li><p>One of the following cases applies:</p></li>
+</ul>
+<div class="deleted">
+<p><del>1.</del> <em>S</em> and <em>T</em> are class types, and either |<em>S</em>| <code>&lt;:</code> |<em>T</em>| or |<em>T</em>| <code>&lt;:</code> |<em>S</em>|.</p>
+<p><del>2.</del> <em>S</em> and <em>T</em> are interface types.</p>
+<p><del>3.</del> <em>S</em> is a class type, <em>T</em> is an interface type, and <em>S</em> does not name a <code>final</code> class (<a href="#jls-8.1.1">8.1.1</a>).</p>
+<p><del>4.</del> <em>S</em> is a class type, <em>T</em> is an interface type, and <em>S</em> names a <code>final</code> class that implements the interface named by <em>T</em>.</p>
+<p><del>5.</del> <em>S</em> is an interface type, <em>T</em> is a class type, and <em>T</em> does not name a <code>final</code> class.</p>
+<p><del>6.</del> <em>S</em> is an interface type, <em>T</em> is a class type, and <em>T</em> names a <code>final</code> class that implements the interface named by <em>S</em>.</p>
+</div>
+<div class="inserted">
+<ol type="1">
+<li><p>Both <em>S</em> and <em>T</em> are class or interface types, and <em>S</em> names a class or interface that is not disjoint from the class or interface named by <em>T</em>.</p>
+<blockquote>
+<p>The definition of a class or interface being disjoint from another class or interface is given below.</p>
+</blockquote></li>
+</ol>
+</div>
+<p><del>7.</del> <strong>2.</strong> <em>S</em> is the class type <code>Object</code> or the interface type <code>java.io.Serializable</code> or <code>Cloneable</code> (the only interfaces implemented by arrays (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-10.html#jls-10.8">10.8</a>)), and <em>T</em> is an array type.</p>
+<p><del>8.</del> <strong>3.</strong> <em>S</em> is an array type <em>SC</em><code>[]</code>, that is, an array of components of type <em>SC</em>; <em>T</em> is an array type <em>TC</em><code>[]</code>, that is, an array of components of type <em>TC</em>; and a narrowing reference conversion exists from <em>SC</em> to <em>TC</em>.</p>
+<p><del>9.</del> <strong>4.</strong> <em>S</em> is a type variable, and a narrowing reference conversion exists from the upper bound of <em>S</em> to <em>T</em>.</p>
+<p><del>10.</del> <strong>5.</strong> <em>T</em> is a type variable, and either a widening reference conversion or a narrowing reference conversion exists from <em>S</em> to the upper bound of <em>T</em>.</p>
+<p><del>11.</del> <strong>6.</strong> <em>S</em> is an intersection type <em>S<sub>1</sub></em> <code>&amp;</code> ... <code>&amp;</code> <em>S<sub>n</sub></em>, and for all <em>i</em> (1 <em>≤</em> <em>i</em> <em>≤</em> <em>n</em>), either a widening reference conversion or a narrowing reference conversion exists from <em>S<sub>i</sub></em> to <em>T</em>.</p>
+<p><del>12.</del> <strong>7.</strong> <em>T</em> is an intersection type <em>T<sub>1</sub></em> <code>&amp;</code> ... <code>&amp;</code> <em>T<sub>n</sub></em>, and for all <em>i</em> (1 <em>≤</em> <em>i</em> <em>≤</em> <em>n</em>), either a widening reference conversion or a narrowing reference conversion exists from <em>S</em> to <em>T<sub>i</sub></em>.</p>
+<div class="inserted">
+<p>A class or interface is said to be <em>disjoint</em> from another class or interface if it can be determined statically that they have no instances in common (other than the <code>null</code> value). It is defined as follows:</p>
+<ol type="1">
+<li><p>A class named <em>C</em> is <em>disjoint</em> from an interface named <em>I</em> if it is not the case that <em>C</em> <code>&lt;:</code> <em>I</em> and one of the following cases applies:</p>
+<ol type="a">
+<li><p><em>C</em> is <code>final</code>.</p></li>
+<li><p><em>C</em> is <code>sealed</code>, and all of the permitted direct subclasses of <em>C</em> are disjoint from <em>I</em>.</p></li>
+<li><p><em>C</em> is freely extensible (<a href="#jls-8.1.1.2">8.1.1.2</a>), and <em>I</em> is <code>sealed</code>, and <em>C</em> is disjoint from all of the permitted direct subclasses and subinterfaces of <em>I</em>.</p></li>
+</ol>
+<blockquote>
+<p>Rules (b) and (c) simply unpack the <code>sealed</code> hierarchies; the important case is rule (a). Consider the following declarations:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">interface</span> I {}</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="dt">final</span> <span class="kw">class</span> C {}</a></code></pre></div>
+<p>As class <code>C</code> is <code>final</code> and does not implement <code>I</code>, there can be no instances of <code>C</code> that are also an instance of <code>I</code>, so they are disjoint. Hence there is no narrowing reference conversion from <code>C</code> to <code>I</code>.</p>
+<p>In contrast, consider the following declarations:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">interface</span> J {}</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">class</span> D {}</a></code></pre></div>
+<p>Even though class <code>D</code> does not implement <code>J</code>, it is still possible for an instance of <code>D</code> to be an instance of <code>J</code>; for example, if the following declaration has been made (possibly at a later time):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">class</span> E <span class="kw">extends</span> D <span class="kw">implements</span> J {}</a></code></pre></div>
+<p>For this reason <code>D</code> is not disjoint from <code>J</code>, and there is a narrowing reference conversion from <code>D</code> to <code>J</code>.</p>
+</blockquote></li>
+<li><p>An interface named <em>I</em> is <em>disjoint</em> from a class named <em>C</em> if <em>C</em> is disjoint from <em>I</em>.</p></li>
+<li><p>A class named <em>C</em> is <em>disjoint</em> from another class named <em>D</em> if it is not the case that <em>C</em> <code>&lt;:</code> <em>D</em>, and it is not the case that <em>D</em> <code>&lt;:</code> <em>C</em>.</p></li>
+<li><p>An interface named <em>I</em> is <em>disjoint</em> from another interface named <em>J</em> if it is not that case that <em>I</em> <code>&lt;:</code> <em>J</em>, and it is not the case that <em>J</em> <code>&lt;:</code> <em>I</em>, and additionally one of the following cases applies:</p>
+<ol type="a">
+<li><p><em>I</em> is <code>sealed</code>, and all of the permitted direct subclasses and subinterfaces of <em>I</em> are disjoint from <em>J</em>.</p></li>
+<li><p><em>J</em> is <code>sealed</code>, and <em>I</em> is disjoint from all the permitted direct subclasses and subinterfaces of <em>J</em>.</p></li>
+</ol>
+<blockquote>
+<p>This rule entails that no two extensible interfaces (<a href="#jls-9.1.1.4">9.1.1.4</a>) are disjoint.</p>
+</blockquote></li>
+</ol>
+</div>
+<h2 id="jls-6">Chapter 6: Names</h2>
+<h3 id="jls-6.1">6.1 Declarations</h3>
+<p>A <em>declaration</em> introduces an entity into a program and includes an identifier (<a href="#jls-3.8">3.8</a>) that can be used in a name to refer to this entity. The identifier is constrained to be a <em>TypeIdentifier</em> when the entity being introduced is a class, interface, or type parameter.</p>
+<p>A declared entity is one of the following:</p>
+<ul>
+<li><p>A module, declared in a <code>module</code> declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.7">7.7</a>)</p></li>
+<li><p>A package, declared in a <code>package</code> declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.4">7.4</a>)</p></li>
+<li><p>An imported class or interface, declared in a single-type-import declaration or a type-import-on-demand declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.1">7.5.1</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.2">7.5.2</a>)</p></li>
+<li><p>An imported <code>static</code> member, declared in a single-static-import declaration or a static-import-on-demand declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.3">7.5.3</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.4">7.5.4</a>)</p></li>
+<li><p>A class, declared by a normal class declaration (<a href="#jls-8.1">8.1</a>), an enum declaration (<a href="#jls-8.9">8.9</a>), or a record declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.10">8.10</a>)</p></li>
+<li><p>An interface, declared by a normal interface declaration (<a href="#jls-9.1">9.1</a>) or an annotation interface declaration (<a href="#jls-9.6">9.6</a>).</p></li>
+<li><p>A type parameter, declared as part of the declaration of a generic class, interface, method, or constructor (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.2">8.1.2</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.1.2">9.1.2</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.4">8.4.4</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8.4">8.8.4</a>)</p></li>
+<li><p>A member of a reference type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.2">8.2</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.2">9.2</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.9.3">8.9.3</a>, <a href="#jls-9.6">9.6</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-10.html#jls-10.7">10.7</a>), one of the following:</p>
+<ul>
+<li><p>A member class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.5">9.5</a>)</p></li>
+<li><p>A member interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.5">9.5</a>)</p></li>
+<li><p>A field, one of the following:</p>
+<ul>
+<li><p>A field declared in a class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.3">8.3</a>)</p></li>
+<li><p>A field declared in an interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.3">9.3</a>)</p></li>
+<li><p>An implicitly declared field of a class corresponding to an enum constant or a record component</p></li>
+<li><p>The field <code>length</code>, which is implicitly a member of every array type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-10.html#jls-10.7">10.7</a>)</p></li>
+</ul></li>
+<li><p>A method, one of the following:</p>
+<ul>
+<li><p>A method (<code>abstract</code> or otherwise) declared in a class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4">8.4</a>)</p></li>
+<li><p>A method (<code>abstract</code> or otherwise) declared in an interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.4">9.4</a>)</p></li>
+<li><p>An implicitly declared accessor method corresponding to a record component</p></li>
+</ul></li>
+</ul></li>
+<li><p>An enum constant (<a href="#jls-8.9.1">8.9.1</a>)</p></li>
+<li><p>A record component (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.10.3">8.10.3</a>)</p></li>
+<li><p>A formal parameter, one of the following:</p>
+<ul>
+<li><p>A formal parameter of a method of a class or interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.1">8.4.1</a>)</p></li>
+<li><p>A formal parameter of a constructor of a class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8.1">8.8.1</a>)</p></li>
+<li><p>A formal parameter of a lambda expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.27.1">15.27.1</a>)</p></li>
+</ul></li>
+<li><p>An exception parameter of an exception handler declared in a <code>catch</code> clause of a <code>try</code> statement (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.20">14.20</a>)</p></li>
+<li><p>A local variable, one of the following:</p>
+<ul>
+<li><p>A local variable declared by a local variable declaration statement in a block (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.4.2">14.4.2</a>)</p></li>
+<li><p>A local variable declared by a <code>for</code> statement or a <code>try</code>-with-resources statement (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.14">14.14</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.20.3">14.20.3</a>)</p></li>
+<li><p>A local variable declared by a pattern (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.30.1">14.30.1</a>)</p></li>
+</ul></li>
+<li><p>A local class or interface (<a href="#jls-14.3">14.3</a>), one of the following:</p>
+<ul>
+<li><p>A local class declared by a normal class declaration</p></li>
+<li><p>A local class declared by an enum declaration</p></li>
+<li><p>A local class declared by an record declaration</p></li>
+<li><p>A local interface declared by a normal interface declaration</p></li>
+</ul></li>
+</ul>
+<p>Constructors (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8">8.8</a>, [8.10.4]) are also introduced by declarations, but use the name of the class in which they are declared rather than introducing a new name.</p>
+<blockquote>
+<p>The declaration of a generic class or interface (<code>class</code> <em>C</em><code>&lt;</code><em>T</em><code>&gt;</code> <code>...</code> or <code>interface</code> <em>C</em><code>&lt;</code><em>T</em><code>&gt;</code> <code>...</code>) introduces both a class named <em>C</em> and a family of types: the raw type <em>C</em>, the parameterized type <em>C</em><code>&lt;Foo&gt;</code>, the parameterized type <em>C</em><code>&lt;Bar&gt;</code>, etc.</p>
+</blockquote>
+<blockquote>
+<p>When a reference to <em>C</em> occurs where genericity is unimportant, identified below as one of the non-generic contexts, the reference to <em>C</em> denotes the class or interface <em>C</em>. In other contexts, the reference to <em>C</em> denotes a type, or part of a type, introduced by <em>C</em>.</p>
+</blockquote>
+<blockquote>
+<p>The <del>14</del> <strong>15</strong> non-generic contexts are as follows:</p>
+<ol type="1">
+<li><p>In a <code>uses</code> or <code>provides</code> directive in a module declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.7.1">7.7.1</a>)</p></li>
+<li><p>In a single-type-import declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.1">7.5.1</a>)</p></li>
+<li><p>To the left of the <code>.</code> in a single-static-import declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.3">7.5.3</a>)</p></li>
+<li><p>To the left of the <code>.</code> in a static-import-on-demand declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.4">7.5.4</a>)</p></li>
+<li><p><strong>In a <code>permits</code> clause of a <code>sealed</code> class or interface declaration (<a href="#jls-8.1.6">8.1.6</a>, <a href="#jls-9.1.4">9.1.4</a>).</strong></p></li>
+</ol>
+<p><del>5.</del> <strong>6.</strong> To the left of the <code>(</code> in a constructor declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8">8.8</a>)</p>
+<p><del>6.</del> <strong>7.</strong> After the <code>@</code> sign in an annotation (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7">9.7</a>)</p>
+<p><del>7.</del> <strong>8.</strong> To the left of <code>.class</code> in a class literal (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.8.2">15.8.2</a>)</p>
+<p><del>8.</del> <strong>9.</strong> To the left of <code>.this</code> in a qualified <code>this</code> expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.8.4">15.8.4</a>)</p>
+<p><del>9.</del> <strong>10.</strong> To the left of <code>.super</code> in a qualified superclass field access expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.11.2">15.11.2</a>)</p>
+<p><del>10.</del> <strong>11.</strong> To the left of <code>.</code><em>Identifier</em> or <code>.super.</code><em>Identifier</em> in a qualified method invocation expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.12">15.12</a>)</p>
+<p><del>11.</del> <strong>12.</strong> To the left of <code>.super::</code> in a method reference expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.13">15.13</a>)</p>
+<p><del>12.</del> <strong>13.</strong> In a qualified expression name in a postfix expression or a <code>try</code>-with-resources statement (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.14.1">15.14.1</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.20.3">14.20.3</a>)</p>
+<p><del>13.</del> <strong>14.</strong> In a <code>throws</code> clause of a method or constructor (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.6">8.4.6</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8.5">8.8.5</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.4">9.4</a>)</p>
+<p><del>14.</del> <strong>15.</strong> In an exception parameter declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.20">14.20</a>)</p>
+</blockquote>
+<blockquote>
+<p>The first <del>eleven</del> <strong>twelve</strong> non-generic contexts correspond to the first <del>eleven</del> <strong>twelve</strong> syntactic contexts for a <em>TypeName</em> in <a href="#jls-6.5.1">6.5.1</a>. The <del>twelfth</del> <strong>thirteenth</strong> non-generic context is where a qualified <em>ExpressionName</em> such as <code>C.x</code> may include a <em>TypeName</em> <code>C</code> to denote static member access. The common use of <em>TypeName</em> in these <del>twelve</del> <strong>thirteen</strong> contexts is significant: it indicates that these contexts involve a less-than-first-class use of a type. In contrast, the <del>thirteenth</del> <strong>fourteenth</strong> and <del>fourteenth</del> <strong>fifteenth</strong> non-generic contexts employ <em>ClassType</em>, indicating that <code>throws</code> and <code>catch</code> clauses use types in a first-class way, in line with, say, field declarations. The characterization of these two contexts as non-generic is due to the fact that an exception type cannot be parameterized <strong>(<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.2">8.1.2</a>)</strong>.</p>
+<p>Note that the <em>ClassType</em> production allows annotations, so it is possible to annotate the use of a type in a <code>throws</code> or <code>catch</code> clause, whereas the <em>TypeName</em> production disallows annotations, so it is not possible to annotate the name of a type in, say, a single-type-import declaration.</p>
+</blockquote>
+<p>...</p>
+<h3 id="jls-6.5">6.5 Determining the Meaning of a Name</h3>
+<h4 id="jls-6.5.1">6.5.1 Syntactic Classification of a Name According to Context</h4>
+<p>A name is syntactically classified as a <em>ModuleName</em> in these contexts:</p>
+<ul>
+<li><p>In a <code>requires</code> directive in a module declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.7.1">7.7.1</a>)</p></li>
+<li><p>To the right of <code>to</code> in an <code>exports</code> or <code>opens</code> directive in a module declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.7.2">7.7.2</a>)</p></li>
+</ul>
+<p>A name is syntactically classified as a <em>PackageName</em> in these contexts:</p>
+<ul>
+<li><p>To the right of <code>exports</code> or <code>opens</code> in a module declaration</p></li>
+<li><p>To the left of the &quot;<code>.</code>&quot; in a qualified <em>PackageName</em></p></li>
+</ul>
+<p>A name is syntactically classified as a <em>TypeName</em> in these contexts:</p>
+<ul>
+<li><p>To name a class or interface:</p>
+<ol type="1">
+<li><p>In a <code>uses</code> or <code>provides</code> directive in a module declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.7.1">7.7.1</a>)</p></li>
+<li><p>In a single-type-import declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.1">7.5.1</a>)</p></li>
+<li><p>To the left of the <code>.</code> in a single-static-import declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.3">7.5.3</a>)</p></li>
+<li><p>To the left of the <code>.</code> in a static-import-on-demand declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.4">7.5.4</a>)</p></li>
+<li><p><strong>In a <code>permits</code> clause of a <code>sealed</code> class or interface declaration (<a href="#jls-8.1.6">8.1.6</a>, <a href="#jls-9.1.4">9.1.4</a>).</strong></p></li>
+</ol>
+<p><del>5.</del> <strong>6.</strong> To the left of the <code>(</code> in a constructor declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8">8.8</a>)</p>
+<p><del>6.</del> <strong>7.</strong> After the <code>@</code> sign in an annotation (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7">9.7</a>)</p>
+<p><del>7.</del> <strong>8.</strong> To the left of <code>.class</code> in a class literal (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.8.2">15.8.2</a>)</p>
+<p><del>8.</del> <strong>9.</strong> To the left of <code>.this</code> in a qualified <code>this</code> expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.8.4">15.8.4</a>)</p>
+<p><del>9.</del> <strong>10.</strong> To the left of <code>.super</code> in a qualified superclass field access expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.11.2">15.11.2</a>)</p>
+<p><del>10.</del> <strong>11.</strong> To the left of <code>.</code><em>Identifier</em> or <code>.super.</code><em>Identifier</em> in a qualified method invocation expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.12">15.12</a>)</p>
+<p><del>11.</del> <strong>12.</strong> To the left of <code>.super::</code> in a method reference expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.13">15.13</a>)</p></li>
+<li><p>As the <em>Identifier</em> or dotted <em>Identifier</em> sequence that constitutes any <em>ReferenceType</em> (including a <em>ReferenceType</em> to the left of the brackets in an array type, or to the left of the &lt; in a parameterized type, or in a non-wildcard type argument of a parameterized type, or in an <code>extends</code> or <code>super</code> clause of a wildcard type argument of a parameterized type) in the 17 contexts where types are used (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.11">4.11</a>):</p>
+<ol type="1">
+<li><p>In an <code>extends</code> or <code>implements</code> clause of a class declaration (<a href="#jls-8.1.4">8.1.4</a>, <a href="#jls-8.1.5">8.1.5</a>)</p></li>
+<li><p>In an <code>extends</code> clause of an interface declaration (<a href="#jls-9.1.3">9.1.3</a>)</p></li>
+<li><p>The return type of a method (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.5">8.4.5</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.4">9.4</a>), including the type of an element of an annotation interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.6.1">9.6.1</a>)</p></li>
+<li><p>In the <code>throws</code> clause of a method or constructor (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.6">8.4.6</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8.5">8.8.5</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.4">9.4</a>)</p></li>
+<li><p>In an <code>extends</code> clause of a type parameter declaration of a generic class, interface, method, or constructor (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.2">8.1.2</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.1.2">9.1.2</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.4">8.4.4</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8.4">8.8.4</a>)</p></li>
+<li><p>The type in a field declaration of a class or interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.3">8.3</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.3">9.3</a>)</p></li>
+<li><p>The type in a formal parameter declaration of a method, constructor, or lambda expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.1">8.4.1</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8.1">8.8.1</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.4">9.4</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.27.1">15.27.1</a>)</p></li>
+<li><p>The type of the receiver parameter of a method (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4">8.4</a>)</p></li>
+<li><p>The type in a local variable declaration in either a statement (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.4.2">14.4.2</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.14.1">14.14.1</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.14.2">14.14.2</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.20.3">14.20.3</a>) or a pattern (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.30.1">14.30.1</a>)</p></li>
+<li><p>A type in an exception parameter declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.20">14.20</a>)</p></li>
+<li><p>The type in a record component declaration of a record class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.10.1">8.10.1</a>)</p></li>
+<li><p>In an explicit type argument list to an explicit constructor invocation statement or class instance creation expression or method invocation expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8.7.1">8.8.7.1</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9">15.9</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.12">15.12</a>)</p></li>
+<li><p>In an unqualified class instance creation expression, either as the class type to be instantiated (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9">15.9</a>) or as the direct superclass or direct superinterface of an anonymous class to be instantiated (<a href="#jls-15.9.5">15.9.5</a>)</p></li>
+<li><p>The element type in an array creation expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.10.1">15.10.1</a>)</p></li>
+<li><p>The type in the cast operator of a cast expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.16">15.16</a>)</p></li>
+<li><p>The type that follows the <code>instanceof</code> relational operator (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.20.2">15.20.2</a>)</p></li>
+<li><p>In a method reference expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.13">15.13</a>), as the reference type to search for a member method or as the class type or array type to construct.</p></li>
+</ol></li>
+</ul>
+<blockquote>
+<p>The extraction of a <em>TypeName</em> from the identifiers of a <em>ReferenceType</em> in the 16 contexts above is intended to apply recursively to all sub-terms of the <em>ReferenceType</em>, such as its element type and any type arguments.</p>
+<p>For example, suppose a field declaration uses the type <code>p.q.Foo[]</code>. The brackets of the array type are ignored, and the term <code>p.q.Foo</code> is extracted as a dotted sequence of <em>Identifiers</em> to the left of the brackets in an array type, and classified as a <em>TypeName</em>. A later step determines which of <code>p</code>, <code>q</code>, and <code>Foo</code> is a type name or a package name.</p>
+<p>As another example, suppose a cast operator uses the type <code>p.q.Foo&lt;? extends String&gt;</code>. The term <code>p.q.Foo</code> is again extracted as a dotted sequence of <em>Identifier</em> terms, this time to the left of the <code>&lt;</code> in a parameterized type, and classified as a <em>TypeName</em>. The term <code>String</code> is extracted as an <em>Identifier</em> in an <code>extends</code> clause of a wildcard type argument of a parameterized type, and classified as a <em>TypeName</em>.</p>
+</blockquote>
+<p>A name is syntactically classified as an <em>ExpressionName</em> in these contexts:</p>
+<ul>
+<li><p>As the qualifying expression in a qualified superclass constructor invocation (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8.7.1">8.8.7.1</a>)</p></li>
+<li><p>As the qualifying expression in a qualified class instance creation expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9">15.9</a>)</p></li>
+<li><p>As the array reference expression in an array access expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.10.3">15.10.3</a>)</p></li>
+<li><p>As a <em>PostfixExpression</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.14">15.14</a>)</p></li>
+<li><p>As the left-hand operand of an assignment operator (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.26">15.26</a>)</p></li>
+<li><p>As a <em>VariableAccess</em> in a <code>try</code>-with-resources statement (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.20.3">14.20.3</a>)</p></li>
+</ul>
+<p>A name is syntactically classified as a <em>MethodName</em> in this context:</p>
+<ul>
+<li>Before the &quot;<code>(</code>&quot; in a method invocation expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.12">15.12</a>)</li>
+</ul>
+<p>A name is syntactically classified as a <em>PackageOrTypeName</em> in these contexts:</p>
+<ul>
+<li><p>To the left of the &quot;<code>.</code>&quot; in a qualified <em>TypeName</em></p></li>
+<li><p>In a type-import-on-demand declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.5.2">7.5.2</a>)</p></li>
+</ul>
+<p>A name is syntactically classified as an <em>AmbiguousName</em> in these contexts:</p>
+<ul>
+<li><p>To the left of the &quot;<code>.</code>&quot; in a qualified <em>ExpressionName</em></p></li>
+<li><p>To the left of the rightmost <code>.</code> that occurs before the &quot;<code>(</code>&quot; in a method invocation expression</p></li>
+<li><p>To the left of the &quot;<code>.</code>&quot; in a qualified <em>AmbiguousName</em></p></li>
+<li><p>In the default value clause of an annotation element declaration (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.6.2">9.6.2</a>)</p></li>
+<li><p>To the right of an &quot;<code>=</code>&quot; in an an element-value pair (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7.1">9.7.1</a>)</p></li>
+<li><p>To the left of <code>::</code> in a method reference expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.13">15.13</a>)</p></li>
+</ul>
+<blockquote>
+<p>The effect of syntactic classification is to restrict certain kinds of entities to certain parts of expressions:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li><p>The name of a field, parameter, or local variable may be used as an expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.14.1">15.14.1</a>).</p></li>
+<li><p>The name of a method may appear in an expression only as part of a method invocation expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.12">15.12</a>).</p></li>
+<li><p>The name of a class or interface may appear in an expression only as part of a class literal (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.8.2">15.8.2</a>), a qualified <code>this</code> expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.8.4">15.8.4</a>), a class instance creation expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9">15.9</a>), an array creation expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.10.1">15.10.1</a>), a cast expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.16">15.16</a>), an <code>instanceof</code> expression (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.20.2">15.20.2</a>), an enum constant (<a href="#jls-8.9">8.9</a>), or as part of a qualified name for a field or method.</p></li>
+<li><p>The name of a package may appear in an expression only as part of a qualified name for a class or interface.</p></li>
+</ul>
+</blockquote>
+<h2 id="jls-8">Chapter 8: Classes</h2>
+<p>A class declaration defines a new class and describes how it is implemented (<a href="#jls-8.1">8.1</a>).</p>
+<p>A <em>top level class</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.6">7.6</a>) is a class declared directly in a compilation unit.</p>
+<p>A <em>nested class</em> is any class whose declaration occurs within the body of another class or interface declaration. A nested class may be a member class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.5">9.5</a>), a local class (<a href="#jls-14.3">14.3</a>), or an anonymous class (<a href="#jls-15.9.5">15.9.5</a>).</p>
+<p>Some kinds of nested class are an <em>inner class</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.3">8.1.3</a>), which is a class that can refer to enclosing class instances, local variables, and type variables.</p>
+<p>An <em>enum class</em> (<a href="#jls-8.9">8.9</a>) is a class declared with abbreviated syntax that defines a small set of named class instances.</p>
+<p>A <em>record class</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.10">8.10</a>) is a class declared with abbreviated syntax that defines a simple aggregate of values.</p>
+<p>This chapter discusses the common semantics of all classes. Details that are specific to particular kinds of classes are discussed in the sections dedicated to these constructs.</p>
+<p>A class may be declared <code>abstract</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.1.1">8.1.1.1</a>) and must be declared abstract if it is incompletely implemented; such a class cannot be instantiated, but can be extended by subclasses.</p>
+<p><strong>The degree to which a class can be extended can be explicitly controlled (<a href="#jls-8.1.1.2">8.1.1.2</a>). A class may be declared <code>sealed</code>, in which case there is a fixed set of classes that directly extend the <code>sealed</code> class.</strong> A class may be declared <code>final</code> (<a href="#jls-8.1.1.2">8.1.1.2</a>), in which case it cannot have subclasses.</p>
+<p>If a class is declared <code>public</code>, then it can be referred to from code in any package of its module and potentially from code in other modules. Each class except <code>Object</code> is an extension of (that is, a subclass of) a single existing class (<a href="#jls-8.1.4">8.1.4</a>) and may implement interfaces (<a href="#jls-8.1.5">8.1.5</a>). Classes may be <em>generic</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.2">8.1.2</a>), that is, they may declare type variables whose bindings may differ among different instances of the class.</p>
+<p>Class declarations may be decorated with annotations (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7">9.7</a>) just like any other kind of declaration.</p>
+<p>The body of a class declares members (fields, methods, classes, and interfaces), instance and static initializers, and constructors (<a href="#jls-8.1.6">8.1.6</a>). The scope (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.3">6.3</a>) of a member (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.2">8.2</a>) is the entire body of the declaration of the class to which the member belongs. Field, method, member class, member interface, and constructor declarations may include the access modifiers <code>public</code>, <code>protected</code>, or <code>private</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>). The members of a class include both declared and inherited members (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.2">8.2</a>). Newly declared fields can hide fields declared in a superclass or superinterface. Newly declared member classes and member interfaces can hide member classes and member interfaces declared in a superclass or superinterface. Newly declared methods can hide, implement, or override methods declared in a superclass or superinterface.</p>
+<p>Field declarations (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.3">8.3</a>) describe class variables, which are incarnated once, and instance variables, which are freshly incarnated for each instance of the class. A field may be declared <code>final</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.3.1.2">8.3.1.2</a>), in which case it can be assigned to only once. Any field declaration may include an initializer.</p>
+<p>Member class declarations (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>) describe nested classes that are members of the surrounding class. Member classes may be <code>static</code>, in which case they have no access to the instance variables of the surrounding class; or they may be inner classes.</p>
+<p>Member interface declarations (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>) describe nested interfaces that are members of the surrounding class.</p>
+<p>Method declarations (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4">8.4</a>) describe code that may be invoked by method invocation expressions (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.12">15.12</a>). A class method is invoked relative to the class; an instance method is invoked with respect to some particular object that is an instance of a class. A method whose declaration does not indicate how it is implemented must be declared <code>abstract</code>. A method may be declared <code>final</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.3.3">8.4.3.3</a>), in which case it cannot be hidden or overridden. A method may be implemented by platform-dependent <code>native</code> code (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.3.4">8.4.3.4</a>). A <code>synchronized</code> method (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.3.6">8.4.3.6</a>) automatically locks an object before executing its body and automatically unlocks the object on return, as if by use of a <code>synchronized</code> statement (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.19">14.19</a>), thus allowing its activities to be synchronized with those of other threads (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-17.html">17</a>).</p>
+<p>Method names may be overloaded (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.9">8.4.9</a>).</p>
+<p>Instance initializers (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.6">8.6</a>) are blocks of executable code that may be used to help initialize an instance when it is created (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9">15.9</a>).</p>
+<p>Static initializers (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.7">8.7</a>) are blocks of executable code that may be used to help initialize a class.</p>
+<p>Constructors (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8">8.8</a>) are similar to methods, but cannot be invoked directly by a method call; they are used to initialize new class instances. Like methods, they may be overloaded (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.8.8">8.8.8</a>).</p>
+<h3 id="jls-8.1">8.1 Class Declarations</h3>
+<p>A <em>class declaration</em> specifies a class.</p>
+<p>There are three kinds of class declarations: <em>normal class declarations</em>, <em>enum declarations</em> (<a href="#jls-8.9">8.9</a>), and <em>record declarations</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.10">8.10</a>).</p>
+<dl>
+<dt><em>ClassDeclaration:</em></dt>
+<dd><em>NormalClassDeclaration</em>
+</dd>
+<dd><em>EnumDeclaration</em>
+</dd>
+<dd><em>RecordDeclaration</em>
+</dd>
+<dt><em>NormalClassDeclaration:</em></dt>
+<dd>{<em>ClassModifier</em>} <code>class</code> <em>TypeIdentifier</em> [<em>TypeParameters</em>]<br />
+[<em>ClassExtends</em>] [<em>ClassImplements</em>] <strong>[<em>ClassPermits</em>]</strong><br />
+<em>ClassBody</em>
+</dd>
+</dl>
+<p>A class is also implicitly declared by a class instance creation expression (<a href="#jls-15.9.5">15.9.5</a>) and an enum constant that ends with a class body (<a href="#jls-8.9.1">8.9.1</a>).</p>
+<p>The <em>TypeIdentifier</em> in a class declaration specifies the name of the class.</p>
+<p>It is a compile-time error if a class has the same simple name as any of its enclosing classes or interfaces.</p>
+<p>The scope and shadowing of a class declaration is specified in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.3">6.3</a> and <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.4.1">6.4.1</a>.</p>
+<h4 id="jls-8.1.1">8.1.1 Class Modifiers</h4>
+<p>A class declaration may include <em>class modifiers</em>.</p>
+<dl>
+<dt><em>ClassModifier:</em></dt>
+<dd>(one of)
+</dd>
+<dd><em>Annotation</em> <code>public</code> <code>protected</code> <code>private</code>
+</dd>
+<dd><code>abstract</code> <code>static</code> <strong><code>sealed</code></strong> <strong><code>non-sealed</code></strong> <code>final</code> <code>strictfp</code>
+</dd>
+</dl>
+<p>The rules concerning annotation modifiers for a class declaration are specified in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7.4">9.7.4</a> and <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7.5">9.7.5</a>.</p>
+<p>The access modifier <code>public</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>) pertains only to top level classes (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.6">7.6</a>) and member classes (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.5">9.5</a>), not to local classes (<a href="#jls-14.3">14.3</a>) or anonymous classes (<a href="#jls-15.9.5">15.9.5</a>).</p>
+<p>The access modifiers <code>protected</code> and <code>private</code> pertain only to member classes.</p>
+<p>The modifier <code>static</code> pertains only to member classes and local classes.</p>
+<p>It is a compile-time error if the same keyword appears more than once as a modifier for a class declaration, or if a class declaration has more than one of the access modifiers <code>public</code>, <code>protected</code>, and <code>private</code>.</p>
+<p><strong>It is a compile-time error if a class declaration has more than one of the class modifiers <code>sealed</code>, <code>non-sealed</code> and <code>final</code>.</strong></p>
+<blockquote>
+<p>If two or more (distinct) class modifiers appear in a class declaration, then it is customary, though not required, that they appear in the order consistent with that shown above in the production for <em>ClassModifier</em>.</p>
+</blockquote>
+<h5 id="jls-8.1.1.2">8.1.1.2 <strong><code>sealed</code> and</strong> <code>final</code> Classes</h5>
+<div class="inserted">
+<p>Extensibility of class hierarchies is an important feature of object-oriented programming. However, there are circumstances where explicit control of this extensibility is desirable; in particular, when extensibility is being used not as a mechanism for code inheritance and reuse but, rather, as a way to list the kinds of values in a domain.</p>
+<p>A class can be declared <code>sealed</code> when a fixed non-empty set of direct subclasses is desired. A <code>sealed</code> class <em>permits</em> a given set of direct subclasses (<a href="#jls-8.1.6">8.1.6</a>).</p>
+</div>
+<p>A class can be declared <code>final</code> if its definition is complete and no subclasses are desired or required.</p>
+<p><del>It is a compile-time error if the name of a <code>final</code> class appears in the <code>extends</code> clause (<a href="#jls-8.1.4">8.1.4</a>) of another class declaration; this implies that a <code>final</code> class cannot have any subclasses.</del></p>
+<div class="editorial">
+<p>This rule already appears in <a href="#jls-8.1.4">8.1.4</a>.</p>
+</div>
+<p>It is a compile-time error if a class is declared both <code>final</code> and <code>abstract</code>, because the implementation of such a class could never be completed (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.1.1">8.1.1.1</a>).</p>
+<p>Because a <code>final</code> class never has any subclasses, the methods of a <code>final</code> class are never overridden (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.8.1">8.4.8.1</a>).</p>
+<div class="inserted">
+<p>A class that is neither <code>sealed</code> nor <code>final</code> is <em>freely extensible</em>. Most classes are freely extensible by default. A class that directly extends a <code>sealed</code> class (<a href="#jls-8.1.4">8.1.4</a>) or directly implements a <code>sealed</code> interface (<a href="#jls-8.1.5">8.1.5</a>) is freely extensible only if it is declared <code>non-sealed</code>.</p>
+<p>It is a compile-time error if a class has a <code>sealed</code> direct superclass or a <code>sealed</code> direct superinterface and is not declared <code>final</code>, <code>sealed</code>, or <code>non-sealed</code>.</p>
+<blockquote>
+<p>An enum class can implement a <code>sealed</code> interface, as an enum class is (implicitly) either <code>final</code> or <code>sealed</code>. A record class can also implement a <code>sealed</code> interface as it is implicitly <code>final</code>.</p>
+</blockquote>
+<p>It is a compile-time error if a class has neither a <code>sealed</code> direct superclass nor a <code>sealed</code> direct superinterface but is declared <code>non-sealed</code>.</p>
+<blockquote>
+<p>An effect of the <code>sealed</code> keyword is to force all direct subclasses to explicitly declare whether they are <code>final</code>, <code>sealed</code>, or <code>non-sealed</code>. This avoids accidentally exposing a <code>sealed</code> class hierarchy to unwanted subclassing.</p>
+</blockquote>
+</div>
+<h4 id="jls-8.1.4">8.1.4 Superclasses</h4>
+<p>The optional <code>extends</code> clause in a normal class declaration specifies the <em>direct superclass type</em> of the class being declared.</p>
+<dl>
+<dt><em>ClassExtends:</em></dt>
+<dd><code>extends</code> <em>ClassType</em>
+</dd>
+</dl>
+<p>The <code>extends</code> clause must not appear in the definition of the class <code>Object</code>, or a compile-time error occurs, because it is the primordial class and has no direct superclass type.</p>
+<p>The <em>ClassType</em> must name an accessible class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>), or a compile-time error occurs.</p>
+<p><strong>It is a compile-time error if the <em>ClassType</em> names a class that is <code>sealed</code> (<a href="#jls-8.1.1.2">8.1.1.2</a>) and the current class is not a permitted direct subclass of that <code>sealed</code> class (<a href="#jls-8.1.6">8.1.6</a>).</strong></p>
+<p>It is a compile-time error if the <em>ClassType</em> names a class that is <code>final</code>, because <code>final</code> classes are not allowed to have subclasses (<a href="#jls-8.1.1.2">8.1.1.2</a>).</p>
+<p>It is a compile-time error if the <em>ClassType</em> names the class <code>Enum</code>, which can only be extended by an enum class (<a href="#jls-8.9">8.9</a>), or names the class <code>Record</code>, which can only be extended by a record class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.10">8.10</a>).</p>
+<p>If the <em>ClassType</em> has type arguments, it must denote a well-formed parameterized type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.5">4.5</a>), and none of the type arguments may be wildcard type arguments, or a compile-time error occurs.</p>
+<p>The direct superclass type of a class whose declaration lacks an <code>extends</code> clause is as follows:</p>
+<ul>
+<li><p>The class <code>Object</code> has no direct superclass type.</p></li>
+<li><p>For a class other than <code>Object</code> with a normal class declaration, the direct superclass type is <code>Object</code>.</p></li>
+<li><p>For an enum class <em>E</em>, the direct superclass type is <code>Enum&lt;</code><em>E</em><code>&gt;</code>.</p></li>
+<li><p>For an anonymous class, the direct superclass type is defined in <a href="#jls-15.9.5">15.9.5</a>.</p></li>
+</ul>
+<p>The <em>direct superclass</em> of a class is the class named by its direct superclass type. The direct superclass is important because its implementation is used to derive the implementation of the class being declared.</p>
+<p>The <em>superclass</em> relationship is the transitive closure of the direct superclass relationship. A class <em>A</em> is a superclass of class <em>C</em> if either of the following is true:</p>
+<ul>
+<li><p><em>A</em> is the direct superclass of <em>C</em>.</p></li>
+<li><p>Where a class <em>B</em> is the direct superclass of <em>C</em>, <em>A</em> is a superclass of <em>B</em>, applying this definition recursively.</p></li>
+</ul>
+<p>A class is said to be a <em>direct subclass</em> of its direct superclass, and a <em>subclass</em> of each of its superclasses.</p>
+<div class="example">
+<p>Example 8.1.4-1. Direct Superclasses and Subclasses</p>
+<pre><code>class Point { int x, y; }
+final class ColoredPoint extends Point { int color; }
+class Colored3DPoint extends ColoredPoint { int z; }  // error</code></pre>
+<p>Here, the relationships are as follows:</p>
+<ul>
+<li><p>The class <code>Point</code> is a direct subclass of <code>Object</code>.</p></li>
+<li><p>The class <code>Object</code> is the direct superclass of the class <code>Point</code>.</p></li>
+<li><p>The class <code>ColoredPoint</code> is a direct subclass of class <code>Point</code>.</p></li>
+<li><p>The class <code>Point</code> is the direct superclass of class <code>ColoredPoint</code>.</p></li>
+</ul>
+<p>The declaration of class <code>Colored3dPoint</code> causes a compile-time error because it attempts to extend the final class <code>ColoredPoint</code>.</p>
+</div>
+<div class="example">
+<p>Example 8.1.4-2. Superclasses and Subclasses</p>
+<pre><code>class Point { int x, y; }
+class ColoredPoint extends Point { int color; }
+final class Colored3dPoint extends ColoredPoint { int z; }</code></pre>
+<p>Here, the relationships are as follows:</p>
+<ul>
+<li><p>The class <code>Point</code> is a superclass of class <code>ColoredPoint</code>.</p></li>
+<li><p>The class <code>Point</code> is a superclass of class <code>Colored3dPoint</code>.</p></li>
+<li><p>The class <code>ColoredPoint</code> is a subclass of class <code>Point</code>.</p></li>
+<li><p>The class <code>ColoredPoint</code> is a superclass of class <code>Colored3dPoint</code>.</p></li>
+<li><p>The class <code>Colored3dPoint</code> is a subclass of class <code>ColoredPoint</code>.</p></li>
+<li><p>The class <code>Colored3dPoint</code> is a subclass of class <code>Point</code>.</p></li>
+</ul>
+</div>
+<p>A class <em>C</em> <em>directly depends</em> on a class or interface <em>A</em> if <em>A</em> is mentioned in the <code>extends</code> or <code>implements</code> clause of <em>C</em> either as a superclass or superinterface, or as a qualifier in the fully qualified form of a superclass or superinterface name.</p>
+<p>A class <em>C</em> <em>depends</em> on a class or interface <em>A</em> if any of the following is true:</p>
+<ul>
+<li><p><em>C</em> directly depends on <em>A</em>.</p></li>
+<li><p><em>C</em> directly depends on an interface <em>I</em> that depends (<a href="#jls-9.1.3">9.1.3</a>) on <em>A</em>.</p></li>
+<li><p><em>C</em> directly depends on a class <em>B</em> that depends on <em>A</em>, applying this definition recursively.</p></li>
+</ul>
+<p>It is a compile-time error if a class depends on itself.</p>
+<p>If circularly declared classes are detected at run time, as classes are loaded, then a <code>ClassCircularityError</code> is thrown (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-12.html#jls-12.2.1">12.2.1</a>).</p>
+<div class="example">
+<p>Example 8.1.4-3. Class Depends on Itself</p>
+<pre><code>class Point extends ColoredPoint { int x, y; }
+class ColoredPoint extends Point { int color; }</code></pre>
+<p>This program causes a compile-time error because class <code>Point</code> depends on itself.</p>
+</div>
+<h4 id="jls-8.1.5">8.1.5 Superinterfaces</h4>
+<p>The optional <code>implements</code> clause in a class declaration specifies the <em>direct superinterface types</em> of the class being declared.</p>
+<dl>
+<dt><em>ClassImplements:</em></dt>
+<dd><code>implements</code> <em>InterfaceTypeList</em>
+</dd>
+<dt><em>InterfaceTypeList:</em></dt>
+<dd><em>InterfaceType</em> {<code>,</code> <em>InterfaceType</em>}
+</dd>
+</dl>
+<p>Each <em>InterfaceType</em> must name an accessible interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>), or a compile-time error occurs.</p>
+<p><strong>It is a compile-time error if any <em>InterfaceType</em> names an interface that is <code>sealed</code> (<a href="#jls-9.1.1.4">9.1.1.4</a>) and the class being declared is not a permitted direct subclass of the named interface (<a href="#jls-9.1.4">9.1.4</a>).</strong></p>
+<p>If an <em>InterfaceType</em> has type arguments, it must denote a well-formed parameterized type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.5">4.5</a>), and none of the type arguments may be wildcard type arguments, or a compile-time error occurs.</p>
+<p>It is a compile-time error if the same interface is named by a direct superinterface type more than once in a single <code>implements</code> clause. This is true even if the interface is named in different ways.</p>
+<div class="example">
+<p>Example 8.1.5-1. Illegal Superinterfaces</p>
+<pre><code>class Redundant implements java.lang.Cloneable, Cloneable {
+    int x;
+}</code></pre>
+<p>This program results in a compile-time error because the names <code>java.lang.Cloneable</code> and <code>Cloneable</code> refer to the same interface.</p>
+</div>
+<p>A class whose declaration lacks an <code>implements</code> clause has no direct superinterface types, with one exception: an anonymous class may have a superinterface type (<a href="#jls-15.9.5">15.9.5</a>).</p>
+<p>An interface is a <em>direct superinterface</em> of a class if the interface is named by one of the direct superinterface types of the class.</p>
+<p>An interface <em>I</em> is a <em>superinterface</em> of class <em>C</em> if any of the following is true:</p>
+<ul>
+<li><p><em>I</em> is a direct superinterface of <em>C</em>.</p></li>
+<li><p><em>C</em> has some direct superinterface <em>J</em> for which <em>I</em> is a superinterface, using the definition of &quot;superinterface of an interface&quot; given in <a href="#jls-9.1.3">9.1.3</a>.</p></li>
+<li><p><em>I</em> is a superinterface of the direct superclass of <em>C</em>.</p></li>
+</ul>
+<p>A class can have a superinterface in more than one way.</p>
+<p>A class is said to <em>directly implement</em> its direct superinterfaces, and to <em>implement</em> all of its superinterfaces.</p>
+<p>A class is said to be a <em>direct subclass</em> of its direct superinterfaces, and a <em>subclass</em> of all of its superinterfaces.</p>
+<p>A class may not declare a direct superclass type and a direct superinterface type, or two direct superinterface types, which are, or which have supertypes (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.10.2">4.10.2</a>) which are, different parameterizations of the same generic interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.1.2">9.1.2</a>), or a parameterization of a generic interface and a raw type naming that same generic interface. In the case of such a conflict, a compile-time error occurs.</p>
+<blockquote>
+<p>This requirement was introduced in order to support translation by type erasure (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.6">4.6</a>).</p>
+</blockquote>
+<p>...</p>
+<h4 id="jls-8.1.6"><strong>8.1.6 Permitted Direct Subclasses</strong></h4>
+<div class="editorial">
+<p>This is a new subsection. The existing subsection 8.1.6 &quot;Class Body and Member Declarations&quot; is renumbered to 8.1.7, and all existing references to it must be renumbered.</p>
+</div>
+<div class="inserted">
+<p>The optional <code>permits</code> clause in a class declaration specifies the classes that are permitted to directly extend a <code>sealed</code> class (<a href="#jls-8.1.1.2">8.1.1.2</a>).</p>
+<dl>
+<dt><em>ClassPermits</em></dt>
+<dd><code>permits</code> <em>TypeName</em> {<code>,</code> <em>TypeName</em> }
+</dd>
+</dl>
+<p>It is a compile-time error if a class declaration has a <code>permits</code> clause but the declared class is not <code>sealed</code>.</p>
+<p>Every <em>TypeName</em> in the <code>permits</code> clause of a class declaration must denote an accessible class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>); otherwise a compile-time error occurs.</p>
+<p>It is a compile-time error if the same class is specified more than once in a <code>permits</code> clause. This is true even if the class is named in different ways.</p>
+<blockquote>
+<p>The canonical name of a class does not need to be used in a <code>permits</code> clause, but a <code>permits</code> clause can only name a class once. For example, the following program fails to compile:</p>
+<pre><code>package p;
+sealed class A permits B, C, p.B {} // Error!
+non-sealed class B extends A {}  
+non-sealed class C extends A {}  </code></pre>
+</blockquote>
+<p>It is a compile-time error if any class named in the <code>permits</code> clause is not a direct subclass (<a href="#jls-8.1.4">8.1.4</a>) of the declared class.</p>
+<p>If a <code>sealed</code> class <em>C</em> belongs to a named module, then every class named in the <code>permits</code> clause of the declaration of <em>C</em> must belong to the same module as <em>C</em>; otherwise a compile-time error occurs.</p>
+<p>If a <code>sealed</code> class <em>C</em> belongs to an unnamed module, then every class named in the <code>permits</code> clause of the declaration of <em>C</em> must belong to the same package as <em>C</em>; otherwise a compile-time error occurs.</p>
+<blockquote>
+<p>Sealed class hierarchies are not intended to be declared across different maintenance domains. Modules cannot depend on each other in a circular fashion, yet a <code>sealed</code> class and its direct subclasses need to refer to each other in a circular fashion (in <code>permits</code> and <code>extends</code> clauses, respectively). Necessarily, therefore, a <code>sealed</code> class and its direct subclasses must co-exist in the same module. In an unnamed module, a <code>sealed</code> class and its direct subclasses must belong to the same package.</p>
+</blockquote>
+<p>The <em>permitted direct subclasses</em> of a <code>sealed</code> class <em>C</em> are the classes listed by its <code>permits</code> clause, or, if <em>C</em> lacks a <code>permits</code> clause, each class declared in the same compilation unit as <em>C</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.3">7.3</a>) which has a canonical name (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.7">6.7</a>) and whose direct superclass is <em>C</em>.</p>
+<blockquote>
+<p>This means that if a <code>sealed</code> class <em>C</em> lacks a <code>permits</code> clause one will be inferred that contains all the top-level and member classes in the same compilation unit that list <em>C</em> as their direct superclass. The requirement of having a canonical name means that no local classes or anonymous classes will be considered.</p>
+</blockquote>
+<p>It is a compile-time error if the declaration of a <code>sealed</code> class <em>C</em> lacks a <code>permits</code> clause and has no permitted direct subclasses.</p>
+</div>
+<h3 id="jls-8.9">8.9 Enum Classes</h3>
+<p>An <em>enum declaration</em> specifies a new <em>enum class</em>, a restricted kind of class that defines a small set of named class instances.</p>
+<dl>
+<dt><em>EnumDeclaration:</em></dt>
+<dd>{<em>ClassModifier</em>} <code>enum</code> <em>TypeIdentifier</em> [<em>ClassImplements</em>] <em>EnumBody</em>
+</dd>
+</dl>
+<p>An enum declaration may specify a top level enum class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.6">7.6</a>), a member enum class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.5">9.5</a>), or a local enum class (<a href="#jls-14.3">14.3</a>).</p>
+<p>The <em>TypeIdentifier</em> in an enum declaration specifies the name of the enum class.</p>
+<p>It is a compile-time error if an enum declaration has the modifier <code>abstract</code><strong>,</strong> <del>or</del> <code>final</code><strong>, <code>sealed</code> or <code>non-sealed</code></strong>.</p>
+<p><del>An enum declaration is implicitly <code>final</code> unless it contains at least one enum constant that has a class body (<a href="#jls-8.9.1">8.9.1</a>).</del></p>
+<div class="inserted">
+<p>An enum declaration is either implicitly <code>final</code> or implicitly <code>sealed</code>, as follows:</p>
+<ul>
+<li><p>An enum declaration is implicitly <code>final</code> if it contains no enum constants that have a class body (<a href="#jls-8.9.1">8.9.1</a>).</p></li>
+<li><p>An enum declaration is implicitly <code>sealed</code> if it contains at least one enum constant that has a class body. The permitted direct subclasses (<a href="#jls-8.1.6">8.1.6</a>) are the anonymous classes implicitly declared by the enum constants that have a class body.</p></li>
+</ul>
+</div>
+<p>A nested enum class is implicitly <code>static</code>. That is, every member enum class and local enum class is <code>static</code>. It is permitted for the declaration of a member enum class to redundantly specify the <code>static</code> modifier, but it is not permitted for the declaration of a local enum class (<a href="#jls-14.3">14.3</a>).</p>
+<p>It is a compile-time error if the same keyword appears more than once as a modifier for an enum declaration, or if an enum declaration has more than one of the access modifiers <code>public</code>, <code>protected</code>, and <code>private</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>).</p>
+<p>The direct superclass type of an enum class <em>E</em> is <code>Enum&lt;</code><em>E</em><code>&gt;</code> (<a href="#jls-8.1.4">8.1.4</a>).</p>
+<blockquote>
+<p>An enum declaration does not have an <code>extends</code> clause, so it is not possible to explicitly declare a direct superclass type, even <code>Enum&lt;</code><em>E</em><code>&gt;</code>.</p>
+</blockquote>
+<p>An enum class has no instances other than those defined by its enum constants. It is a compile-time error to attempt to explicitly instantiate an enum class (<a href="#jls-15.9.1">15.9.1</a>).</p>
+<blockquote>
+<p>In addition to the compile-time error, three further mechanisms ensure that no instances of an enum class exist beyond those defined by its enum constants:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li><p>The <code>final</code> <code>clone</code> method in <code>Enum</code> ensures that enum constants can never be cloned.</p></li>
+<li><p>Reflective instantiation of enum classes is prohibited.</p></li>
+<li><p>Special treatment by the serialization mechanism ensures that duplicate instances are never created as a result of deserialization.</p></li>
+</ul>
+</blockquote>
+<h4 id="jls-8.9.1">8.9.1 Enum Constants</h4>
+<p>The body of an enum declaration may contain <em>enum constants</em>. An enum constant defines an instance of the enum class.</p>
+<dl>
+<dt><em>EnumBody:</em></dt>
+<dd><code>{</code> [<em>EnumConstantList</em>] [<code>,</code>] [<em>EnumBodyDeclarations</em>] <code>}</code>
+</dd>
+<dt><em>EnumConstantList:</em></dt>
+<dd><em>EnumConstant</em> {<code>,</code> <em>EnumConstant</em>}
+</dd>
+<dt><em>EnumConstant:</em></dt>
+<dd>{<em>EnumConstantModifier</em>} <em>Identifier</em> [<code>(</code> [<em>ArgumentList</em>] <code>)</code>] [<em>ClassBody</em>]
+</dd>
+<dt><em>EnumConstantModifier:</em></dt>
+<dd><em>Annotation</em>
+</dd>
+</dl>
+<blockquote>
+<p>The following production from <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.12">15.12</a> is shown here for convenience:</p>
+</blockquote>
+<blockquote>
+<dl>
+<dt><em>ArgumentList:</em></dt>
+<dd><em>Expression</em> {<code>,</code> <em>Expression</em>}
+</dd>
+</dl>
+</blockquote>
+<p>The rules for annotation modifiers on an enum constant declaration are specified in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7.4">9.7.4</a> and <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7.5">9.7.5</a>.</p>
+<p>The <em>Identifier</em> in a <em>EnumConstant</em> may be used in a name to refer to the enum constant.</p>
+<p>The scope and shadowing of an enum constant is specified in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.3">6.3</a> and <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.4">6.4</a>.</p>
+<p>An enum constant may be followed by arguments, which are passed to the constructor of the enum when the constant is created during class initialization as described later in this section. The constructor to be invoked is chosen using the normal rules of overload resolution (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.12.2">15.12.2</a>). If the arguments are omitted, an empty argument list is assumed.</p>
+<p><del>The optional class body of an enum constant implicitly defines an anonymous class declaration (<a href="#jls-15.9.5">15.9.5</a>) that extends the immediately enclosing enum type.</del> <strong>The optional class body of an enum constant implicitly defines an anonymous class (<a href="#jls-15.9.5">15.9.5</a>) that (i) is <code>final</code>, and (ii) extends the immediately enclosing <code>sealed</code> enum class.</strong> The class body is governed by the usual rules of anonymous classes; in particular it cannot contain any constructors. Instance methods declared in these class bodies may be invoked outside the enclosing enum class only if they override accessible methods in the enclosing enum class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.8">8.4.8</a>).</p>
+<p>Because there is only one instance of each enum constant, it is permitted to use the <code>==</code> operator in place of the <code>equals</code> method when comparing two object references if it is known that at least one of them refers to an enum constant.</p>
+<blockquote>
+<p>The <code>equals</code> method in <code>Enum</code> is a <code>final</code> method that merely invokes <code>super.equals</code> on its argument and returns the result, thus performing an identity comparison.</p>
+</blockquote>
+<h2 id="jls-9">Chapter 9: Interfaces</h2>
+<p>An interface declaration defines a new interface that can be implemented by one or more classes. Programs can use interfaces to provide a common supertype for otherwise unrelated classes, and to make it unnecessary for related classes to share a common <code>abstract</code> superclass.</p>
+<p>Interfaces have no instance variables, and typically declare one or more <code>abstract</code> methods; otherwise unrelated classes can implement an interface by providing implementations for its <code>abstract</code> methods. Interfaces may not be directly instantiated.</p>
+<p>A <em>top level interface</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.6">7.6</a>) is an interface declared directly in a compilation unit.</p>
+<p>A <em>nested interface</em> is any interface whose declaration occurs within the body of another class or interface declaration. A nested interface may be a member interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.5">9.5</a>) or a local interface (<a href="#jls-14.3">14.3</a>).</p>
+<p>An <em>annotation interface</em> (<a href="#jls-9.6">9.6</a>) is an interface declared with distinct syntax, intended to be implemented by reflective representations of <em>annotations</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7">9.7</a>).</p>
+<p>This chapter discusses the common semantics of all interfaces. Details that are specific to particular kinds of interfaces are discussed in the sections dedicated to these constructs.</p>
+<p>An interface may be declared to be a <em>direct extension</em> of one or more other interfaces, meaning that it inherits all the member classes and interfaces, instance methods, and <code>static</code> fields of the interfaces it extends, except for any members that it may override or hide.</p>
+<p>A class may be declared to <em>directly implement</em> one or more interfaces (<a href="#jls-8.1.5">8.1.5</a>), meaning that any instance of the class implements all the <code>abstract</code> methods specified by the interface or interfaces. A class necessarily implements all the interfaces that its direct superclasses and direct superinterfaces do. This (multiple) interface inheritance allows objects to support (multiple) common behaviors without sharing a superclass.</p>
+<div class="inserted">
+<p>Unlike a class, an interface cannot be declared <code>final</code>. However, an interface may be declared <code>sealed</code> (<a href="#jls-9.1.1.4">9.1.1.4</a>), when there is a fixed set of classes and interfaces that may directly implement or extend the <code>sealed</code> interface.</p>
+</div>
+<p>A variable whose declared type is an interface type may have as its value a reference to any instance of a class which implements the specified interface. It is not sufficient that the class happen to implement all the <code>abstract</code> methods of the interface; the class or one of its superclasses must actually be declared to implement the interface, or else the class is not considered to implement the interface.</p>
+<h3 id="jls-9.1">9.1 Interface Declarations</h3>
+<p>An <em>interface declaration</em> specifies an interface. There are two kinds of interface declarations - <em>normal interface declarations</em> and <em>annotation interface declarations</em> (<a href="#jls-9.6">9.6</a>).</p>
+<dl>
+<dt><em>InterfaceDeclaration:</em></dt>
+<dd><em>NormalInterfaceDeclaration</em>
+</dd>
+<dd><em>AnnotationTypeDeclaration</em>
+</dd>
+<dt><em>NormalInterfaceDeclaration:</em></dt>
+<dd>{<em>InterfaceModifier</em>} <code>interface</code> <em>TypeIdentifier</em> [<em>TypeParameters</em>]<br />
+[<em>InterfaceExtends</em>] <strong>[<em>InterfacePermits</em>]</strong><br />
+<em>InterfaceBody</em>
+</dd>
+</dl>
+<p>The <em>TypeIdentifier</em> in an interface declaration specifies the name of the interface.</p>
+<p>It is a compile-time error if an interface has the same simple name as any of its enclosing classes or interfaces.</p>
+<p>The scope and shadowing of an interface declaration is specified in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.3">6.3</a> and <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.4">6.4</a>.</p>
+<h4 id="jls-9.1.1">9.1.1 Interface Modifiers</h4>
+<p>An interface declaration may include <em>interface modifiers</em>.</p>
+<dl>
+<dt><em>InterfaceModifier:</em></dt>
+<dd>(one of)
+</dd>
+<dd><em>Annotation</em> <code>public</code> <code>protected</code> <code>private</code>
+</dd>
+<dd><code>abstract</code> <code>static</code> <strong><code>sealed</code></strong> <strong><code>non-sealed</code></strong> <code>strictfp</code>
+</dd>
+</dl>
+<p>The rules concerning annotation modifiers for an interface declaration are specified in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7.4">9.7.4</a> and <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7.5">9.7.5</a>.</p>
+<p>The access modifier <code>public</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>) pertains only to top level interfaces (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.6">7.6</a>) and member interfaces (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.5">9.5</a>), not to local interfaces (<a href="#jls-14.3">14.3</a>).</p>
+<p>The access modifiers <code>protected</code> and <code>private</code> pertain only to member interfaces.</p>
+<p>The modifier <code>static</code> pertains only to member interfaces and local interfaces.</p>
+<p>It is a compile-time error if the same keyword appears more than once as a modifier for an interface declaration, or if a interface declaration has more than one of the access modifiers <code>public</code>, <code>protected</code>, and <code>private</code>.</p>
+<p><strong>It is a compile-time error if an interface is declared both <code>sealed</code> and <code>non-sealed</code>.</strong></p>
+<blockquote>
+<p>If two or more (distinct) interface modifiers appear in an interface declaration, then it is customary, though not required, that they appear in the order consistent with that shown above in the production for <em>InterfaceModifier</em>.</p>
+</blockquote>
+<h5 id="jls-9.1.1.4"><strong>9.1.1.4 <code>sealed</code> Interfaces</strong></h5>
+<div class="inserted">
+<p>An interface can be declared <code>sealed</code> when there is a known, non-empty, fixed set of direct subclasses and subinterfaces, and no further direct subclasses or subinterfaces are desired or required. A <code>sealed</code> interface <em>permits</em> a given set of direct subclasses and subinterfaces (<a href="#jls-9.1.4">9.1.4</a>).</p>
+<p>An interface that is not <code>sealed</code> is <em>freely extensible</em>. Most interfaces are freely extensible by default. An interface that directly extends a <code>sealed</code> interface (<a href="#jls-9.1.3">9.1.3</a>) is freely extensible only if it is declared <code>non-sealed</code>.</p>
+<p>It is a compile-time error if an interface has a <code>sealed</code> direct superinterface and is not declared <code>sealed</code> or <code>non-sealed</code>.</p>
+<p>It is a compile-time error if an interface has no <code>sealed</code> direct superinterface but is declared <code>non-sealed</code>.</p>
+</div>
+<h4 id="jls-9.1.3">9.1.3 Superinterfaces</h4>
+<p>If an <code>extends</code> clause is provided, then the interface being declared extends each of the specified interface types and therefore inherits the member classes, member interfaces, instance methods, and <code>static</code> fields of each of those interface types.</p>
+<p>The specified interface types are the <em>direct superinterface types</em> of the interface being declared.</p>
+<p>Any class that <code>implements</code> the declared interface is also considered to implement all the interfaces that this interface <code>extends</code>.</p>
+<dl>
+<dt><em>InterfaceExtends:</em></dt>
+<dd><code>extends</code> <em>InterfaceTypeList</em>
+</dd>
+</dl>
+<blockquote>
+<p>The following production from <a href="#jls-8.1.5">8.1.5</a> is shown here for convenience:</p>
+</blockquote>
+<blockquote>
+<dl>
+<dt><em>InterfaceTypeList:</em></dt>
+<dd><em>InterfaceType</em> {<code>,</code> <em>InterfaceType</em>}
+</dd>
+</dl>
+</blockquote>
+<p>Each <em>InterfaceType</em> in the <code>extends</code> clause of an interface declaration must name an accessible interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>), or a compile-time error occurs.</p>
+<p><strong>It is a compile-time error if any <em>InterfaceType</em> names an interface that is <code>sealed</code> (<a href="#jls-9.1.1.4">9.1.1.4</a>) and the current interface is not a permitted direct subinterface of that <code>sealed</code> interface (<a href="#jls-9.1.4">9.1.4</a>).</strong></p>
+<p>If an <em>InterfaceType</em> has type arguments, it must denote a well-formed parameterized type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.5">4.5</a>), and none of the type arguments may be wildcard type arguments, or a compile-time error occurs.</p>
+<p>One interface is a <em>direct superinterface</em> of another interface if the first interface is named by one of the direct superinterface types of the second interface.</p>
+<p>The <em>superinterface</em> relationship is the transitive closure of the direct superinterface relationship. An interface <em>I</em> is a superinterface of interface <em>K</em> if either of the following is true:</p>
+<ul>
+<li><p><em>I</em> is a direct superinterface of <em>K</em>.</p></li>
+<li><p>Where <em>J</em> is a direct superinterface of <em>K</em>, <em>I</em> is a superinterface of <em>J</em>, applying this definition recursively.</p></li>
+</ul>
+<p>An interface is said to be a <em>direct subinterface</em> of its direct superinterface, and a <em>subinterface</em> of each of its superinterfaces.</p>
+<p>While every class is an extension of class <code>Object</code>, there is no single interface of which all interfaces are extensions.</p>
+<p>An interface <em>I</em> <em>directly depends</em> on a class or interface <em>A</em> if <em>A</em> is mentioned in the <code>extends</code> clause of <em>I</em> either as a superinterface or as a qualifier in the fully qualified form of a superinterface name.</p>
+<p>An interface <em>I</em> <em>depends</em> on a class or interface <em>A</em> if any of the following is true:</p>
+<ul>
+<li><p><em>I</em> directly depends on <em>A</em>.</p></li>
+<li><p><em>I</em> directly depends on a class <em>C</em> that depends on <em>A</em> (<a href="#jls-8.1.5">8.1.5</a>).</p></li>
+<li><p><em>I</em> directly depends on an interface <em>J</em> that depends on <em>A</em>, applying this definition recursively.</p></li>
+</ul>
+<p>It is a compile-time error if an interface depends on itself.</p>
+<p>If circularly declared interfaces are detected at run time, as interfaces are loaded, then a <code>ClassCircularityError</code> is thrown (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-12.html#jls-12.2.1">12.2.1</a>).</p>
+<h4 id="jls-9.1.4"><strong>9.1.4 Permitted Direct Subclasses and Subinterfaces</strong></h4>
+<div class="editorial">
+<p>This is a new subsection. The existing subsection 9.1.4 &quot;Interface Body and Member Declarations&quot; is renumbered to 9.1.5, and all existing references to it must be renumbered.</p>
+</div>
+<div class="inserted">
+<p>The optional <code>permits</code> clause in an interface declaration lists the classes and interfaces that are permitted to directly implement or extend a <code>sealed</code> interface (<a href="#jls-9.1.1.4">9.1.1.4</a>).</p>
+<dl>
+<dt><em>InterfacePermits</em></dt>
+<dd><code>permits</code> <em>TypeName</em> {<code>,</code> <em>TypeName</em> }
+</dd>
+</dl>
+<p>It is a compile-time error if an interface declaration has a <code>permits</code> clause but the declared interface is not <code>sealed</code>.</p>
+<p>Every <em>TypeName</em> in the <code>permits</code> clause of an interface declaration must denote an accessible class or interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>); otherwise a compile-time error occurs.</p>
+<p>It is a compile-time error if a class or interface is named more than once in a single <code>permits</code> clause. This is true even if the class or interface is named in different ways.</p>
+<blockquote>
+<p>The canonical name of a class or interface does not need to be used in a <code>permits</code> clause, but a <code>permits</code> clause can only name a class or interface once. For example, the following program fails to compile:</p>
+<pre><code>package p;
+sealed interface I permits C, D, p.C {} // Error!
+non-sealed class C implements I {}
+non-sealed class D implements I {}</code></pre>
+</blockquote>
+<p>It is a compile-time error if any class or interface named in the <code>permits</code> clause is not a direct subclass (<a href="#jls-8.1.5">8.1.5</a>) or a direct subinterface (<a href="#jls-9.1.3">9.1.3</a>) of the declared interface.</p>
+<p>If a <code>sealed</code> interface <em>I</em> belongs to a named module, then every class or interface named in the <code>permits</code> clause of the declaration of <em>I</em> must belong to the same module as <em>I</em>; otherwise a compile-time error occurs.</p>
+<p>If a <code>sealed</code> interface <em>I</em> belongs to an unnamed module, then every class or interface named in the <code>permits</code> clause of the declaration of <em>I</em> must belong to the same package as <em>I</em>; otherwise a compile-time error occurs.</p>
+<blockquote>
+<p>Sealed interface hierarchies are not intended to be declared across different maintenance domains. Modules cannot depend on each other in a circular fashion, yet a <code>sealed</code> interface and its direct subclasses and subinterfaces need to refer to each other in a circular fashion (in <code>permits</code>, <code>implements</code> and <code>extends</code> clauses, respectively). Necessarily, therefore, a <code>sealed</code> interface and its direct subclasses and subinterfaces must co-exist in the same module. In an unnamed module, a <code>sealed</code> interface and its direct subclasses and subinterfaces must belong to the same package.</p>
+</blockquote>
+<p>The <em>permitted direct subclasses and subinterfaces</em> of a <code>sealed</code> interface <em>I</em> are the classes and interfaces listed by its <code>permits</code> clause, or, if <em>I</em> lacks a <code>permits</code> clause, each top level or member class or interface declared in the same compilation unit as <em>I</em> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.3">7.3</a>) which has a canonical name (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.7">6.7</a>) and whose direct superinterfaces include <em>I</em>.</p>
+<p>It is a compile-time error if the declaration of a <code>sealed</code> interface <em>I</em> lacks a <code>permits</code> clause and has no permitted direct subclasses or subinterfaces.</p>
+</div>
+<h3 id="jls-9.6">9.6 Annotation Interfaces</h3>
+<p>An <em>annotation interface declaration</em> specifies an <em>annotation interface</em>, a specialized kind of interface. To distinguish an annotation interface declaration from a normal interface declaration, the keyword <code>interface</code> is preceded by an at sign (<code>@</code>).</p>
+<dl>
+<dt><em>AnnotationInterfaceDeclaration:</em></dt>
+<dd>{<em>InterfaceModifier</em>} <code>@</code> <code>interface</code> <em>TypeIdentifier</em> <em>AnnotationInterfaceBody</em>
+</dd>
+</dl>
+<blockquote>
+<p>Note that the at sign (<code>@</code>) and the keyword <code>interface</code> are distinct tokens. It is possible to separate them with whitespace, but this is discouraged as a matter of style.</p>
+</blockquote>
+<p>Unless explicitly modified in this section and its subsections, all of the rules that apply to normal interface declarations (<a href="#jls-9.1">9.1</a>) apply to annotation interface declarations.</p>
+<blockquote>
+<p>For example, annotation interface declarations have the same rules for <del>modifiers and</del> scope as normal interface declarations.</p>
+</blockquote>
+<p><strong>It is a compile-time error if an annotation interface declaration has the modifier <code>sealed</code> (<a href="#jls-9.1.1.4">9.1.1.4</a>).</strong></p>
+<p>An annotation interface declaration may specify a top level interface or a member interface, but not a local interface (<a href="#jls-14.3">14.3</a>).</p>
+<blockquote>
+<p>An annotation interface declaration is not permitted syntactically to appear within a block, by virtue of the <em>LocalClassOrInterfaceDeclaration</em> production in <a href="#jls-14.3">14.3</a>.</p>
+</blockquote>
+<p>It is a compile-time error if an annotation interface declaration appears directly or indirectly in the body of a local class, local interface, or anonymous class declaration (<a href="#jls-14.3">14.3</a>, <a href="#jls-15.9.5">15.9.5</a>).</p>
+<blockquote>
+<p>This rule, together with the syntactic restriction on annotation interface declarations noted above, ensures that an annotation interface always has a canonical name (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.7">6.7</a>). Having such a name is important because the purpose of an annotation interface is to be used by annotations in other compilation units. Since a local class or interface does not have a canonical name, an annotation interface declared anywhere within its syntactic body (if that were allowed) would not have a canonical name either.</p>
+</blockquote>
+<blockquote>
+<p>The following code shows the effect of this rule and the related syntactic restriction:</p>
+</blockquote>
+<blockquote>
+<pre><code>class C {
+    @interface A1 {}  /* Legal: an annotation interface can be a
+                         member interface */
+
+    void m() {
+        @interface A2 {}  /* Illegal: an annotation interface cannot
+                             be a local interface */
+
+        class D {
+            @interface A3 {}  /* Illegal: an annotation interface
+                                 cannot be specified anywhere within
+                                 the body of local class D */
+
+            class E {
+                @interface A4 {}
+                  /* Illegal: an annotation interface cannot be
+                     specified anywhere within the body of local class
+                     D, even as a member of a class E nested in D */
+            }
+        }
+    }
+}</code></pre>
+</blockquote>
+<p>An annotation interface is never generic (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.1.2">9.1.2</a>).</p>
+<blockquote>
+<p>Unlike a normal interface declaration, an annotation interface declaration cannot declare any type variables, by virtue of the <em>AnnotationTypeDeclaration</em> production.</p>
+</blockquote>
+<p>The direct superinterface type of an annotation interface is always <code>java.lang.annotation.Annotation</code> (<a href="#jls-9.1.3">9.1.3</a>).</p>
+<blockquote>
+<p>Unlike a normal interface declaration, an annotation interface declaration cannot choose the direct superinterface type via an <code>extends</code> clause, by virtue of the <em>AnnotationTypeDeclaration</em> production.</p>
+</blockquote>
+<blockquote>
+<p>A consequence of the fact that an annotation interface declaration does not explicitly specify a superinterface type via <code>extends</code> is that a subinterface of an annotation interface is never itself an annotation interface, since the subinterface's declaration necessarily uses an <code>extends</code> clause. Similarly, <code>java.lang.annotation.Annotation</code> is not itself an annotation interface.</p>
+</blockquote>
+<p>An annotation interface inherits several methods from <code>java.lang.annotation.Annotation</code>, including the implicitly declared methods corresponding to the instance methods of <code>Object</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.2">9.2</a>), yet these methods do not define elements of the annotation interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.6.1">9.6.1</a>).</p>
+<blockquote>
+<p>Because these methods do not define elements of the annotation interface, it is illegal to use them in annotations conforming to the annotation interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.7">9.7</a>). Without this rule, we could not ensure that elements were of the types representable in annotations, or that accessor methods for them would be available.</p>
+</blockquote>
+<h3 id="jls-9.8">9.8 Functional Interfaces</h3>
+<p>A <em>functional interface</em> is an interface that <strong>is not declared <code>sealed</code> and</strong> has just one abstract method (aside from the methods of <code>Object</code>), and thus represents a single function contract. This &quot;single&quot; method may take the form of multiple abstract methods with override-equivalent signatures inherited from superinterfaces; in this case, the inherited methods logically represent a single method.</p>
+<p>For an interface <em>I</em> <strong>that is not declared <code>sealed</code></strong>, let <em>M</em> be the set of <code>abstract</code> methods that are members of <em>I</em> that do not have the same signature as any <code>public</code> instance method of the class <code>Object</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.3.2">4.3.2</a>). Then, <em>I</em> is a <em>functional interface</em> if there exists a method <em>m</em> in <em>M</em> for which both of the following are true:</p>
+<ul>
+<li><p>The signature of <em>m</em> is a subsignature (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.2">8.4.2</a>) of every method's signature in <em>M</em>.</p></li>
+<li><p><em>m</em> is return-type-substitutable (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4.5">8.4.5</a>) for every method in <em>M</em>.</p></li>
+</ul>
+<p>In addition to the usual process of creating an interface instance by declaring and instantiating a class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9">15.9</a>), instances of functional interfaces can be created with method reference expressions and lambda expressions (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.13">15.13</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.27">15.27</a>).</p>
+<blockquote>
+<p>The definition of <em>functional interface</em> excludes methods in an interface that are also <code>public</code> methods in <code>Object</code>. This is to allow functional treatment of an interface like <code>java.util.Comparator&lt;T&gt;</code> that declares multiple <code>abstract</code> methods of which only one is really &quot;new&quot; - <code>int compare(T,T)</code>. The other - <code>boolean equals(Object)</code> - is an explicit declaration of an <code>abstract</code> method that would otherwise be implicitly declared in the interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.2">9.2</a>) and automatically implemented by every class that <code>implements</code> the interface.</p>
+</blockquote>
+<blockquote>
+<p>Note that if non-<code>public</code> methods of <code>Object</code>, such as <code>clone()</code>, are explicitly declared in an interface as <code>public</code>, they are <em>not</em> automatically implemented by every class that <code>implements</code> the interface. The implementation inherited from <code>Object</code> is <code>protected</code> while the interface method is <code>public</code>, so the only way to implement the interface would be for a class to override the non-<code>public</code> <code>Object</code> method with a <code>public</code> method.</p>
+</blockquote>
+<div class="example">
+<p>Example 9.8-1. Functional Interfaces</p>
+<p>A simple example of a functional interface is:</p>
+<pre><code>interface Runnable {
+    void run();
+}</code></pre>
+<p>The following interface is not functional because it declares nothing which is not already a member of <code>Object</code>:</p>
+<pre><code>interface NonFunc {
+    boolean equals(Object obj);
+}</code></pre>
+<p>However, its subinterface can be functional by declaring an <code>abstract</code> method which is not a member of <code>Object</code>:</p>
+<pre><code>interface Func extends NonFunc {
+    int compare(String o1, String o2);
+}</code></pre>
+<p>Similarly, the well known interface <code>java.util.Comparator&lt;T&gt;</code> is functional because it has one <code>abstract</code> non-<code>Object</code> method:</p>
+<pre><code>interface Comparator&lt;T&gt; {
+    boolean equals(Object obj);
+    int compare(T o1, T o2);
+}</code></pre>
+<p>The following interface is not functional because while it only declares one <code>abstract</code> method which is not a member of <code>Object</code>, it declares <em>two</em> <code>abstract</code> methods which are not <code>public</code> members of <code>Object</code>:</p>
+<pre><code>interface Foo {
+    int m();
+    Object clone();
+}</code></pre>
+</div>
+<div class="example">
+<p>Example 9.8-2. Functional Interfaces and Erasure</p>
+<p>In the following interface hierarchy, <code>Z</code> is a functional interface because while it inherits two <code>abstract</code> methods which are not members of <code>Object</code>, they have the same signature, so the inherited methods logically represent a single method:</p>
+<pre><code>interface X { int m(Iterable&lt;String&gt; arg); }
+interface Y { int m(Iterable&lt;String&gt; arg); }
+interface Z extends X, Y {}</code></pre>
+<p>Similarly, <code>Z</code> is a functional interface in the following interface hierarchy because <code>Y.m</code> is a subsignature of <code>X.m</code> and is return-type-substitutable for <code>X.m</code>:</p>
+<pre><code>interface X { Iterable m(Iterable&lt;String&gt; arg); }
+interface Y { Iterable&lt;String&gt; m(Iterable arg); }
+interface Z extends X, Y {}</code></pre>
+<p>The definition of <em>functional interface</em> respects the fact that an interface cannot have two members which are not subsignatures of each other, yet have the same erasure (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.4.1.2">9.4.1.2</a>). Thus, in the following three interface hierarchies where <code>Z</code> causes a compile-time error, <code>Z</code> is not a functional interface: (because none of its <code>abstract</code> members are subsignatures of all other <code>abstract</code> members)</p>
+<pre><code>interface X { int m(Iterable&lt;String&gt; arg); }
+interface Y { int m(Iterable&lt;Integer&gt; arg); }
+interface Z extends X, Y {}
+
+interface X { int m(Iterable&lt;String&gt; arg, Class c); }
+interface Y { int m(Iterable arg, Class&lt;?&gt; c); }
+interface Z extends X, Y {}
+
+interface X&lt;T&gt; { void m(T arg); }
+interface Y&lt;T&gt; { void m(T arg); }
+interface Z&lt;A, B&gt; extends X&lt;A&gt;, Y&lt;B&gt; {}</code></pre>
+<p>Similarly, the definition of &quot;functional interface&quot; respects the fact that an interface may only have methods with override-equivalent signatures if one is return-type-substitutable for all the others. Thus, in the following interface hierarchy where <code>Z</code> causes a compile-time error, <code>Z</code> is not a functional interface: (because none of its <code>abstract</code> members are return-type-substitutable for all other <code>abstract</code> members)</p>
+<pre><code>interface X { long m(); }
+interface Y { int  m(); }
+interface Z extends X, Y {}</code></pre>
+<p>In the following example, the declarations of <code>Foo&lt;T,N&gt;</code> and <code>Bar</code> are legal: in each, the methods called <code>m</code> are not subsignatures of each other, but do have different erasures. Still, the fact that the methods in each are not subsignatures means <code>Foo&lt;T,N&gt;</code> and <code>Bar</code> are not functional interfaces. However, <code>Baz</code> is a functional interface because the methods it inherits from <code>Foo&lt;Integer,Integer&gt;</code> have the same signature and so logically represent a single method.</p>
+<pre><code>interface Foo&lt;T, N extends Number&gt; {
+    void m(T arg);
+    void m(N arg);
+}
+interface Bar extends Foo&lt;String, Integer&gt; {}
+interface Baz extends Foo&lt;Integer, Integer&gt; {}</code></pre>
+<p>Finally, the following examples demonstrate the same rules as above, but with generic methods:</p>
+<pre><code>interface Exec { &lt;T&gt; T execute(Action&lt;T&gt; a); }
+  // Functional
+
+interface X { &lt;T&gt; T execute(Action&lt;T&gt; a); }
+interface Y { &lt;S&gt; S execute(Action&lt;S&gt; a); }
+interface Exec extends X, Y {}
+  // Functional: signatures are logically &quot;the same&quot;
+
+interface X { &lt;T&gt;   T execute(Action&lt;T&gt; a); }
+interface Y { &lt;S,T&gt; S execute(Action&lt;S&gt; a); }
+interface Exec extends X, Y {}
+  // Error: different signatures, same erasure</code></pre>
+</div>
+<div class="example">
+<p>Example 9.8-3. Generic Functional Interfaces</p>
+<p>Functional interfaces can be generic, such as <code>java.util.function.Predicate&lt;T&gt;</code>. Such a functional interface may be parameterized in a way that produces distinct <code>abstract</code> methods - that is, multiple methods that cannot be legally overridden with a single declaration. For example:</p>
+<pre><code>interface I    { Object m(Class c); }
+interface J&lt;S&gt; { S m(Class&lt;?&gt; c); }
+interface K&lt;T&gt; { T m(Class&lt;?&gt; c); }
+interface Functional&lt;S,T&gt; extends I, J&lt;S&gt;, K&lt;T&gt; {}</code></pre>
+<p><code>Functional&lt;S,T&gt;</code> is a functional interface - <code>I.m</code> is return-type-substitutable for <code>J.m</code> and <code>K.m</code> - but the functional interface type <code>Functional&lt;String,Integer&gt;</code> clearly cannot be implemented with a single method. However, other parameterizations of <code>Functional&lt;S,T&gt;</code> which are functional interface types are possible.</p>
+</div>
+<p>The declaration of a functional interface allows a <em>functional interface type</em> to be used in a program. There are four kinds of functional interface type:</p>
+<ul>
+<li><p>The type of a non-generic (<a href="#jls-6.1">6.1</a>) functional interface</p></li>
+<li><p>A parameterized type that is a parameterization (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.5">4.5</a>) of a generic functional interface</p></li>
+<li><p>The raw type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.8">4.8</a>) of a generic functional interface</p></li>
+<li><p>An intersection type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.9">4.9</a>) that induces a notional functional interface</p></li>
+</ul>
+<blockquote>
+<p>In special circumstances, it is useful to treat an intersection type as a functional interface type. Typically, this will look like an intersection of a functional interface type with one or more marker interface types, such as <code>Runnable &amp; java.io.Serializable</code>. Such an intersection can be used in casts (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.16">15.16</a>) that force a lambda expression to conform to a certain type. If one of the interface types in the intersection is <code>java.io.Serializable</code>, special run-time support for serialization is triggered (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.27.4">15.27.4</a>).</p>
+</blockquote>
+<h2 id="jls-13">Chapter 13: Binary Compatibility</h2>
+<h3 id="jls-13.4">13.4 Evolution of Classes</h3>
+<h4 id="jls-13.4.2">13.4.2 <strong><code>sealed</code>, <code>non-sealed</code> and</strong> <code>final</code> Classes</h4>
+<div class="editorial">
+<p>The discussion about <code>final</code> classes has been moved to a new subsection <a href="#jls-13.4.2.3">13.4.2.3</a>.</p>
+</div>
+<h5 id="jls-13.4.2.1"><strong>13.4.2.1 <code>sealed</code> Classes</strong></h5>
+<div class="inserted">
+<p>If a class that was freely extensible (<a href="#jls-8.1.1.2">8.1.1.2</a>) is changed to be declared <code>sealed</code>, then an <code>IncompatibleClassChangeError</code> is thrown if a binary of a pre-existing subclass of this class is loaded that is not contained in its <code>permits</code> clause; such a change is not recommended for widely distributed classes.</p>
+<p>Changing a class that was declared <code>final</code> to be declared <code>sealed</code> does not break compatibility with pre-existing binaries.</p>
+<p>Removing the <code>sealed</code> modifier from a class that does not have a <code>sealed</code> direct superclass or a <code>sealed</code> direct superinterface does not break compatibility with pre-existing binaries.</p>
+<blockquote>
+<p>If a <code>sealed</code> class <em>C</em> did have a <code>sealed</code> direct superclass or a <code>sealed</code> direct superinterface, then simply removing the <code>sealed</code> modifier would mean that <em>C</em> would not compile as every class with a <code>sealed</code> direct superclass or a <code>sealed</code> direct superinterface must be either <code>final</code>, <code>sealed</code> or <code>non-sealed</code> (<a href="#jls-8.1.1.2">8.1.1.2</a>).</p>
+</blockquote>
+</div>
+<h5 id="jls-13.4.2.2"><strong>13.4.2.2 <code>non-sealed</code> Classes</strong></h5>
+<div class="inserted">
+<p>Changing a class that was declared <code>sealed</code> to be declared <code>non-sealed</code> does not break compatibility with pre-existing binaries.</p>
+<p>Changing a class that was declared <code>final</code> to be declared <code>non-sealed</code> does not break compatibility with pre-existing binaries.</p>
+<blockquote>
+<p>A <code>non-sealed</code> class <em>C</em> must have a <code>sealed</code> direct superclass or a <code>sealed</code> direct superinterface (<a href="#jls-8.1.1.2">8.1.1.2</a>). Simply removing the <code>non-sealed</code> modifier from <em>C</em> would mean that <em>C</em> would not compile as every class with a <code>sealed</code> direct superclass or a <code>sealed</code> direct superinterface must be either <code>final</code>, <code>sealed</code> or <code>non-sealed</code> (<a href="#jls-8.1.1.2">8.1.1.2</a>).</p>
+</blockquote>
+</div>
+<h5 id="jls-13.4.2.3"><strong>13.4.2.3 <code>final</code> Classes</strong></h5>
+<p>If a class that was not declared <code>final</code> is changed to be declared <code>final</code>, then a <code>VerifyError</code> is thrown if a binary of a pre-existing subclass of this class is loaded, because <code>final</code> classes can have no subclasses; such a change is not recommended for widely distributed classes.</p>
+<p><del>Changing a class that is declared <code>final</code> to no longer be declared <code>final</code> does not break compatibility with pre-existing binaries.</del></p>
+<div class="inserted">
+<p>Removing the <code>final</code> modifier from a class that does not have a <code>sealed</code> direct superclass or a <code>sealed</code> direct superinterface does not break compatibility with pre-existing binaries.</p>
+<blockquote>
+<p>If a <code>final</code> class <em>C</em> did have a <code>sealed</code> direct superclass or a <code>sealed</code> direct superinterface, then simply removing the <code>final</code> modifier would mean that <em>C</em> would not compile as every class with a <code>sealed</code> direct superclass or a <code>sealed</code> direct superinterface must be either <code>final</code>, <code>sealed</code> or <code>non-sealed</code> (<a href="#jls-8.1.1.2">8.1.1.2</a>).</p>
+</blockquote>
+</div>
+<h4 id="jls-13.4.5"><strong>13.4.5 Permitted Direct Subclasses</strong></h4>
+<div class="inserted">
+<p>Adding a class to the set of permitted direct subclasses of a <code>sealed</code> class (<a href="#jls-8.1.6">8.1.6</a>) will not break compatibility with pre-existing binaries.</p>
+<p>If a class is removed from the set of permitted direct subclasses of a <code>sealed</code> class (<a href="#jls-8.1.6">8.1.6</a>) then an <code>IncompatibleClassChangeError</code> is thrown if the pre-existing binary of the removed class is loaded.</p>
+</div>
+<h3 id="jls-13.5">13.5 Evolution of Interfaces</h3>
+<div class="editorial">
+<p>Existing section 13.5.2 is renumbered as 13.5.3. Existing sections 13.5.3 - 13.5.7 are renumbered as 13.5.5 - 13.5.9.</p>
+</div>
+<h4 id="jls-13.5.2">13.5.2 <strong><code>sealed</code> and <code>non-sealed</code> Interfaces</strong></h4>
+<div class="inserted">
+<p>If an interface that was freely extensible (<a href="#jls-9.1.1.4">9.1.1.4</a>) is changed to be declared <code>sealed</code>, then an <code>IncompatibleClassChangeError</code> is thrown if a binary of a pre-existing subclass or subinterface of this interface is loaded that is not contained in its <code>permits</code> clause; such a change is not recommended for widely distributed classes.</p>
+<p>Removing the <code>sealed</code> modifier from an interface that does not have a <code>sealed</code> direct superinterface does not break compatibility with pre-existing binaries.</p>
+<blockquote>
+<p>If a <code>sealed</code> interface <em>I</em> did have a <code>sealed</code> direct superinterface, then simply removing the <code>sealed</code> modifier from <em>I</em> would mean that <em>I</em> would not compile as every interface with a <code>sealed</code> direct superinterface must be <code>sealed</code> or <code>non-sealed</code> (<a href="#jls-9.1.1.4">9.1.1.4</a>).</p>
+</blockquote>
+<p>Changing an interface that is declared <code>sealed</code> to be declared <code>non-sealed</code> does not break compatibility with pre-existing binaries.</p>
+<blockquote>
+<p>A <code>non-sealed</code> interface <em>I</em> must have a <code>sealed</code> direct superinterface (<a href="#jls-9.1.1.4">9.1.1.4</a>). Simply removing the <code>non-sealed</code> modifier from <em>I</em> would mean that <em>I</em> would not compile as every interface with a <code>sealed</code> direct superinterface must be <code>sealed</code> or <code>non-sealed</code> (<a href="#jls-9.1.1.4">9.1.1.4</a>).</p>
+</blockquote>
+</div>
+<h4 id="jls-13.5.4">13.5.4 <strong>Permitted Direct Subclasses and Subinterfaces</strong></h4>
+<div class="inserted">
+<p>Adding a class or interface to the set of permitted direct subclasses or subinterfaces, respectively, of a <code>sealed</code> interface (<a href="#jls-9.1.4">9.1.4</a>) will not break compatibility with pre-existing binaries.</p>
+<p>If a class or interface is removed from the set of permitted direct subclasses or subinterfaces of a <code>sealed</code> interface (<a href="#jls-9.1.4">9.1.4</a>) then an <code>IncompatibleClassChangeError</code> is thrown if the pre-existing binary of the removed class or interface is loaded.</p>
+</div>
+<h2 id="jls-14">Chapter 14: Blocks and Statements</h2>
+<h3 id="jls-14.3">14.3 Local Class and Interface Declarations</h3>
+<p>A <em>local class</em> is a nested class (<a href="#jls-8">8</a>) whose declaration is immediately contained by a block (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.2">14.2</a>).</p>
+<p>A <em>local interface</em> is a nested interface (<a href="#jls-9">9</a>) whose declaration is immediately contained by a block.</p>
+<dl>
+<dt><em>LocalClassOrInterfaceDeclaration:</em></dt>
+<dd><em>ClassDeclaration</em>
+</dd>
+<dd><em>NormalInterfaceDeclaration</em>
+</dd>
+</dl>
+<blockquote>
+<p>The following productions are shown here for convenience:</p>
+</blockquote>
+<blockquote>
+<dl>
+<dt><em>ClassDeclaration:</em></dt>
+<dd><em>NormalClassDeclaration</em>
+</dd>
+<dd><em>EnumDeclaration</em>
+</dd>
+<dd><em>RecordDeclaration</em>
+</dd>
+<dt><em>NormalClassDeclaration:</em></dt>
+<dd>{<em>ClassModifier</em>} <code>class</code> <em>TypeIdentifier</em> [<em>TypeParameters</em>]<br />
+[<em>ClassExtends</em>] [<em>ClassImplements</em>] <strong>[<em>ClassPermits</em>]</strong><br />
+<em>ClassBody</em>
+</dd>
+<dt><em>EnumDeclaration:</em></dt>
+<dd>{<em>ClassModifier</em>} <code>enum</code> <em>TypeIdentifier</em> [<em>ClassImplements</em>] <em>EnumBody</em>
+</dd>
+<dt><em>NormalInterfaceDeclaration:</em></dt>
+<dd>{<em>InterfaceModifier</em>} <code>interface</code> <em>TypeIdentifier</em> [<em>TypeParameters</em>]<br />
+[<em>InterfaceExtends</em>] <strong>[<em>InterfacePermits</em>]</strong><br />
+<em>InterfaceBody</em>
+</dd>
+</dl>
+</blockquote>
+<p>Local class and interface declarations may be intermixed freely with statements (including local variable declaration statements) in the containing block.</p>
+<p>It is a compile-time error if a local class or interface declaration has any of the access modifiers <code>public</code>, <code>protected</code>, or <code>private</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>).</p>
+<p>It is a compile-time error if a local class or interface declaration has the modifier <code>static</code> (<a href="#jls-8.1.1">8.1.1</a>)<strong>, <code>sealed</code> or <code>non-sealed</code> (<a href="#jls-8.1.1.2">8.1.1.2</a>)</strong>.</p>
+<p>A local class may be a normal class (<a href="#jls-8.1">8.1</a>), an enum class (<a href="#jls-8.9">8.9</a>), or a record class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.10">8.10</a>). Every local normal class is an inner class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.3">8.1.3</a>). Every local enum class and local record class is implicitly <code>static</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.1.4">8.1.1.4</a>), and therefore not an inner class.</p>
+<p>A local interface may be a normal interface (<a href="#jls-9.1">9.1</a>), but not an annotation interface (<a href="#jls-9.6">9.6</a>). Every local interface is implicitly <code>static</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.1.1.3">9.1.1.3</a>).</p>
+<p>Like an anonymous class (<a href="#jls-15.9.5">15.9.5</a>), a local class or interface is not a member of any package, class, or interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.1">7.1</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>). Unlike an anonymous class, a local class or interface has a simple name (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.2">6.2</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.7">6.7</a>).</p>
+<p><strong>It is a compile-time error if the direct superclass or direct superinterface of a local class is <code>sealed</code> (<a href="#jls-8.1.1.2">8.1.1.2</a>).</strong></p>
+<p><strong>It is a compile-time error if the direct superinterface of a local interface is <code>sealed</code> (<a href="#jls-9.1.1.4">9.1.1.4</a>).</strong></p>
+<p>The scope and shadowing of a local class or interface declaration is specified in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.3">6.3</a> and <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.4">6.4</a>.</p>
+<div class="example">
+<p>Example 14.3-1. Local Class Declarations</p>
+<p>Here is an example that illustrates several aspects of the rules given above:</p>
+<pre><code>class Global {
+    class Cyclic {}
+
+    void foo() {
+        new Cyclic(); // create a Global.Cyclic
+        class Cyclic extends Cyclic {} // circular definition
+
+        {
+            class Local {}
+            {
+                class Local {} // compile-time error
+            }
+            class Local {} // compile-time error
+            class AnotherLocal {
+                void bar() {
+                    class Local {} // ok
+                }
+            }
+        }
+        class Local {} // ok, not in scope of prior Local
+    }
+}</code></pre>
+<p>The first statement of method <code>foo</code> creates an instance of the member class <code>Global.Cyclic</code> rather than an instance of the local class <code>Cyclic</code>, because the statement appears prior to the scope of the local class declaration.</p>
+<p>The fact that the scope of a local class declaration encompasses its whole declaration (not only its body) means that the definition of the local class <code>Cyclic</code> is indeed cyclic because it extends itself rather than <code>Global.Cyclic</code>. Consequently, the declaration of the local class <code>Cyclic</code> is rejected at compile time.</p>
+<p>Since local class names cannot be redeclared within the same method (or constructor or initializer, as the case may be), the second and third declarations of <code>Local</code> result in compile-time errors. However, <code>Local</code> can be redeclared in the context of another, more deeply nested, class such as <code>AnotherLocal</code>.</p>
+<p>The final declaration of <code>Local</code> is legal, since it occurs outside the scope of any prior declaration of <code>Local</code>.</p>
+</div>
+<h2 id="jls-15">Chapter 15: Expressions</h2>
+<h3 id="jls-15.9">15.9 Class Instance Creation Expressions</h3>
+<h4 id="jls-15.9.1">15.9.1 Determining the Class being Instantiated</h4>
+<p>If <em>ClassOrInterfaceTypeToInstantiate</em> ends with <em>TypeArguments</em> (rather than <code>&lt;&gt;</code>), then <em>ClassOrInterfaceTypeToInstantiate</em> must denote a well-formed parameterized type (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-4.html#jls-4.5">4.5</a>), or a compile-time error occurs.</p>
+<p>If <em>ClassOrInterfaceTypeToInstantiate</em> ends with <code>&lt;&gt;</code>, but the class or interface denoted by the <em>Identifier</em> in <em>ClassOrInterfaceTypeToInstantiate</em> is not generic, then a compile-time error occurs.</p>
+<p>If the class instance creation expression ends in a class body, then the class being instantiated is an anonymous class. Then:</p>
+<ul>
+<li><p>If the class instance creation expression is unqualified, then:</p>
+<p>The <em>Identifier</em> in <em>ClassOrInterfaceTypeToInstantiate</em> must denote either a class that is accessible, <del>non-<code>final</code></del> <strong>freely extensible (<a href="#jls-8.1.1.2">8.1.1.2</a>)</strong>, and not an enum class, or an interface that is accessible <strong>and freely extensible (<a href="#jls-9.1.1.4">9.1.1.4</a>)</strong> <del>(<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-6.html#jls-6.6">6.6</a>)</del>. Otherwise a compile-time error occurs.</p>
+<p>If the <em>Identifier</em> in <em>ClassOrInterfaceTypeToInstantiate</em> denotes a class, <em>C</em>, then an anonymous direct subclass of <em>C</em> is declared. If <em>TypeArguments</em> is present, then <em>C</em> has type arguments given by <em>TypeArguments</em>; if <code>&lt;&gt;</code> is present, then <em>C</em> will have its type arguments inferred in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9.3">15.9.3</a>; otherwise, <em>C</em> has no type arguments. The body of the subclass is the <em>ClassBody</em> given in the class instance creation expression. The class being instantiated is the anonymous subclass.</p>
+<p>If the <em>Identifier</em> in <em>ClassOrInterfaceTypeToInstantiate</em> denotes an interface, <em>I</em>, then an anonymous direct subclass of <code>Object</code> that implements <em>I</em> is declared. If <em>TypeArguments</em> is present, then <em>I</em> has type arguments given by <em>TypeArguments</em>; if <code>&lt;&gt;</code> is present, then <em>I</em> will have its type arguments inferred in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9.3">15.9.3</a>; otherwise, <em>I</em> has no type arguments. The body of the subclass is the <em>ClassBody</em> given in the class instance creation expression. The class being instantiated is the anonymous subclass.</p></li>
+<li><p>If the class instance creation expression is qualified, then:</p>
+<p>The <em>Identifier</em> in <em>ClassOrInterfaceTypeToInstantiate</em> must unambiguously denote an inner class that is accessible, <del>non-<code>final</code></del> <strong>freely extensible (<a href="#jls-8.1.1.2">8.1.1.2</a>)</strong>, not an enum class, and a member of the compile-time type of the <em>Primary</em> expression or the <em>ExpressionName</em>. Otherwise, a compile-time error occurs.</p>
+<p>Let the <em>Identifier</em> in <em>ClassOrInterfaceTypeToInstantiate</em> denote a class, <em>C</em>. An anonymous direct subclass of <em>C</em> is declared. If <em>TypeArguments</em> is present, then <em>C</em> has type arguments given by <em>TypeArguments</em>; if <code>&lt;&gt;</code> is present, then <em>C</em> will have its type arguments inferred in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9.3">15.9.3</a>; otherwise, <em>C</em> has no type arguments. The body of the subclass is the <em>ClassBody</em> given in the class instance creation expression. The class being instantiated is the anonymous subclass.</p></li>
+</ul>
+<p>If a class instance creation expression does not declare an anonymous class, then:</p>
+<ul>
+<li><p>If the class instance creation expression is unqualified, then:</p>
+<p>The <em>Identifier</em> in <em>ClassOrInterfaceTypeToInstantiate</em> must denote a class that is accessible, non-<code>abstract</code>, and not an enum class. Otherwise, a compile-time error occurs.</p>
+<p>The class being instantiated is specified by the <em>Identifier</em> in <em>ClassOrInterfaceTypeToInstantiate</em>. If <em>TypeArguments</em> is present, then the class has type arguments given by <em>TypeArguments</em>; if <code>&lt;&gt;</code> is present, then the class will have its type arguments inferred in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9.3">15.9.3</a>; otherwise, the class has no type arguments.</p></li>
+<li><p>If the class instance creation expression is qualified, then:</p>
+<p>The <em>ClassOrInterfaceTypeToInstantiate</em> must unambiguously denote an inner class that is accessible, non-<code>abstract</code>, not an enum class, and a member of the compile-time type of the <em>Primary</em> expression or the <em>ExpressionName</em>.</p>
+<p>The class being instantiated is specified by the <em>Identifier</em> in <em>ClassOrInterfaceTypeToInstantiate</em>. If <em>TypeArguments</em> is present, then the class has type arguments given by <em>TypeArguments</em>; if <code>&lt;&gt;</code> is present, then the class will have its type arguments inferred in <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9.3">15.9.3</a>; otherwise, the class has no type arguments.</p></li>
+</ul>
+<h4 id="jls-15.9.5">15.9.5 Anonymous Class Declarations</h4>
+<p>An anonymous class is implicitly declared by a class instance creation expression or by an enum constant that ends with a class body (<a href="#jls-8.9.1">8.9.1</a>).</p>
+<p>An anonymous class is never <code>abstract</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.1.1">8.1.1.1</a>).</p>
+<p><strong>An anonymous class is never <code>sealed</code> (<a href="#jls-8.1.1.2">8.1.1.2</a>), and thus has no permitted direct subclasses (<a href="#jls-8.1.6">8.1.6</a>).</strong></p>
+<p>An anonymous class declared by a class instance creation expression is never <code>final</code> (<a href="#jls-8.1.1.2">8.1.1.2</a>).</p>
+<p>An anonymous class declared by an enum constant is always <code>final</code>.</p>
+<blockquote>
+<p>An anonymous class being non-<code>final</code> is relevant in casting, in particular the narrowing reference conversion allowed for the cast operator (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-5.html#jls-5.5">5.5</a>). On the other hand, it is not relevant to subclassing, because it is impossible to declare a subclass of an anonymous class (an anonymous class cannot be named by an <code>extends</code> clause) despite the anonymous class being non-<code>final</code>.</p>
+</blockquote>
+<p>An anonymous class is always an inner class (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.1.3">8.1.3</a>).</p>
+<p>Like a local class or interface (<a href="#jls-14.3">14.3</a>), an anonymous class is not a member of any package, class, or interface (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-7.html#jls-7.1">7.1</a>, <a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>).</p>
+<p>The direct superclass type or direct superinterface type of an anonymous class declared by a class instance creation expression is given by the expression (<a href="#jls-15.9.1">15.9.1</a>), with type arguments inferred as necessary while choosing a constructor (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9.3">15.9.3</a>). If a direct superinterface type is given, the direct superclass type is <code>Object</code>.</p>
+<p>The direct superclass type of an anonymous class declared by an enum constant is the type of the declaring enum class.</p>
+<p>The <em>ClassBody</em> of the class instance creation expression or enum constant declares fields (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.3">8.3</a>), methods (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.4">8.4</a>), member classes (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.5">8.5</a>), member interfaces (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.1.1.3">9.1.1.3</a>), instance initializers (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.6">8.6</a>), and static initializers (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-8.html#jls-8.7">8.7</a>) of the anonymous class. The constructor of an anonymous class is always implicit (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-15.html#jls-15.9.5.1">15.9.5.1</a>).</p>
+<p>If a class instance creation expression with a <em>ClassBody</em> uses a diamond (<code>&lt;&gt;</code>) for the type arguments of the class to be instantiated, then for all non-<code>private</code> methods declared in the <em>ClassBody</em>, it is as if the method declaration is annotated with <code>@Override</code> (<a href="https://docs.oracle.com/javase/specs/jls/se16/html/jls-9.html#jls-9.6.4.4">9.6.4.4</a>).</p>
+<blockquote>
+<p>When <code>&lt;&gt;</code> is used, the inferred type arguments may not be as anticipated by the programmer. Consequently, the supertype of the anonymous class may not be as anticipated, and methods declared in the anonymous class may not override supertype methods as intended. Treating such methods as if annotated with <code>@Override</code> (if they are not explicitly annotated with <code>@Override</code>) helps avoid silently incorrect programs.</p>
+</blockquote>
+</main><footer class="legal-footer"><hr/><a href="../legal/copyright.html">Copyright</a> &copy; 1993, 2021, Oracle and/or its affiliates, 500 Oracle Parkway, Redwood Shores, CA 94065 USA.<br>All rights reserved. Use is subject to <a href="https://www.oracle.com/java/javase/terms/license/java17.0.1speclicense.html">license terms</a> and the <a href="https://www.oracle.com/technetwork/java/redist-137594.html">documentation redistribution policy</a>. <!-- Version 17.0.1+12-LTS-39 --></footer>
+</body>
+</html>

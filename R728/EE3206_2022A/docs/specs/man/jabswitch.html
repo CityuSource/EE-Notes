@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc,fixuphtml" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>The jabswitch Command</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../../resources/jdk-default.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">The jabswitch Command</h1>
+</header>
+<nav id="TOC" title="Table Of Contents">
+<ul>
+<li><a href="#name">Name</a></li>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#options">Options</a></li>
+<li><a href="#description">Description</a></li>
+</ul>
+</nav>
+<main><h2 id="name">Name</h2>
+<p>jabswitch - enable or disable the Java Access Bridge</p>
+<h2 id="synopsis">Synopsis</h2>
+<p><code>jabswitch</code> [ -enable|/enable | -disable|/disable | -version|/version | -?|/? ]</p>
+<h2 id="options">Options</h2>
+<p><code>-enable</code> or <code>/enable</code> : Enables the Java Access Bridge</p>
+<p><code>-disable</code> or <code>/disable</code> : Disables the Java Access Bridge</p>
+<p><code>-version</code> or <code>/version</code> : Displays version information for the <code>jabswitch</code> command.</p>
+<p><code>-?</code> or <code>/?</code> : Displays usage information for the <code>jabswitch</code> command.</p>
+<h2 id="description">Description</h2>
+<p>The <code>jabswitch</code> command is a utility program that enables the Java Access Bridge to be loaded by the JDK on Windows platforms. The Java Access Bridge is used by Assistive Technologies to interact with Java Accessibility APIs of the Java SE platform. To have any effect, the assistive technology must support the Java Access Bridge.</p>
+<p>This command creates or updates a file named <code>.accessibility.properties</code>, in the user's home directory. When selecting the <code>-enable</code> option, the file is populated with the information needed to load the Java Access Bridge. This file is then read and used in accordance with the specification of the Java SE <a href="../../api/java.desktop/java/awt/Toolkit.html#getDefaultToolkit()"><code>java.awt.Toolkit.getDefaultToolkit()</code></a> API, on initialization.</p>
+<p>Note: This command is only provided with JDK for Windows.</p>
+</main><footer class="legal-footer"><hr/><a href="../../legal/copyright.html">Copyright</a> &copy; 1993, 2021, Oracle and/or its affiliates, 500 Oracle Parkway, Redwood Shores, CA 94065 USA.<br>All rights reserved. Use is subject to <a href="https://www.oracle.com/java/javase/terms/license/java17.0.1speclicense.html">license terms</a> and the <a href="https://www.oracle.com/technetwork/java/redist-137594.html">documentation redistribution policy</a>. <!-- Version 17.0.1+12-LTS-39 --></footer>
+</body>
+</html>

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc,fixuphtml" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Sealed Classes</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../resources/jdk-default.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="../resources/spec-changes.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Sealed Classes</h1>
+<p class="subtitle">Changes to the Java® Virtual Machine Specification • Version 17.0.1+12-LTS-39</p>
+</header>
+<nav id="TOC" title="Table Of Contents">
+<ul>
+<li><a href="#jvms-4">Chapter 4: The <code>class</code> File Format</a><ul>
+<li><a href="#jvms-4.7">4.7 Attributes</a><ul>
+<li><a href="#jvms-4.7.31"><strong>4.7.31 The <code>PermittedSubclasses</code> Attribute</strong></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#jvms-5">Chapter 5: Loading, Linking, and Initializing</a><ul>
+<li><a href="#jvms-5.3">5.3 Creation and Loading</a><ul>
+<li><a href="#jvms-5.3.1">5.3.1 <del>Loading</del> <strong>Creation</strong> Using the Bootstrap Class Loader</a></li>
+<li><a href="#jvms-5.3.2">5.3.2 <del>Loading</del> <strong>Creation</strong> Using a User-defined Class Loader</a></li>
+<li><a href="#jvms-5.3.5">5.3.5 Deriving a Class from a <code>class</code> File Representation</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<main><p>This document describes changes to the <a href="https://docs.oracle.com/javase/specs/jvms/se16/html">Java Virtual Machine Specification</a> to support <em>sealed classes and interfaces</em>, a feature of Java SE 17. A <em>sealed</em> class or interface restricts extension and implementation to an enumerated set of authorized subclasses or subinterfaces. See <a href="http://openjdk.java.net/jeps/409">JEP 409</a> for an overview of the feature.</p>
+<p>The changes are the same as those in the <a href="https://docs.oracle.com/javase/specs/jls/se16/preview/specs/sealed-classes-jvms.html">second preview</a> of Sealed Classes in Java SE 16, except for minor editorial changes.</p>
+<p>Changes are described with respect to existing sections of the JVM Specification. New text is indicated <strong>like this</strong> and deleted text is indicated <del>like this</del>. Explanation and discussion, as needed, is set aside in grey boxes.</p>
+<h2 id="jvms-4">Chapter 4: The <code>class</code> File Format</h2>
+<h3 id="jvms-4.7">4.7 Attributes</h3>
+<p><em>Attributes</em> are used in the <code>ClassFile</code>, <code>field_info</code>, <code>method_info</code>, <code>Code_attribute</code>, and <code>record_component_info</code> structures of the <code>class</code> file format (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>, <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.5">4.5</a>, <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.6">4.6</a>, <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.3">4.7.3</a>, <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.30">4.7.30</a>).</p>
+<p>All attributes have the following general format:</p>
+<pre><code>attribute_info {
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u1 info[attribute_length];
+}</code></pre>
+<p>For all attributes, the <code>attribute_name_index</code> item must be a valid unsigned 16-bit index into the constant pool of the class. The <code>constant_pool</code> entry at <code>attribute_name_index</code> must be a <code>CONSTANT_Utf8_info</code> structure (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.4.7">4.4.7</a>) representing the name of the attribute. The value of the <code>attribute_length</code> item indicates the length of the subsequent information in bytes. The length does not include the initial six bytes that contain the <code>attribute_name_index</code> and <code>attribute_length</code> items.</p>
+<p><del>29</del> <strong>30</strong> attributes are predefined by this specification. They are listed three times, for ease of navigation:</p>
+<ul>
+<li><p><a href="#jvms-4.7-300">Table 4.7-A</a> is ordered by the attributes' section numbers in this chapter. Each attribute is shown with the first version of the <code>class</code> file format in which it was defined. Also shown is the version of the Java SE Platform which introduced that version of the <code>class</code> file format (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>).</p></li>
+<li><p><a href="#jvms-4.7-310">Table 4.7-B</a> is ordered by the first version of the <code>class</code> file format in which each attribute was defined.</p></li>
+<li><p><a href="#jvms-4.7-320">Table 4.7-C</a> is ordered by the location in a <code>class</code> file where each attribute is defined to appear.</p></li>
+</ul>
+<p>Within the context of their use in this specification, that is, in the <code>attributes</code> tables of the <code>class</code> file structures in which they appear, the names of these predefined attributes are reserved.</p>
+<p>Any conditions on the presence of a predefined attribute in an <code>attributes</code> table are specified explicitly in the section which describes the attribute. If no conditions are specified, then the attribute may appear any number of times in an <code>attributes</code> table.</p>
+<p>The predefined attributes are categorized into three groups according to their purpose:</p>
+<ol type="1">
+<li><p><del>Six</del> <strong>Seven</strong> attributes are critical to correct interpretation of the <code>class</code> file by the Java Virtual Machine:</p>
+<ul>
+<li><code>ConstantValue</code></li>
+<li><code>Code</code></li>
+<li><code>StackMapTable</code></li>
+<li><code>BootstrapMethods</code></li>
+<li><code>NestHost</code></li>
+<li><code>NestMembers</code></li>
+<li><strong><code>PermittedSubclasses</code></strong></li>
+</ul>
+<p>In a <code>class</code> file whose version number is <em>v</em>, each of these attributes must be recognized and correctly read by an implementation of the Java Virtual Machine if the implementation supports version <em>v</em> of the <code>class</code> file format, and the attribute was first defined in version <em>v</em> or earlier of the <code>class</code> file format, and the attribute appears in a location where it is defined to appear.</p></li>
+<li><p>Ten attributes are not critical to correct interpretation of the <code>class</code> file by the Java Virtual Machine, but are either critical to correct interpretation of the <code>class</code> file by the class libraries of the Java SE Platform, or are useful for tools (in which case the section that specifies an attribute describes it as &quot;optional&quot;):</p>
+<ul>
+<li><code>Exceptions</code></li>
+<li><code>InnerClasses</code></li>
+<li><code>EnclosingMethod</code></li>
+<li><code>Synthetic</code></li>
+<li><code>Signature</code></li>
+<li><code>Record</code></li>
+<li><code>SourceFile</code></li>
+<li><code>LineNumberTable</code></li>
+<li><code>LocalVariableTable</code></li>
+<li><code>LocalVariableTypeTable</code></li>
+</ul>
+<p>In a <code>class</code> file whose version number is <em>v</em>, each of these attributes must be recognized and correctly read by an implementation of the Java Virtual Machine if the implementation supports version <em>v</em> of the <code>class</code> file format, and the attribute was first defined in version <em>v</em> or earlier of the <code>class</code> file format, and the attribute appears in a location where it is defined to appear.</p></li>
+<li><p>Thirteen attributes are not critical to correct interpretation of the <code>class</code> file by the Java Virtual Machine, but contain metadata about the <code>class</code> file that is either exposed by the class libraries of the Java SE Platform, or made available by tools (in which case the section that specifies an attribute describes it as &quot;optional&quot;):</p>
+<ul>
+<li><code>SourceDebugExtension</code></li>
+<li><code>Deprecated</code></li>
+<li><code>RuntimeVisibleAnnotations</code></li>
+<li><code>RuntimeInvisibleAnnotations</code></li>
+<li><code>RuntimeVisibleParameterAnnotations</code></li>
+<li><code>RuntimeInvisibleParameterAnnotations</code></li>
+<li><code>RuntimeVisibleTypeAnnotations</code></li>
+<li><code>RuntimeInvisibleTypeAnnotations</code></li>
+<li><code>AnnotationDefault</code></li>
+<li><code>MethodParameters</code></li>
+<li><code>Module</code></li>
+<li><code>ModulePackages</code></li>
+<li><code>ModuleMainClass</code></li>
+</ul>
+<p>An implementation of the Java Virtual Machine may use the information that these attributes contain, or otherwise must silently ignore these attributes.</p></li>
+</ol>
+<div id="jvms-4.7-300" class="table">
+<p>Table 4.7-A. Predefined <code>class</code> file attributes (by section)</p>
+<table>
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 19%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Attribute</th>
+<th style="text-align: left;">Section</th>
+<th style="text-align: left;"><code>class</code> file</th>
+<th style="text-align: left;">Java SE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>ConstantValue</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.2">4.7.2</a></td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Code</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.3">4.7.3</a></td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>StackMapTable</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.4">4.7.4</a></td>
+<td style="text-align: left;">50.0</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Exceptions</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.5">4.7.5</a></td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>InnerClasses</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.6">4.7.6</a></td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.1</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>EnclosingMethod</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.7">4.7.7</a></td>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Synthetic</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.8">4.7.8</a></td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.1</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Signature</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.9">4.7.9</a></td>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>SourceFile</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.10">4.7.10</a></td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>SourceDebugExtension</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.11">4.7.11</a></td>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>LineNumberTable</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.12">4.7.12</a></td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>LocalVariableTable</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.13">4.7.13</a></td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>LocalVariableTypeTable</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.14">4.7.14</a></td>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Deprecated</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.15">4.7.15</a></td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.1</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeVisibleAnnotations</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.16">4.7.16</a></td>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeInvisibleAnnotations</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.17">4.7.17</a></td>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeVisibleParameterAnnotations</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.18">4.7.18</a></td>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeInvisibleParameterAnnotations</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.19">4.7.19</a></td>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeVisibleTypeAnnotations</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.20">4.7.20</a></td>
+<td style="text-align: left;">52.0</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeInvisibleTypeAnnotations</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.21">4.7.21</a></td>
+<td style="text-align: left;">52.0</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>AnnotationDefault</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.22">4.7.22</a></td>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>BootstrapMethods</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.23">4.7.23</a></td>
+<td style="text-align: left;">51.0</td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>MethodParameters</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.24">4.7.24</a></td>
+<td style="text-align: left;">52.0</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Module</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.25">4.7.25</a></td>
+<td style="text-align: left;">53.0</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>ModulePackages</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.26">4.7.26</a></td>
+<td style="text-align: left;">53.0</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>ModuleMainClass</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.27">4.7.27</a></td>
+<td style="text-align: left;">53.0</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>NestHost</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.28">4.7.28</a></td>
+<td style="text-align: left;">55.0</td>
+<td style="text-align: left;">11</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>NestMembers</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.29">4.7.29</a></td>
+<td style="text-align: left;">55.0</td>
+<td style="text-align: left;">11</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Record</code></th>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.30">4.7.30</a></td>
+<td style="text-align: left;">60.0</td>
+<td style="text-align: left;">16</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><strong><code>PermittedSubclasses</code></strong></th>
+<td style="text-align: left;"><strong><a href="#jvms-4.7.31">4.7.31</a></strong></td>
+<td style="text-align: left;"><strong>61.0</strong></td>
+<td style="text-align: left;"><strong>17</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="jvms-4.7-310" class="table">
+<p>Table 4.7-B. Predefined <code>class</code> file attributes (by <code>class</code> file format)</p>
+<table style="width:94%;">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Attribute</th>
+<th style="text-align: left;"><code>class</code> file</th>
+<th style="text-align: left;">Java SE</th>
+<th style="text-align: left;">Section</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>ConstantValue</code></th>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.2">4.7.2</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Code</code></th>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.3">4.7.3</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Exceptions</code></th>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.5">4.7.5</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>SourceFile</code></th>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.10">4.7.10</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>LineNumberTable</code></th>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.12">4.7.12</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>LocalVariableTable</code></th>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.0.2</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.13">4.7.13</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>InnerClasses</code></th>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.1</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.6">4.7.6</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Synthetic</code></th>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.1</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.8">4.7.8</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Deprecated</code></th>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">1.1</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.15">4.7.15</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>EnclosingMethod</code></th>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.7">4.7.7</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Signature</code></th>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.9">4.7.9</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>SourceDebugExtension</code></th>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.11">4.7.11</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>LocalVariableTypeTable</code></th>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.14">4.7.14</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeVisibleAnnotations</code></th>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.16">4.7.16</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeInvisibleAnnotations</code></th>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.17">4.7.17</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeVisibleParameterAnnotations</code></th>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.18">4.7.18</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeInvisibleParameterAnnotations</code></th>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.19">4.7.19</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>AnnotationDefault</code></th>
+<td style="text-align: left;">49.0</td>
+<td style="text-align: left;">5.0</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.22">4.7.22</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>StackMapTable</code></th>
+<td style="text-align: left;">50.0</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.4">4.7.4</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>BootstrapMethods</code></th>
+<td style="text-align: left;">51.0</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.23">4.7.23</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeVisibleTypeAnnotations</code></th>
+<td style="text-align: left;">52.0</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.20">4.7.20</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeInvisibleTypeAnnotations</code></th>
+<td style="text-align: left;">52.0</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.21">4.7.21</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>MethodParameters</code></th>
+<td style="text-align: left;">52.0</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.24">4.7.24</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Module</code></th>
+<td style="text-align: left;">53.0</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.25">4.7.25</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>ModulePackages</code></th>
+<td style="text-align: left;">53.0</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.26">4.7.26</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>ModuleMainClass</code></th>
+<td style="text-align: left;">53.0</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.27">4.7.27</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>NestHost</code></th>
+<td style="text-align: left;">55.0</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.28">4.7.28</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>NestMembers</code></th>
+<td style="text-align: left;">55.0</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.29">4.7.29</a></td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Record</code></th>
+<td style="text-align: left;">60.0</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;"><a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.30">4.7.30</a></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><strong><code>PermittedSubclasses</code></strong></th>
+<td style="text-align: left;"><strong>61.0</strong></td>
+<td style="text-align: left;"><strong>17</strong></td>
+<td style="text-align: left;"><strong><a href="#jvms-4.7.31">4.7.31</a></strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="jvms-4.7-320" class="table">
+<p>Table 4.7-C. Predefined <code>class</code> file attributes (by location)</p>
+<table style="width:89%;">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 20%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Attribute</th>
+<th style="text-align: left;">Location</th>
+<th style="text-align: left;"><code>class</code> file</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>SourceFile</code></th>
+<td style="text-align: left;"><code>ClassFile</code></td>
+<td style="text-align: left;">45.3</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>InnerClasses</code></th>
+<td style="text-align: left;"><code>ClassFile</code></td>
+<td style="text-align: left;">45.3</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>EnclosingMethod</code></th>
+<td style="text-align: left;"><code>ClassFile</code></td>
+<td style="text-align: left;">49.0</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>SourceDebugExtension</code></th>
+<td style="text-align: left;"><code>ClassFile</code></td>
+<td style="text-align: left;">49.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>BootstrapMethods</code></th>
+<td style="text-align: left;"><code>ClassFile</code></td>
+<td style="text-align: left;">51.0</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Module</code>, <code>ModulePackages</code>, <code>ModuleMainClass</code></th>
+<td style="text-align: left;"><code>ClassFile</code></td>
+<td style="text-align: left;">53.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>NestHost</code>, <code>NestMembers</code></th>
+<td style="text-align: left;"><code>ClassFile</code></td>
+<td style="text-align: left;">55.0</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Record</code></th>
+<td style="text-align: left;"><code>ClassFile</code></td>
+<td style="text-align: left;">60.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><strong><code>PermittedSubclasses</code></strong></th>
+<td style="text-align: left;"><strong><code>ClassFile</code></strong></td>
+<td style="text-align: left;"><strong>61.0</strong></td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>ConstantValue</code></th>
+<td style="text-align: left;"><code>field_info</code></td>
+<td style="text-align: left;">45.3</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Code</code></th>
+<td style="text-align: left;"><code>method_info</code></td>
+<td style="text-align: left;">45.3</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Exceptions</code></th>
+<td style="text-align: left;"><code>method_info</code></td>
+<td style="text-align: left;">45.3</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeVisibleParameterAnnotations</code>, <code>RuntimeInvisibleParameterAnnotations</code></th>
+<td style="text-align: left;"><code>method_info</code></td>
+<td style="text-align: left;">49.0</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>AnnotationDefault</code></th>
+<td style="text-align: left;"><code>method_info</code></td>
+<td style="text-align: left;">49.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>MethodParameters</code></th>
+<td style="text-align: left;"><code>method_info</code></td>
+<td style="text-align: left;">52.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="jvms-4.7-320.1" class="table">
+<p>Table 4.7-C (cont.). Predefined <code>class</code> file attributes (by location)</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 34%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Attribute</th>
+<th style="text-align: left;">Location</th>
+<th style="text-align: left;"><code>class</code> file</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Synthetic</code></th>
+<td style="text-align: left;"><code>ClassFile</code>, <code>field_info</code>, <code>method_info</code></td>
+<td style="text-align: left;">45.3</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Deprecated</code></th>
+<td style="text-align: left;"><code>ClassFile</code>, <code>field_info</code>, <code>method_info</code></td>
+<td style="text-align: left;">45.3</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>Signature</code></th>
+<td style="text-align: left;"><code>ClassFile</code>, <code>field_info</code>, <code>method_info</code>, <code>record_component_info</code></td>
+<td style="text-align: left;">49.0</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeVisibleAnnotations</code>, <code>RuntimeInvisibleAnnotations</code></th>
+<td style="text-align: left;"><code>ClassFile</code>, <code>field_info</code>, <code>method_info</code>, <code>record_component_info</code></td>
+<td style="text-align: left;">49.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>LineNumberTable</code></th>
+<td style="text-align: left;"><code>Code</code></td>
+<td style="text-align: left;">45.3</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>LocalVariableTable</code></th>
+<td style="text-align: left;"><code>Code</code></td>
+<td style="text-align: left;">45.3</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>LocalVariableTypeTable</code></th>
+<td style="text-align: left;"><code>Code</code></td>
+<td style="text-align: left;">49.0</td>
+</tr>
+<tr class="even">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>StackMapTable</code></th>
+<td style="text-align: left;"><code>Code</code></td>
+<td style="text-align: left;">50.0</td>
+</tr>
+<tr class="odd">
+<th style="font-weight: normal; text-align: left;" scope="row"><code>RuntimeVisibleTypeAnnotations</code>, <code>RuntimeInvisibleTypeAnnotations</code></th>
+<td style="text-align: left;"><code>ClassFile</code>, <code>field_info</code>, <code>method_info</code>, <code>Code</code>, <code>record_component_info</code></td>
+<td style="text-align: left;">52.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="jvms-4.7.31"><strong>4.7.31 The <code>PermittedSubclasses</code> Attribute</strong></h4>
+<div class="inserted">
+<p>The <code>PermittedSubclasses</code> attribute is a variable-length attribute in the <code>attributes</code> table of a <code>ClassFile</code> structure. If a class or interface has a <code>PermittedSubclasses</code> attribute, any class or interface that attempts to extend or implement it must be named by the attribute (<a href="#jvms-5.3.5">5.3.5</a>).</p>
+<blockquote>
+<p>In the Java Programming Language, there is a <code>sealed</code> modifier to indicate a class or interface that constrains extension in this way. In the class file, there is no <code>ACC_SEALED</code> flag. Instead, a <code>sealed</code> class or interface is indicated by the presence of the <code>PermittedSubclasses</code> attribute.</p>
+</blockquote>
+<p>There may be at most one <code>PermittedSubclasses</code> attribute in the <code>attributes</code> table of a <code>ClassFile</code> structure whose <code>ACC_FINAL</code> flag is not set (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>). If the <code>ACC_FINAL</code> flag is set, then the <code>ClassFile</code> structure must not have a <code>PermittedSubclasses</code> attribute.</p>
+</div>
+<div class="editorial">
+<p>We treat <em>sealed</em> as distinct from <em>final</em>—a sealed class has an enumerated list of designated subclasses, while a final class has no subclasses. Thus, a <code>ClassFile</code> structure may have a <code>PermittedSubclasses</code> attribute, or may have its <code>ACC_FINAL</code> flag set, but not both.</p>
+<p>Alternatively, we could have let the <code>PermittedSubclasses</code> attribute <em>refine</em> the <code>ACC_FINAL</code> flag—reinterpreting &quot;final&quot; to mean &quot;can't be extended, except for authorized subclasses&quot;. But doing so risks disrupting consumers of class files that have long assumed &quot;final&quot; means &quot;has 0 subclasses&quot; and that interfaces cannot be final.</p>
+</div>
+<div class="inserted">
+<p>The <code>PermittedSubclasses</code> attribute has the following format:</p>
+<pre><code>PermittedSubclasses_attribute {
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u2 number_of_classes;
+    u2 classes[number_of_classes];
+}</code></pre>
+<p>The items of the <code>PermittedSubclasses_attribute</code> structure are as follows:</p>
+<dl>
+<dt>attribute_name_index</dt>
+<dd><p>The value of the <code>attribute_name_index</code> item must be a valid index into the <code>constant_pool</code> table. The <code>constant_pool</code> entry at that index must be a <code>CONSTANT_Utf8_info</code> structure (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.4.7">4.4.7</a>) representing the string &quot;<code>PermittedSubclasses</code>&quot;.</p>
+</dd>
+<dt>attribute_length</dt>
+<dd><p>The value of the <code>attribute_length</code> item indicates the length of the attribute, excluding the initial six bytes.</p>
+</dd>
+<dt>number_of_classes</dt>
+<dd><p>The value of the <code>number_of_classes</code> item indicates the number of entries in the <code>classes</code> array.</p>
+</dd>
+<dt>classes[]</dt>
+<dd><p>Each value in the <code>classes</code> array must be a valid index into the <code>constant_pool</code> table. The <code>constant_pool</code> entry at that index must be a <code>CONSTANT_Class_info</code> structure (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.4.1">4.4.1</a>) representing a class or interface which is authorized to extend or implement the current class or interface.</p>
+<blockquote>
+<p>The <code>classes</code> array is consulted when a class or interface that attempts to directly extend or implement the current class or interface is created (<a href="#jvms-5.3.5">5.3.5</a>). Array items that do not attempt to directly extend or implement the current class or interface are ignored.</p>
+</blockquote>
+</dd>
+</dl>
+</div>
+<h2 id="jvms-5">Chapter 5: Loading, Linking, and Initializing</h2>
+<h3 id="jvms-5.3">5.3 Creation and Loading</h3>
+<p>Creation of a class or interface <em>C</em> denoted by the name <em>N</em> consists of <strong>locating a binary representation the class or interface (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html">4</a>) and then deriving</strong> <del>construction in the method area of the Java Virtual Machine (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-2.html#jvms-2.5.4">2.5.4</a>) of</del> an implementation-specific internal representation of <em>C</em> <strong>in the method area of the Java Virtual Machine (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-2.html#jvms-2.5.4">2.5.4</a>)</strong>.</p>
+<p>Class or interface creation is triggered by another class or interface <em>D</em>, which references <em>C</em> through its run-time constant pool. Class or interface creation may also be triggered by <em>D</em> invoking methods in certain Java SE Platform class libraries (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-2.html#jvms-2.12">2.12</a>) such as reflection.</p>
+<p><strong>When class or interface creation is triggered by a reference to <em>C</em> from a run-time constant pool, the process described in this section is followed. Class or interface creation triggered by a method of the Java SE Platform class libraries follows a similar process, the details of which are specified by the method.</strong></p>
+<p>If <em>C</em> is not an array class, it is <del>created by loading a binary representation of <em>C</em> (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html">4</a>)</del> <strong>created by <em>loading</em> it</strong> using a class loader. Array classes do not have an external binary representation; they are created by the Java Virtual Machine rather than by a class loader.</p>
+<p>There are two kinds of class loaders: the bootstrap class loader supplied by the Java Virtual Machine, and user-defined class loaders. Every user-defined class loader is an instance of a subclass of the abstract class <code>ClassLoader</code>. Applications employ user-defined class loaders in order to extend the manner in which the Java Virtual Machine dynamically loads and thereby creates classes. <del>User-defined class loaders can be used to create classes that originate from user-defined sources. For example, a class could be downloaded across a network, generated on the fly, or extracted from an encrypted file.</del></p>
+<blockquote>
+<p><strong>User-defined class loaders can be used to create classes that originate from user-defined sources. For example, a class could be downloaded across a network, generated on the fly, or extracted from an encrypted file.</strong></p>
+</blockquote>
+<p>A class loader <em>L</em> may <del>create</del> <strong>load</strong> <em>C</em> by <del>defining</del> <strong><em>defining</em></strong> it directly or by delegating to another class loader. If <em>L</em> <del>creates</del> <strong>defines</strong> <em>C</em> directly, we say <del>that <em>L</em> <em>defines</em> <em>C</em> or, equivalently,</del> that <em>L</em> is the <em>defining loader</em> of <em>C</em>.</p>
+<p>When one class loader delegates to another class loader, the loader that initiates the loading is not necessarily the same loader that completes the loading and defines the class. If <em>L</em> <del>creates</del> <strong>loads</strong> <em>C</em>, either by defining it directly or by delegation, we say <del>that <em>L</em> initiates loading of <em>C</em> or, equivalently, that</del> <em>L</em> is an <em>initiating loader</em> of <em>C</em>.</p>
+<p>At run time, a class or interface is determined not by its name alone, but by a pair: its binary name (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.2.1">4.2.1</a>) and its defining class loader. Each such class or interface belongs to a single <em>run-time package</em>. The run-time package of a class or interface is determined by the package name and defining class loader of the class or interface.</p>
+<p>The Java Virtual Machine uses one of three procedures to create class or interface <em>C</em> denoted by <em>N</em>:</p>
+<ul>
+<li><p>If <em>N</em> denotes a nonarray class or an interface, one of the two following methods is used to load and thereby create <em>C</em>:</p>
+<ul>
+<li><p>If <em>D</em> was defined by the bootstrap class loader, then the bootstrap class loader initiates loading of <em>C</em> (<a href="#jvms-5.3.1">5.3.1</a>).</p></li>
+<li><p>If <em>D</em> was defined by a user-defined class loader, then that same user-defined class loader initiates loading of <em>C</em> (<a href="#jvms-5.3.2">5.3.2</a>).</p></li>
+</ul></li>
+<li><p>Otherwise <em>N</em> denotes an array class. An array class is created directly by the Java Virtual Machine (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.3.3">5.3.3</a>), not by a class loader. However, the defining class loader of <em>D</em> is used in the process of creating array class <em>C</em>.</p></li>
+</ul>
+<p>If an error occurs <del>during class loading</del> <strong>while the Java Virtual Machine is attempting to create a class</strong>, then an instance of a subclass of <code>LinkageError</code> must be thrown at a point in the program that (directly or indirectly) uses the class or interface being loaded.</p>
+<p><del>If the Java Virtual Machine ever attempts to load a class <em>C</em> during verification (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.4.1">5.4.1</a>) or resolution (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.4.3">5.4.3</a>) (but not initialization (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.5">5.5</a>)), and the class loader that is used to initiate loading of <em>C</em> throws an instance of <code>ClassNotFoundException</code>, then the Java Virtual Machine must throw an instance of <code>NoClassDefFoundError</code> whose cause is the instance of <code>ClassNotFoundException</code>.</del></p>
+<div class="editorial">
+<p>This discussion appears to be a roundabout way to say &quot;when you load a class via reflection, you get direct access to the exceptions that the reflection API throws&quot;. But those details can be left to the reflection API specification. For our purposes, this section is only concerned with the behavior of the JVM as it loads classes.</p>
+<p>The details about wrapping <code>ClassNotFoundException</code> in <code>NoClassDefFoundError</code> are moved to sections <a href="#jvms-5.3.1">5.3.1</a> and <a href="#jvms-5.3.2">5.3.2</a>, below.</p>
+</div>
+<p><del>(A subtlety here is that recursive class loading to load superclasses is performed as part of resolution (<a href="#jvms-5.3.5">5.3.5</a>, step 3). Therefore, a <code>ClassNotFoundException</code> that results from a class loader failing to load a superclass must be wrapped in a <code>NoClassDefFoundError</code>.)</del></p>
+<div class="editorial">
+<p>Discussions about recursion are best left to <a href="#jvms-5.3.5">5.3.5</a>.</p>
+</div>
+<blockquote>
+<p>A well-behaved class loader should maintain three properties:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li><p>Given the same name, a good class loader should always return the same <code>Class</code> object.</p></li>
+<li><p>If a class loader <em>L<sub>1</sub></em> delegates loading of a class <em>C</em> to another loader <em>L<sub>2</sub></em>, then for any type <em>T</em> that occurs as the direct superclass or a direct superinterface of <em>C</em>, or as the type of a field in <em>C</em>, or as the type of a formal parameter of a method or constructor in <em>C</em>, or as a return type of a method in <em>C</em>, <em>L<sub>1</sub></em> and <em>L<sub>2</sub></em> should return the same <code>Class</code> object.</p></li>
+<li><p>If a user-defined classloader prefetches binary representations of classes and interfaces, or loads a group of related classes together, then it must reflect loading errors only at points in the program where they could have arisen without prefetching or group loading.</p></li>
+</ul>
+</blockquote>
+<p>We will sometimes represent a class or interface using the notation <code>&lt;</code><em>N</em>, <em>L<sub>d</sub></em><code>&gt;</code>, where <em>N</em> denotes the name of the class or interface and <em>L<sub>d</sub></em> denotes the defining loader of the class or interface.</p>
+<p>We will also represent a class or interface using the notation <em>N</em><sup><em>L<sub>i</sub></em></sup>, where <em>N</em> denotes the name of the class or interface and <em>L<sub>i</sub></em> denotes an initiating loader of the class or interface.</p>
+<h4 id="jvms-5.3.1">5.3.1 <del>Loading</del> <strong>Creation</strong> Using the Bootstrap Class Loader</h4>
+<p>The following steps are used to <del>load and thereby</del> create the nonarray class or interface <em>C</em> denoted by <em>N</em> using the bootstrap class loader.</p>
+<p>First, the Java Virtual Machine determines whether the bootstrap class loader has already been recorded as an initiating loader of a class or interface denoted by <em>N</em>. If so, this class or interface is <em>C</em>, and no class creation is necessary.</p>
+<p>Otherwise, the Java Virtual Machine passes the argument <em>N</em> to an invocation of a method on the bootstrap class loader to <del>search</del> <strong>load <em>C</em>.</strong> <strong>This will involve searching</strong> for a purported representation of <em>C</em> in a platform-dependent manner <strong>and then deriving <em>C</em> from that representation using the algorithm found in <a href="#jvms-5.3.5">5.3.5</a></strong>. Typically, a class or interface will be represented using a file in a hierarchical file system, and the name of the class or interface will be encoded in the pathname of the file.</p>
+<div class="deleted">
+<p>Note that there is no guarantee that a purported representation found is valid or is a representation of <em>C</em>. This phase of loading must detect the following error:</p>
+<ul>
+<li>If no purported representation of <em>C</em> is found, loading throws an instance of <code>ClassNotFoundException</code>.</li>
+</ul>
+<p>Then the Java Virtual Machine attempts to derive a class denoted by <em>N</em> using the bootstrap class loader from the purported representation using the algorithm found in <a href="#jvms-5.3.5">5.3.5</a>. That class is <em>C</em>.</p>
+</div>
+<div class="inserted">
+<p>If no purported representation of <em>C</em> is found, the bootstrap class loader throws an instance of <code>ClassNotFoundException</code>. Creation of <em>C</em> then fails with a <code>NoClassDefFoundError</code> whose cause is the <code>ClassNotFoundException</code> produced by the bootstrap class loader.</p>
+<p>If deriving <em>C</em> from the purported representation fails, any of the errors specified in <a href="#jvms-5.3.5">5.3.5</a> may be thrown by the bootstrap class loader. Creation of <em>C</em> fails for the same reason.</p>
+</div>
+<div class="editorial">
+<p>It's confusing to treat class derivation as a followup step. While no particular API is specified to be used, the <code>loadClass</code> model matches what readers will expect. In that case, once the <code>loadClass</code> method returns, the class has already been derived and the creation process is complete (except that the Java Virtual Machine may need to wrap a <code>ClassNotFoundException</code>).</p>
+</div>
+<h4 id="jvms-5.3.2">5.3.2 <del>Loading</del> <strong>Creation</strong> Using a User-defined Class Loader</h4>
+<p>The following steps are used to <del>load and thereby</del> create the nonarray class or interface <em>C</em> denoted by <em>N</em> using a user-defined class loader <em>L</em>.</p>
+<p>First, the Java Virtual Machine determines whether <em>L</em> has already been recorded as an initiating loader of a class or interface denoted by <em>N</em>. If so, this class or interface is <em>C</em>, and no class creation is necessary.</p>
+<p>Otherwise, the Java Virtual Machine invokes <code>loadClass(N)</code> on <em>L</em>. The value returned by the invocation is the created class or interface <em>C</em>. The Java Virtual Machine then records that <em>L</em> is an initiating loader of <em>C</em> (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.3.4">5.3.4</a>). The remainder of this section describes this process in more detail.</p>
+<p>When the <code>loadClass</code> method of the class loader <em>L</em> is invoked with the name <em>N</em> of a class or interface <em>C</em> to be loaded, <em>L</em> must perform one of the following two operations in order to load <em>C</em>:</p>
+<ol type="1">
+<li><p>The class loader <em>L</em> can <del>create</del> <strong><em>directly define</em> C. This is accomplished by producing</strong> an array of bytes representing <em>C</em> as the bytes of a <code>ClassFile</code> structure (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>)<strong>, and then invoking</strong><del>; it then must invoke</del> the method <code>defineClass</code> of class <code>ClassLoader</code>. Invoking <code>defineClass</code> causes the Java Virtual Machine to derive a class or interface denoted by <em>N</em> using <em>L</em> from the array of bytes using the algorithm found in <a href="#jvms-5.3.5">5.3.5</a>.</p>
+<p><strong>If deriving <em>C</em> from the purported representation fails, any of the errors specified in <a href="#jvms-5.3.5">5.3.5</a> may be thrown by <code>loadClass</code>. Creation of <em>C</em> fails for the same reason.</strong></p>
+<p><strong>If the class or interface produced by <code>loadClass</code> has name <em>N</em> but is different than the class or interface derived by <code>defineClass</code>, creation fails and the Java Virtual Machine throws an instance of <code>LinkageError</code> or a subclass of <code>LinkageError</code>.</strong></p></li>
+<li><p>The class loader <em>L</em> can delegate the loading of <em>C</em> to some other class loader <em>L</em>'. This is accomplished by passing the argument <em>N</em> directly or indirectly to an invocation of a method on <em>L</em>' (typically the <code>loadClass</code> method). The result of the invocation is <em>C</em>.</p></li>
+</ol>
+<p>In either (1) or (2), if the class loader <em>L</em> is unable to load a class or interface denoted by <em>N</em> for any <strong>other</strong> reason, it must throw an instance of <code>ClassNotFoundException</code>. <strong>Creation of <em>C</em> then fails with a <code>NoClassDefFoundError</code> whose cause is the <code>ClassNotFoundException</code> produced by the class loader.</strong></p>
+<p><strong>If the <code>loadClass</code> invocation throws any other type of exception, creation of <em>C</em> fails for the same reason.</strong></p>
+<p><strong>If the result of the <code>loadClass</code> invocation is <code>null</code>, or is a loaded class or interface with a name other than <em>N</em>, creation fails with a <code>NoClassDefFoundError</code>.</strong></p>
+<div class="editorial">
+<p>These additional rules attempt to capture actual error checks as observed in JDK 14 and OpenJ9 0.15.</p>
+<p>The check in step 1 produces different errors in the two implementations: Hotspot throws a <code>LinkageError</code>, while J9 throws a <code>NoClassDefFoundError</code>.</p>
+<p>Note that if <code>defineClass</code> is called by some loader other than the initiating loader, the check in step (1) is not performed. This is because the delegated loading is a reflective call, and so not subject to these JVM-level loading checks.</p>
+</div>
+<blockquote>
+<p>Since JDK 1.1, Oracle’s Java Virtual Machine implementation has invoked the <code>loadClass</code> method of a class loader in order to cause it to load a class or interface. The argument to <code>loadClass</code> is the name of the class or interface to be loaded. There is also a two-argument version of the <code>loadClass</code> method, where the second argument is a <code>boolean</code> that indicates whether the class or interface is to be linked or not. Only the two-argument version was supplied in JDK 1.0.2, and Oracle’s Java Virtual Machine implementation relied on it to link the loaded class or interface. From JDK 1.1 onward, Oracle’s Java Virtual Machine implementation links the class or interface directly, without relying on the class loader.</p>
+</blockquote>
+<h4 id="jvms-5.3.5">5.3.5 Deriving a Class from a <code>class</code> File Representation</h4>
+<div class="editorial">
+<p>The <em>derivation</em> process described here is an important, tightly-specified subprocess of <em>loading</em> and <em>creation</em>. These revisions make more prominent use of the term.</p>
+<p>Steps 3 and 4 of the process include new checks to enforce the <code>PermittedSubclasses</code> attribute.</p>
+</div>
+<p>The following steps are used to derive a <del><code>Class</code> object for the</del> nonarray class or interface <em>C</em> denoted by <em>N</em> using loader <em>L</em> from a purported representation in <code>class</code> file format.</p>
+<div class="editorial">
+<p>This section says nothing about <code>Class</code> objects, which are only auxiliary to creation and loading. Instead, these rules describe how to derive an abstract &quot;class or interface&quot; from a name, class loader, and byte array.</p>
+</div>
+<ol type="1">
+<li><p>First, the Java Virtual Machine determines whether <del>it has already recorded that <em>L</em> is an initiating loader of a class or interface denoted by <em>N</em>. If so, this creation attempt is invalid and loading throws a <code>LinkageError</code>.</del> <strong>the attempt to derive a class or interface named <em>N</em> for class loader <em>L</em> is invalid. If so, derivation throws a <code>LinkageError</code>.</strong></p>
+<p><strong>An attempt to derive a class or interface named <em>N</em> for class loader <em>L</em> is invalid if one of the following are true:</strong></p>
+<ul>
+<li><p><strong><em>L</em> has already been recorded as as an initiating loader of a class or interface named <em>N</em>.</strong></p></li>
+<li><p><strong><em>L</em> is not the bootstrap class loader (<a href="#jvms-5.3">5.3</a>) and <em>N</em> is the reserved name <code>java/lang/Object</code>.</strong></p></li>
+</ul>
+<blockquote>
+<p><strong>The second case, combined with restrictions in <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>, ensures that there is only one root of the class hierarchy, and the name <code>java/lang/Object</code> can reliably be used to refer to it.</strong></p>
+<p><strong>The Java SE API enforces additional security restrictions that prevent unauthorized attempts to load classes in certain packages, including <code>java.*</code>.</strong></p>
+</blockquote>
+<div class="editorial">
+<p>In practice, the security restrictions make it impossible to test the <code>Object</code> rule—a <code>SecurityException</code> will happen before the JVM can perform this check. But for internal consistency, it seems important to state.</p>
+</div></li>
+<li><p>Otherwise, the Java Virtual Machine attempts to parse the purported representation. However, the purported representation may not in fact be a valid representation of <em>C</em>.</p>
+<p>This phase of <del>loading</del> <strong>derivation</strong> must detect the following errors:</p>
+<ul>
+<li><p><del>If the purported representation is not a <code>ClassFile</code> structure (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>, <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.8">4.8</a>), loading throws an instance of <code>ClassFormatError</code>.</del></p>
+<div class="editorial">
+<p>It doesn't make sense to try to parse a <code>class</code> file before determining that the version number is supported. The version check has to happen first.</p>
+</div></li>
+<li><p><del>Otherwise, if</del> <strong>If</strong> the purported representation <del>is not of a supported major or minor version (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>)</del> <strong>provides a major and minor version number in its 5th through 8th bytes (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>), but the version number is not supported by this Java Virtual Machine implementation</strong>, <del>loading</del> <strong>derivation</strong> throws an instance of <code>UnsupportedClassVersionError</code>.</p>
+<blockquote>
+<p><code>UnsupportedClassVersionError</code>, a subclass of <code>ClassFormatError</code>, was introduced to enable easy identification of a <code>ClassFormatError</code> caused by an attempt to load a class whose representation uses an unsupported version of the <code>class</code> file format. In JDK 1.1 and earlier, an instance of <code>NoClassDefFoundError</code> or <code>ClassFormatError</code> was thrown in case of an unsupported version, depending on whether the class was being loaded by the system class loader or a user-defined class loader.</p>
+</blockquote></li>
+<li><p><strong>Otherwise, if the purported representation is not a <code>ClassFile</code> structure (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>, <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.8">4.8</a>), derivation throws an instance of <code>ClassFormatError</code>.</strong></p></li>
+<li><p>Otherwise, if the purported representation does not actually represent a class <strong>or interface</strong> named <em>N</em>, <del>loading</del> <strong>derivation</strong> throws an instance of <code>NoClassDefFoundError</code> or an instance of one of its subclasses.</p>
+<p>This occurs when the purported representation has either a <code>this_class</code> item which specifies a name other than <em>N</em>, or an <code>access_flags</code> item which has the <code>ACC_MODULE</code> flag set.</p></li>
+</ul></li>
+<li><p>If <em>C</em> has a direct superclass, the symbolic reference from <em>C</em> to its direct superclass is resolved using the algorithm of <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.4.3.1">5.4.3.1</a>. Note that if <em>C</em> is an interface it must have <code>Object</code> as its direct superclass<del>, which must already have been loaded</del>. Only <code>Object</code> has no direct superclass.</p>
+<div class="editorial">
+<p>Per <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.2">5.2</a>, an arbitrary initial class or interface is the first to be created. If the initial class or interface is an interface, deriving it will recursively prompt the creation of (not-yet-loaded) <code>Object</code> here.</p>
+</div>
+<p>Any exceptions that can be thrown due to class or interface resolution can be thrown as a result of this phase of <del>loading</del> <strong>derivation</strong>. In addition, this phase of <del>loading</del> <strong>derivation</strong> must detect the following errors:</p>
+<ul>
+<li><p><del>If the class or interface named as the direct superclass of <em>C</em> is in fact an interface, loading throws an <code>IncompatibleClassChangeError</code>.</del></p></li>
+<li><p><del>Otherwise, if any of the superclasses of <em>C</em> is <em>C</em> itself</del> <strong>If the attempt to resolve the direct superclass leads to the current thread attempting to recursively derive a class named <em>N</em> using loader <em>L</em></strong>, <del>loading</del> <strong>derivation</strong> throws a <code>ClassCircularityError</code>.</p>
+<div class="editorial">
+<p>How can we decide whether a superclass is &quot;<em>C</em> itself&quot; without actually creating the superclass first? And, of course, we can't create the superclass without recursively applying this check. This dependency loop is broken by detecting when a second attempt is made to derive a class named <em>N</em>.</p>
+</div></li>
+<li><p><strong>Otherwise, if the class or interface named as the direct superclass of <em>C</em> is an interface or a <code>final</code> class, derivation throws a <code>IncompatibleClassChangeError</code>.</strong></p>
+<div class="editorial">
+<p>This check has long been specified as part of verification (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.10">4.10</a>, <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.10.1">4.10.1</a>). However, JDK 14 and OpenJ9 both perform it as part of class derivation.</p>
+<p>Accordingly, in JDK 16 the specification was changed to throw a <code>IncompatibleClassChangeError</code> (See <a href="https://bugs.openjdk.java.net/browse/JDK-8243582">JDK-8243582</a>).</p>
+</div></li>
+</ul>
+<div class="inserted">
+<ul>
+<li><p>Otherwise, if the class named as the direct superclass of <em>C</em> has a <code>PermittedSubclasses</code> attribute (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.30">4.7.30</a>) and any of the following are true, derivation fails with a <code>IncompatibleClassChangeError</code>:</p>
+<ul>
+<li><p>The superclass belongs to a different run-time module than <em>C</em>.</p></li>
+<li><p><em>C</em> does not have its <code>ACC_PUBLIC</code> flag set (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>) and the superclass belongs to a different run-time package than <em>C</em>.</p></li>
+<li><p>No entry in the <code>classes</code> table of the superclass's <code>PermittedSubclasses</code> attribute references a class or interface with name <em>N</em>.</p></li>
+</ul></li>
+</ul>
+</div>
+<div class="editorial">
+<p>These restrictions guarantee that an entry in <code>PermittedSubclasses</code> of the superclass will resolve to <em>C</em>. (We don't actually resolve the reference to <em>C</em>, because doing so would prompt a circularity, since derivation of <em>C</em> hasn't yet completed.)</p>
+<p>The Java language has an additional requirement that, if the classes belong to an unnamed module, they must both be in the same package. This encourages programmers to use the feature appropriately (they shouldn't try to spread a sealed hierarchy across different maintenance domains), but is not the sort of fundamental restriction the JVM needs to enforce. So another language or bytecode generator is free not to follow the package restriction.</p>
+</div>
+<ul>
+<li><p><strong>Otherwise, if <em>C</em> is a class and some non-<code>static</code> method declared in <em>C</em> can override (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.4.5">5.4.5</a>) a <code>final</code>, non-<code>static</code> method declared in a superclass of <em>C</em>, derivation throws a <code>IncompatibleClassChangeError</code>.</strong></p>
+<div class="editorial">
+<p>Same comment about the <code>IncompatibleClassChangeError</code>.</p>
+</div></li>
+</ul></li>
+<li><p>If <em>C</em> has any direct superinterfaces, the symbolic references from <em>C</em> to its direct superinterfaces are resolved using the algorithm of <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.4.3.1">5.4.3.1</a>.</p>
+<p>Any exceptions that can be thrown due to class or interface resolution can be thrown as a result of this phase of <del>loading</del> <strong>derivation</strong>. In addition, this phase of <del>loading</del> <strong>derivation</strong> must detect the following errors:</p>
+<ul>
+<li><p><del>If any of the classes or interfaces named as direct superinterfaces of <em>C</em> is not in fact an interface, loading throws an <code>IncompatibleClassChangeError</code>.</del></p></li>
+<li><p><del>Otherwise, if any of the superinterfaces of <em>C</em> is <em>C</em> itself</del> <strong>If the attempt to resolve a direct superinterface leads to the current thread attempting to recursively derive a class named <em>N</em> using loader <em>L</em></strong>, <del>loading</del> <strong>derivation</strong> throws a <code>ClassCircularityError</code>.</p></li>
+<li><p><strong>Otherwise, if any of the classes or interfaces named as direct superinterfaces of <em>C</em> is not in fact an interface, derivation throws an <code>IncompatibleClassChangeError</code>.</strong></p></li>
+</ul>
+<div class="inserted">
+<ul>
+<li><p>Otherwise, for each direct superinterface, if the superinterface has a <code>PermittedSubclasses</code> attribute (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.30">4.7.30</a>) and any of the following are true, derivation fails with a <code>IncompatibleClassChangeError</code>:</p>
+<ul>
+<li><p>The superinterface belongs to a different run-time module than <em>C</em>.</p></li>
+<li><p><em>C</em> does not have its <code>ACC_PUBLIC</code> flag set (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">4.1</a>) and the superinterface belongs to a different run-time package than <em>C</em>.</p></li>
+<li><p>No entry in the <code>classes</code> table of the superinterface's <code>PermittedSubclasses</code> attribute references a class or interface with name <em>N</em>.</p></li>
+</ul></li>
+</ul>
+</div></li>
+<li><p><strong>If, since step 1, in another thread, the Java Virtual Machine has marked a class or interface named <em>N</em> as having <em>L</em> as its defining class loader, that class or interface is the result of class derivation, and the class or interface derived in steps 1-4 is discarded.</strong></p>
+<div class="editorial">
+<p>This is the longstanding behavior of Hotspot, but there was no provision for it in the specification.</p>
+</div>
+<p><del>The</del> <strong>Otherwise, the class or interface derived in steps 1-4 is the result of class derivation, and the</strong> Java Virtual Machine marks <em>C</em> as having <em>L</em> as its defining class loader and records that <em>L</em> is an initiating loader of <em>C</em> (<a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.3.4">5.3.4</a>).</p></li>
+</ol>
+</main><footer class="legal-footer"><hr/><a href="../legal/copyright.html">Copyright</a> &copy; 1993, 2021, Oracle and/or its affiliates, 500 Oracle Parkway, Redwood Shores, CA 94065 USA.<br>All rights reserved. Use is subject to <a href="https://www.oracle.com/java/javase/terms/license/java17.0.1speclicense.html">license terms</a> and the <a href="https://www.oracle.com/technetwork/java/redist-137594.html">documentation redistribution policy</a>. <!-- Version 17.0.1+12-LTS-39 --></footer>
+</body>
+</html>
