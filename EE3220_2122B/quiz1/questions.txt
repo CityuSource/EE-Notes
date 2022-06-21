@@ -1,0 +1,31 @@
+Take ARM Cortex-M M0 and M4 processors as an example, compare the advantages of Von Neumann architecture and the Harvard architecture for these two processors. (5%)
+
+Translate the following C statements into an assembly program and explain the meanings, you can use any general-purpose registers, and ARM instructions: (10%)
+int MAC(int a, int b, int c) {
+  return ((a*b) + c);
+}
+
+It is required to swap the data of two registers R1 and R2, which are part of the processor architecture. (10%)
+- Write the code to do it using only PUSH and POP operations.
+- Write the code to do it by using register transfer instructions.
+- Compare the two methods and explain why one method is superior to the other in terms of time expended.
+
+Explain the functionality of different memory types, data segment, code segment, stack, heap. Use a C program to illustrate the idea. (10%)
+
+A RISC Computer has a 32-bit instruction format with 1) Opcode: 8-bits, 2) 3 register fields, each of 4 bits, 3) A 4-bit field for "condition". The remaining bits are for information pertaining to the processor. Please show your calculations.
+1) What is the maximum number of operations possible?
+2) How many combinations of three registers are possible?
+3) How many conditions can be accommodated?
+4) How many registers are possible?
+
+Explain the meaning of Registers->Core, Thread and Call Stack with the support from the figure below? Explain the concept of why "A procedure call has more overheads than a jump instruction". (10%)
+
+Describe the relationship between an embedded system and System-on-Chip in less than 200 words, and what are the differences between a microprocessor and an MCU? (10%)
+
+What are the similarities and differences between Keil Studio and Mbed? In addition, please also elaborate on the difference between ARMv8-A and ARMv9. What is the architecture that Cortex-M4 is using? (10%)
+
+We take Microbit v1 as an example. Describe the process technology used, How many pipeline stages and interrupts are there? Please illustrate the movement of instruction, such as the 32-bit hardware integer multiply with 32-bit result in these pipelines. (10%)
+
+Given an 8-bit ALU with outputs F7 to F0 and available Carries C8 and C7, show the logic circuit / Boolean function for generating the signals for the four status bits N, Z, V, C. (5%)
+
+Describe the term “instruction” and “instruction set architecture (ISA)”. Accordingly to the knowledge you have learned in our course, explain what is required when we add a new instruction to a System-on-Chip. (10%)

@@ -1,0 +1,9 @@
+python -u ./test.py --resume 'checkpoints/model.pth'
+Total # images:2624, labels:2624
+number of features in block1 256
+number of features in block2 512
+number of features in block3 1024
+number of features in block4 1024
+test:
+ 164/164 [================================================================================>]  Step: 311ms | Tot: 46s431ms | Loss: 0.3838 | Acc: 89.024% (2336/2624)
+===> ACC. PERFORMANCE: 89.024%

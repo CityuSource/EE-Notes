@@ -9,10 +9,13 @@
 
 **wsl.txt
 **ssh_command.txt
+**/desktop.ini
+**/.DS_Store
 
 # Ext
 *.ini
 *.exe
+
 # *.rdata
 *.Rhistory
 

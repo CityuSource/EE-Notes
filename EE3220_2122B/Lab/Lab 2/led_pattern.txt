@@ -1,0 +1,13 @@
+2_1
+blink every 1s, wait for 8s (time interrupt), loop
+
+2_2
+blink every 1s, stop after time interrupt, loop
+
+2_b
+if no number pressed when start
+	blink for 4 times once (time interrupt)
+after that
+	blink for number of times that number pressed
+or if no number pressed afterwards
+	keep led on
