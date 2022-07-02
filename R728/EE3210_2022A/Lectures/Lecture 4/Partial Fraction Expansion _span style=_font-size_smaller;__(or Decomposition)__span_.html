@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<!-- saved from url=(0075)https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html -->
+<html><link type="text/css" rel="stylesheet" id="dark-mode-custom-link"><link type="text/css" rel="stylesheet" id="dark-mode-general-link"><style lang="en" type="text/css" id="dark-mode-custom-style"></style><style lang="en" type="text/css" id="dark-mode-native-style"></style><!-- InstanceBegin template="/Templates/LPSA.dwt" codeOutsideHTMLIsLocked="false" --><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/LinePhysSystAnal.css" rel="stylesheet" type="text/css">
+<link href="mailto:echeeve1@swarthmore.edu" rev="made">
+<meta content="en-us" http-equiv="Content-Language">
+
+<meta content="Erik Cheever, Swarthmore College" name="author">
+<meta content="ALL" name="ROBOTS">
+<script src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/overlib.js.download"><!-- overLIB (c) Erik Bosrup --></script>
+<script type="text/x-mathjax-config;executed=true">
+       MathJax.Hub.Config({  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+<script type="text/javascript" async="" src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/MathJax.js.download">
+</script>
+<script src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/jquery-3.3.1.min.js.download" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/jquery-toc.js.download"></script>
+<!-- InstanceBeginEditable name="doctitle" -->
+
+<meta name="keywords" content="Partial Fraction Expansion">
+<meta name="description" content="Partial Fraction Expansion, Partial Fraction Decomposition">
+<title>Partial Fraction Expansion &lt;span style="font-size:smaller;"&gt;(or Decomposition)&lt;/span&gt;</title>
+<script type="text/javascript">myMapLink="t_PFE"</script>
+<!-- InstanceEndEditable -->
+<script src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/LPSA.js.download" type="text/javascript"></script>
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+<body><div id="MathJax_Message" style="display: none;"></div>
+<div id="overDiv" style="position: absolute; visibility: hidden; z-index: 1000;"> </div>
+<!-- InstanceBeginEditable name="MainText" -->
+  
+<h1>Partial Fraction Expansion <span style="font-size:smaller;">(or Decomposition)</span></h1>
+<ul>
+	<li><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Why_perform_partial_fraction_expansion_">Why perform partial fraction 
+	expansion?</a><ul>
+		<li><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#A_Simple_Partial_Fraction_Expansion_">A Simple Partial Fraction 
+		Expansion</a></li>
+	</ul>
+	</li>
+	<li><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Special_Cases_of_Partial_Fraction_Expansion_">Special Cases of 
+	Partial Fraction Expansion</a><ul>
+		<li>
+		<a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Order_of_numerator_polynomial_is_not_less_than_that_of_the_denominator.">
+		Order of numerator polynomial is not less than that of the denominator.
+		</a></li>
+		<li><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Distinct_Real_Roots.">Distinct Real Roots</a> (<a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#cover-up">the 
+		cover up method</a>). </li>
+		<li><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Repeated_Real_Roots.">Repeated Real Roots. </a></li>
+		<li><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Complex_roots.">Complex roots.</a></li>
+		<li><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#An_exponential_(or_other_function)_in_the_numerator.">An exponential 
+		(or other function) in the numerator. </a></li>
+	</ul>
+	</li>
+</ul>
+<hr>
+<h2><a name="Why_perform_partial_fraction_expansion_">Why perform partial fraction 
+expansion?</a></h2>
+<p>Partial fraction expansion (also called partial fraction decomposition) is performed whenever we want to represent a complicated 
+fraction as a sum of simpler fractions.&nbsp; This occurs when working with the 
+Laplace or Z-Transform in which we have methods of efficiently processing simpler 
+fractions (If you are not yet familiar with these transforms, don't worry -- the 
+technique also has other uses).&nbsp; Examples of partial fraction expansion 
+applied to the inverse Laplace Transform are given
+<a href="https://lpsa.swarthmore.edu/LaplaceXform/InvLaplace/InvLaplaceXformPFE.html">here</a>.&nbsp; 
+The inverse Z Transform is discussed
+<a href="https://lpsa.swarthmore.edu/ZXform/InvZXform/InvZXform.html">here</a>.</p>
+<p>As an example of partial fraction expansion, 
+consider the fraction:</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/FofS_1.gif"></p>
+<p class="noindent">We can represent this as a sum of simple fractions:</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/FofS_1_expand.gif"></p>
+<p class="noindent">But how do we determine the values of A<sub>1</sub>, A<sub>2</sub>, 
+and A<sub>3</sub>?</p>
+<h3><a name="A_Simple_Partial_Fraction_Expansion_">A Simple Partial Fraction Expansion</a></h3>
+<p class="noindent">If we have a situation like the one shown above, there is a 
+simple and straightforward method for determining the unknown coefficients A<sub>1</sub>, 
+A<sub>2</sub>, and A<sub>3</sub>.</p>
+<p class="noindent">To find A<sub>1</sub>, multiply F(s) by s, </p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/FofS_1_expand2.gif"></p>
+<p class="noindent">and then set s=0.&nbsp; </p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/SimpleGetA.gif"></p>
+<p class="noindent">To find A<sub>2</sub>, multiply F(s) by s+2 and set s=-2.</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/SimpleGetB.gif"></p>
+<p class="noindent">Likewise, for A<sub>3</sub> multiply by s+5 and set s=-5</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/SimpleGetC.gif"><br>
+&nbsp;</p>
+<p class="noindent">So, the final expansion is</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/SimpleFinal.gif"></p>
+<p class="noindent">The result can be simply checked by putting all of the expanded 
+terms over a common denominator.</p>
+<p>&nbsp;</p>
+<h2><a name="Special_Cases_of_Partial_Fraction_Expansion_">Special Cases of Partial 
+Fraction Expansion</a></h2>
+<p>The example given above shows that partial fraction expansion can easily expand 
+a complex fraction into a sum of simpler fractions.&nbsp; However, there are many 
+situations where the expansion is not so simple.&nbsp; The cases we will consider 
+include</p>
+<ul>
+	<li><i>
+	<a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Order_of_numerator_polynomial_is_not_less_than_that_of_the_denominator.">
+	Order of numerator polynomial is not less than that of the denominator.</a>&nbsp;
+	</i>Partial fraction expansion can only be performed when the order of the denominator 
+	polynomial (the bottom term of the fraction) is greater than the order of the 
+	numerator (the top term).&nbsp; If this condition is not met, we must perform 
+	an extra step before continuing with the expansion.</li>
+	<li><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Distinct_Real_Roots."><i>Distinct Real Roots.</i> </a>&nbsp;The 
+	problem solved above is described as the case of distinct, real roots.&nbsp;&nbsp; 
+	This means that each term only appears once in the denominator, and the root 
+	of each term in the denominator is a distinct real number.&nbsp; In the example 
+	above, the roots were at 0, -2 and -5.</li>
+	<li><i><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Repeated_Real_Roots.">Repeated Real Roots.</a> </i>&nbsp;Another 
+	possibility is a case of repeated roots.&nbsp; For example<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Repeat1.gif"><br>
+	wherein the root at -2 is repeated.</li>
+	<li><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Complex_roots."><i>Complex roots.</i> </a>&nbsp;Additional difficulty 
+	arises if the denominator cannot be reduced to a product of real roots.&nbsp; 
+	For example if <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Complex1.gif"></li>
+	<li><i><a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#An_exponential_(or_other_function)_in_the_numerator.">An exponential 
+	(or other function) in the numerator.</a>&nbsp; </i>Although this is not really 
+	a special case, it often confuses students, so we will discuss what to do if 
+	you come upon this particular type of problem.</li>
+</ul>
+<h3>
+<a name="Order_of_numerator_polynomial_is_not_less_than_that_of_the_denominator.">
+Order of numerator polynomial is not less than that of the denominator.</a> </h3>
+<p>The partial fraction expansion methods described below can be used only when 
+the order of the denominator polynomial is greater than that of the numerator.
+</p>
+<div class="example">
+	<h5>Example: Order of Numerator Equals Order of Denominator</h5>
+	<p>The fraction</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/OrderNum1.gif"></p>
+	<p>has numerator and denominator that are both second order.&nbsp; Before performing 
+	a partial fraction expansion, the fraction must be manipulated so that the order 
+	of the numerator is less than that of the denominator.&nbsp; A straightforward 
+	way to do this is to use long division on the fraction.</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/OrderNum2.gif"></p>
+	<p>In order to get the s<sup>2</sup> to drop out, multiply by 3.</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/OrderNum3.gif"></p>
+	<p>so the result is 3 with a remainder of -39s-58.&nbsp; Or, put another way</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/OrderNum4.gif"></p>
+	<p>Partial fraction expansion can now be applied to the remaining fractional 
+	term of F(s).</p>
+</div>
+<h3><a name="Distinct_Real_Roots.">Distinct Real Roots.&nbsp; </a></h3>
+<p>Performing partial fraction expansions of an expression with distinct (i.e., 
+not repeated) real roots.&nbsp; An example of this was done above.&nbsp; In general
+</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Discrete1.gif"></p>
+<p class="noindent">where the a<sub>i</sub> are all unique.&nbsp; In this expression 
+D(s) is the denominator polynomial of order n, and N(s) is the numerator polynomial 
+whose order is less than n.&nbsp; We want to perform a partial fraction expansion 
+such that F(s) is expressed as:</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Discrete2.gif"></p>
+<p class="noindent">where</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Discrete3.gif"></p>
+<p class="noindent">&nbsp;</p>
+<div class="example">
+	<h5>Example: Distinct Real Roots</h5>
+	<p>Consider the example from <a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#A_Simple_Partial_Fraction_Expansion_">
+	above</a>:</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/FofS_1_expand.gif"></p>
+	<p>Find A<sub>1</sub></p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Ex1_1.gif"></p>
+	<p>Find A<sub>2</sub></p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Ex1_2.gif"></p>
+	<p>Find A<sub>3</sub></p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Ex1_3.gif"></p>
+	<p>&nbsp;</p>
+	<p>The calculation described above can, in practice, be very easily completed 
+	by hand by using the "<a name="cover-up">cover-up</a>" method.</p>
+	<div class="example">
+		<h5>Example: Distinct Real Roots; the cover-up method</h5>
+		<p>Consider the example from above:</p>
+		<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/FofS_1_expand.gif"></p>
+		<p>Find A<sub>1</sub> by first&nbsp; "covering-up" the first term in the 
+		denominator (i.e., the term that is associated with A<sub>1</sub>) with 
+		your finger (shown as a gray ellipse), and then letting s=0.</p>
+		<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Ex1r_1.gif"></p>
+		<p>Likewise for A<sub>2</sub></p>
+		<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Ex1r_2.gif"></p>
+		<p>and A<sub>3</sub></p>
+		<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Ex1r_3.gif"></p>
+	</div>
+</div>
+<h3><a name="Repeated_Real_Roots.">Repeated Real Roots.&nbsp; </a></h3>
+<p>Situations in which there exists a repeated root in the denominator polynomial 
+are more complicated.&nbsp; Consider the fraction: </p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi1.gif"></p>
+<p class="noindent">The expansion for this case is:</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi2.gif"></p>
+<p class="noindent">Most of the unknown coefficients can be found using the "cover-up" 
+method.</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi3.gif"></p>
+<p class="noindent">Unfortunately, the parameter A2 cannot be found in this way.&nbsp; 
+Why not? {<a target="_blank" href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PFESide1.html">answer</a>} </p>
+<p>There are two commonly used methods for finding A2.&nbsp; The method favored 
+by most textbooks uses the relationship</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi4.gif"></p>
+<p>so</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi5.gif"></p>
+<p class="noindent">This yields,</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi15.gif"></p>
+<p class="noindent">While this method is elegant (and can be extended to multiply 
+repeated roots), the differentiation of the ratio of polynomials is prone to 
+errors.&nbsp; This method won't be used again in this document {<a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/RootsRepeat.html">click 
+for details of method</a>}.</p>
+<p class="noindent">&nbsp;</p>
+<p>Another way to find the value of A<sub>2</sub> that is completely general, involves 
+no calculus, is useful in other situations, and can even be used to find the coefficients 
+found by the cover-up method involves manipulation of the original equation describing 
+the partial fraction expansion by performing a <a name="cross-multiplication">cross-multiplication</a>.</p>
+<div class="example">
+	<h5>Example: Cross Multiplication</h5>
+	<p>Start with the partial fraction expansion</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi13.gif"></p>
+	<p>Multiply this by the denominator (to clear it out).&nbsp; In other words 
+	cross-multiply the right side by the denominator of the left side.</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi7.gif"></p>
+	<p>Now expand the right hand side as a polynomial in "s."</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi8.gif"></p>
+	<p>We are left with two polynomials that are equal to each other.&nbsp; We can 
+	use the fact that if two polynomials are equal, then the coefficient associated 
+	with each power in the polynomials must be equal.&nbsp; The polynomial on the 
+	left of the equals sign (i.e., s+3) only has 1<sup>st</sup> and 0<sup>th</sup> 
+	order terms, with values equal to 1 and 3, respectively.&nbsp; The right side 
+	is more complicated (as shown below).</p>
+	<div class="skinnyTable">
+		<table class="skinnyTable" align="center">
+			<tbody><tr>
+				<th class="skinnyTable">order of <br>
+				coefficient</th>
+				<th class="skinnyTable">left side<br>
+				coefficient</th>
+				<th class="skinnyTable">right side<br>
+				coefficient</th>
+			</tr>
+			<tr>
+				<td class="skinnyTable">3<sup>rd</sup> (s<sup>3</sup>)</td>
+				<td class="skinnyTable">0</td>
+				<td class="skinnyTable"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi9.gif"></td>
+			</tr>
+			<tr>
+				<td class="skinnyTable">2<sup>nd</sup> (s<sup>2</sup>)</td>
+				<td class="skinnyTable">0</td>
+				<td class="skinnyTable"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi10.gif"></td>
+			</tr>
+			<tr>
+				<td class="skinnyTable">1<sup>st</sup> (s<sup>1</sup>)</td>
+				<td class="skinnyTable">1</td>
+				<td class="skinnyTable"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi11.gif"></td>
+			</tr>
+			<tr>
+				<td class="skinnyTable">0<sup>th</sup> (s<sup>0</sup>)</td>
+				<td class="skinnyTable">3</td>
+				<td class="skinnyTable"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi12.gif"></td>
+			</tr>
+		</tbody></table>
+	</div>
+	<p>This yields a four-by-four system of equations that can be solved for A1 
+	through A4.&nbsp; </p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi14.gif"></p>
+	<p>&nbsp;</p>
+	<p>Or, expressed in matrix form</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Multi6.gif"></p>
+	<p>Solution yields:</p>
+	<p class="equation">A<sub>1</sub> = 0.1500<br>
+	A<sub>2</sub> = -0.1944<br>
+	A<sub>3</sub> = -0.1667<br>
+	A<sub>4</sub> = 0.0444</p>
+	<p>Solution of a four-by-four system of equations is obviously more complicated 
+	than is the use of the cover-up method to find A<sub>1</sub>, A<sub>3</sub> 
+	and A<sub>4</sub>, followed by using the differentiation method to find A<sub>2</sub>.&nbsp; 
+	This begs the question: why use the cross-multiplication technique?&nbsp; The 
+	answer is that the cross-multiplication technique need not be used in isolation.&nbsp; 
+	The cover-up method can be used to find A<sub>1</sub>, A<sub>3</sub> and A<sub>4</sub>.&nbsp; 
+	Then the value of A<sub>2</sub> can be found by using the expression (obtained 
+	using cross-multiplication)</p>
+	<p class="equation">A<sub>1</sub>+A<sub>2</sub>+A<sub>4</sub>=0,</p>
+	<p>or</p>
+	<p class="equation">A<sub>2</sub>=-(A<sub>1</sub>+A<sub>4</sub>)=-0.1944</p>
+</div>
+<h3><a name="Complex_roots.">Complex roots.</a></h3>
+<p>Another case that often comes up is that of complex conjugate roots.&nbsp; Consider 
+the fraction:</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Complex2.gif"></p>
+<p>The second term in the denominator cannot be factored into real terms.&nbsp; 
+This leaves us with two possibilities - either accept the complex roots, or find 
+a way to include the second order term.</p>
+<div class="example">
+	<h5>Example: Complex roots;
+	Method 1 - Using the complex (first order) roots<br>
+	</h5>
+	<p>If we use complex roots, we can expand the fraction as we did before.&nbsp; 
+	This is not typically the way you want to proceed if you are working by hand, 
+	but may be easier for computer solutions (where complex numbers are handled 
+	as easily as real numbers).&nbsp; To perform the expansion, continue as before.</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Complex3.gif"></p>
+	<p class="noindent">where</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Complex4.gif"></p>
+	<p class="noindent">Note that A2 and A3 must be complex conjugates of each other 
+	since they are equivalent except for the sign on the imaginary part.&nbsp; Performing 
+	the required calculations:</p>
+	<p class="equation">
+	<img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/PartialComplex.gif"></p>
+	<p class="noindent">so</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Complex6.gif"></p>
+	<p>&nbsp;</p>
+</div>
+<p>&nbsp;</p>
+<div class="example">
+	<h5>Example: Complex roots;&nbsp;
+	Method 2 - Using the second order polynomial<br>
+	</h5>
+	<p>Another way to expand the fraction without resorting to complex numbers is 
+	to perform the expansion as follows.</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Complex7.gif"></p>
+	<p class="noindent">Note that the numerator of the second term is no longer 
+	a constant, but is instead a first order polynomial.&nbsp; From above (or using 
+	the cover-up method) we know that A=-0.2.&nbsp; We can find the quantities B 
+	and C from cross-multiplication.</p>
+	<p class="noindent"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Complex8.gif"></p>
+	<p class="noindent">If we equate like powers of&nbsp; "s" we get</p>
+	<div class="skinnyTable">
+		<table class="skinnyTable">
+			<tbody><tr>
+				<th class="skinnyTable">order of <br>
+				coefficient</th>
+				<th class="skinnyTable">left side<br>
+				coefficient</th>
+				<th class="skinnyTable">right side<br>
+				coefficient</th>
+			</tr>
+			<tr>
+				<td class="skinnyTable">2<sup>nd</sup> (s<sup>2</sup>)</td>
+				<td class="skinnyTable">0</td>
+				<td class="skinnyTable">A+B</td>
+			</tr>
+			<tr>
+				<td class="skinnyTable">1<sup>st</sup> (s<sup>1</sup>)</td>
+				<td class="skinnyTable">1</td>
+				<td class="skinnyTable">4A+5B+C</td>
+			</tr>
+			<tr>
+				<td class="skinnyTable">0<sup>th</sup> (s<sup>0</sup>)</td>
+				<td class="skinnyTable">3</td>
+				<td class="skinnyTable">5A+5C</td>
+			</tr>
+		</tbody></table>
+	</div>
+	<p class="noindent">Since we already know that A=-0.2, the first expression 
+	(0=A+B) tells us that B=0.2, and the last expression (3=5A+5C) tells us that 
+	C=0.8. We can use the middle expression (1=4A+5B+C) to check our calculations.&nbsp; 
+	Finally, we get</p>
+	<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/Complex9.gif"></p>
+</div>
+<h3><a name="An_exponential_(or_other_function)_in_the_numerator.">An exponential 
+(or other function) in the numerator.&nbsp; </a></h3>
+<p>A situation that often confuses students is when there is an exponential term 
+in the numerator.&nbsp; For example, the function</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/ExpNum1.gif"></p>
+<p>cannot be simplified to a form</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/ExpNum2.gif"></p>
+<p>Instead, it is simplified to </p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/ExpNum3.gif"></p>
+<p>The quantities A1, A2 and A3 are found in the same way as for the case of distinct 
+real roots (<a href="https://lpsa.swarthmore.edu/BackGround/PartialFraction/PartialFraction.html#Distinct_Real_Roots.">above</a>).&nbsp; So</p>
+<p class="equation"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/ExpNum4.gif"></p>
+
+
+<!-- InstanceEndEditable -->
+<hr class="fullWidth">
+<p style="text-align: right; font-size: smaller"><a href="https://lpsa.swarthmore.edu/References.html">References</a></p>
+<div id="siteInfo"><p class="center">© Copyright 2005 to 2021 Erik Cheever&nbsp;&nbsp;&nbsp;
+		This page may be freely used for educational purposes.</p>
+		<a href="mailto:echeeve1@swarthmore.edu?subject=Partial" fraction="" expansion="" <span="" style="font-size:smaller;">(or Decomposition) (Comments)&gt;Comments?</a>
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	<a href="mailto:echeeve1@swarthmore.edu?subject=Partial" fraction="" expansion="" <span="" style="font-size:smaller;">(or Decomposition) (Questions)&gt;Questions?</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	<a href="mailto:echeeve1@swarthmore.edu?subject=Partial" fraction="" expansion="" <span="" style="font-size:smaller;">(or Decomposition) (Suggestions)&gt;Suggestions?</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	<a href="mailto:echeeve1@swarthmore.edu?subject=Partial" fraction="" expansion="" <span="" style="font-size:smaller;">(or Decomposition) (Corrections)&gt;Corrections?</a>
+		<br><a href="http://www.swarthmore.edu/NatSci/echeeve1">Erik Cheever</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		<a href="http://www.engin.swarthmore.edu/">Department of Engineering</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		<a href="http://www.swarthmore.edu/">Swarthmore College</a></div>
+
+<!-- InstanceEnd -->
+<div class="topNavWidget"> <br>
+    <a href="javascript:history.go(-1)"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/previous.png" title="Back"></a><br><br>
+    <a href="javascript:window.scrollTo(0,0)"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/top.png" title="Top"></a><br><br>
+    <img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/nextGray.png" title="unavailable"><br><br>
+    <a href="https://lpsa.swarthmore.edu/TM/tmExplore/index.html?LPSA#t_PFE"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/map.png" title="Topic Map"></a><br><br>
+    <a href="https://lpsa.swarthmore.edu/LPSAHelp/LPSA_Search.html"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/search.png" title="Search"></a><br><br>
+	<a href="https://lpsa.swarthmore.edu/LPSAHelp/LPSA_Help.html"><img src="./Partial Fraction Expansion _span style=_font-size_smaller;__(or Decomposition)__span__files/info.png" title="Help"></a><br><br></div></body></html>

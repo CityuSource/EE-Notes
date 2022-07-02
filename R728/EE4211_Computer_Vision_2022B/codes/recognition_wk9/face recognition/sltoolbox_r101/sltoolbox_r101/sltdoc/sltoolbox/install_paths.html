@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of install_paths</title>
+  <meta name="keywords" content="install_paths">
+  <meta name="description" content="THE SCRIPT to install the sltoolbox paths to matlab system">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">sltoolbox</a> &gt; install_paths.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>install_paths
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>THE SCRIPT to install the sltoolbox paths to matlab system</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function install_paths() </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">THE SCRIPT to install the sltoolbox paths to matlab system</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>	DISP displays the dataset fields</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function install_paths()</a>
+0002 <span class="comment">%THE SCRIPT to install the sltoolbox paths to matlab system</span>
+0003 
+0004 fp = mfilename(<span class="string">'fullpath'</span>);
+0005 rootdir = fileparts(fp);
+0006 
+0007 subfolders = { <span class="keyword">...</span>
+0008     <span class="string">'ann'</span>; <span class="keyword">...</span>
+0009     <span class="string">'cluster'</span>; <span class="keyword">...</span>
+0010     <span class="string">'core'</span>; <span class="keyword">...</span>
+0011     <span class="string">'demos'</span>; <span class="keyword">...</span>
+0012     <span class="string">'discrete'</span>; <span class="keyword">...</span>
+0013     <span class="string">'ExpDL'</span>; <span class="keyword">...</span>
+0014     <span class="string">'fileio'</span>; <span class="keyword">...</span>
+0015     <span class="string">'graph'</span>; <span class="keyword">...</span>
+0016     <span class="string">'imgproc'</span>; <span class="keyword">...</span>
+0017     <span class="string">'interp'</span>; <span class="keyword">...</span>
+0018     <span class="string">'kernel'</span>; <span class="keyword">...</span>
+0019     <span class="string">'learn'</span>; <span class="keyword">...</span>
+0020     <span class="string">'manifold'</span>; <span class="keyword">...</span>
+0021     <span class="string">'perfeval'</span>; <span class="keyword">...</span>
+0022     <span class="string">'regression'</span>; <span class="keyword">...</span>
+0023     <span class="string">'smallmat'</span>; <span class="keyword">...</span>
+0024     <span class="string">'stat'</span>; <span class="keyword">...</span>
+0025     <span class="string">'subspace'</span>; <span class="keyword">...</span>
+0026     <span class="string">'subspace_ex'</span>; <span class="keyword">...</span>
+0027     <span class="string">'tensor'</span>; <span class="keyword">...</span>
+0028     <span class="string">'text'</span>; <span class="keyword">...</span>
+0029     <span class="string">'utils'</span>; <span class="keyword">...</span>
+0030     <span class="string">'utils_ex'</span>; <span class="keyword">...</span>
+0031     <span class="string">'visualize'</span>; <span class="keyword">...</span>
+0032     <span class="string">'xmlkits'</span>};
+0033 
+0034 n = length(subfolders);
+0035 folderpaths = cell(1, n);
+0036 
+0037 <span class="keyword">for</span> i = 1 : n
+0038     folderpaths{i} = fullfile(rootdir, subfolders{i});
+0039     fprintf(<span class="string">'Add path: %s\n'</span>, folderpaths{i});    
+0040 <span class="keyword">end</span>
+0041 
+0042 addpath(folderpaths{:});
+0043 savepath;
+0044 
+0045 <a href="../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>(<span class="string">'All paths have been added.'</span>);
+0046 <a href="../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>(<span class="string">' '</span>);  <span class="comment">% a blank line</span>
+0047 
+0048 
+0049</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

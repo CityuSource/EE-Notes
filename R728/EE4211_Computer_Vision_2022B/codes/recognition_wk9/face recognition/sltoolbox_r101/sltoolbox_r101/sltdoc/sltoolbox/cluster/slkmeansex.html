@@ -1,0 +1,337 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slkmeansex</title>
+  <meta name="keywords" content="slkmeansex">
+  <meta name="description" content="SLKMEANSEX Performs Generalized K-means">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">cluster</a> &gt; slkmeansex.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\cluster&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slkmeansex
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLKMEANSEX Performs Generalized K-means</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [centers, labels, info] = slkmeansex(X, n, estfunctor, clsfunctor, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLKMEANSEX Performs Generalized K-means
+
+ $ Syntax $
+   - [centers, labels] = slkmeansex(X, n, estfunctor, clsfunctor, ...)
+   - [centers, labels, info] = slkmeansex(X, n, estfunctor, clsfunctor, ...)
+
+ $ Arguments $
+   - X:            the samples to be clustered
+   - n:            the number of samples
+   - estfunctor:   the functor to estimate means(centers), as follows:
+                   centers = estfunc(centers, X, K, weights, labels, ...)
+                   when input centers is empty, it performs initial
+                   estimation, otherwise, it performs updating. 
+                   In addition, it should ignore the samples with 
+                   labels being zeros or negative numbers.
+   - clsfunctor:   the functor to classify samples
+                   labels = clsfunc(centers, X, n, ...)  
+                   it should produce 1 x n row vector.
+   - centers:      the clustered centers
+   - labels:       the labels indicating which sample belong to which center
+                   a 1 x n row vector.
+   - info:         the information on iteration process
+
+ $ Description $
+   - [centers, labels] = slkmeansex(X, n, estfunctor, clsfunctor, ...) 
+     is a generalized version of K-means. It actually implements an
+     iterative process to estimate centers from clustered samples and
+     re-clustered the samples according to centers.
+     You can specify the following properties:
+       - 'K':              the number of initial number of clusters
+                           (default = 3)
+       - 'init_centers':   the initial centers.
+       - 'maxiter':        the maximum number of iterations
+                           (default = 100);
+       - 'annthres':       the threshold of annealing
+                           when the sum of sample weights for a center
+                           is below annthres * the total weight, the
+                           center will be discarded. (default = 0)
+       - 'annfunc':        the function to discard a set of centers
+                           centers = annfunc(centers, inds_discard);
+       - 'weights':        the weights of the samples (default = [])
+       - 'verbose':        whether to show progress information
+                           (default = true)
+
+ $ Remarks $
+   - The X and centers can be in any form that conform to the specified
+     functors.
+
+   - If init_centers is specified, K should be exactly the number of
+     initial centers.
+
+   - If annthres is 0, then no centers will be discarded even some centers
+     have no support samples in the process. The estfunctor should keep
+     those centers unchanged.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 28, 2006
+   - Modified by Dahua Lin, on Aug 30, 2006
+       - utilize slevalfunctor and slsharedisp
+   - Modified by Dahua Lin, on Aug 31, 2006
+       - based on slreevallearn</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sllabeledsum.html" class="code" title="function S = sllabeledsum(X, labels, labelset, w)">sllabeledsum</a>	SLLABELEDSUM Sums the numbers according to labels</li><li><a href="../../sltoolbox/learn/slreevallearn.html" class="code" title="function [models, Q, info] = slreevallearn(models, Q, data, estfunctor, evalfunctor, cmpfunctor, varargin)">slreevallearn</a>	SLREEVALLEARN Performs an iterative learning based on re-evaluation</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>	SLEVALFUNCTOR Evaluates a functor</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li><li><a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>	SLSHAREDISP Displays message using a shared configuration</li><li><a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>	SLSHAREDISP_ATTACH Attachs to global display options</li><li><a href="../../sltoolbox/utils/slsharedisp_decindent.html" class="code" title="function slsharedisp_decindent(nsteps)">slsharedisp_decindent</a>	SLSHAREDISP_DECINDENT Decreases the indent of the displayer</li><li><a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>	SLSHAREDISP_DETACH Detachs current function from global display</li><li><a href="../../sltoolbox/utils/slsharedisp_incindent.html" class="code" title="function slsharedisp_incindent(nsteps)">slsharedisp_incindent</a>	SLSHAREDISP_INCINDENT Increases the indent of the displayer</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slkmeans.html" class="code" title="function [means, labels] = slkmeans(X, varargin)">slkmeans</a>	SLKMEANS Performs K-Means Clustering on samples</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function models = kmeansex_est(models, data, labels, estfunctor, opts)</a></li><li><a href="#_sub2" class="code">function labels = kmeansex_eval(models, data, labels, clsfunctor)</a></li><li><a href="#_sub3" class="code">function isconverged = kmeansex_cmp(models_prev, models, labels_prev, labels)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [centers, labels, info] = slkmeansex(X, n, estfunctor, clsfunctor, varargin)</a>
+0002 <span class="comment">%SLKMEANSEX Performs Generalized K-means</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [centers, labels] = slkmeansex(X, n, estfunctor, clsfunctor, ...)</span>
+0006 <span class="comment">%   - [centers, labels, info] = slkmeansex(X, n, estfunctor, clsfunctor, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - X:            the samples to be clustered</span>
+0010 <span class="comment">%   - n:            the number of samples</span>
+0011 <span class="comment">%   - estfunctor:   the functor to estimate means(centers), as follows:</span>
+0012 <span class="comment">%                   centers = estfunc(centers, X, K, weights, labels, ...)</span>
+0013 <span class="comment">%                   when input centers is empty, it performs initial</span>
+0014 <span class="comment">%                   estimation, otherwise, it performs updating.</span>
+0015 <span class="comment">%                   In addition, it should ignore the samples with</span>
+0016 <span class="comment">%                   labels being zeros or negative numbers.</span>
+0017 <span class="comment">%   - clsfunctor:   the functor to classify samples</span>
+0018 <span class="comment">%                   labels = clsfunc(centers, X, n, ...)</span>
+0019 <span class="comment">%                   it should produce 1 x n row vector.</span>
+0020 <span class="comment">%   - centers:      the clustered centers</span>
+0021 <span class="comment">%   - labels:       the labels indicating which sample belong to which center</span>
+0022 <span class="comment">%                   a 1 x n row vector.</span>
+0023 <span class="comment">%   - info:         the information on iteration process</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% $ Description $</span>
+0026 <span class="comment">%   - [centers, labels] = slkmeansex(X, n, estfunctor, clsfunctor, ...)</span>
+0027 <span class="comment">%     is a generalized version of K-means. It actually implements an</span>
+0028 <span class="comment">%     iterative process to estimate centers from clustered samples and</span>
+0029 <span class="comment">%     re-clustered the samples according to centers.</span>
+0030 <span class="comment">%     You can specify the following properties:</span>
+0031 <span class="comment">%       - 'K':              the number of initial number of clusters</span>
+0032 <span class="comment">%                           (default = 3)</span>
+0033 <span class="comment">%       - 'init_centers':   the initial centers.</span>
+0034 <span class="comment">%       - 'maxiter':        the maximum number of iterations</span>
+0035 <span class="comment">%                           (default = 100);</span>
+0036 <span class="comment">%       - 'annthres':       the threshold of annealing</span>
+0037 <span class="comment">%                           when the sum of sample weights for a center</span>
+0038 <span class="comment">%                           is below annthres * the total weight, the</span>
+0039 <span class="comment">%                           center will be discarded. (default = 0)</span>
+0040 <span class="comment">%       - 'annfunc':        the function to discard a set of centers</span>
+0041 <span class="comment">%                           centers = annfunc(centers, inds_discard);</span>
+0042 <span class="comment">%       - 'weights':        the weights of the samples (default = [])</span>
+0043 <span class="comment">%       - 'verbose':        whether to show progress information</span>
+0044 <span class="comment">%                           (default = true)</span>
+0045 <span class="comment">%</span>
+0046 <span class="comment">% $ Remarks $</span>
+0047 <span class="comment">%   - The X and centers can be in any form that conform to the specified</span>
+0048 <span class="comment">%     functors.</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">%   - If init_centers is specified, K should be exactly the number of</span>
+0051 <span class="comment">%     initial centers.</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">%   - If annthres is 0, then no centers will be discarded even some centers</span>
+0054 <span class="comment">%     have no support samples in the process. The estfunctor should keep</span>
+0055 <span class="comment">%     those centers unchanged.</span>
+0056 <span class="comment">%</span>
+0057 <span class="comment">% $ History $</span>
+0058 <span class="comment">%   - Created by Dahua Lin, on Aug 28, 2006</span>
+0059 <span class="comment">%   - Modified by Dahua Lin, on Aug 30, 2006</span>
+0060 <span class="comment">%       - utilize slevalfunctor and slsharedisp</span>
+0061 <span class="comment">%   - Modified by Dahua Lin, on Aug 31, 2006</span>
+0062 <span class="comment">%       - based on slreevallearn</span>
+0063 <span class="comment">%</span>
+0064 
+0065 <span class="comment">%% parse and verify input arguments</span>
+0066 
+0067 <span class="keyword">if</span> nargin &lt; 4
+0068     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slkmeansex'</span>, 4);
+0069 <span class="keyword">end</span>
+0070 
+0071 opts.K = 3;
+0072 opts.init_centers = [];
+0073 opts.maxiter = 100;
+0074 opts.annthres = 0;
+0075 opts.annfunc = [];
+0076 opts.weights = [];
+0077 opts.verbose = true;
+0078 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0079 
+0080 <span class="keyword">if</span> opts.K &gt; n
+0081     error(<span class="string">'sltoolbox:rterror'</span>, <span class="keyword">...</span>
+0082         <span class="string">'The initial K is larger than the number of samples'</span>);
+0083 <span class="keyword">end</span>
+0084 
+0085 <span class="keyword">if</span> opts.annthres &gt; 0
+0086     <span class="keyword">if</span> isempty(opts.annfunc)
+0087         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0088             <span class="string">'You should specify annfunc when annthres &gt; 0'</span>);
+0089     <span class="keyword">end</span>
+0090 <span class="keyword">end</span>
+0091 
+0092 w = opts.weights;
+0093 <span class="keyword">if</span> ~isempty(w)
+0094     <span class="keyword">if</span> ~isequal(w, [1 n])
+0095         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0096             <span class="string">'The weights should be a 1 x n row vector'</span>);
+0097     <span class="keyword">end</span>
+0098 <span class="keyword">end</span>
+0099 
+0100 
+0101 <span class="comment">%% Initialization</span>
+0102 
+0103 <a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>(<span class="string">'slkmeansex'</span>, <span class="string">'show'</span>, opts.verbose);
+0104 
+0105 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'Intialize K-Means'</span>);
+0106 
+0107 <span class="keyword">if</span> isempty(opts.init_centers)
+0108     initcinds = randsample(n, opts.K);
+0109     labels = zeros(1, n);
+0110     labels(initcinds) = 1:opts.K;
+0111     
+0112     K = opts.K;
+0113     centers = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(estfunctor, [], X, K, w, labels);
+0114 <span class="keyword">else</span>
+0115     K = opts.K;
+0116     centers = opts.init_centers;
+0117 <span class="keyword">end</span>
+0118 
+0119 <a href="../../sltoolbox/utils/slsharedisp_incindent.html" class="code" title="function slsharedisp_incindent(nsteps)">slsharedisp_incindent</a>;
+0120 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'initial K = %d'</span>, K);
+0121 <a href="../../sltoolbox/utils/slsharedisp_decindent.html" class="code" title="function slsharedisp_decindent(nsteps)">slsharedisp_decindent</a>;
+0122 
+0123 labels = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(clsfunctor, centers, X, n);
+0124 
+0125 
+0126 <span class="comment">%% Updating</span>
+0127 
+0128 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'Update K-Means'</span>);
+0129 <a href="../../sltoolbox/utils/slsharedisp_incindent.html" class="code" title="function slsharedisp_incindent(nsteps)">slsharedisp_incindent</a>;
+0130 
+0131 km_estfunctor = {@<a href="#_sub1" class="code" title="subfunction models = kmeansex_est(models, data, labels, estfunctor, opts)">kmeansex_est</a>, estfunctor, opts};
+0132 km_evalfunctor = {@<a href="#_sub2" class="code" title="subfunction labels = kmeansex_eval(models, data, labels, clsfunctor)">kmeansex_eval</a>, clsfunctor};
+0133 km_cmpfunctor = {@<a href="#_sub3" class="code" title="subfunction isconverged = kmeansex_cmp(models_prev, models, labels_prev, labels)">kmeansex_cmp</a>};
+0134 
+0135 models = {centers, K};
+0136 data = {X, n, w};
+0137 [models, labels, info] = <a href="../../sltoolbox/learn/slreevallearn.html" class="code" title="function [models, Q, info] = slreevallearn(models, Q, data, estfunctor, evalfunctor, cmpfunctor, varargin)">slreevallearn</a>(models, labels, data, <span class="keyword">...</span>
+0138     km_estfunctor, km_evalfunctor, km_cmpfunctor, <span class="keyword">...</span>
+0139     <span class="string">'iter'</span>, {<span class="string">'maxiter'</span>, opts.maxiter, <span class="string">'titlebreak'</span>, false}, <span class="string">'isrecorded'</span>, false);
+0140 
+0141 centers = models{1};
+0142 
+0143 <a href="../../sltoolbox/utils/slsharedisp_decindent.html" class="code" title="function slsharedisp_decindent(nsteps)">slsharedisp_decindent</a>;
+0144 <a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>;
+0145 
+0146 <span class="comment">%% Core functions</span>
+0147 
+0148 <span class="comment">% models = {centers, K}</span>
+0149 <span class="comment">% data = {X, n, w}</span>
+0150 
+0151 <a name="_sub1" href="#_subfunctions" class="code">function models = kmeansex_est(models, data, labels, estfunctor, opts)</a>
+0152 
+0153 X = data{1};
+0154 w = data{3};
+0155 centers = models{1};
+0156 K = models{2};
+0157 
+0158 <span class="keyword">if</span> ~isempty(centers) &amp;&amp; opts.annthres &gt; 0    
+0159     <span class="keyword">if</span> isempty(w)
+0160         w = ones(1, length(labels));
+0161     <span class="keyword">end</span>
+0162     cw = <a href="../../sltoolbox/core/sllabeledsum.html" class="code" title="function S = sllabeledsum(X, labels, labelset, w)">sllabeledsum</a>(w, labels, 1:K);
+0163     wthres = opts.annthres * sum(cw) / K;
+0164     <span class="keyword">if</span> any(cw &lt; wthres)
+0165         inds_ann = find(cw &lt; wthres);
+0166         centers = feval(opts.annfunc, centers, inds_ann);
+0167         K = K - length(inds_ann);
+0168         
+0169         models = {centers, K};
+0170         <span class="keyword">return</span>;
+0171     <span class="keyword">end</span>
+0172 <span class="keyword">end</span>
+0173 
+0174 centers = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(estfunctor, centers, X, K, w, labels);
+0175 models = {centers, K};
+0176 
+0177 
+0178 <a name="_sub2" href="#_subfunctions" class="code">function labels = kmeansex_eval(models, data, labels, clsfunctor)</a>
+0179 
+0180 X = data{1};
+0181 n = data{2};
+0182 centers = models{1};
+0183 
+0184 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(labels);
+0185     
+0186 labels = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(clsfunctor, centers, X, n);
+0187 
+0188 
+0189 <a name="_sub3" href="#_subfunctions" class="code">function isconverged = kmeansex_cmp(models_prev, models, labels_prev, labels)</a>
+0190     
+0191 K_prev = models_prev{2};
+0192 K = models{2};
+0193 n = length(labels);
+0194 
+0195 <a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>(<span class="string">'kmeansex_cmp'</span>);
+0196 
+0197 isconverged = false;
+0198 <span class="keyword">if</span> K == K_prev
+0199     nchanged = sum(labels ~= labels_prev);
+0200     <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'K = %d: %d / %d changed'</span>, K, nchanged, n);
+0201 
+0202     <span class="keyword">if</span> nchanged == 0
+0203         isconverged = true;
+0204     <span class="keyword">end</span>
+0205 <span class="keyword">else</span>
+0206     <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'K = %d ==&gt; %d'</span>, K_prev, K);
+0207 <span class="keyword">end</span>
+0208 
+0209 <a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>();
+0210 
+0211 
+0212 
+0213 
+0214 
+0215 
+0216     
+0217     
+0218     
+0219     
+0220         
+0221     
+0222     
+0223     
+0224 
+0225 
+0226 
+0227 
+0228 
+0229</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

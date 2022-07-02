@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sldrawgraph</title>
+  <meta name="keywords" content="sldrawgraph">
+  <meta name="description" content="SLDRAWGRAPH Draws a graph">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">visualize</a> &gt; sldrawgraph.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\visualize&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sldrawgraph
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLDRAWGRAPH Draws a graph</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function h = sldrawgraph(G, X, Xt, ppedges, ppsn, pptn) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLDRAWGRAPH Draws a graph
+
+ $ Syntax $
+   - sldrawgraph(G, X)
+   - sldrawgraph(G, X, Xt)
+   - sldrawgraph(G, X, [], ppedges)
+   - sldrawgraph(G, X, [], ppedges, ppsn)
+   - sldrawgraph(G, X, Xt, ppedges)
+   - sldrawgraph(G, X, Xt, ppedges, pptn)
+   - h = sldrawgraph(...)
+
+ $ Arguments $
+   - G:        The graph in any acceptable form
+   - X:        The sample matrix of (source) nodes (2xn or 3xn)
+   - Xt:       The sample matrix of (target) nodes (2xn or 3xn)
+   - ppedges:  The cell array of parameters for plotting graph edges
+   - ppsn:     The cell array of parameters for plotting source nodes
+   - pptn:     The cell array of parameters for plotting target nodes
+   - h:        The vector of handles to all plotted objects
+
+ $ Description $
+   - sldrawgraph(G, X) draws a graph with the coordinates of the 
+     graph nodes given in X (a 2 x n matrix for 2D points or 3 x n
+     matrix for 3D points), using default plotting parameters.
+
+   - sldrawgraph(G, X, Xt) draws a bigraph using default plotting
+     parameters.
+
+   - sldrawgraph(G, X, [], ppedges) draws a graph using the specified
+     parameters to draw edges.
+
+   - sldrawgraph(G, X, [], ppedges, ppsn) draws a graph using the 
+     specified parameters to draw edges and nodes.
+
+   - sldrawgraph(G, X, Xt, ppedges) draws a bigraph using the specified
+     parameters to draw edges.
+
+   - sldrawgraph(G, X, Xt, ppedges, ppsn, pptn) draws a bigraph using the 
+     specified parameters to draw edges and nodes.
+
+   - h = sldrawgraph(...) returns the handles to the plotted objects.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 11st, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/graph/sledgeset.html" class="code" title="function Gd = sledgeset(G, uv)">sledgeset</a>	SLEDGESET Construct the edge set representation of a graph</li><li><a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>	SLGRAPHINFO Extracts basic information of a given graph representation</li><li><a href="../../sltoolbox/graph/slpruneedgeset.html" class="code" title="function edges = slpruneedgeset(n, nt, edges, method)">slpruneedgeset</a>	SLPRUNEEDGESET Prunes the edge set</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function h = sldrawgraph(G, X, Xt, ppedges, ppsn, pptn)</a>
+0002 <span class="comment">%SLDRAWGRAPH Draws a graph</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - sldrawgraph(G, X)</span>
+0006 <span class="comment">%   - sldrawgraph(G, X, Xt)</span>
+0007 <span class="comment">%   - sldrawgraph(G, X, [], ppedges)</span>
+0008 <span class="comment">%   - sldrawgraph(G, X, [], ppedges, ppsn)</span>
+0009 <span class="comment">%   - sldrawgraph(G, X, Xt, ppedges)</span>
+0010 <span class="comment">%   - sldrawgraph(G, X, Xt, ppedges, pptn)</span>
+0011 <span class="comment">%   - h = sldrawgraph(...)</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Arguments $</span>
+0014 <span class="comment">%   - G:        The graph in any acceptable form</span>
+0015 <span class="comment">%   - X:        The sample matrix of (source) nodes (2xn or 3xn)</span>
+0016 <span class="comment">%   - Xt:       The sample matrix of (target) nodes (2xn or 3xn)</span>
+0017 <span class="comment">%   - ppedges:  The cell array of parameters for plotting graph edges</span>
+0018 <span class="comment">%   - ppsn:     The cell array of parameters for plotting source nodes</span>
+0019 <span class="comment">%   - pptn:     The cell array of parameters for plotting target nodes</span>
+0020 <span class="comment">%   - h:        The vector of handles to all plotted objects</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% $ Description $</span>
+0023 <span class="comment">%   - sldrawgraph(G, X) draws a graph with the coordinates of the</span>
+0024 <span class="comment">%     graph nodes given in X (a 2 x n matrix for 2D points or 3 x n</span>
+0025 <span class="comment">%     matrix for 3D points), using default plotting parameters.</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%   - sldrawgraph(G, X, Xt) draws a bigraph using default plotting</span>
+0028 <span class="comment">%     parameters.</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">%   - sldrawgraph(G, X, [], ppedges) draws a graph using the specified</span>
+0031 <span class="comment">%     parameters to draw edges.</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">%   - sldrawgraph(G, X, [], ppedges, ppsn) draws a graph using the</span>
+0034 <span class="comment">%     specified parameters to draw edges and nodes.</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">%   - sldrawgraph(G, X, Xt, ppedges) draws a bigraph using the specified</span>
+0037 <span class="comment">%     parameters to draw edges.</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">%   - sldrawgraph(G, X, Xt, ppedges, ppsn, pptn) draws a bigraph using the</span>
+0040 <span class="comment">%     specified parameters to draw edges and nodes.</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">%   - h = sldrawgraph(...) returns the handles to the plotted objects.</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">% $ History $</span>
+0045 <span class="comment">%   - Created by Dahua Lin, on Sep 11st, 2006</span>
+0046 <span class="comment">%</span>
+0047 
+0048 <span class="comment">%% parse and verify input arguments</span>
+0049 
+0050 <span class="keyword">if</span> nargin &lt; 2
+0051     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sldrawgraph'</span>, 2);
+0052 <span class="keyword">end</span>
+0053 
+0054 EG = <a href="../../sltoolbox/graph/sledgeset.html" class="code" title="function Gd = sledgeset(G, uv)">sledgeset</a>(G, <span class="string">'off'</span>);
+0055 gi = <a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>(EG);
+0056 n = gi.n;
+0057 nt = gi.nt;
+0058 
+0059 d = size(X, 1);
+0060 <span class="keyword">if</span> ~isnumeric(X) || ndims(X) ~= 2 || (d ~= 2 &amp;&amp; d ~= 3)
+0061     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0062         <span class="string">'The X should be a 2D numeric matrix, and should have 2 or 3 rows.'</span>);
+0063 <span class="keyword">end</span>
+0064 
+0065 <span class="keyword">if</span> nargin &lt; 3 || isempty(Xt)
+0066     Xt = X;
+0067     bi = false;
+0068 <span class="keyword">else</span>
+0069     <span class="keyword">if</span> ~isnumeric(Xt) || ndims(Xt) ~= 2
+0070         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0071             <span class="string">'The X should be a 2D numeric matrix, and should have 2 or 3 rows.'</span>);
+0072     <span class="keyword">end</span>
+0073     <span class="keyword">if</span> size(Xt, 1) ~= d
+0074         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0075             <span class="string">'The sample dimensions in Xt is not the same as X'</span>);
+0076     <span class="keyword">end</span>
+0077     bi = true;
+0078 <span class="keyword">end</span>
+0079 
+0080 <span class="keyword">if</span> size(X, 2) ~= n || size(Xt, 2) ~= nt
+0081     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0082         <span class="string">'The size of graph is not consistent with the sample numbers'</span>);
+0083 <span class="keyword">end</span>
+0084 
+0085 
+0086 <span class="keyword">if</span> nargin &lt; 4 || isempty(ppedges)
+0087     ppedges = {};
+0088 <span class="keyword">end</span>
+0089 
+0090 <span class="keyword">if</span> nargin &lt; 5 || isempty(ppsn)
+0091     ppsn = {};
+0092 <span class="keyword">end</span>
+0093 
+0094 <span class="keyword">if</span> nargin &lt; 6 || isempty(pptn)
+0095     pptn = ppsn;
+0096 <span class="keyword">end</span>
+0097 
+0098 <span class="keyword">if</span> nargout &gt;= 1
+0099     output_h = true;
+0100 <span class="keyword">else</span>
+0101     output_h = false;
+0102 <span class="keyword">end</span>
+0103 
+0104 <span class="comment">%% Prepare Data for plotting</span>
+0105 
+0106 <span class="comment">% produce pruned NaN-separated coordinate list</span>
+0107 
+0108 edges = EG.edges;
+0109 edges = <a href="../../sltoolbox/graph/slpruneedgeset.html" class="code" title="function edges = slpruneedgeset(n, nt, edges, method)">slpruneedgeset</a>(n, nt, edges);
+0110 
+0111 I = edges(:,1);
+0112 J = edges(:,2);
+0113 nedges = length(I);
+0114 
+0115 xc = [X(1, I); Xt(1, J); NaN(1, nedges)];
+0116 xc = xc(:);
+0117 yc = [X(2, I); Xt(2, J); NaN(1, nedges)];
+0118 yc = yc(:);
+0119 <span class="keyword">if</span> d == 3
+0120     zc = [X(3, I); Xt(3, J); NaN(1, nedges)];
+0121     zc = zc(:);
+0122 <span class="keyword">end</span>
+0123 
+0124 <span class="comment">%% plot edges</span>
+0125 
+0126 <span class="comment">% plot the edges</span>
+0127 <span class="keyword">if</span> d == 2
+0128     ch = plot(xc, yc, ppedges{:});
+0129 <span class="keyword">else</span>
+0130     ch = plot3(xc, yc, zc, ppedges{:});
+0131 <span class="keyword">end</span>
+0132 <span class="keyword">if</span> output_h
+0133     h = ch;
+0134 <span class="keyword">end</span>
+0135 clear xc yc zc;
+0136 
+0137 <span class="comment">%% plot source nodes</span>
+0138 
+0139 <span class="keyword">if</span> ~isempty(ppsn)
+0140     ppsn = [ppsn, {<span class="string">'LineStyle'</span>, <span class="string">'none'</span>}];
+0141     hold on;
+0142     <span class="keyword">if</span> d == 2
+0143         ch = plot(X(1,:), X(2,:), ppsn{:});
+0144     <span class="keyword">else</span>
+0145         ch = plot3(X(1,:), X(2,:), X(3,:), ppsn{:});
+0146     <span class="keyword">end</span>
+0147     <span class="keyword">if</span> output_h
+0148         h = [h; ch];
+0149     <span class="keyword">end</span>
+0150 <span class="keyword">end</span>
+0151 
+0152 <span class="comment">%% plot target nodes</span>
+0153 
+0154 <span class="keyword">if</span> bi &amp;&amp; ~isempty(pptn)
+0155     pptn = [pptn, {<span class="string">'LineStyle'</span>, <span class="string">'none'</span>}];
+0156     hold on;
+0157     <span class="keyword">if</span> d == 2
+0158         ch = plot(Xt(1,:), Xt(2,:), pptn{:});
+0159     <span class="keyword">else</span>
+0160         ch = plot3(Xt(1,:), Xt(2,:), Xt(3,:), pptn{:});
+0161     <span class="keyword">end</span>
+0162     <span class="keyword">if</span> output_h
+0163         h = [h; ch];
+0164     <span class="keyword">end</span>
+0165 <span class="keyword">end</span>
+0166 
+0167</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

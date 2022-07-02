@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sldrawellipse</title>
+  <meta name="keywords" content="sldrawellipse">
+  <meta name="description" content="SLDRAWELLIPSE Draws an ellipse on current axis">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">visualize</a> &gt; sldrawellipse.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\visualize&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sldrawellipse
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLDRAWELLIPSE Draws an ellipse on current axis</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function h = sldrawellipse(center, shape, n, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLDRAWELLIPSE Draws an ellipse on current axis
+
+ $ Syntax $
+   - sldrawellipse(center, shape)
+   - sldrawellipse(center, shape, n)
+   - sldrawellipse(center, shape, n, ...)
+   - h = sldrawellipse(...)
+
+ $ Description $
+   - sldrawellipse(center, shape) draws an ellipse specified by
+     its center and shape on current axis. center is a vector of
+     length 2, storing the x and y coordinate of the center. 
+     shape have following two forms:
+     1. [a, b, theta], here a and b are the half-lengths of two axis,
+        theta is the radians of first axis relative to x-axis, in 
+        anti-clockwise manner.
+     2. C, a 2 x 2 covariance matrix, the ellipse is the set of points
+        with mahalanobis distance to the center being equal to 1.
+        ellipse eqn: x^T C x = 1
+     3. {C, r}, C is a 2 x 2 covariance matrix, the ellipse is the set 
+        of points with mahalanobis distance to the center being equal to 
+        r. ellipse eqn: x^T C x = r^2.
+
+   - sldrawellipse(center, shape, n) draws the ellipse using specified
+     number of samples. If n is not specified or empty, then n takes
+     the default value 300.
+          
+   - sldrawellipse(center, shape, n, ...) draws the ellipse with the 
+     plotting properties specified by additional arguments. By default,
+     it uses 'b-'.
+
+   - h = sldrawellipse(...) returns the handle to the line
+     drawn on the axis.
+
+ $ History $
+   - Created by Dahua Lin on Apr 23, 2006
+   - Modified by Dahua Lin, on Aug 26, 2006
+       - from sldraw_ellipse to sldrawellipse
+   - Modified by Dahua Lin, on Sep 10, 2006
+       - replace sladd by sladdvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sldrawmultiellipse.html" class="code" title="function h = sldrawmultiellipse(centers, vars, npts, plotsyms, varargin)">sldrawmultiellipse</a>	SLDRAWMULTIELLIPSE Draws multiple ellipses on axies</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [S, R] = get_transform_from_geo(a, b, theta)</a></li><li><a href="#_sub2" class="code">function [S, R] = get_transform_from_cov(C)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function h = sldrawellipse(center, shape, n, varargin)</a>
+0002 <span class="comment">%SLDRAWELLIPSE Draws an ellipse on current axis</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - sldrawellipse(center, shape)</span>
+0006 <span class="comment">%   - sldrawellipse(center, shape, n)</span>
+0007 <span class="comment">%   - sldrawellipse(center, shape, n, ...)</span>
+0008 <span class="comment">%   - h = sldrawellipse(...)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% $ Description $</span>
+0011 <span class="comment">%   - sldrawellipse(center, shape) draws an ellipse specified by</span>
+0012 <span class="comment">%     its center and shape on current axis. center is a vector of</span>
+0013 <span class="comment">%     length 2, storing the x and y coordinate of the center.</span>
+0014 <span class="comment">%     shape have following two forms:</span>
+0015 <span class="comment">%     1. [a, b, theta], here a and b are the half-lengths of two axis,</span>
+0016 <span class="comment">%        theta is the radians of first axis relative to x-axis, in</span>
+0017 <span class="comment">%        anti-clockwise manner.</span>
+0018 <span class="comment">%     2. C, a 2 x 2 covariance matrix, the ellipse is the set of points</span>
+0019 <span class="comment">%        with mahalanobis distance to the center being equal to 1.</span>
+0020 <span class="comment">%        ellipse eqn: x^T C x = 1</span>
+0021 <span class="comment">%     3. {C, r}, C is a 2 x 2 covariance matrix, the ellipse is the set</span>
+0022 <span class="comment">%        of points with mahalanobis distance to the center being equal to</span>
+0023 <span class="comment">%        r. ellipse eqn: x^T C x = r^2.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%   - sldrawellipse(center, shape, n) draws the ellipse using specified</span>
+0026 <span class="comment">%     number of samples. If n is not specified or empty, then n takes</span>
+0027 <span class="comment">%     the default value 300.</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%   - sldrawellipse(center, shape, n, ...) draws the ellipse with the</span>
+0030 <span class="comment">%     plotting properties specified by additional arguments. By default,</span>
+0031 <span class="comment">%     it uses 'b-'.</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">%   - h = sldrawellipse(...) returns the handle to the line</span>
+0034 <span class="comment">%     drawn on the axis.</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">% $ History $</span>
+0037 <span class="comment">%   - Created by Dahua Lin on Apr 23, 2006</span>
+0038 <span class="comment">%   - Modified by Dahua Lin, on Aug 26, 2006</span>
+0039 <span class="comment">%       - from sldraw_ellipse to sldrawellipse</span>
+0040 <span class="comment">%   - Modified by Dahua Lin, on Sep 10, 2006</span>
+0041 <span class="comment">%       - replace sladd by sladdvec to increase efficiency</span>
+0042 <span class="comment">%</span>
+0043 
+0044 
+0045 <span class="comment">%% parse and verify arguments</span>
+0046 
+0047 <span class="keyword">if</span> nargin &lt; 2
+0048     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sldraw_ellipse'</span>, 2);
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="keyword">if</span> length(center) ~= 2
+0052     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="string">'center should be a vector of length 2'</span>);    
+0053 <span class="keyword">end</span>
+0054 center = center(:);
+0055 
+0056 <span class="keyword">if</span> nargin &lt; 3 || isempty(n)
+0057     n = 300;
+0058 <span class="keyword">end</span>
+0059 
+0060 <span class="comment">%% convert the shape to transform (scale and rotation)</span>
+0061 
+0062 <span class="keyword">if</span> isnumeric(shape) &amp;&amp; length(shape) == 3 <span class="comment">% [a, b, theta] form</span>
+0063     
+0064     [S, R] = <a href="#_sub1" class="code" title="subfunction [S, R] = get_transform_from_geo(a, b, theta)">get_transform_from_geo</a>(shape(1), shape(2), shape(3));                
+0065     
+0066 <span class="keyword">elseif</span> isnumeric(shape) &amp;&amp; isequal(size(shape), [2, 2]) <span class="comment">% C form</span>
+0067     
+0068     [S, R] = <a href="#_sub2" class="code" title="subfunction [S, R] = get_transform_from_cov(C)">get_transform_from_cov</a>(shape);
+0069     
+0070 <span class="keyword">elseif</span> iscell(shape) &amp;&amp; length(shape) == 2 <span class="comment">% {C, r} form</span>
+0071     
+0072     [S, R] = <a href="#_sub2" class="code" title="subfunction [S, R] = get_transform_from_cov(C)">get_transform_from_cov</a>(shape{1});
+0073     S = S * shape{2};
+0074     
+0075 <span class="keyword">end</span>
+0076 
+0077 T = R * S;
+0078 
+0079 <span class="comment">%% make the points forming the ellipse</span>
+0080 
+0081 <span class="comment">% make a circle first</span>
+0082 t = linspace(0, 2*pi, n);
+0083 X = [cos(t); sin(t)];
+0084 
+0085 <span class="comment">% transform the circle to an ellipse</span>
+0086 X = T * X;
+0087 X = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, center, 1);
+0088 
+0089 <span class="comment">% draw the circle</span>
+0090 hold on;
+0091 h = plot(X(1,:), X(2,:), varargin{:});
+0092 
+0093 
+0094 <span class="comment">%% The functions for making transforms from shapes</span>
+0095 
+0096 <a name="_sub1" href="#_subfunctions" class="code">function [S, R] = get_transform_from_geo(a, b, theta)</a>
+0097 
+0098 S = [a 0; 0 b];
+0099 R = [cos(theta), -sin(theta); sin(theta), cos(theta)];
+0100 
+0101 <a name="_sub2" href="#_subfunctions" class="code">function [S, R] = get_transform_from_cov(C)</a>
+0102 
+0103 [S, R] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(C);
+0104 S = max(S, 0);  <span class="comment">% a zero guard</span>
+0105 S = diag(sqrt(S));
+0106 
+0107 
+0108 
+0109     
+0110     
+0111 
+0112</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

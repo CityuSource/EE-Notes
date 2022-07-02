@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of write</title>
+  <meta name="keywords" content="write">
+  <meta name="description" content="WRITE Writes message to a logger">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">sltoolbox</a> &gt; <a href="../index.html">fileio</a> &gt; <a href="index.html">@sllog</a> &gt; write.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\fileio\@sllog&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>write
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>WRITE Writes message to a logger</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function write(logger, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">WRITE Writes message to a logger
+
+ $ Syntax $
+   - write(logger, ...)
+
+ $ Description $
+   - write(logger, ...) writes message to a logger. The contents given
+     should be as sprintf.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 12nd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>	DISP displays the dataset fields</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../sltoolbox/ExpDL/edl_batchexp.html" class="code" title="function edl_batchexp(expfun, scrpath, env, logger, filter, runopt)">edl_batchexp</a>	EDL_BATCHEXP Performs Batch experiments according to scheme</li><li><a href="../../../sltoolbox/ExpDL/edl_go.html" class="code" title="function edl_go(expdef, type, name, filter, runopt)">edl_go</a>	EDL_GO The Top interface for doing experiments in EDL</li><li><a href="../../../sltoolbox/ExpDL/edl_logerror.html" class="code" title="function edl_logerror(caller, err, logger, varargin)">edl_logerror</a>	EDL_LOGERROR Logs an error into logger</li><li><a href="writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>	WRITEINFO Writes information to logger without time-stamp</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function write(logger, varargin)</a>
+0002 <span class="comment">%WRITE Writes message to a logger</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - write(logger, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Description $</span>
+0008 <span class="comment">%   - write(logger, ...) writes message to a logger. The contents given</span>
+0009 <span class="comment">%     should be as sprintf.</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ History $</span>
+0012 <span class="comment">%   - Created by Dahua Lin, on Aug 12nd, 2006</span>
+0013 <span class="comment">%</span>
+0014 
+0015 
+0016 <span class="keyword">if</span> ~logger.winshow &amp;&amp; isempty(logger.files)
+0017     <span class="keyword">return</span>;
+0018 <span class="keyword">end</span>
+0019 
+0020 <span class="comment">% generate string</span>
+0021 
+0022 indent_step = 4;    
+0023 ns = max(logger.indent, 0);
+0024 
+0025 <span class="keyword">if</span> logger.timestamp
+0026     tstr = datestr(now(), logger.timeformat);
+0027     nblanks = ns * indent_step + 2;
+0028     str = [tstr, blanks(nblanks), sprintf(varargin{:})];
+0029 <span class="keyword">else</span>
+0030     <span class="keyword">if</span> ns == 0
+0031         str = sprintf(varargin{:});
+0032     <span class="keyword">else</span>
+0033         nblanks = ns * indent_step;
+0034         str = [blanks(nblanks), sprintf(varargin{:})];
+0035     <span class="keyword">end</span>
+0036 <span class="keyword">end</span>
+0037 
+0038 <span class="comment">% write it</span>
+0039 
+0040 <span class="keyword">if</span> logger.winshow
+0041     <a href="../../../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>(str);
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="keyword">if</span> ~isempty(logger.files)
+0045     
+0046     F = logger.files;
+0047     nf = length(F);
+0048     <span class="keyword">for</span> i = 1 : nf        
+0049         <span class="keyword">if</span> F(i).isactive
+0050             fprintf(F(i).fid, <span class="string">'%s\n'</span>, str);
+0051         <span class="keyword">end</span>        
+0052     <span class="keyword">end</span>
+0053         
+0054 <span class="keyword">end</span>
+0055     
+0056 
+0057     
+0058     
+0059     
+0060     
+0061</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sltensor_unfold</title>
+  <meta name="keywords" content="sltensor_unfold">
+  <meta name="description" content="SLTENSOR_UNFOLD Unfolds a tensor to a matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">tensor</a> &gt; sltensor_unfold.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\tensor&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sltensor_unfold
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLTENSOR_UNFOLD Unfolds a tensor to a matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function M = sltensor_unfold(T, k) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLTENSOR_UNFOLD Unfolds a tensor to a matrix 
+
+ $ Syntax $
+   - M = sltensor_unfold(T, k)
+
+ $ Arguments $
+   - T:        the tensor
+   - k:        the dimension along which the tensor is unfolded
+   - M:        the matrix obtained by unfolding the tensor
+
+ $ Description $
+   - M = sltensor_unfold(T, k) Unfolds a tensor T to the matrix M along
+   the k-th dimension.
+
+ $ History $
+   - Created by Dahua Lin on Dec 17th, 2005</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sltensor_multiply.html" class="code" title="function T2 = sltensor_multiply(T, varargin)">sltensor_multiply</a>	SLTENSOR_MULTIPLY Multiplies a tensor and a matrix</li><li><a href="sltensor_svd.html" class="code" title="function varargout = sltensor_svd(T, n)">sltensor_svd</a>	SLTENSOR_SVD Performs a Higher-Order SVD on a Tensor</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function M = sltensor_unfold(T, k)</a>
+0002 <span class="comment">%SLTENSOR_UNFOLD Unfolds a tensor to a matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - M = sltensor_unfold(T, k)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - T:        the tensor</span>
+0009 <span class="comment">%   - k:        the dimension along which the tensor is unfolded</span>
+0010 <span class="comment">%   - M:        the matrix obtained by unfolding the tensor</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - M = sltensor_unfold(T, k) Unfolds a tensor T to the matrix M along</span>
+0014 <span class="comment">%   the k-th dimension.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ History $</span>
+0017 <span class="comment">%   - Created by Dahua Lin on Dec 17th, 2005</span>
+0018 <span class="comment">%</span>
+0019 
+0020 <span class="comment">%% parse and verify</span>
+0021 <span class="keyword">if</span> nargin &lt; 2
+0022     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sltensor_unfold'</span>, 2);
+0023 <span class="keyword">end</span>
+0024 
+0025 <span class="comment">%% compute</span>
+0026 n = ndims(T);
+0027 <span class="keyword">if</span> k == 1
+0028     M = T(1:<span class="keyword">end</span>, :);
+0029 <span class="keyword">elseif</span> k &lt;= n
+0030     <span class="keyword">if</span> k &lt; n
+0031         pdims = [k, 1:k-1, k+1:n];
+0032     <span class="keyword">else</span>
+0033         pdims = [k, 1:k-1];
+0034     <span class="keyword">end</span>
+0035     M = permute(T, pdims);
+0036     M = M(1:<span class="keyword">end</span>, :);
+0037 <span class="keyword">else</span>
+0038     M = T(:)';
+0039 <span class="keyword">end</span>
+0040 
+0041 
+0042 
+0043 
+0044 
+0045 
+0046     
+0047</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

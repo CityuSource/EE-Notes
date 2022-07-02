@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slbenchmark_batchfilter</title>
+  <meta name="keywords" content="slbenchmark_batchfilter">
+  <meta name="description" content="SLBENCHMARK_BATCHFILTER Compares the efficiency of batch filter">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">imgproc</a> &gt; slbenchmark_batchfilter.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\imgproc&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slbenchmark_batchfilter
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLBENCHMARK_BATCHFILTER Compares the efficiency of batch filter</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function recs = slbenchmark_batchfilter(imgsiz, nimgs, filtersiz, nfilters) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLBENCHMARK_BATCHFILTER Compares the efficiency of batch filter
+
+ Input:
+   imgsiz:     the size of each image
+   nimgs:      the number of images
+   filtersiz:  The size of each filter
+   nfilters:   the list of numbers of filters
+
+ History
+   - Created by Dahua Lin, on Sep 2nd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>	DISP displays the dataset fields</li><li><a href="slapplyfilterband.html" class="code" title="function fimgs = slapplyfilterband(imgs, filterband, filtersize, varargin)">slapplyfilterband</a>	SLAPPLYFILTERBAND Applies filter band to filter images in batch</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function test_imfilter(imgs, fb)</a></li><li><a href="#_sub2" class="code">function test_slband(imgs, fb)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function recs = slbenchmark_batchfilter(imgsiz, nimgs, filtersiz, nfilters)</a>
+0002 <span class="comment">%SLBENCHMARK_BATCHFILTER Compares the efficiency of batch filter</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Input:</span>
+0005 <span class="comment">%   imgsiz:     the size of each image</span>
+0006 <span class="comment">%   nimgs:      the number of images</span>
+0007 <span class="comment">%   filtersiz:  The size of each filter</span>
+0008 <span class="comment">%   nfilters:   the list of numbers of filters</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% History</span>
+0011 <span class="comment">%   - Created by Dahua Lin, on Sep 2nd, 2006</span>
+0012 
+0013 
+0014 imgs = rand([imgsiz, nimgs]);
+0015 fb = rand([filtersiz, max(nfilters)]);
+0016 
+0017 names = {<span class="string">'imfilter'</span>, <span class="string">'slapplyfilerband'</span>};
+0018 methods = {@<a href="#_sub1" class="code" title="subfunction test_imfilter(imgs, fb)">test_imfilter</a>, @<a href="#_sub2" class="code" title="subfunction test_slband(imgs, fb)">test_slband</a>};
+0019 nmethods = length(names);
+0020 
+0021 recs = zeros(length(nfilters), nmethods);
+0022 
+0023 <span class="keyword">for</span> k = 1 : nmethods
+0024     
+0025     curname = names{k};
+0026     curmethod = methods{k};
+0027     
+0028     <a href="../../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>([<span class="string">'Test '</span>, curname]);
+0029     
+0030     <span class="keyword">for</span> i = 1 : length(nfilters)
+0031         nf = nfilters(i);
+0032         tic;
+0033         curmethod(imgs, fb(:,:,1:nf));        
+0034         recs(i, k) = toc;        
+0035     <span class="keyword">end</span>        
+0036 <span class="keyword">end</span>
+0037 
+0038 recs = recs / nimgs;
+0039 
+0040 
+0041 <a name="_sub1" href="#_subfunctions" class="code">function test_imfilter(imgs, fb)</a>
+0042 
+0043 nf = size(fb ,3);
+0044 R = zeros([size(imgs), nf]);
+0045 <span class="keyword">for</span> i = 1 : nf
+0046     R(:,:,:,i) = imfilter(imgs, fb(:,:,i), <span class="string">'replicate'</span>);
+0047 <span class="keyword">end</span>
+0048 clear R;
+0049 
+0050 <a name="_sub2" href="#_subfunctions" class="code">function test_slband(imgs, fb)</a>
+0051 
+0052 fh = size(fb, 1);
+0053 fw = size(fb, 2);
+0054 R = <a href="slapplyfilterband.html" class="code" title="function fimgs = slapplyfilterband(imgs, filterband, filtersize, varargin)">slapplyfilterband</a>(imgs, fb, [fh, fw]);
+0055 clear R;
+0056 
+0057 
+0058 
+0059 
+0060 
+0061 
+0062 
+0063 
+0064 
+0065 
+0066</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

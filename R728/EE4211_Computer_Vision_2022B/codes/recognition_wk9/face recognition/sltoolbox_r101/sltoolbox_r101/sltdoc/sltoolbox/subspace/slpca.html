@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpca</title>
+  <meta name="keywords" content="slpca">
+  <meta name="description" content="SLPCA Learns a PCA model from training samples">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace</a> &gt; slpca.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpca
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPCA Learns a PCA model from training samples</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function S = slpca(X, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPCA Learns a PCA model from training samples
+
+ $ Syntax $
+   - S = slpca(X)
+   - S = slpca(X, ...)
+
+ $ Arguments $
+   - X:        the training sample matrix
+   - S:        the struct representing the learned PCA
+
+ $ Description $
+   - S = slpca(X) learns a PCA model from the samples X by default way.
+
+   - S = slpca(X, ...) learns a PCA model from the samples X according to
+     the properties specified:
+     \*
+     \t   Table 1. The properties of PCA learning
+     \h    name       &amp;    description                               \\
+          'method'    &amp; The method using in training the PCA model.
+                        Currently, there are three methods available:
+                        default = 'auto'.
+                        1. 'auto': automatically selection of the best;
+                        2. 'std':  use standard way based on covariance;
+                        3. 'svd':  use SVD-based computation
+                        4. 'trans': use a transposed way, it is typically
+                           used for small-sample-size and high-dimension
+                           cases.                                    \\
+          'preserve'  &amp; Determine how many components are preserved, it is
+                        given in following form: {sch, ...}, which is used
+                        as parameters in sldim_by_eigval.       \\
+          'weights'   &amp; The 1 x n row vector of sample weights.  
+                        If the weights are not specified, then it 
+                        considers that all samples have weights 1. 
+                        default = [].   \\
+     \*
+                           
+ $ History $
+   - Created by Dahua Lin on Apr 24, 2006
+   - Modified by Dahua Lin on Apr 25, 2006
+       - Extract the dimension determination part to an independent
+         function, in order to offer more flexible preservation process,
+         and make it reusable in more functions.
+   - Modified by Dahua Lin on Aug 17, 2006
+       - Add a field energyratio
+   - Modified by Dahua Lin, on Sep 10, 2006
+       - replace sladd by sladdvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slnormalize.html" class="code" title="function An = slnormalize(A, p, d)">slnormalize</a>	SLNORMALIZE Normalize the sub-arrays</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>	SLMEAN Compute the mean vector of samples</li><li><a href="sldim_by_eigval.html" class="code" title="function d = sldim_by_eigval(eigvals, sch, varargin)">sldim_by_eigval</a>	SLDIM_BY_EIGVAL Determines the dimension of principal subspace by eigenvalues</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slfld.html" class="code" title="function T = slfld(X, nums, varargin)">slfld</a>	SLFLD Performs Fisher Linear Discriminant Analysis</li><li><a href="slnlda.html" class="code" title="function T = slnlda(X, nums, varargin)">slnlda</a>	SLNLDA Performs Nullspace-based Linear Discriminant Analysis</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [P, evals] = pca_auto(X)</a></li><li><a href="#_sub2" class="code">function [P, evals] = pca_std(X)</a></li><li><a href="#_sub3" class="code">function [P, evals] = pca_svd(X)</a></li><li><a href="#_sub4" class="code">function [P, evals] = pca_trans(X)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function S = slpca(X, varargin)</a>
+0002 <span class="comment">%SLPCA Learns a PCA model from training samples</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - S = slpca(X)</span>
+0006 <span class="comment">%   - S = slpca(X, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - X:        the training sample matrix</span>
+0010 <span class="comment">%   - S:        the struct representing the learned PCA</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - S = slpca(X) learns a PCA model from the samples X by default way.</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%   - S = slpca(X, ...) learns a PCA model from the samples X according to</span>
+0016 <span class="comment">%     the properties specified:</span>
+0017 <span class="comment">%     \*</span>
+0018 <span class="comment">%     \t   Table 1. The properties of PCA learning</span>
+0019 <span class="comment">%     \h    name       &amp;    description                               \\</span>
+0020 <span class="comment">%          'method'    &amp; The method using in training the PCA model.</span>
+0021 <span class="comment">%                        Currently, there are three methods available:</span>
+0022 <span class="comment">%                        default = 'auto'.</span>
+0023 <span class="comment">%                        1. 'auto': automatically selection of the best;</span>
+0024 <span class="comment">%                        2. 'std':  use standard way based on covariance;</span>
+0025 <span class="comment">%                        3. 'svd':  use SVD-based computation</span>
+0026 <span class="comment">%                        4. 'trans': use a transposed way, it is typically</span>
+0027 <span class="comment">%                           used for small-sample-size and high-dimension</span>
+0028 <span class="comment">%                           cases.                                    \\</span>
+0029 <span class="comment">%          'preserve'  &amp; Determine how many components are preserved, it is</span>
+0030 <span class="comment">%                        given in following form: {sch, ...}, which is used</span>
+0031 <span class="comment">%                        as parameters in sldim_by_eigval.       \\</span>
+0032 <span class="comment">%          'weights'   &amp; The 1 x n row vector of sample weights.</span>
+0033 <span class="comment">%                        If the weights are not specified, then it</span>
+0034 <span class="comment">%                        considers that all samples have weights 1.</span>
+0035 <span class="comment">%                        default = [].   \\</span>
+0036 <span class="comment">%     \*</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">% $ History $</span>
+0039 <span class="comment">%   - Created by Dahua Lin on Apr 24, 2006</span>
+0040 <span class="comment">%   - Modified by Dahua Lin on Apr 25, 2006</span>
+0041 <span class="comment">%       - Extract the dimension determination part to an independent</span>
+0042 <span class="comment">%         function, in order to offer more flexible preservation process,</span>
+0043 <span class="comment">%         and make it reusable in more functions.</span>
+0044 <span class="comment">%   - Modified by Dahua Lin on Aug 17, 2006</span>
+0045 <span class="comment">%       - Add a field energyratio</span>
+0046 <span class="comment">%   - Modified by Dahua Lin, on Sep 10, 2006</span>
+0047 <span class="comment">%       - replace sladd by sladdvec to increase efficiency</span>
+0048 <span class="comment">%</span>
+0049 
+0050 <span class="comment">%% parse and verify input arguments</span>
+0051 
+0052 <span class="comment">% for size</span>
+0053 <span class="keyword">if</span> ndims(X) ~= 2
+0054     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="string">'X should be a 2D sample matrix'</span>);
+0055 <span class="keyword">end</span>
+0056 [d, n] = size(X);
+0057 
+0058 <span class="comment">% for options</span>
+0059 opts.method = <span class="string">'auto'</span>;
+0060 opts.preserve = {<span class="string">'rank'</span>};
+0061 opts.weights = [];
+0062 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0063 
+0064 <span class="comment">% check options</span>
+0065 
+0066 <span class="keyword">switch</span> opts.method
+0067     <span class="keyword">case</span> <span class="string">'auto'</span>
+0068         fh_learnpca = @<a href="#_sub1" class="code" title="subfunction [P, evals] = pca_auto(X)">pca_auto</a>;
+0069     <span class="keyword">case</span> <span class="string">'std'</span>
+0070         fh_learnpca = @<a href="#_sub2" class="code" title="subfunction [P, evals] = pca_std(X)">pca_std</a>;
+0071     <span class="keyword">case</span> <span class="string">'svd'</span>
+0072         fh_learnpca = @<a href="#_sub3" class="code" title="subfunction [P, evals] = pca_svd(X)">pca_svd</a>;
+0073     <span class="keyword">case</span> <span class="string">'trans'</span>
+0074         fh_learnpca = @<a href="#_sub4" class="code" title="subfunction [P, evals] = pca_trans(X)">pca_trans</a>;
+0075     <span class="keyword">otherwise</span>
+0076         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0077             <span class="string">'Invalid PCA learning method %s'</span>, opts.method);
+0078 <span class="keyword">end</span>
+0079 
+0080 
+0081 <span class="keyword">if</span> ~isempty(opts.weights)
+0082     <span class="keyword">if</span> ~isequal(size(opts.weights), [1, n])
+0083         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0084             <span class="string">'The sample weights should be a 1 x n row vector'</span>);
+0085     <span class="keyword">end</span>
+0086 <span class="keyword">end</span>
+0087 
+0088 
+0089 <span class="comment">%% Compute</span>
+0090 
+0091 <span class="comment">% data centralization</span>
+0092 vmean = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X, opts.weights);
+0093 X = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, -vmean, 1);
+0094 
+0095 <span class="comment">% sample scaling</span>
+0096 <span class="comment">% in order to normalize the energy per unit sample weight</span>
+0097 <span class="keyword">if</span> isempty(opts.weights)
+0098     X = sqrt(1 / n) * X;
+0099 <span class="keyword">else</span>
+0100     w = max(opts.weights, 0);
+0101     tw = sum(w);
+0102     sf = sqrt(w / tw);
+0103     X = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(X, sf, 2);
+0104     clear sf;
+0105 <span class="keyword">end</span>
+0106     
+0107 <span class="comment">% learn full size PCA</span>
+0108 
+0109 [P, evals] = fh_learnpca(X);
+0110 
+0111 
+0112 <span class="comment">% preserve principal components</span>
+0113 
+0114 evals = max(evals, 0);
+0115 kmax = min([size(P, 2), d, n-1]);
+0116 <span class="keyword">if</span> kmax &lt; size(P, 2)
+0117     P = P(:, 1:kmax);
+0118     evals = evals(1:kmax);
+0119 <span class="keyword">end</span>
+0120 k = <a href="sldim_by_eigval.html" class="code" title="function d = sldim_by_eigval(eigvals, sch, varargin)">sldim_by_eigval</a>(evals, opts.preserve{:});
+0121 
+0122 
+0123 <span class="comment">%% Output the PCA struct</span>
+0124 
+0125 S.sampledim = d;
+0126 S.feadim    = k;
+0127 
+0128 <span class="keyword">if</span> isempty(opts.weights)
+0129     S.support = n;
+0130 <span class="keyword">else</span>
+0131     S.support = tw;
+0132 <span class="keyword">end</span>
+0133 
+0134 S.vmean = vmean;
+0135 <span class="keyword">if</span> k &lt; kmax
+0136     S.P = P(:, 1:k);
+0137     S.eigvals = evals(1:k);
+0138     S.residue = sum(evals(k+1:kmax));
+0139 <span class="keyword">else</span>
+0140     S.P = P;
+0141     S.eigvals = evals;
+0142     S.residue = 0;
+0143 <span class="keyword">end</span>
+0144 
+0145 prinenergy = sum(S.eigvals);
+0146 S.energyratio = prinenergy / (prinenergy + S.residue);
+0147 
+0148 
+0149 <span class="comment">%% Sub functions for Learning PCA from centralized samples</span>
+0150 
+0151 <a name="_sub1" href="#_subfunctions" class="code">function [P, evals] = pca_auto(X)</a>
+0152 
+0153 [d, n] = size(X);
+0154 <span class="keyword">if</span> d &lt;= n
+0155     [P, evals] = <a href="#_sub2" class="code" title="subfunction [P, evals] = pca_std(X)">pca_std</a>(X);
+0156 <span class="keyword">else</span>
+0157     [P, evals] = <a href="#_sub4" class="code" title="subfunction [P, evals] = pca_trans(X)">pca_trans</a>(X);
+0158 <span class="keyword">end</span>
+0159 
+0160 
+0161 <a name="_sub2" href="#_subfunctions" class="code">function [P, evals] = pca_std(X)</a>
+0162 
+0163 C = X * X';
+0164 [evals, P] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(C);
+0165 
+0166 
+0167 <a name="_sub3" href="#_subfunctions" class="code">function [P, evals] = pca_svd(X)</a>
+0168 
+0169 [P, D, V] = svd(X, 0);
+0170 clear V;
+0171 evals = diag(D) .^ 2;
+0172 
+0173 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(V);
+0174 
+0175 <a name="_sub4" href="#_subfunctions" class="code">function [P, evals] = pca_trans(X)</a>
+0176 
+0177 Ct = X' * X;
+0178 [evals, P] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(Ct);
+0179 P = <a href="../../sltoolbox/core/slnormalize.html" class="code" title="function An = slnormalize(A, p, d)">slnormalize</a>(X * P);
+0180 
+0181 
+0182 
+0183</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

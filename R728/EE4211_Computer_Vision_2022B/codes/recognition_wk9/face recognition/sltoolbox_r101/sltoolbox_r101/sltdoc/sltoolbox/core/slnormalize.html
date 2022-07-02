@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slnormalize</title>
+  <meta name="keywords" content="slnormalize">
+  <meta name="description" content="SLNORMALIZE Normalize the sub-arrays">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">core</a> &gt; slnormalize.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\core&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slnormalize
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLNORMALIZE Normalize the sub-arrays</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function An = slnormalize(A, p, d) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLNORMALIZE Normalize the sub-arrays
+
+ $ Syntax $
+   - An = slnormalize(A)
+   - An = slnormalize(A, p)
+   - An = slnormalize(A, [], d)
+   - An = slnormalize(A, p, d)
+
+ $ Arguments $
+   - A:        the input array
+   - p:        the order of the norm (default = 2)
+   - d:        the dimension of subarrays (default = 1, column vectors)
+   - An:       the normalized array
+
+ $ Description $
+   - An = slnormalize(A) normalizes the column vectors of A by 2nd-order.
+
+   - An = slnormalize(A, p) normalizes the column vectors of a by
+     pth-order.
+
+   - An = slnormalize(A, [], d) normalizes the subarrays of A along 
+     dimensions specified by d by 2nd-order.
+
+   - An = slnormalize(A, p, d) normalizes the subarrays of A along
+     dimensions specified by d by pth-order.
+
+ $ Remarks $
+   # Normalize an array by pth order means dividing the elements of 
+     the array by its p-th norm.
+   # p can be inf or -inf. If p = inf, then the Lp norm is simply the
+     maximum magnitude value; while if p = -inf, then the Lp norm is the 
+     minimum magnitude value.
+
+ $ History $
+   - Created by Dahua Lin on Nov 19th, 2005
+   - Modified by Dahua Lin on Sep 10th, 2006
+       - replace slmul by slmulvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slenforce.html" class="code" title="function Ae = slenforce(A, varargin)">slenforce</a>	SLENFORCE Enforce some property on the array A</li><li><a href="slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="slnorm.html" class="code" title="function An = slnorm(A, p, d)">slnorm</a>	SLNORM Compute the Lp-norms</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/manifold/sllocaltanspace.html" class="code" title="function [LM, LP, LS] = sllocaltanspace(X0, G, dl)">sllocaltanspace</a>	SLLOCALTANSPACE Solves the local tangent spaces</li><li><a href="../../sltoolbox/stat/slregcov.html" class="code" title="function Crs = slregcov(Cs, varargin)">slregcov</a>	SLREGCOV Regularizes covariance matrices</li><li><a href="../../sltoolbox/stat/slwhiten_from_samples.html" class="code" title="function W = slwhiten_from_samples(X, varargin)">slwhiten_from_samples</a>	SLWHITEN_FROM_SAMPLES Compute the whitening matrix from sample matrix</li><li><a href="../../sltoolbox/subspace/slpca.html" class="code" title="function S = slpca(X, varargin)">slpca</a>	SLPCA Learns a PCA model from training samples</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function An = slnormalize(A, p, d)</a>
+0002 <span class="comment">%SLNORMALIZE Normalize the sub-arrays</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - An = slnormalize(A)</span>
+0006 <span class="comment">%   - An = slnormalize(A, p)</span>
+0007 <span class="comment">%   - An = slnormalize(A, [], d)</span>
+0008 <span class="comment">%   - An = slnormalize(A, p, d)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% $ Arguments $</span>
+0011 <span class="comment">%   - A:        the input array</span>
+0012 <span class="comment">%   - p:        the order of the norm (default = 2)</span>
+0013 <span class="comment">%   - d:        the dimension of subarrays (default = 1, column vectors)</span>
+0014 <span class="comment">%   - An:       the normalized array</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - An = slnormalize(A) normalizes the column vectors of A by 2nd-order.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%   - An = slnormalize(A, p) normalizes the column vectors of a by</span>
+0020 <span class="comment">%     pth-order.</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">%   - An = slnormalize(A, [], d) normalizes the subarrays of A along</span>
+0023 <span class="comment">%     dimensions specified by d by 2nd-order.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%   - An = slnormalize(A, p, d) normalizes the subarrays of A along</span>
+0026 <span class="comment">%     dimensions specified by d by pth-order.</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% $ Remarks $</span>
+0029 <span class="comment">%   # Normalize an array by pth order means dividing the elements of</span>
+0030 <span class="comment">%     the array by its p-th norm.</span>
+0031 <span class="comment">%   # p can be inf or -inf. If p = inf, then the Lp norm is simply the</span>
+0032 <span class="comment">%     maximum magnitude value; while if p = -inf, then the Lp norm is the</span>
+0033 <span class="comment">%     minimum magnitude value.</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% $ History $</span>
+0036 <span class="comment">%   - Created by Dahua Lin on Nov 19th, 2005</span>
+0037 <span class="comment">%   - Modified by Dahua Lin on Sep 10th, 2006</span>
+0038 <span class="comment">%       - replace slmul by slmulvec to increase efficiency</span>
+0039 <span class="comment">%</span>
+0040 
+0041 <span class="comment">%% parse and verify input arguments</span>
+0042 <span class="keyword">if</span> nargin &lt; 2 || isempty(p)
+0043     p = 2;
+0044 <span class="keyword">end</span>
+0045 <span class="keyword">if</span> nargin &lt; 3 || isempty(d)
+0046     d = 1;
+0047 <span class="keyword">end</span>
+0048 <span class="keyword">if</span> ~isscalar(p)
+0049     error(<span class="string">'sltoolbox:notscalar'</span>, <span class="string">'p should be a scalar'</span>);
+0050 <span class="keyword">end</span>
+0051 <span class="keyword">if</span> p == 0
+0052     error(<span class="string">'sltoolbox:zeroerr'</span>, <span class="string">'p should not be zero'</span>);
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="comment">%% compute</span>
+0056 nrms = <a href="slnorm.html" class="code" title="function An = slnorm(A, p, d)">slnorm</a>(A, p, d);
+0057 nrms = <a href="slenforce.html" class="code" title="function Ae = slenforce(A, varargin)">slenforce</a>(nrms, <span class="string">'positive'</span>);
+0058 An = <a href="slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(A, 1 ./ nrms);
+0059 
+0060 
+0061</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

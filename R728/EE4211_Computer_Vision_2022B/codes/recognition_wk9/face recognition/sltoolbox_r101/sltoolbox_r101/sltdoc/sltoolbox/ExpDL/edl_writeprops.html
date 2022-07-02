@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of edl_writeprops</title>
+  <meta name="keywords" content="edl_writeprops">
+  <meta name="description" content="EDL_WRITEPROPS Writes the property table to XML file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">ExpDL</a> &gt; edl_writeprops.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>edl_writeprops
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>EDL_WRITEPROPS Writes the property table to XML file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function edl_writeprops(doctag, attribs, nodeTag, props, filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">EDL_WRITEPROPS Writes the property table to XML file
+
+ $ Syntax $
+   - edl_writeprops(doctag, attribs, nodeTag, props, filename)
+
+ $ Arguments $
+   - doctag:       the tag name of document node
+   - attribs:      the header attributes
+   - nodeTag:      the tag name of child nodes
+   - props:        the struct array of all properties
+   - filename:     the name of the XML file to be written to
+
+ $ Description $
+   - edl_writeprops(doctag, attribs, nodeTag, props, filename) writes 
+     a table of properties to an XML property table file, with the
+     header attributes.
+
+ $ Remarks $
+   - For numeric values, they will be converted to string using num2str.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 10th, 2006
+   - Modified by Dahua Lin, on Aug 13rd, 2006
+       - adds support of document header attribute
+       - changes the structure of the result
+       - adds the selection of node tag</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>	SLFILEPARTS Extracts a specified part of a file path string</li><li><a href="../../sltoolbox/fileio/slmkdir.html" class="code" title="function dirpath = slmkdir(dirname, parentpath)">slmkdir</a>	SLMKDIR Makes a directory if it does not exist</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/xmlkits/xml_addattribs.html" class="code" title="function xelem = xml_addattribs(xelem, varargin)">xml_addattribs</a>	XML_ADDATTRIBS Adds attributes to an element</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_initctrlfile.html" class="code" title="function edl_initctrlfile(filename, guidstr, n)">edl_initctrlfile</a>	EDL_INITCTRLFILE Creates an initial control file</li><li><a href="edl_updatectrlfile.html" class="code" title="function edl_updatectrlfile(guid, filename, idx, status)">edl_updatectrlfile</a>	EDL_UPDATECTRLFILE Updates the status in a control file</li><li><a href="edl_writereport.html" class="code" title="function edl_writereport(filename, guid, props)">edl_writereport</a>	EDL_WRITEREPORT Writes an EDL report</li><li><a href="edl_writescript.html" class="code" title="function edl_writescript(filename, guid, workdir, ctrlpath, props)">edl_writescript</a>	EDL_WRITESCRIPT Writes an EDL script</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function edl_writeprops(doctag, attribs, nodeTag, props, filename)</a>
+0002 <span class="comment">%EDL_WRITEPROPS Writes the property table to XML file</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - edl_writeprops(doctag, attribs, nodeTag, props, filename)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - doctag:       the tag name of document node</span>
+0009 <span class="comment">%   - attribs:      the header attributes</span>
+0010 <span class="comment">%   - nodeTag:      the tag name of child nodes</span>
+0011 <span class="comment">%   - props:        the struct array of all properties</span>
+0012 <span class="comment">%   - filename:     the name of the XML file to be written to</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - edl_writeprops(doctag, attribs, nodeTag, props, filename) writes</span>
+0016 <span class="comment">%     a table of properties to an XML property table file, with the</span>
+0017 <span class="comment">%     header attributes.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% $ Remarks $</span>
+0020 <span class="comment">%   - For numeric values, they will be converted to string using num2str.</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% $ History $</span>
+0023 <span class="comment">%   - Created by Dahua Lin, on Aug 10th, 2006</span>
+0024 <span class="comment">%   - Modified by Dahua Lin, on Aug 13rd, 2006</span>
+0025 <span class="comment">%       - adds support of document header attribute</span>
+0026 <span class="comment">%       - changes the structure of the result</span>
+0027 <span class="comment">%       - adds the selection of node tag</span>
+0028 
+0029 import com.mathworks.xml.*;
+0030 
+0031 <span class="comment">%% parse and verify input arguments</span>
+0032 
+0033 <span class="keyword">if</span> nargin &lt; 5
+0034     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'edl_writeprops'</span>, 5);
+0035 <span class="keyword">end</span>
+0036 
+0037 <span class="keyword">if</span> ~isstruct(props)
+0038     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0039         <span class="string">'props should be a struct array'</span>);
+0040 <span class="keyword">end</span>
+0041 
+0042 <span class="comment">%% Write file</span>
+0043 
+0044 <span class="comment">% create document</span>
+0045 
+0046 xdoc = XMLUtils.createDocument(doctag);
+0047 xdoc.setVersion(<span class="string">'1.0'</span>);
+0048 xdoc.setEncoding(<span class="string">'UTF-8'</span>);
+0049 
+0050 docelem = xdoc.getDocumentElement;
+0051 
+0052 
+0053 <span class="comment">% write header</span>
+0054 docelem = <a href="../../sltoolbox/xmlkits/xml_addattribs.html" class="code" title="function xelem = xml_addattribs(xelem, varargin)">xml_addattribs</a>(docelem, attribs);
+0055 
+0056 
+0057 <span class="comment">% add elements</span>
+0058 
+0059 n = numel(props);
+0060 fns = fieldnames(props);
+0061 cf = length(fns);
+0062 
+0063 <span class="keyword">for</span> i = 1 : n
+0064     
+0065     propelem = xdoc.createElement(nodeTag);
+0066     cur = props(i);
+0067     
+0068     <span class="keyword">for</span> j = 1 : cf
+0069         fn = fns{j};
+0070         val = cur.(fn);
+0071         <span class="keyword">if</span> isnumeric(val)
+0072             val = num2str(val);
+0073         <span class="keyword">end</span>
+0074         propelem.setAttribute(fn, val);
+0075     <span class="keyword">end</span>
+0076     
+0077     docelem.appendChild(propelem);
+0078     
+0079 <span class="keyword">end</span>
+0080 
+0081 <span class="comment">% write to file</span>
+0082 filedir = <a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>(filename, <span class="string">'parent'</span>);
+0083 <a href="../../sltoolbox/fileio/slmkdir.html" class="code" title="function dirpath = slmkdir(dirname, parentpath)">slmkdir</a>(filedir);
+0084 xmlwrite(filename, xdoc);
+0085 
+0086     
+0087     
+0088</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

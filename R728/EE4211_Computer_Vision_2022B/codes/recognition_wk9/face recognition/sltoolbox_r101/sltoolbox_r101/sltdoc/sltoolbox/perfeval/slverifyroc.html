@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slverifyroc</title>
+  <meta name="keywords" content="slverifyroc">
+  <meta name="description" content="SLVERIFYROC Computes the verification ROC">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">perfeval</a> &gt; slverifyroc.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\perfeval&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slverifyroc
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLVERIFYROC Computes the verification ROC</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op, npts) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLVERIFYROC Computes the verification ROC
+
+ $ Syntax $
+   - [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op)
+   - [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op, npts)
+ 
+ $ Arguments $
+   - scores:       the score matrix for verification
+   - labels1:      the labels of referred samples
+   - labels2:      the labels of query samples
+   - op:           the option stating the attributes of the scores
+   - npts:         the number of threshold points (default = 200)
+   - thrs:         the sampled thresholds
+   - fars:         the false accept rates at the sampled thresholds
+   - frrs:         the false reject rates at the sampled thresholds
+
+ $ Description $
+   - [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op) 
+     Computes the verification ROC based on the pairwise scores. 
+     If there are m samples in the first set, n samples in the second set, 
+     then the scores matrix should be of size m x n, and the labels1 and 
+     labels2 should be a vector of m and n elements respectively. 
+     If labels2 is given empty, then it is supposed to be the same as 
+     labels1, where we are performing self-pairwise-verification.
+     Here op can be 'low' or 'high', if op is 'high' means that a higher
+     score indicating higher similarity, vice versa for 'low' op. 
+     For output, if n thresholds are sampled, then thrs, fars, and frrs
+     for all n x 1 vectors, containing the sampled threshold values,
+     and the corresponding false accept rates, and false reject rates.
+
+   - [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op, npts)
+     You can specify the number of threshold points to sampled by npts.
+
+ $ History $
+   - Created by Dahua Lin on Jun 10th, 2005
+   - Modified by Dahua Lin on May 1st, 2006
+     - Base on the sltoolbox v4
+   - Modified by Dahua Lin on Aug 8th, 2006
+     - Add one more argument npts to tune the density of sampling</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slroc.html" class="code" title="function [thrs, fars, frrs] = slroc(scores, signs, thres, op)">slroc</a>	SLROC Computes the ROC</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op, npts)</a>
+0002 <span class="comment">%SLVERIFYROC Computes the verification ROC</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op)</span>
+0006 <span class="comment">%   - [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op, npts)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - scores:       the score matrix for verification</span>
+0010 <span class="comment">%   - labels1:      the labels of referred samples</span>
+0011 <span class="comment">%   - labels2:      the labels of query samples</span>
+0012 <span class="comment">%   - op:           the option stating the attributes of the scores</span>
+0013 <span class="comment">%   - npts:         the number of threshold points (default = 200)</span>
+0014 <span class="comment">%   - thrs:         the sampled thresholds</span>
+0015 <span class="comment">%   - fars:         the false accept rates at the sampled thresholds</span>
+0016 <span class="comment">%   - frrs:         the false reject rates at the sampled thresholds</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $ Description $</span>
+0019 <span class="comment">%   - [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op)</span>
+0020 <span class="comment">%     Computes the verification ROC based on the pairwise scores.</span>
+0021 <span class="comment">%     If there are m samples in the first set, n samples in the second set,</span>
+0022 <span class="comment">%     then the scores matrix should be of size m x n, and the labels1 and</span>
+0023 <span class="comment">%     labels2 should be a vector of m and n elements respectively.</span>
+0024 <span class="comment">%     If labels2 is given empty, then it is supposed to be the same as</span>
+0025 <span class="comment">%     labels1, where we are performing self-pairwise-verification.</span>
+0026 <span class="comment">%     Here op can be 'low' or 'high', if op is 'high' means that a higher</span>
+0027 <span class="comment">%     score indicating higher similarity, vice versa for 'low' op.</span>
+0028 <span class="comment">%     For output, if n thresholds are sampled, then thrs, fars, and frrs</span>
+0029 <span class="comment">%     for all n x 1 vectors, containing the sampled threshold values,</span>
+0030 <span class="comment">%     and the corresponding false accept rates, and false reject rates.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%   - [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op, npts)</span>
+0033 <span class="comment">%     You can specify the number of threshold points to sampled by npts.</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% $ History $</span>
+0036 <span class="comment">%   - Created by Dahua Lin on Jun 10th, 2005</span>
+0037 <span class="comment">%   - Modified by Dahua Lin on May 1st, 2006</span>
+0038 <span class="comment">%     - Base on the sltoolbox v4</span>
+0039 <span class="comment">%   - Modified by Dahua Lin on Aug 8th, 2006</span>
+0040 <span class="comment">%     - Add one more argument npts to tune the density of sampling</span>
+0041 <span class="comment">%</span>
+0042 
+0043 <span class="comment">%% parse and verify input arguments</span>
+0044 <span class="keyword">if</span> nargin &lt; 4
+0045     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slverifyroc'</span>, 4);
+0046 <span class="keyword">end</span>
+0047 <span class="keyword">if</span> isempty(labels2)
+0048     labels2 = labels1;
+0049 <span class="keyword">end</span>
+0050 <span class="keyword">if</span> ndims(scores) ~= 2
+0051     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0052         <span class="string">'The scores should be a 2D matrix'</span>);
+0053 <span class="keyword">end</span>
+0054 [m, n] = size(scores);
+0055 <span class="keyword">if</span> length(labels1) ~= m || length(labels2) ~= n 
+0056     error(<span class="string">'The sizes of labels do not match that of scores'</span>);
+0057 <span class="keyword">end</span>
+0058 
+0059 <span class="keyword">if</span> nargin &lt; 5 || isempty(npts)
+0060     npts = 200;
+0061 <span class="keyword">end</span>
+0062 
+0063 
+0064 <span class="comment">%% generate the signs</span>
+0065 labels1 = labels1(:);
+0066 labels2 = labels2(:)';
+0067 L1 = labels1(:, ones(1, n));
+0068 L2 = labels2(ones(m, 1), :);
+0069 signals = (L1 == L2);
+0070 clear L1 L2;
+0071 
+0072 <span class="comment">%% compute</span>
+0073 [thrs, fars, frrs] = <a href="slroc.html" class="code" title="function [thrs, fars, frrs] = slroc(scores, signs, thres, op)">slroc</a>(scores, signals, npts, op);
+0074 
+0075 
+0076 
+0077</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

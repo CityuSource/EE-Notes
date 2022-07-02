@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slimgsetprep</title>
+  <meta name="keywords" content="slimgsetprep">
+  <meta name="description" content="SLIMGSETPREP organizes the images in a MATLAB friendly way">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">fileio</a> &gt; slimgsetprep.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\fileio&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slimgsetprep
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLIMGSETPREP organizes the images in a MATLAB friendly way</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function slimgsetprep(srcfolder, dstpath, matsize, maxsec) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLIMGSETPREP organizes the images in a MATLAB friendly way
+
+ $ Syntax $
+   - slimgsetprep(srcfolder, dstpath, matsize, maxsec) 
+
+ $ Argument $
+   - srcfolder:        the source file folder
+   - dstpath:          the destination file (without extension name)
+   - matsize:          the matrix size (row vector): [nrows, ncols]
+   - maxsec:           the maximum section size
+
+ $ Description $
+   - slimgsetprep(srcfolder, dstpath, imgsiz, maxsec) prepares the matlab 
+     files in destination for a set of images. The requirement is
+       1) In source folder: there are all the images and a DSDML 
+          description file named dataset.xml
+       2) For destination, say abc, then there would be a core file named
+          abc.xml. And if the actual data is separately stored, there are
+          a series of files named abc.arr.&lt;begin index&gt;-&lt;last index&gt;. For
+          example, abc.arr.0001-2000, means that the 1st t0 2000th samples
+          are stored in the array file. 
+       3) maxsec is the number of samples in each section. If maxsec is
+          specified, the images are stored in separate array files. If 
+          maxsec is not specified or empty, the images are stored in core
+          file.
+       4) The core file is a MAT file with following variables:
+           'desc':         the DSDML data object descriptor
+           'sections':     the starting and ending indices of all sections
+           'matsize':      the row vector describing the size of images
+           'data':         the image array
+                           if imgs is numeric, it is the actual image
+                           array.
+                           if imgs is a cell array, it is the set of
+                           array filenames.
+   
+ $ History $
+   - Created by Dahua Lin, on Jul 26th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/ExpDL/@dataset/dataset.html" class="code" title="function DS = dataset(varargin)">dataset</a>	DATASET Constructs a dataset object (conform to DSDML)</li><li><a href="slwritearray.html" class="code" title="function slwritearray(A, filename)">slwritearray</a>	SLWRITEARRAY Writes an array to an array file</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slimg2mat.html" class="code" title="function M = slimg2mat(img)">slimg2mat</a>	SLIMG2MAT Converts an image array to a double matrix</li><li><a href="../../sltoolbox/utils/slpartition.html" class="code" title="function PS = slpartition(whole_size, spec_item, varargin)">slpartition</a>	SLPARTITION Partition a range into blocks in a specified manner</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function slimgsetprep(srcfolder, dstpath, matsize, maxsec)</a>
+0002 <span class="comment">%SLIMGSETPREP organizes the images in a MATLAB friendly way</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - slimgsetprep(srcfolder, dstpath, matsize, maxsec)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Argument $</span>
+0008 <span class="comment">%   - srcfolder:        the source file folder</span>
+0009 <span class="comment">%   - dstpath:          the destination file (without extension name)</span>
+0010 <span class="comment">%   - matsize:          the matrix size (row vector): [nrows, ncols]</span>
+0011 <span class="comment">%   - maxsec:           the maximum section size</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - slimgsetprep(srcfolder, dstpath, imgsiz, maxsec) prepares the matlab</span>
+0015 <span class="comment">%     files in destination for a set of images. The requirement is</span>
+0016 <span class="comment">%       1) In source folder: there are all the images and a DSDML</span>
+0017 <span class="comment">%          description file named dataset.xml</span>
+0018 <span class="comment">%       2) For destination, say abc, then there would be a core file named</span>
+0019 <span class="comment">%          abc.xml. And if the actual data is separately stored, there are</span>
+0020 <span class="comment">%          a series of files named abc.arr.&lt;begin index&gt;-&lt;last index&gt;. For</span>
+0021 <span class="comment">%          example, abc.arr.0001-2000, means that the 1st t0 2000th samples</span>
+0022 <span class="comment">%          are stored in the array file.</span>
+0023 <span class="comment">%       3) maxsec is the number of samples in each section. If maxsec is</span>
+0024 <span class="comment">%          specified, the images are stored in separate array files. If</span>
+0025 <span class="comment">%          maxsec is not specified or empty, the images are stored in core</span>
+0026 <span class="comment">%          file.</span>
+0027 <span class="comment">%       4) The core file is a MAT file with following variables:</span>
+0028 <span class="comment">%           'desc':         the DSDML data object descriptor</span>
+0029 <span class="comment">%           'sections':     the starting and ending indices of all sections</span>
+0030 <span class="comment">%           'matsize':      the row vector describing the size of images</span>
+0031 <span class="comment">%           'data':         the image array</span>
+0032 <span class="comment">%                           if imgs is numeric, it is the actual image</span>
+0033 <span class="comment">%                           array.</span>
+0034 <span class="comment">%                           if imgs is a cell array, it is the set of</span>
+0035 <span class="comment">%                           array filenames.</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">% $ History $</span>
+0038 <span class="comment">%   - Created by Dahua Lin, on Jul 26th, 2006</span>
+0039 <span class="comment">%</span>
+0040 
+0041 <span class="comment">%% Parse and verify input arguments</span>
+0042 
+0043 <span class="keyword">if</span> nargin &lt; 3
+0044     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slimgsetprep'</span>, 3);
+0045 <span class="keyword">end</span>
+0046 
+0047 isseparate = false;
+0048 <span class="keyword">if</span> nargin &gt;= 4
+0049     isseparate = ~isempty(maxsec);
+0050 <span class="keyword">end</span>
+0051 
+0052 matsize = matsize(:)';
+0053 <span class="keyword">if</span> length(matsize) ~= 2
+0054     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0055         <span class="string">'imgsize should be a 2-element vector'</span>);
+0056 <span class="keyword">end</span>
+0057 
+0058 
+0059 <span class="comment">%% Read the dataset</span>
+0060 
+0061 descrfile = [srcfolder, <span class="string">'\dataset.xml'</span>];
+0062 desc = <a href="../../sltoolbox/ExpDL/@dataset/dataset.html" class="code" title="function DS = dataset(varargin)">dataset</a>(descrfile);
+0063 
+0064 N = desc.numsamples;
+0065 fns = desc.filenames;
+0066 
+0067 <span class="comment">%% Process data</span>
+0068 
+0069 <span class="keyword">if</span> ~isseparate
+0070     
+0071     datasiz = [matsize, N];
+0072     data = zeros(datasiz);
+0073     
+0074     <span class="keyword">for</span> i = 1 : N
+0075         img = imread([srcfolder, <span class="string">'\'</span>, fns{i}]);
+0076         img = <a href="../../sltoolbox/utils/slimg2mat.html" class="code" title="function M = slimg2mat(img)">slimg2mat</a>(img);
+0077         data(:,:,i) = img;
+0078     <span class="keyword">end</span>
+0079         
+0080 <span class="keyword">else</span>
+0081     
+0082     sections = <a href="../../sltoolbox/utils/slpartition.html" class="code" title="function PS = slpartition(whole_size, spec_item, varargin)">slpartition</a>(N, <span class="string">'maxblksize'</span>, maxsec);    
+0083     nsecs = length(sections.sinds);
+0084     
+0085     data = cell(nsecs, 1);    
+0086     
+0087     <span class="comment">% process filenames</span>
+0088     dstdir = fileparts(dstpath);
+0089     numlen = length(num2str(N));    
+0090     <span class="keyword">if</span> isempty(dstdir)  <span class="comment">% local dst</span>
+0091         dstfnpat = [dstpath, sprintf(<span class="string">'.arr.%%0%dd-%%0%dd'</span>, numlen, numlen)];
+0092         dstfppre = [];
+0093     <span class="keyword">else</span>
+0094         dstfnpat = [dstpath(length(dstdir)+2:end), sprintf(<span class="string">'.arr.%%0%dd-%%0%dd'</span>, numlen, numlen)];
+0095         dstfppre = [dstdir, <span class="string">'\'</span>];
+0096     <span class="keyword">end</span>
+0097     
+0098     <span class="keyword">for</span> i = 1 : nsecs        
+0099         si = sections.sinds(i);
+0100         ei = sections.einds(i);
+0101         
+0102         curfn = sprintf(dstfnpat, si, ei);
+0103         curfp = [dstfppre, curfn];
+0104         data{i} = curfn;
+0105         
+0106         curN = ei - si + 1;
+0107         arr = zeros([matsize, curN]);
+0108         
+0109         <span class="keyword">for</span> j = 1 : curN
+0110             curidx = si + j - 1;
+0111             img = imread([srcfolder, <span class="string">'\'</span>, fns{curidx}]);
+0112             img = <a href="../../sltoolbox/utils/slimg2mat.html" class="code" title="function M = slimg2mat(img)">slimg2mat</a>(img);        
+0113             arr(:,:,j) = img;                                                
+0114         <span class="keyword">end</span>        
+0115         
+0116         <a href="slwritearray.html" class="code" title="function slwritearray(A, filename)">slwritearray</a>(arr, curfp);        
+0117     <span class="keyword">end</span>
+0118         
+0119 <span class="keyword">end</span>
+0120 
+0121 
+0122 <span class="comment">%% Output core</span>
+0123 
+0124 corefile = [dstpath, <span class="string">'.mat'</span>];
+0125 save(corefile, <span class="string">'desc'</span>, <span class="string">'sections'</span>, <span class="string">'matsize'</span>, <span class="string">'data'</span>, <span class="string">'-v6'</span>); 
+0126 
+0127 
+0128 
+0129</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

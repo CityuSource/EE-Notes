@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slreadarray</title>
+  <meta name="keywords" content="slreadarray">
+  <meta name="description" content="SLREADARRAY Reads an array from an array file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">fileio</a> &gt; slreadarray.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\fileio&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slreadarray
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLREADARRAY Reads an array from an array file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function A = slreadarray(filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLREADARRAY Reads an array from an array file
+
+ $ Syntax $
+   - A = slreadarray(filename)
+
+ $ Arguments $
+   - filename:         the filename of the array file
+   - A:                the array read
+
+ $ Description $
+   - A = slreadarray(filename) reads an array from an array file and
+     returns it by A.
+
+ $ History $
+   - Created by Dahua Lin, on Jul 26th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slsumstat_blks.html" class="code" title="function R = slsumstat_blks(data, statfunc, varargin)">slsumstat_blks</a>	SLSUMSTAT_BLKS Sums up statistics on all blocks for partitioned data</li><li><a href="../../sltoolbox/perfeval/slverifyroc_blks.html" class="code" title="function [thrs, fars, frrs] = slverifyroc_blks(scores, blocks, labels1, labels2, op, npts)">slverifyroc_blks</a>	SLVERIFYROC_BLKS Computes the verification ROC for blockwise score matrix</li><li><a href="../../sltoolbox/subspace_ex/sl2dmatcov.html" class="code" title="function varargout = sl2dmatcov(type, data, matsiz, n, meanmat, PL, PR, w)">sl2dmatcov</a>	SL2DMATCOV Computes the 2D matrix-covariances</li><li><a href="../../sltoolbox/subspace_ex/sl2dpca_apply.html" class="code" title="function Y = sl2dpca_apply(Mm, PL, PR, data, matsiz, n)">sl2dpca_apply</a>	SL2DPCA_APPLY Applies 2D PCA onto a set of matrices to extract features</li><li><a href="../../sltoolbox/subspace_ex/sl2dpcaex.html" class="code" title="function [Mm, PL, PR, info] = sl2dpcaex(data, matsiz, n, method, varargin)">sl2dpcaex</a>	SL2DPCAEX Learns Extended 2D PCA on a set of matrix samples</li><li><a href="../../sltoolbox/subspace_ex/slarrmean.html" class="code" title="function arrMean = slarrmean(data, arrsiz, n, varargin)">slarrmean</a>	SLARRMEAN Computes the mean of a set of arrays</li><li><a href="../../sltoolbox/subspace_ex/slpartitionpca.html" class="code" title="function slpartitionpca(data, arrsiz, n, ps, filepath, varargin)">slpartitionpca</a>	SLPARTITIONPCA Performs Partition-based PCA and saves the models</li><li><a href="../../sltoolbox/subspace_ex/slpartitionpca_apply.html" class="code" title="function feas = slpartitionpca_apply(S, modeldir, data, n, k)">slpartitionpca_apply</a>	SLPARTITIONPCA_APPLY applies partition-based PCA to a set of arrays</li><li><a href="../../sltoolbox/subspace_ex/slpartitionpca_construct.html" class="code" title="function A = slpartitionpca_construct(S, modeldir, feas)">slpartitionpca_construct</a>	SLPARTITIONPCA_CONSTRUCT Constructs the array from features</li><li><a href="../../sltoolbox/utils/slclassify_blks.html" class="code" title="function [decisions, decscores] = slclassify_blks(scores, n, blocks, clabels, op, varargin)">slclassify_blks</a>	SLCLASSIFY_BLKS Classifies samples according to blockwise scores</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function A = slreadarray(filename)</a>
+0002 <span class="comment">%SLREADARRAY Reads an array from an array file</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - A = slreadarray(filename)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - filename:         the filename of the array file</span>
+0009 <span class="comment">%   - A:                the array read</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - A = slreadarray(filename) reads an array from an array file and</span>
+0013 <span class="comment">%     returns it by A.</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ History $</span>
+0016 <span class="comment">%   - Created by Dahua Lin, on Jul 26th, 2006</span>
+0017 <span class="comment">%</span>
+0018 
+0019 value_types = { <span class="keyword">...</span>
+0020     <span class="string">'double'</span>, <span class="keyword">...</span>
+0021     <span class="string">'single'</span>, <span class="keyword">...</span>
+0022     <span class="string">'logical'</span>, <span class="keyword">...</span>
+0023     <span class="string">'char'</span>, <span class="keyword">...</span>
+0024     <span class="string">'int8'</span>, <span class="keyword">...</span>
+0025     <span class="string">'uint8'</span>, <span class="keyword">...</span>
+0026     <span class="string">'int16'</span>, <span class="keyword">...</span>
+0027     <span class="string">'uint16'</span>, <span class="keyword">...</span>
+0028     <span class="string">'int32'</span>, <span class="keyword">...</span>
+0029     <span class="string">'uint32'</span>, <span class="keyword">...</span>
+0030     <span class="string">'int64'</span>, <span class="keyword">...</span>
+0031     <span class="string">'uint64'</span>};
+0032 
+0033 <span class="comment">%% open file</span>
+0034 fid = fopen(filename, <span class="string">'r'</span>);
+0035 <span class="keyword">if</span> fid &lt;= 0
+0036     error(<span class="string">'sltoolbox:filefail'</span>, <span class="keyword">...</span>
+0037         <span class="string">'Fail to open file %s'</span>, filename);
+0038 <span class="keyword">end</span>
+0039 
+0040 
+0041 <span class="comment">%% read header</span>
+0042 
+0043 <span class="comment">% read and verify tag</span>
+0044 tag = fread(fid, 4, <span class="string">'*char'</span>)';
+0045 <span class="keyword">if</span> ~isequal(tag, [<span class="string">'arr'</span>, 0])
+0046     error(<span class="string">'sltoolbox:parseerror'</span>, <span class="keyword">...</span>
+0047         <span class="string">'The file tag is invalid'</span>);
+0048 <span class="keyword">end</span>
+0049 
+0050 <span class="comment">% read the value type</span>
+0051 typeidx = fread(fid, 1, <span class="string">'uint8'</span>);
+0052 valtype = value_types{typeidx};
+0053 
+0054 <span class="comment">% read the dimension</span>
+0055 d = fread(fid, 1, <span class="string">'uint8'</span>);
+0056 
+0057 <span class="comment">%% read size</span>
+0058 
+0059 fseek(fid, 8, -1);
+0060 siz = fread(fid, d, <span class="string">'uint32'</span>)';
+0061 
+0062 
+0063 <span class="comment">%% read data</span>
+0064 A = fread(fid, prod(siz), [<span class="string">'*'</span>, valtype]);
+0065 <span class="keyword">if</span> length(siz) == 1
+0066     siz = [siz, 1];
+0067 <span class="keyword">end</span>
+0068 A = reshape(A, siz);
+0069 
+0070 
+0071 <span class="comment">%% close file</span>
+0072 fclose(fid);
+0073 
+0074 
+0075 
+0076 
+0077 
+0078 
+0079 
+0080 
+0081 
+0082 
+0083</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

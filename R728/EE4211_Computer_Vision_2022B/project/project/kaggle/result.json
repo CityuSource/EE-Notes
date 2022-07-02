@@ -1,0 +1,2103 @@
+[
+{
+ "frame_id":1, 
+ "filename":"data/Test/1000.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.495576, "center_y":0.502036, "width":0.676564, "height":0.859624}, "confidence":0.960325}
+ ] 
+}, 
+{
+ "frame_id":2, 
+ "filename":"data/Test/1001.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.352349, "center_y":0.496141, "width":0.240092, "height":0.290609}, "confidence":0.935245}
+ ] 
+}, 
+{
+ "frame_id":3, 
+ "filename":"data/Test/1002.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.502085, "center_y":0.578700, "width":0.881172, "height":0.717570}, "confidence":0.943262}
+ ] 
+}, 
+{
+ "frame_id":4, 
+ "filename":"data/Test/1003.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.507720, "center_y":0.574828, "width":0.420987, "height":0.789268}, "confidence":0.845740}
+ ] 
+}, 
+{
+ "frame_id":5, 
+ "filename":"data/Test/1004.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.573614, "center_y":0.496053, "width":0.289342, "height":0.956827}, "confidence":0.913376}
+ ] 
+}, 
+{
+ "frame_id":6, 
+ "filename":"data/Test/1005.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.490541, "center_y":0.565382, "width":0.760799, "height":0.693970}, "confidence":0.858877}
+ ] 
+}, 
+{
+ "frame_id":7, 
+ "filename":"data/Test/1006.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.401660, "center_y":0.655403, "width":0.321763, "height":0.334311}, "confidence":0.869467}
+ ] 
+}, 
+{
+ "frame_id":8, 
+ "filename":"data/Test/1007.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.677804, "center_y":0.577839, "width":0.384289, "height":0.832915}, "confidence":0.923208}
+ ] 
+}, 
+{
+ "frame_id":9, 
+ "filename":"data/Test/1008.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.501253, "center_y":0.559595, "width":0.477718, "height":0.556402}, "confidence":0.952232}
+ ] 
+}, 
+{
+ "frame_id":10, 
+ "filename":"data/Test/1009.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.709571, "center_y":0.481155, "width":0.384754, "height":0.561648}, "confidence":0.846412}
+ ] 
+}, 
+{
+ "frame_id":11, 
+ "filename":"data/Test/1010.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":12, 
+ "filename":"data/Test/1011.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.588230, "center_y":0.505388, "width":0.583785, "height":0.959828}, "confidence":0.968476}
+ ] 
+}, 
+{
+ "frame_id":13, 
+ "filename":"data/Test/1012.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.437677, "center_y":0.560616, "width":0.486607, "height":0.687472}, "confidence":0.931643}
+ ] 
+}, 
+{
+ "frame_id":14, 
+ "filename":"data/Test/1013.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.581647, "center_y":0.432749, "width":0.583922, "height":0.673125}, "confidence":0.892475}
+ ] 
+}, 
+{
+ "frame_id":15, 
+ "filename":"data/Test/1014.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.421691, "center_y":0.483879, "width":0.824999, "height":0.548811}, "confidence":0.727061}
+ ] 
+}, 
+{
+ "frame_id":16, 
+ "filename":"data/Test/1015.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.589645, "center_y":0.577866, "width":0.725128, "height":0.888843}, "confidence":0.886769}
+ ] 
+}, 
+{
+ "frame_id":17, 
+ "filename":"data/Test/1016.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.472952, "center_y":0.585050, "width":0.238508, "height":0.568204}, "confidence":0.738061}
+ ] 
+}, 
+{
+ "frame_id":18, 
+ "filename":"data/Test/1017.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.657336, "center_y":0.600227, "width":0.431848, "height":0.417690}, "confidence":0.820530}
+ ] 
+}, 
+{
+ "frame_id":19, 
+ "filename":"data/Test/1018.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.506775, "center_y":0.423330, "width":0.657275, "height":0.761809}, "confidence":0.886985}
+ ] 
+}, 
+{
+ "frame_id":20, 
+ "filename":"data/Test/1019.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.416220, "center_y":0.575303, "width":0.616329, "height":0.778723}, "confidence":0.864203}
+ ] 
+}, 
+{
+ "frame_id":21, 
+ "filename":"data/Test/1020.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.281862, "center_y":0.586073, "width":0.502185, "height":0.605760}, "confidence":0.946988}
+ ] 
+}, 
+{
+ "frame_id":22, 
+ "filename":"data/Test/1021.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.487735, "center_y":0.484485, "width":0.842822, "height":0.639026}, "confidence":0.680929}
+ ] 
+}, 
+{
+ "frame_id":23, 
+ "filename":"data/Test/1022.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.483417, "center_y":0.585553, "width":0.265754, "height":0.924024}, "confidence":0.947836}
+ ] 
+}, 
+{
+ "frame_id":24, 
+ "filename":"data/Test/1023.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.514384, "center_y":0.517952, "width":0.371897, "height":0.871587}, "confidence":0.700708}
+ ] 
+}, 
+{
+ "frame_id":25, 
+ "filename":"data/Test/1024.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.399729, "center_y":0.654904, "width":0.302147, "height":0.400389}, "confidence":0.780260}
+ ] 
+}, 
+{
+ "frame_id":26, 
+ "filename":"data/Test/1025.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.590274, "center_y":0.600072, "width":0.560247, "height":0.520614}, "confidence":0.841062}
+ ] 
+}, 
+{
+ "frame_id":27, 
+ "filename":"data/Test/1026.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.450560, "center_y":0.479777, "width":0.323935, "height":0.429356}, "confidence":0.547194}
+ ] 
+}, 
+{
+ "frame_id":28, 
+ "filename":"data/Test/1027.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.353033, "center_y":0.423703, "width":0.478805, "height":0.485617}, "confidence":0.780243}
+ ] 
+}, 
+{
+ "frame_id":29, 
+ "filename":"data/Test/1028.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.438890, "center_y":0.513496, "width":0.332331, "height":0.572682}, "confidence":0.835648}
+ ] 
+}, 
+{
+ "frame_id":30, 
+ "filename":"data/Test/1029.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":31, 
+ "filename":"data/Test/1030.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.440179, "center_y":0.517317, "width":0.730174, "height":0.899894}, "confidence":0.909067}
+ ] 
+}, 
+{
+ "frame_id":32, 
+ "filename":"data/Test/1031.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.570988, "center_y":0.514691, "width":0.407408, "height":0.823408}, "confidence":0.587869}
+ ] 
+}, 
+{
+ "frame_id":33, 
+ "filename":"data/Test/1032.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.341691, "center_y":0.488006, "width":0.372362, "height":0.632467}, "confidence":0.472874}
+ ] 
+}, 
+{
+ "frame_id":34, 
+ "filename":"data/Test/1033.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.349966, "center_y":0.549212, "width":0.570123, "height":0.594640}, "confidence":0.964685}
+ ] 
+}, 
+{
+ "frame_id":35, 
+ "filename":"data/Test/1034.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":36, 
+ "filename":"data/Test/1035.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.486549, "center_y":0.488895, "width":0.550959, "height":0.768210}, "confidence":0.727613}
+ ] 
+}, 
+{
+ "frame_id":37, 
+ "filename":"data/Test/1036.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.590549, "center_y":0.576038, "width":0.383752, "height":0.507013}, "confidence":0.844679}
+ ] 
+}, 
+{
+ "frame_id":38, 
+ "filename":"data/Test/1037.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.350809, "center_y":0.414454, "width":0.396183, "height":0.568869}, "confidence":0.879301}
+ ] 
+}, 
+{
+ "frame_id":39, 
+ "filename":"data/Test/1038.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.347310, "center_y":0.640635, "width":0.530169, "height":0.444874}, "confidence":0.906886}
+ ] 
+}, 
+{
+ "frame_id":40, 
+ "filename":"data/Test/1039.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.567854, "center_y":0.561075, "width":0.398171, "height":0.833296}, "confidence":0.797069}
+ ] 
+}, 
+{
+ "frame_id":41, 
+ "filename":"data/Test/1040.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.514516, "center_y":0.596068, "width":0.585837, "height":0.680487}, "confidence":0.931414}
+ ] 
+}, 
+{
+ "frame_id":42, 
+ "filename":"data/Test/1041.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.672863, "center_y":0.477805, "width":0.289696, "height":0.259305}, "confidence":0.830309}
+ ] 
+}, 
+{
+ "frame_id":43, 
+ "filename":"data/Test/1042.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.651986, "center_y":0.556766, "width":0.424375, "height":0.573801}, "confidence":0.881861}
+ ] 
+}, 
+{
+ "frame_id":44, 
+ "filename":"data/Test/1043.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.583416, "center_y":0.506121, "width":0.637950, "height":0.992710}, "confidence":0.976935}
+ ] 
+}, 
+{
+ "frame_id":45, 
+ "filename":"data/Test/1044.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.501545, "center_y":0.575602, "width":0.851316, "height":0.740115}, "confidence":0.972954}
+ ] 
+}, 
+{
+ "frame_id":46, 
+ "filename":"data/Test/1045.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.518895, "center_y":0.511037, "width":0.639805, "height":0.856137}, "confidence":0.875553}
+ ] 
+}, 
+{
+ "frame_id":47, 
+ "filename":"data/Test/1046.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.500581, "center_y":0.425351, "width":0.417814, "height":0.611823}, "confidence":0.615243}
+ ] 
+}, 
+{
+ "frame_id":48, 
+ "filename":"data/Test/1047.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.428029, "center_y":0.564518, "width":0.232818, "height":0.298893}, "confidence":0.651925}
+ ] 
+}, 
+{
+ "frame_id":49, 
+ "filename":"data/Test/1048.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.487100, "center_y":0.561994, "width":0.562749, "height":0.971594}, "confidence":0.817492}
+ ] 
+}, 
+{
+ "frame_id":50, 
+ "filename":"data/Test/1049.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.667211, "center_y":0.572375, "width":0.383883, "height":0.740842}, "confidence":0.972812}
+ ] 
+}, 
+{
+ "frame_id":51, 
+ "filename":"data/Test/1050.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.513488, "center_y":0.524682, "width":0.770537, "height":0.925862}, "confidence":0.772559}
+ ] 
+}, 
+{
+ "frame_id":52, 
+ "filename":"data/Test/1051.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.246717, "center_y":0.587867, "width":0.313907, "height":0.574275}, "confidence":0.771126}
+ ] 
+}, 
+{
+ "frame_id":53, 
+ "filename":"data/Test/1052.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.589700, "center_y":0.520709, "width":0.476186, "height":0.762975}, "confidence":0.921036}
+ ] 
+}, 
+{
+ "frame_id":54, 
+ "filename":"data/Test/1053.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.501509, "center_y":0.567180, "width":0.888447, "height":0.680967}, "confidence":0.894244}
+ ] 
+}, 
+{
+ "frame_id":55, 
+ "filename":"data/Test/1054.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.582316, "center_y":0.560170, "width":0.693922, "height":0.384223}, "confidence":0.868234}
+ ] 
+}, 
+{
+ "frame_id":56, 
+ "filename":"data/Test/1055.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.490766, "center_y":0.516413, "width":0.484245, "height":1.050558}, "confidence":0.973352}
+ ] 
+}, 
+{
+ "frame_id":57, 
+ "filename":"data/Test/1056.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.516814, "center_y":0.566052, "width":0.304001, "height":0.456092}, "confidence":0.742157}
+ ] 
+}, 
+{
+ "frame_id":58, 
+ "filename":"data/Test/1057.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.487307, "center_y":0.476460, "width":0.299328, "height":0.508665}, "confidence":0.749930}
+ ] 
+}, 
+{
+ "frame_id":59, 
+ "filename":"data/Test/1058.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.470819, "center_y":0.501049, "width":0.215319, "height":0.765522}, "confidence":0.853228}
+ ] 
+}, 
+{
+ "frame_id":60, 
+ "filename":"data/Test/1059.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.487189, "center_y":0.580991, "width":0.359022, "height":0.676903}, "confidence":0.454884}
+ ] 
+}, 
+{
+ "frame_id":61, 
+ "filename":"data/Test/1060.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.424563, "center_y":0.526432, "width":0.408432, "height":0.976766}, "confidence":0.937496}
+ ] 
+}, 
+{
+ "frame_id":62, 
+ "filename":"data/Test/1061.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.495806, "center_y":0.566999, "width":0.715375, "height":1.000898}, "confidence":0.935052}
+ ] 
+}, 
+{
+ "frame_id":63, 
+ "filename":"data/Test/1062.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.503149, "center_y":0.439818, "width":0.251481, "height":0.297578}, "confidence":0.890362}
+ ] 
+}, 
+{
+ "frame_id":64, 
+ "filename":"data/Test/1063.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.564078, "center_y":0.505439, "width":0.474100, "height":0.763081}, "confidence":0.805220}
+ ] 
+}, 
+{
+ "frame_id":65, 
+ "filename":"data/Test/1064.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.585683, "center_y":0.488043, "width":0.610937, "height":0.591420}, "confidence":0.942774}
+ ] 
+}, 
+{
+ "frame_id":66, 
+ "filename":"data/Test/1065.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.577049, "center_y":0.573479, "width":0.514980, "height":0.704931}, "confidence":0.915110}
+ ] 
+}, 
+{
+ "frame_id":67, 
+ "filename":"data/Test/1066.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.510837, "center_y":0.508428, "width":0.538625, "height":0.896936}, "confidence":0.867175}
+ ] 
+}, 
+{
+ "frame_id":68, 
+ "filename":"data/Test/1067.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.346642, "center_y":0.496296, "width":0.403013, "height":0.552608}, "confidence":0.467029}
+ ] 
+}, 
+{
+ "frame_id":69, 
+ "filename":"data/Test/1068.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.271526, "center_y":0.508065, "width":0.343507, "height":0.591783}, "confidence":0.750419}
+ ] 
+}, 
+{
+ "frame_id":70, 
+ "filename":"data/Test/1069.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.595339, "center_y":0.565893, "width":0.321451, "height":0.620789}, "confidence":0.750149}
+ ] 
+}, 
+{
+ "frame_id":71, 
+ "filename":"data/Test/1070.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.419596, "center_y":0.595426, "width":0.571979, "height":0.845844}, "confidence":0.937079}
+ ] 
+}, 
+{
+ "frame_id":72, 
+ "filename":"data/Test/1071.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.356725, "center_y":0.631117, "width":0.554993, "height":0.608691}, "confidence":0.771969}
+ ] 
+}, 
+{
+ "frame_id":73, 
+ "filename":"data/Test/1072.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.520757, "center_y":0.589705, "width":0.370317, "height":0.535734}, "confidence":0.949400}
+ ] 
+}, 
+{
+ "frame_id":74, 
+ "filename":"data/Test/1073.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.442077, "center_y":0.412738, "width":0.872552, "height":0.627626}, "confidence":0.640293}
+ ] 
+}, 
+{
+ "frame_id":75, 
+ "filename":"data/Test/1074.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.522575, "center_y":0.498054, "width":0.729705, "height":0.722808}, "confidence":0.959456}
+ ] 
+}, 
+{
+ "frame_id":76, 
+ "filename":"data/Test/1075.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.580460, "center_y":0.505459, "width":0.711482, "height":0.663773}, "confidence":0.965633}
+ ] 
+}, 
+{
+ "frame_id":77, 
+ "filename":"data/Test/1076.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.639821, "center_y":0.602752, "width":0.464090, "height":0.690304}, "confidence":0.847151}
+ ] 
+}, 
+{
+ "frame_id":78, 
+ "filename":"data/Test/1077.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.343595, "center_y":0.439615, "width":0.424761, "height":0.585308}, "confidence":0.910924}
+ ] 
+}, 
+{
+ "frame_id":79, 
+ "filename":"data/Test/1078.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.438420, "center_y":0.512070, "width":0.279104, "height":0.554063}, "confidence":0.956474}
+ ] 
+}, 
+{
+ "frame_id":80, 
+ "filename":"data/Test/1079.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":81, 
+ "filename":"data/Test/1080.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.428648, "center_y":0.570336, "width":0.635119, "height":0.831089}, "confidence":0.954828}
+ ] 
+}, 
+{
+ "frame_id":82, 
+ "filename":"data/Test/1081.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.582855, "center_y":0.574181, "width":0.264853, "height":0.477811}, "confidence":0.907880}
+ ] 
+}, 
+{
+ "frame_id":83, 
+ "filename":"data/Test/1082.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.514499, "center_y":0.554946, "width":0.319757, "height":0.632208}, "confidence":0.672026}
+ ] 
+}, 
+{
+ "frame_id":84, 
+ "filename":"data/Test/1083.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.516348, "center_y":0.568961, "width":0.200164, "height":0.532830}, "confidence":0.919685}
+ ] 
+}, 
+{
+ "frame_id":85, 
+ "filename":"data/Test/1084.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.348800, "center_y":0.577298, "width":0.454723, "height":0.498280}, "confidence":0.940602}
+ ] 
+}, 
+{
+ "frame_id":86, 
+ "filename":"data/Test/1085.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.520943, "center_y":0.517638, "width":0.194187, "height":0.429863}, "confidence":0.564996}
+ ] 
+}, 
+{
+ "frame_id":87, 
+ "filename":"data/Test/1086.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.580954, "center_y":0.507667, "width":0.465486, "height":0.494439}, "confidence":0.952558}
+ ] 
+}, 
+{
+ "frame_id":88, 
+ "filename":"data/Test/1087.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.425708, "center_y":0.506787, "width":0.513754, "height":0.808340}, "confidence":0.819195}
+ ] 
+}, 
+{
+ "frame_id":89, 
+ "filename":"data/Test/1088.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.509070, "center_y":0.566973, "width":0.647723, "height":0.749358}, "confidence":0.759463}
+ ] 
+}, 
+{
+ "frame_id":90, 
+ "filename":"data/Test/1089.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.419152, "center_y":0.506899, "width":0.414562, "height":0.638162}, "confidence":0.952787}
+ ] 
+}, 
+{
+ "frame_id":91, 
+ "filename":"data/Test/1090.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.504436, "center_y":0.581378, "width":0.553746, "height":0.705203}, "confidence":0.940548}
+ ] 
+}, 
+{
+ "frame_id":92, 
+ "filename":"data/Test/1091.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.516706, "center_y":0.517738, "width":0.380766, "height":0.428107}, "confidence":0.698124}
+ ] 
+}, 
+{
+ "frame_id":93, 
+ "filename":"data/Test/1092.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.716797, "center_y":0.598527, "width":0.239358, "height":0.402316}, "confidence":0.924235}
+ ] 
+}, 
+{
+ "frame_id":94, 
+ "filename":"data/Test/1093.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.487673, "center_y":0.516405, "width":0.456015, "height":0.756084}, "confidence":0.803751}
+ ] 
+}, 
+{
+ "frame_id":95, 
+ "filename":"data/Test/1094.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.418067, "center_y":0.510789, "width":0.246588, "height":0.755877}, "confidence":0.857522}
+ ] 
+}, 
+{
+ "frame_id":96, 
+ "filename":"data/Test/1095.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.485209, "center_y":0.490599, "width":0.768191, "height":0.655399}, "confidence":0.935489}
+ ] 
+}, 
+{
+ "frame_id":97, 
+ "filename":"data/Test/1096.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.514113, "center_y":0.516233, "width":0.477553, "height":0.509521}, "confidence":0.906248}
+ ] 
+}, 
+{
+ "frame_id":98, 
+ "filename":"data/Test/1097.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.442251, "center_y":0.523303, "width":0.490188, "height":0.716347}, "confidence":0.866899}
+ ] 
+}, 
+{
+ "frame_id":99, 
+ "filename":"data/Test/1098.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.523512, "center_y":0.480586, "width":0.792349, "height":0.543672}, "confidence":0.767013}
+ ] 
+}, 
+{
+ "frame_id":100, 
+ "filename":"data/Test/1099.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.271897, "center_y":0.504863, "width":0.337547, "height":0.745685}, "confidence":0.780180}
+ ] 
+}, 
+{
+ "frame_id":101, 
+ "filename":"data/Test/1100.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.519245, "center_y":0.632641, "width":0.766638, "height":0.665794}, "confidence":0.881491}
+ ] 
+}, 
+{
+ "frame_id":102, 
+ "filename":"data/Test/1101.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.489357, "center_y":0.566024, "width":0.269731, "height":0.785326}, "confidence":0.629908}
+ ] 
+}, 
+{
+ "frame_id":103, 
+ "filename":"data/Test/1102.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":104, 
+ "filename":"data/Test/1103.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.276516, "center_y":0.514577, "width":0.433286, "height":0.837424}, "confidence":0.726037}
+ ] 
+}, 
+{
+ "frame_id":105, 
+ "filename":"data/Test/1104.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.354822, "center_y":0.364699, "width":0.279638, "height":0.342145}, "confidence":0.954462}, 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.356290, "center_y":0.363737, "width":0.455789, "height":0.468741}, "confidence":0.566177}
+ ] 
+}, 
+{
+ "frame_id":106, 
+ "filename":"data/Test/1105.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.643254, "center_y":0.501317, "width":0.639599, "height":0.744025}, "confidence":0.950034}
+ ] 
+}, 
+{
+ "frame_id":107, 
+ "filename":"data/Test/1106.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.497212, "center_y":0.512266, "width":0.728896, "height":0.991342}, "confidence":0.953738}
+ ] 
+}, 
+{
+ "frame_id":108, 
+ "filename":"data/Test/1107.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.364712, "center_y":0.285994, "width":0.217732, "height":0.322139}, "confidence":0.810252}
+ ] 
+}, 
+{
+ "frame_id":109, 
+ "filename":"data/Test/1108.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.440266, "center_y":0.578544, "width":0.764539, "height":0.576826}, "confidence":0.914273}
+ ] 
+}, 
+{
+ "frame_id":110, 
+ "filename":"data/Test/1109.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.601910, "center_y":0.486145, "width":0.254567, "height":0.720085}, "confidence":0.800009}
+ ] 
+}, 
+{
+ "frame_id":111, 
+ "filename":"data/Test/1110.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.576519, "center_y":0.519939, "width":0.508441, "height":0.428255}, "confidence":0.538414}
+ ] 
+}, 
+{
+ "frame_id":112, 
+ "filename":"data/Test/1111.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.646127, "center_y":0.405673, "width":0.286600, "height":0.460625}, "confidence":0.933639}
+ ] 
+}, 
+{
+ "frame_id":113, 
+ "filename":"data/Test/1112.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.506845, "center_y":0.479266, "width":0.320938, "height":0.480168}, "confidence":0.694507}
+ ] 
+}, 
+{
+ "frame_id":114, 
+ "filename":"data/Test/1113.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.517027, "center_y":0.572482, "width":0.633201, "height":0.671209}, "confidence":0.771370}
+ ] 
+}, 
+{
+ "frame_id":115, 
+ "filename":"data/Test/1114.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.506297, "center_y":0.506203, "width":0.717109, "height":0.735893}, "confidence":0.837523}
+ ] 
+}, 
+{
+ "frame_id":116, 
+ "filename":"data/Test/1115.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":117, 
+ "filename":"data/Test/1116.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.676838, "center_y":0.587169, "width":0.220085, "height":0.306803}, "confidence":0.652024}
+ ] 
+}, 
+{
+ "frame_id":118, 
+ "filename":"data/Test/1117.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.410079, "center_y":0.590090, "width":0.537536, "height":0.719047}, "confidence":0.777841}
+ ] 
+}, 
+{
+ "frame_id":119, 
+ "filename":"data/Test/1118.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.498745, "center_y":0.522005, "width":0.357262, "height":0.892197}, "confidence":0.887589}
+ ] 
+}, 
+{
+ "frame_id":120, 
+ "filename":"data/Test/1119.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.440903, "center_y":0.591552, "width":0.389897, "height":0.806401}, "confidence":0.829561}
+ ] 
+}, 
+{
+ "frame_id":121, 
+ "filename":"data/Test/1120.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.652260, "center_y":0.490373, "width":0.608161, "height":0.872266}, "confidence":0.844700}
+ ] 
+}, 
+{
+ "frame_id":122, 
+ "filename":"data/Test/1121.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":123, 
+ "filename":"data/Test/1122.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.512711, "center_y":0.403124, "width":0.562692, "height":0.596272}, "confidence":0.730111}
+ ] 
+}, 
+{
+ "frame_id":124, 
+ "filename":"data/Test/1123.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.503526, "center_y":0.566467, "width":0.536143, "height":0.484407}, "confidence":0.707357}
+ ] 
+}, 
+{
+ "frame_id":125, 
+ "filename":"data/Test/1124.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.517627, "center_y":0.553453, "width":0.671771, "height":0.585181}, "confidence":0.834130}
+ ] 
+}, 
+{
+ "frame_id":126, 
+ "filename":"data/Test/1125.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.496069, "center_y":0.486779, "width":0.384489, "height":0.396170}, "confidence":0.580530}
+ ] 
+}, 
+{
+ "frame_id":127, 
+ "filename":"data/Test/1126.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.593897, "center_y":0.512478, "width":0.425580, "height":0.435302}, "confidence":0.619175}
+ ] 
+}, 
+{
+ "frame_id":128, 
+ "filename":"data/Test/1127.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.505090, "center_y":0.502748, "width":0.679270, "height":0.712182}, "confidence":0.961741}
+ ] 
+}, 
+{
+ "frame_id":129, 
+ "filename":"data/Test/1128.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.523089, "center_y":0.491675, "width":0.265124, "height":1.013703}, "confidence":0.885268}
+ ] 
+}, 
+{
+ "frame_id":130, 
+ "filename":"data/Test/1129.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.370187, "center_y":0.514975, "width":0.568593, "height":0.819582}, "confidence":0.864455}
+ ] 
+}, 
+{
+ "frame_id":131, 
+ "filename":"data/Test/1130.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.334429, "center_y":0.491695, "width":0.454226, "height":0.727029}, "confidence":0.887753}
+ ] 
+}, 
+{
+ "frame_id":132, 
+ "filename":"data/Test/1131.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.659778, "center_y":0.561050, "width":0.598229, "height":0.835818}, "confidence":0.692373}
+ ] 
+}, 
+{
+ "frame_id":133, 
+ "filename":"data/Test/1132.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.551091, "center_y":0.440822, "width":0.263918, "height":0.271181}, "confidence":0.782831}
+ ] 
+}, 
+{
+ "frame_id":134, 
+ "filename":"data/Test/1133.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.434276, "center_y":0.512686, "width":0.324128, "height":0.392576}, "confidence":0.866268}
+ ] 
+}, 
+{
+ "frame_id":135, 
+ "filename":"data/Test/1134.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.519849, "center_y":0.559631, "width":0.369876, "height":0.589564}, "confidence":0.868953}
+ ] 
+}, 
+{
+ "frame_id":136, 
+ "filename":"data/Test/1135.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":137, 
+ "filename":"data/Test/1136.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.414331, "center_y":0.520368, "width":0.787881, "height":0.890160}, "confidence":0.914972}
+ ] 
+}, 
+{
+ "frame_id":138, 
+ "filename":"data/Test/1137.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":139, 
+ "filename":"data/Test/1138.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.520554, "center_y":0.585301, "width":0.354306, "height":0.641799}, "confidence":0.887201}
+ ] 
+}, 
+{
+ "frame_id":140, 
+ "filename":"data/Test/1139.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.350371, "center_y":0.504630, "width":0.716198, "height":0.757619}, "confidence":0.706310}
+ ] 
+}, 
+{
+ "frame_id":141, 
+ "filename":"data/Test/1140.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.606515, "center_y":0.255193, "width":0.287964, "height":0.298730}, "confidence":0.786985}
+ ] 
+}, 
+{
+ "frame_id":142, 
+ "filename":"data/Test/1141.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.519170, "center_y":0.568050, "width":0.318541, "height":0.778263}, "confidence":0.619514}
+ ] 
+}, 
+{
+ "frame_id":143, 
+ "filename":"data/Test/1142.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.566516, "center_y":0.577408, "width":0.468865, "height":0.510555}, "confidence":0.736604}
+ ] 
+}, 
+{
+ "frame_id":144, 
+ "filename":"data/Test/1143.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.500231, "center_y":0.579376, "width":0.810486, "height":1.013826}, "confidence":0.506763}
+ ] 
+}, 
+{
+ "frame_id":145, 
+ "filename":"data/Test/1144.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":146, 
+ "filename":"data/Test/1145.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.568940, "center_y":0.505933, "width":0.274468, "height":0.640289}, "confidence":0.400276}
+ ] 
+}, 
+{
+ "frame_id":147, 
+ "filename":"data/Test/1146.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.601441, "center_y":0.521443, "width":0.375322, "height":0.717269}, "confidence":0.810355}
+ ] 
+}, 
+{
+ "frame_id":148, 
+ "filename":"data/Test/1147.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.510134, "center_y":0.594972, "width":0.333868, "height":0.729502}, "confidence":0.572882}
+ ] 
+}, 
+{
+ "frame_id":149, 
+ "filename":"data/Test/1148.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.491991, "center_y":0.586251, "width":0.300150, "height":0.561581}, "confidence":0.670210}
+ ] 
+}, 
+{
+ "frame_id":150, 
+ "filename":"data/Test/1149.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.573528, "center_y":0.563630, "width":0.705108, "height":0.789501}, "confidence":0.926496}
+ ] 
+}, 
+{
+ "frame_id":151, 
+ "filename":"data/Test/1150.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.254007, "center_y":0.522621, "width":0.328750, "height":0.322479}, "confidence":0.838238}
+ ] 
+}, 
+{
+ "frame_id":152, 
+ "filename":"data/Test/1151.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.638409, "center_y":0.647563, "width":0.312525, "height":0.631935}, "confidence":0.796603}
+ ] 
+}, 
+{
+ "frame_id":153, 
+ "filename":"data/Test/1152.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.440615, "center_y":0.507343, "width":0.244589, "height":0.863859}, "confidence":0.798117}
+ ] 
+}, 
+{
+ "frame_id":154, 
+ "filename":"data/Test/1153.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.504619, "center_y":0.522515, "width":0.362563, "height":0.940549}, "confidence":0.933576}
+ ] 
+}, 
+{
+ "frame_id":155, 
+ "filename":"data/Test/1154.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.414591, "center_y":0.553005, "width":0.513910, "height":0.884605}, "confidence":0.680243}
+ ] 
+}, 
+{
+ "frame_id":156, 
+ "filename":"data/Test/1155.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.580333, "center_y":0.593595, "width":0.691009, "height":0.830695}, "confidence":0.793880}
+ ] 
+}, 
+{
+ "frame_id":157, 
+ "filename":"data/Test/1156.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.428430, "center_y":0.553370, "width":0.751122, "height":0.680320}, "confidence":0.933897}
+ ] 
+}, 
+{
+ "frame_id":158, 
+ "filename":"data/Test/1157.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.525276, "center_y":0.525190, "width":0.374743, "height":0.302686}, "confidence":0.720513}
+ ] 
+}, 
+{
+ "frame_id":159, 
+ "filename":"data/Test/1158.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.405838, "center_y":0.485095, "width":0.265438, "height":0.382607}, "confidence":0.872263}
+ ] 
+}, 
+{
+ "frame_id":160, 
+ "filename":"data/Test/1159.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.443410, "center_y":0.500860, "width":0.282156, "height":0.667737}, "confidence":0.750969}
+ ] 
+}, 
+{
+ "frame_id":161, 
+ "filename":"data/Test/1160.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.442666, "center_y":0.493593, "width":0.303731, "height":0.424327}, "confidence":0.928734}
+ ] 
+}, 
+{
+ "frame_id":162, 
+ "filename":"data/Test/1161.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.333898, "center_y":0.514817, "width":0.336027, "height":0.847827}, "confidence":0.907881}
+ ] 
+}, 
+{
+ "frame_id":163, 
+ "filename":"data/Test/1162.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.509110, "center_y":0.504394, "width":0.333422, "height":0.431424}, "confidence":0.738316}
+ ] 
+}, 
+{
+ "frame_id":164, 
+ "filename":"data/Test/1163.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.442038, "center_y":0.508605, "width":0.626414, "height":1.033871}, "confidence":0.981189}
+ ] 
+}, 
+{
+ "frame_id":165, 
+ "filename":"data/Test/1164.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.493400, "center_y":0.503117, "width":0.714152, "height":0.833688}, "confidence":0.965630}
+ ] 
+}, 
+{
+ "frame_id":166, 
+ "filename":"data/Test/1165.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.427112, "center_y":0.515802, "width":0.932927, "height":0.615497}, "confidence":0.674889}
+ ] 
+}, 
+{
+ "frame_id":167, 
+ "filename":"data/Test/1166.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.288536, "center_y":0.560654, "width":0.414267, "height":0.821447}, "confidence":0.754855}
+ ] 
+}, 
+{
+ "frame_id":168, 
+ "filename":"data/Test/1167.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.521098, "center_y":0.498360, "width":0.582927, "height":0.564830}, "confidence":0.878544}
+ ] 
+}, 
+{
+ "frame_id":169, 
+ "filename":"data/Test/1168.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.527110, "center_y":0.474371, "width":0.310624, "height":0.309236}, "confidence":0.711403}
+ ] 
+}, 
+{
+ "frame_id":170, 
+ "filename":"data/Test/1169.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.424128, "center_y":0.557773, "width":0.692474, "height":0.645870}, "confidence":0.759780}
+ ] 
+}, 
+{
+ "frame_id":171, 
+ "filename":"data/Test/1170.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.569072, "center_y":0.503271, "width":0.548708, "height":0.724106}, "confidence":0.970529}
+ ] 
+}, 
+{
+ "frame_id":172, 
+ "filename":"data/Test/1171.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.438473, "center_y":0.521367, "width":0.498989, "height":0.949735}, "confidence":0.886660}
+ ] 
+}, 
+{
+ "frame_id":173, 
+ "filename":"data/Test/1172.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.503916, "center_y":0.560563, "width":0.359914, "height":0.755404}, "confidence":0.639912}
+ ] 
+}, 
+{
+ "frame_id":174, 
+ "filename":"data/Test/1173.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.508102, "center_y":0.516735, "width":0.408140, "height":0.686115}, "confidence":0.941165}
+ ] 
+}, 
+{
+ "frame_id":175, 
+ "filename":"data/Test/1174.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.487691, "center_y":0.560280, "width":0.725809, "height":0.865824}, "confidence":0.903531}
+ ] 
+}, 
+{
+ "frame_id":176, 
+ "filename":"data/Test/1175.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.568162, "center_y":0.512725, "width":0.567490, "height":0.703628}, "confidence":0.932905}
+ ] 
+}, 
+{
+ "frame_id":177, 
+ "filename":"data/Test/1176.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.575313, "center_y":0.499138, "width":0.503309, "height":0.669368}, "confidence":0.870622}
+ ] 
+}, 
+{
+ "frame_id":178, 
+ "filename":"data/Test/1177.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.477297, "center_y":0.491320, "width":0.303513, "height":0.561445}, "confidence":0.746664}
+ ] 
+}, 
+{
+ "frame_id":179, 
+ "filename":"data/Test/1178.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.514993, "center_y":0.499760, "width":0.780248, "height":0.700927}, "confidence":0.835202}
+ ] 
+}, 
+{
+ "frame_id":180, 
+ "filename":"data/Test/1179.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.424277, "center_y":0.494295, "width":0.906017, "height":0.543284}, "confidence":0.609033}
+ ] 
+}, 
+{
+ "frame_id":181, 
+ "filename":"data/Test/1180.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.563589, "center_y":0.564935, "width":0.339030, "height":0.362059}, "confidence":0.726568}
+ ] 
+}, 
+{
+ "frame_id":182, 
+ "filename":"data/Test/1181.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.584867, "center_y":0.566373, "width":0.649045, "height":0.829295}, "confidence":0.813606}
+ ] 
+}, 
+{
+ "frame_id":183, 
+ "filename":"data/Test/1182.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.581404, "center_y":0.559348, "width":0.710247, "height":0.635473}, "confidence":0.801597}
+ ] 
+}, 
+{
+ "frame_id":184, 
+ "filename":"data/Test/1183.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":185, 
+ "filename":"data/Test/1184.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.363707, "center_y":0.517456, "width":0.678322, "height":0.697977}, "confidence":0.696870}
+ ] 
+}, 
+{
+ "frame_id":186, 
+ "filename":"data/Test/1185.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.370616, "center_y":0.520040, "width":0.376686, "height":0.464604}, "confidence":0.790341}
+ ] 
+}, 
+{
+ "frame_id":187, 
+ "filename":"data/Test/1186.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.501174, "center_y":0.438867, "width":0.336345, "height":0.761025}, "confidence":0.892337}
+ ] 
+}, 
+{
+ "frame_id":188, 
+ "filename":"data/Test/1187.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.343207, "center_y":0.548863, "width":0.520160, "height":0.960175}, "confidence":0.701736}
+ ] 
+}, 
+{
+ "frame_id":189, 
+ "filename":"data/Test/1188.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.482733, "center_y":0.484301, "width":0.562471, "height":0.380238}, "confidence":0.752051}
+ ] 
+}, 
+{
+ "frame_id":190, 
+ "filename":"data/Test/1189.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.634837, "center_y":0.523102, "width":0.320302, "height":0.295264}, "confidence":0.781480}
+ ] 
+}, 
+{
+ "frame_id":191, 
+ "filename":"data/Test/1190.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.566171, "center_y":0.497570, "width":0.530622, "height":0.733370}, "confidence":0.922677}
+ ] 
+}, 
+{
+ "frame_id":192, 
+ "filename":"data/Test/1191.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.504769, "center_y":0.500147, "width":0.631192, "height":0.785469}, "confidence":0.676824}
+ ] 
+}, 
+{
+ "frame_id":193, 
+ "filename":"data/Test/1192.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.398196, "center_y":0.322558, "width":0.322079, "height":0.403627}, "confidence":0.779776}
+ ] 
+}, 
+{
+ "frame_id":194, 
+ "filename":"data/Test/1193.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.504503, "center_y":0.431133, "width":0.495185, "height":0.577576}, "confidence":0.922954}
+ ] 
+}, 
+{
+ "frame_id":195, 
+ "filename":"data/Test/1194.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.435026, "center_y":0.578263, "width":0.305824, "height":0.439234}, "confidence":0.452068}
+ ] 
+}, 
+{
+ "frame_id":196, 
+ "filename":"data/Test/1195.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.349990, "center_y":0.601921, "width":0.285475, "height":0.267280}, "confidence":0.599163}
+ ] 
+}, 
+{
+ "frame_id":197, 
+ "filename":"data/Test/1196.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":198, 
+ "filename":"data/Test/1197.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.267324, "center_y":0.511217, "width":0.249131, "height":0.400548}, "confidence":0.940615}
+ ] 
+}, 
+{
+ "frame_id":199, 
+ "filename":"data/Test/1198.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.424597, "center_y":0.478972, "width":0.253363, "height":0.374454}, "confidence":0.741402}
+ ] 
+}, 
+{
+ "frame_id":200, 
+ "filename":"data/Test/1199.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.508983, "center_y":0.570079, "width":0.494405, "height":0.490824}, "confidence":0.612670}
+ ] 
+}, 
+{
+ "frame_id":201, 
+ "filename":"data/Test/1200.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.411897, "center_y":0.639997, "width":0.639220, "height":0.726127}, "confidence":0.723563}
+ ] 
+}, 
+{
+ "frame_id":202, 
+ "filename":"data/Test/1201.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.428797, "center_y":0.566683, "width":0.644341, "height":0.696678}, "confidence":0.624300}
+ ] 
+}, 
+{
+ "frame_id":203, 
+ "filename":"data/Test/1202.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.429886, "center_y":0.510926, "width":0.605711, "height":0.864552}, "confidence":0.954425}
+ ] 
+}, 
+{
+ "frame_id":204, 
+ "filename":"data/Test/1203.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.511899, "center_y":0.506761, "width":0.460319, "height":0.760271}, "confidence":0.703599}
+ ] 
+}, 
+{
+ "frame_id":205, 
+ "filename":"data/Test/1204.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.602189, "center_y":0.553301, "width":0.459011, "height":0.521758}, "confidence":0.809725}
+ ] 
+}, 
+{
+ "frame_id":206, 
+ "filename":"data/Test/1205.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.505710, "center_y":0.504205, "width":0.775778, "height":0.913096}, "confidence":0.979402}
+ ] 
+}, 
+{
+ "frame_id":207, 
+ "filename":"data/Test/1206.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.674051, "center_y":0.485045, "width":0.241659, "height":0.347689}, "confidence":0.648416}
+ ] 
+}, 
+{
+ "frame_id":208, 
+ "filename":"data/Test/1207.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.637478, "center_y":0.436775, "width":0.358106, "height":0.491987}, "confidence":0.598522}
+ ] 
+}, 
+{
+ "frame_id":209, 
+ "filename":"data/Test/1208.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.402912, "center_y":0.575236, "width":0.264903, "height":0.612904}, "confidence":0.700371}
+ ] 
+}, 
+{
+ "frame_id":210, 
+ "filename":"data/Test/1209.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.428161, "center_y":0.448513, "width":0.506061, "height":0.716797}, "confidence":0.594684}
+ ] 
+}, 
+{
+ "frame_id":211, 
+ "filename":"data/Test/1210.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.416132, "center_y":0.507339, "width":0.314546, "height":0.912214}, "confidence":0.634081}
+ ] 
+}, 
+{
+ "frame_id":212, 
+ "filename":"data/Test/1211.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.510693, "center_y":0.585713, "width":0.329806, "height":0.710567}, "confidence":0.702894}
+ ] 
+}, 
+{
+ "frame_id":213, 
+ "filename":"data/Test/1212.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.512777, "center_y":0.444559, "width":0.478045, "height":0.346780}, "confidence":0.751375}
+ ] 
+}, 
+{
+ "frame_id":214, 
+ "filename":"data/Test/1213.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.484450, "center_y":0.598083, "width":0.382618, "height":0.399089}, "confidence":0.898582}
+ ] 
+}, 
+{
+ "frame_id":215, 
+ "filename":"data/Test/1214.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.499605, "center_y":0.666654, "width":0.441585, "height":0.348546}, "confidence":0.893804}
+ ] 
+}, 
+{
+ "frame_id":216, 
+ "filename":"data/Test/1215.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":217, 
+ "filename":"data/Test/1216.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.564770, "center_y":0.589814, "width":0.457299, "height":0.529414}, "confidence":0.671154}
+ ] 
+}, 
+{
+ "frame_id":218, 
+ "filename":"data/Test/1217.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.503498, "center_y":0.498640, "width":0.534907, "height":0.911024}, "confidence":0.956135}
+ ] 
+}, 
+{
+ "frame_id":219, 
+ "filename":"data/Test/1218.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.509926, "center_y":0.500153, "width":0.741744, "height":0.768071}, "confidence":0.956313}
+ ] 
+}, 
+{
+ "frame_id":220, 
+ "filename":"data/Test/1219.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.410588, "center_y":0.499058, "width":0.511161, "height":0.699926}, "confidence":0.729170}
+ ] 
+}, 
+{
+ "frame_id":221, 
+ "filename":"data/Test/1220.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.349691, "center_y":0.474139, "width":0.429439, "height":0.593018}, "confidence":0.936827}
+ ] 
+}, 
+{
+ "frame_id":222, 
+ "filename":"data/Test/1221.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.410173, "center_y":0.555489, "width":0.657234, "height":0.621975}, "confidence":0.882414}
+ ] 
+}, 
+{
+ "frame_id":223, 
+ "filename":"data/Test/1222.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":224, 
+ "filename":"data/Test/1223.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.490500, "center_y":0.498464, "width":0.541219, "height":0.560033}, "confidence":0.822737}
+ ] 
+}, 
+{
+ "frame_id":225, 
+ "filename":"data/Test/1224.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.440597, "center_y":0.560312, "width":0.382720, "height":0.851003}, "confidence":0.830943}
+ ] 
+}, 
+{
+ "frame_id":226, 
+ "filename":"data/Test/1225.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":227, 
+ "filename":"data/Test/1226.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.493603, "center_y":0.433416, "width":0.710269, "height":0.572287}, "confidence":0.894790}
+ ] 
+}, 
+{
+ "frame_id":228, 
+ "filename":"data/Test/1227.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.326273, "center_y":0.513871, "width":0.249500, "height":0.871612}, "confidence":0.818881}
+ ] 
+}, 
+{
+ "frame_id":229, 
+ "filename":"data/Test/1228.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.515042, "center_y":0.506006, "width":0.247881, "height":0.287557}, "confidence":0.924089}
+ ] 
+}, 
+{
+ "frame_id":230, 
+ "filename":"data/Test/1229.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.676900, "center_y":0.507618, "width":0.300366, "height":0.826038}, "confidence":0.742454}
+ ] 
+}, 
+{
+ "frame_id":231, 
+ "filename":"data/Test/1230.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.483733, "center_y":0.577100, "width":0.898086, "height":0.451268}, "confidence":0.872661}
+ ] 
+}, 
+{
+ "frame_id":232, 
+ "filename":"data/Test/1231.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.665873, "center_y":0.480127, "width":0.406493, "height":0.584988}, "confidence":0.922990}
+ ] 
+}, 
+{
+ "frame_id":233, 
+ "filename":"data/Test/1232.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.514649, "center_y":0.490136, "width":0.700197, "height":0.849061}, "confidence":0.907390}
+ ] 
+}, 
+{
+ "frame_id":234, 
+ "filename":"data/Test/1233.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.640647, "center_y":0.562760, "width":0.562556, "height":0.796421}, "confidence":0.779749}
+ ] 
+}, 
+{
+ "frame_id":235, 
+ "filename":"data/Test/1234.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.485127, "center_y":0.515570, "width":0.678801, "height":0.642504}, "confidence":0.922497}
+ ] 
+}, 
+{
+ "frame_id":236, 
+ "filename":"data/Test/1235.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.451636, "center_y":0.423364, "width":0.221940, "height":0.294112}, "confidence":0.421006}
+ ] 
+}, 
+{
+ "frame_id":237, 
+ "filename":"data/Test/1236.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.409353, "center_y":0.564511, "width":0.357643, "height":0.713638}, "confidence":0.906198}
+ ] 
+}, 
+{
+ "frame_id":238, 
+ "filename":"data/Test/1237.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.584175, "center_y":0.516740, "width":0.778831, "height":0.888354}, "confidence":0.930094}
+ ] 
+}, 
+{
+ "frame_id":239, 
+ "filename":"data/Test/1238.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.436165, "center_y":0.573462, "width":0.429652, "height":0.578863}, "confidence":0.752640}
+ ] 
+}, 
+{
+ "frame_id":240, 
+ "filename":"data/Test/1239.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.479660, "center_y":0.583052, "width":0.434959, "height":0.445999}, "confidence":0.812168}
+ ] 
+}, 
+{
+ "frame_id":241, 
+ "filename":"data/Test/1240.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.560528, "center_y":0.581026, "width":0.314956, "height":0.296863}, "confidence":0.907841}
+ ] 
+}, 
+{
+ "frame_id":242, 
+ "filename":"data/Test/1241.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.563012, "center_y":0.569470, "width":0.421005, "height":0.788453}, "confidence":0.948936}
+ ] 
+}, 
+{
+ "frame_id":243, 
+ "filename":"data/Test/1242.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":244, 
+ "filename":"data/Test/1243.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.511227, "center_y":0.646401, "width":0.890150, "height":0.718532}, "confidence":0.854660}
+ ] 
+}, 
+{
+ "frame_id":245, 
+ "filename":"data/Test/1244.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.581196, "center_y":0.423134, "width":0.258963, "height":0.296758}, "confidence":0.773448}
+ ] 
+}, 
+{
+ "frame_id":246, 
+ "filename":"data/Test/1245.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.423024, "center_y":0.497914, "width":0.690874, "height":0.822284}, "confidence":0.906489}
+ ] 
+}, 
+{
+ "frame_id":247, 
+ "filename":"data/Test/1246.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.513327, "center_y":0.586215, "width":0.372381, "height":0.598032}, "confidence":0.801759}
+ ] 
+}, 
+{
+ "frame_id":248, 
+ "filename":"data/Test/1247.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.440903, "center_y":0.559990, "width":0.903930, "height":0.826864}, "confidence":0.868380}
+ ] 
+}, 
+{
+ "frame_id":249, 
+ "filename":"data/Test/1248.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.291564, "center_y":0.487888, "width":0.406794, "height":0.764594}, "confidence":0.906225}
+ ] 
+}, 
+{
+ "frame_id":250, 
+ "filename":"data/Test/1249.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.644966, "center_y":0.397148, "width":0.332572, "height":0.317734}, "confidence":0.622935}
+ ] 
+}, 
+{
+ "frame_id":251, 
+ "filename":"data/Test/1250.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.487260, "center_y":0.555905, "width":0.722394, "height":0.536625}, "confidence":0.877546}
+ ] 
+}, 
+{
+ "frame_id":252, 
+ "filename":"data/Test/1251.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.347233, "center_y":0.599340, "width":0.434667, "height":0.214719}, "confidence":0.733321}
+ ] 
+}, 
+{
+ "frame_id":253, 
+ "filename":"data/Test/1252.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.513229, "center_y":0.560877, "width":0.261109, "height":0.643454}, "confidence":0.935943}
+ ] 
+}, 
+{
+ "frame_id":254, 
+ "filename":"data/Test/1253.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":255, 
+ "filename":"data/Test/1254.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.437929, "center_y":0.658724, "width":0.360813, "height":0.660281}, "confidence":0.954880}
+ ] 
+}, 
+{
+ "frame_id":256, 
+ "filename":"data/Test/1255.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.577645, "center_y":0.632589, "width":0.495280, "height":0.546750}, "confidence":0.966821}
+ ] 
+}, 
+{
+ "frame_id":257, 
+ "filename":"data/Test/1256.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.585904, "center_y":0.520015, "width":0.639269, "height":0.665434}, "confidence":0.889785}
+ ] 
+}, 
+{
+ "frame_id":258, 
+ "filename":"data/Test/1257.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.428801, "center_y":0.557879, "width":0.752134, "height":0.588351}, "confidence":0.948946}
+ ] 
+}, 
+{
+ "frame_id":259, 
+ "filename":"data/Test/1258.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.482191, "center_y":0.497937, "width":0.357167, "height":0.356632}, "confidence":0.765788}
+ ] 
+}, 
+{
+ "frame_id":260, 
+ "filename":"data/Test/1259.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":261, 
+ "filename":"data/Test/1260.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.433646, "center_y":0.491639, "width":0.667980, "height":0.559300}, "confidence":0.887366}
+ ] 
+}, 
+{
+ "frame_id":262, 
+ "filename":"data/Test/1261.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.405581, "center_y":0.350089, "width":0.408911, "height":0.457999}, "confidence":0.658926}
+ ] 
+}, 
+{
+ "frame_id":263, 
+ "filename":"data/Test/1262.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":264, 
+ "filename":"data/Test/1263.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.640051, "center_y":0.557507, "width":0.268130, "height":0.443360}, "confidence":0.669592}
+ ] 
+}, 
+{
+ "frame_id":265, 
+ "filename":"data/Test/1264.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.512264, "center_y":0.493367, "width":0.393211, "height":0.286155}, "confidence":0.909580}
+ ] 
+}, 
+{
+ "frame_id":266, 
+ "filename":"data/Test/1265.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.496551, "center_y":0.500656, "width":0.273411, "height":0.624940}, "confidence":0.784949}
+ ] 
+}, 
+{
+ "frame_id":267, 
+ "filename":"data/Test/1266.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.517228, "center_y":0.404641, "width":0.259199, "height":0.460951}, "confidence":0.646495}
+ ] 
+}, 
+{
+ "frame_id":268, 
+ "filename":"data/Test/1267.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":269, 
+ "filename":"data/Test/1268.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.514650, "center_y":0.427475, "width":0.688281, "height":0.557406}, "confidence":0.852881}
+ ] 
+}, 
+{
+ "frame_id":270, 
+ "filename":"data/Test/1269.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.501391, "center_y":0.494844, "width":0.687150, "height":0.743320}, "confidence":0.801824}
+ ] 
+}, 
+{
+ "frame_id":271, 
+ "filename":"data/Test/1270.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.594491, "center_y":0.567793, "width":0.502604, "height":0.749054}, "confidence":0.927636}
+ ] 
+}, 
+{
+ "frame_id":272, 
+ "filename":"data/Test/1271.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.519450, "center_y":0.571545, "width":0.331312, "height":0.659450}, "confidence":0.844735}
+ ] 
+}, 
+{
+ "frame_id":273, 
+ "filename":"data/Test/1272.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":274, 
+ "filename":"data/Test/1273.jpg", 
+ "objects": [ 
+
+ ] 
+}, 
+{
+ "frame_id":275, 
+ "filename":"data/Test/1274.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.411502, "center_y":0.578719, "width":0.504953, "height":0.477985}, "confidence":0.885814}
+ ] 
+}, 
+{
+ "frame_id":276, 
+ "filename":"data/Test/1275.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.435468, "center_y":0.506105, "width":0.567168, "height":0.630354}, "confidence":0.967152}
+ ] 
+}, 
+{
+ "frame_id":277, 
+ "filename":"data/Test/1276.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.522744, "center_y":0.503554, "width":0.745915, "height":0.838753}, "confidence":0.955872}
+ ] 
+}, 
+{
+ "frame_id":278, 
+ "filename":"data/Test/1277.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.364346, "center_y":0.577855, "width":0.361475, "height":0.588296}, "confidence":0.627746}
+ ] 
+}, 
+{
+ "frame_id":279, 
+ "filename":"data/Test/1278.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.507559, "center_y":0.507302, "width":0.479863, "height":0.498230}, "confidence":0.550131}
+ ] 
+}, 
+{
+ "frame_id":280, 
+ "filename":"data/Test/1279.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.506268, "center_y":0.555927, "width":0.478577, "height":0.874269}, "confidence":0.925378}
+ ] 
+}, 
+{
+ "frame_id":281, 
+ "filename":"data/Test/1280.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.487969, "center_y":0.493386, "width":0.720856, "height":0.532473}, "confidence":0.931388}
+ ] 
+}, 
+{
+ "frame_id":282, 
+ "filename":"data/Test/1281.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.572106, "center_y":0.648218, "width":0.516225, "height":0.442996}, "confidence":0.846996}
+ ] 
+}, 
+{
+ "frame_id":283, 
+ "filename":"data/Test/1282.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.590511, "center_y":0.645340, "width":0.364651, "height":0.528653}, "confidence":0.897444}
+ ] 
+}, 
+{
+ "frame_id":284, 
+ "filename":"data/Test/1283.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.490019, "center_y":0.498848, "width":0.485146, "height":0.530289}, "confidence":0.493268}
+ ] 
+}, 
+{
+ "frame_id":285, 
+ "filename":"data/Test/1284.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.674615, "center_y":0.599291, "width":0.424497, "height":0.667337}, "confidence":0.906012}
+ ] 
+}, 
+{
+ "frame_id":286, 
+ "filename":"data/Test/1285.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.520102, "center_y":0.490280, "width":0.251591, "height":0.484119}, "confidence":0.891820}
+ ] 
+}, 
+{
+ "frame_id":287, 
+ "filename":"data/Test/1286.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.400702, "center_y":0.641535, "width":0.302773, "height":0.548190}, "confidence":0.760000}
+ ] 
+}, 
+{
+ "frame_id":288, 
+ "filename":"data/Test/1287.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.423286, "center_y":0.564356, "width":0.686275, "height":0.596131}, "confidence":0.929001}
+ ] 
+}, 
+{
+ "frame_id":289, 
+ "filename":"data/Test/1288.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.408097, "center_y":0.361812, "width":0.311247, "height":0.350394}, "confidence":0.870770}
+ ] 
+}, 
+{
+ "frame_id":290, 
+ "filename":"data/Test/1289.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.640933, "center_y":0.566993, "width":0.599179, "height":0.660475}, "confidence":0.910772}
+ ] 
+}, 
+{
+ "frame_id":291, 
+ "filename":"data/Test/1290.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.497195, "center_y":0.415398, "width":0.873146, "height":0.502980}, "confidence":0.864798}
+ ] 
+}, 
+{
+ "frame_id":292, 
+ "filename":"data/Test/1291.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.495803, "center_y":0.516508, "width":0.729690, "height":0.993338}, "confidence":0.983222}
+ ] 
+}, 
+{
+ "frame_id":293, 
+ "filename":"data/Test/1292.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.556658, "center_y":0.499359, "width":0.232767, "height":0.830106}, "confidence":0.620020}
+ ] 
+}, 
+{
+ "frame_id":294, 
+ "filename":"data/Test/1293.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.425482, "center_y":0.487404, "width":0.865728, "height":0.572385}, "confidence":0.908669}
+ ] 
+}, 
+{
+ "frame_id":295, 
+ "filename":"data/Test/1294.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.411202, "center_y":0.485880, "width":0.467109, "height":0.522091}, "confidence":0.896750}
+ ] 
+}, 
+{
+ "frame_id":296, 
+ "filename":"data/Test/1295.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.559210, "center_y":0.588384, "width":0.291382, "height":0.685574}, "confidence":0.950575}
+ ] 
+}, 
+{
+ "frame_id":297, 
+ "filename":"data/Test/1296.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.446884, "center_y":0.473464, "width":0.284361, "height":0.338442}, "confidence":0.892327}
+ ] 
+}, 
+{
+ "frame_id":298, 
+ "filename":"data/Test/1297.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.518469, "center_y":0.508744, "width":0.385157, "height":0.684759}, "confidence":0.934728}
+ ] 
+}, 
+{
+ "frame_id":299, 
+ "filename":"data/Test/1298.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.409108, "center_y":0.490294, "width":0.645485, "height":0.965329}, "confidence":0.964410}
+ ] 
+}, 
+{
+ "frame_id":300, 
+ "filename":"data/Test/1299.jpg", 
+ "objects": [ 
+  {"class_id":0, "name":"Bird", "relative_coordinates":{"center_x":0.498308, "center_y":0.522009, "width":0.222909, "height":0.646968}, "confidence":0.648524}
+ ] 
+}
+]

@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of writefile</title>
+  <meta name="keywords" content="writefile">
+  <meta name="description" content="WRITEFILE Writes a dataset to a DSDML file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">sltoolbox</a> &gt; <a href="../index.html">ExpDL</a> &gt; <a href="index.html">@dataset</a> &gt; writefile.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL\@dataset&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>writefile
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>WRITEFILE Writes a dataset to a DSDML file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function writefile(DS, filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">WRITEFILE Writes a dataset to a DSDML file
+
+ $ Syntax $
+   - writefile(DS, filename)
+
+ $ Arguments $
+   - DS:           the dataset object
+   - filename:     the name of the file to be written to
+
+ $ Description $
+   - writefile(DS, filename) writes a dataset object to the DSDML file
+     with the filename specified.
+
+ $ History $
+   - Created by Dahua Lin on Jul 23rd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function sampleNode = CreateSampleNode(xdoc, sample)</a></li><li><a href="#_sub2" class="code">function groupNode = CreateSampleGroupNode(xdoc, grp)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function writefile(DS, filename)</a>
+0002 <span class="comment">%WRITEFILE Writes a dataset to a DSDML file</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - writefile(DS, filename)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - DS:           the dataset object</span>
+0009 <span class="comment">%   - filename:     the name of the file to be written to</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - writefile(DS, filename) writes a dataset object to the DSDML file</span>
+0013 <span class="comment">%     with the filename specified.</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ History $</span>
+0016 <span class="comment">%   - Created by Dahua Lin on Jul 23rd, 2006</span>
+0017 <span class="comment">%</span>
+0018 
+0019 import com.mathworks.xml.*;
+0020 
+0021 <span class="comment">%% Initialize the document</span>
+0022 
+0023 xdoc = XMLUtils.createDocument(<span class="string">'DataSet'</span>);
+0024 xdoc.setVersion(<span class="string">'1.0'</span>);
+0025 xdoc.setEncoding(<span class="string">'UTF-8'</span>);
+0026 
+0027 S = struct(DS);
+0028 
+0029 
+0030 <span class="comment">%% Set headers</span>
+0031 
+0032 docelem = xdoc.getDocumentElement;
+0033 docelem.setAttribute(<span class="string">'version'</span>, char(S.version));
+0034 docelem.setAttribute(<span class="string">'name'</span>, char(S.name));
+0035 docelem.setAttribute(<span class="string">'unit'</span>, char(S.unittype));
+0036 docelem.setAttribute(<span class="string">'format'</span>, char(S.format));
+0037 <span class="keyword">if</span> ~isempty(S.author)
+0038     docelem.setAttribute(<span class="string">'author'</span>, char(S.author));
+0039 <span class="keyword">end</span>
+0040 <span class="keyword">if</span> ~isempty(S.description)
+0041     docelem.setAttribute(<span class="string">'description'</span>, char(S.description));
+0042 <span class="keyword">end</span>
+0043 <span class="keyword">if</span> ~isempty(S.attribs)
+0044     attrnames = fieldnames(S.attribs);
+0045     nattrs = length(attrnames);
+0046     <span class="keyword">for</span> i = 1 : nattrs
+0047         docelem.setAttribute(attrnames{i}, S.attribs.(attrnames{i}));
+0048     <span class="keyword">end</span>
+0049 <span class="keyword">end</span>
+0050 
+0051 
+0052 <span class="comment">%% Create unit nodes</span>
+0053 
+0054 <span class="keyword">switch</span> S.unittype
+0055     <span class="keyword">case</span> <span class="string">'Sample'</span>
+0056         n = length(S.units);
+0057         <span class="keyword">for</span> i = 1 : n
+0058             docelem.appendChild(<a href="#_sub1" class="code" title="subfunction sampleNode = CreateSampleNode(xdoc, sample)">CreateSampleNode</a>(xdoc, S.units(i)));
+0059         <span class="keyword">end</span>
+0060         
+0061     <span class="keyword">case</span> <span class="string">'SampleGroup'</span>
+0062         n = length(S.units);
+0063         <span class="keyword">for</span> i = 1 : n
+0064             docelem.appendChild(<a href="#_sub2" class="code" title="subfunction groupNode = CreateSampleGroupNode(xdoc, grp)">CreateSampleGroupNode</a>(xdoc, S.units(i)));
+0065         <span class="keyword">end</span>
+0066         
+0067     <span class="keyword">otherwise</span>
+0068         error(<span class="string">'dsdml:invalidutype'</span>, <span class="keyword">...</span>
+0069             <span class="string">'Invalid unit type %s'</span>, DS.unittype);
+0070 <span class="keyword">end</span>
+0071     
+0072 
+0073 <span class="comment">%% Write document</span>
+0074 xmlwrite(filename, xdoc);
+0075 
+0076 
+0077 
+0078 <span class="comment">%% Node Creating functions</span>
+0079 
+0080 <a name="_sub1" href="#_subfunctions" class="code">function sampleNode = CreateSampleNode(xdoc, sample)</a>
+0081 
+0082 sampleNode = xdoc.createElement(<span class="string">'Sample'</span>);
+0083 sampleNode.setAttribute(<span class="string">'class_id'</span>, int2str(sample.class_id));
+0084 <span class="keyword">if</span> ~isempty(sample.filename)
+0085     sampleNode.setAttribute(<span class="string">'filename'</span>, sample.filename);
+0086 <span class="keyword">end</span>
+0087 <span class="keyword">if</span> ~isempty(sample.attribs)
+0088     attrnames = fieldnames(sample.attribs);
+0089     nattrs = length(attrnames);
+0090     <span class="keyword">for</span> i = 1 : nattrs
+0091         sampleNode.setAttribute(attrnames{i}, sample.attribs.(attrnames{i}));
+0092     <span class="keyword">end</span>
+0093 <span class="keyword">end</span>
+0094 
+0095 
+0096 <a name="_sub2" href="#_subfunctions" class="code">function groupNode = CreateSampleGroupNode(xdoc, grp)</a>
+0097 
+0098 groupNode = xdoc.createElement(<span class="string">'SampleGroup'</span>);
+0099 groupNode.setAttribute(<span class="string">'class_id'</span>, int2str(grp.class_id));
+0100 <span class="keyword">if</span> ~isempty(grp.attribs)
+0101     attrnames = fieldnames(grp.attribs);
+0102     nattrs = length(attrnames);
+0103     <span class="keyword">for</span> i = 1 : nattrs
+0104         sampleNode.setAttribute(attrnames{i}, grp.attribs.(attrnames{i}));
+0105     <span class="keyword">end</span>
+0106 <span class="keyword">end</span>
+0107 nsamples = length(grp.samples);
+0108 <span class="keyword">for</span> i = 1 : nsamples
+0109     groupNode.appendChild(<a href="#_sub1" class="code" title="subfunction sampleNode = CreateSampleNode(xdoc, sample)">CreateSampleNode</a>(xdoc, grp.samples(i)));
+0110 <span class="keyword">end</span>
+0111 
+0112 
+0113 
+0114 
+0115 
+0116</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

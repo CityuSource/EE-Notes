@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of edl_buildiidxdict</title>
+  <meta name="keywords" content="edl_buildiidxdict">
+  <meta name="description" content="EDL_BUILDIIDXDICT Builds a dictionary using internal index">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">ExpDL</a> &gt; edl_buildiidxdict.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>edl_buildiidxdict
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>EDL_BUILDIIDXDICT Builds a dictionary using internal index</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function Dict = edl_buildiidxdict(S, idxfn) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">EDL_BUILDIIDXDICT Builds a dictionary using internal index
+
+ $ Syntax $
+   - Dict = edl_buildiidxdict(S, idxfn)
+
+ $ Arguments $
+   - S:        a struct array on which the dictionary is built
+   - idxfn:    the field name of the internal index 
+               (default = 'internal_index')
+   - Dict:     the built dictionary
+               a cell array, indexed by internal_index
+
+ $ Remarks $
+   - The length of the cell array (dict) will be equal to the maximum
+     internal index in S.
+   - In S, different elements should have different internal indices.
+   - For the index corresponding to no element, the corresponding cells
+     are empty.
+   - The dictionary will not automatically keep track of the change of
+     S. If S is changed, the dictonary should be rebuilt in order to
+     reflect the updates.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 15, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function Dict = edl_buildiidxdict(S, idxfn)</a>
+0002 <span class="comment">%EDL_BUILDIIDXDICT Builds a dictionary using internal index</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - Dict = edl_buildiidxdict(S, idxfn)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - S:        a struct array on which the dictionary is built</span>
+0009 <span class="comment">%   - idxfn:    the field name of the internal index</span>
+0010 <span class="comment">%               (default = 'internal_index')</span>
+0011 <span class="comment">%   - Dict:     the built dictionary</span>
+0012 <span class="comment">%               a cell array, indexed by internal_index</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Remarks $</span>
+0015 <span class="comment">%   - The length of the cell array (dict) will be equal to the maximum</span>
+0016 <span class="comment">%     internal index in S.</span>
+0017 <span class="comment">%   - In S, different elements should have different internal indices.</span>
+0018 <span class="comment">%   - For the index corresponding to no element, the corresponding cells</span>
+0019 <span class="comment">%     are empty.</span>
+0020 <span class="comment">%   - The dictionary will not automatically keep track of the change of</span>
+0021 <span class="comment">%     S. If S is changed, the dictonary should be rebuilt in order to</span>
+0022 <span class="comment">%     reflect the updates.</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% $ History $</span>
+0025 <span class="comment">%   - Created by Dahua Lin, on Aug 15, 2006</span>
+0026 <span class="comment">%</span>
+0027 
+0028 <span class="comment">%% parse and verify input arguments</span>
+0029 
+0030 <span class="keyword">if</span> ~isstruct(S)
+0031     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0032         <span class="string">'The S should be a struct'</span>);
+0033 <span class="keyword">end</span>
+0034 
+0035 <span class="keyword">if</span> nargin &lt; 2 || isempty(idxfn)
+0036     idxfn = <span class="string">'internal_index'</span>;
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> ~isfield(S, idxfn)
+0040     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0041         <span class="string">'The S have no specified internal index field'</span>);
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="comment">%% Build dictionary</span>
+0045 
+0046 <span class="comment">% gather the internal indices</span>
+0047 n = numel(S);
+0048 inds = zeros(n, 1);
+0049 <span class="keyword">for</span> i = 1 : n
+0050     idx = S(i).(idxfn);
+0051     <span class="keyword">if</span> ischar(idx)
+0052         idx = str2double(idx);
+0053     <span class="keyword">end</span>
+0054     inds(i) = idx;
+0055 <span class="keyword">end</span>
+0056 
+0057 <span class="comment">% construct dictionary</span>
+0058 m = max(inds);
+0059 
+0060 Dict = cell(m, 1);
+0061 
+0062 <span class="keyword">for</span> i = 1 : n
+0063     idx = inds(i);
+0064     <span class="keyword">if</span> ~isempty(Dict{idx})
+0065         error(<span class="string">'sltoolbox:rterror'</span>, <span class="keyword">...</span>
+0066             <span class="string">'Repeated index %d is encountered'</span>, idx);
+0067     <span class="keyword">end</span>
+0068     Dict{idx} = S(i);        
+0069 <span class="keyword">end</span>
+0070</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

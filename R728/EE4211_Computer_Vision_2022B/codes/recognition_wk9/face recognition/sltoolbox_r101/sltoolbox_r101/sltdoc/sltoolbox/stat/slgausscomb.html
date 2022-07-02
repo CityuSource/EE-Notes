@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slgausscomb</title>
+  <meta name="keywords" content="slgausscomb">
+  <meta name="description" content="SLGAUSSCOMB Collects the means and variances/covariances to form GS">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slgausscomb.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slgausscomb
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLGAUSSCOMB Collects the means and variances/covariances to form GS</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function GS = slgausscomb(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLGAUSSCOMB Collects the means and variances/covariances to form GS
+
+ $ Syntax $
+   - GS = slgausscomb('means', means, 'vars', vars, ...)
+   - GS = slgausscomb('means', means, 'covs', covs, ...)
+
+ $ Arguments $
+   - means:        the mean vectors
+   - vars:         the variance values
+   - covs:         the covariance matrices
+   - GS:           the formed Gaussian model struct
+
+ $ Description $
+   - GS = slgausscomb('means', means, 'vars', vars) forms the Gaussian 
+     model struct with varform being 'univar' or 'diagvar' using the mean
+     vectors and variance values.
+     The means can be given in either of the following forms:
+       - a d x k matrix
+       - a cell array with k cells, each cell being a d x 1 vector
+     The vars can be given in either of the following forms:
+       - a 1 x 1 scalar: for shared univar model
+       - a 1 x k vector: for non-shared univar model
+       - a d x 1 vector: for shared diagvar model
+       - a d x k matrix: for non-shared diagvar model
+       - a cell array of k scalars: for non-shared univar model
+       - a cell array of dx1 vectors: for non-shared diagvar model
+
+   - GS = slgausscomb('means', means, 'covs', covs) forms the Gaussian
+     model struct with varform being 'covar' using the mean vector and
+     covariance matrices.
+     The form of means is as mentioned above.
+     The covs can be given in either of the following forms:
+       - a d x d matrix: for shared covar model
+       - a d x d x k matrix: for non-shared covar model
+       - a cell array of k dxd matrices: for non-shared covar model
+
+     You can specify other properties to control the process
+       - 'invparams'  the cell array of parameters to compute inverse
+                      (default = {})
+                      For invvars, the computation is done by 
+                      slinvevals;
+                      For invcovs, the computation is done by
+                      slinvcovs;
+       - 'compinv'    whether to compute the inverse covariances
+                      (default = true)
+       - 'mixweights' the mixture weights (default = [])                        
+
+ $ Remarks $
+   - You can specify either covs or vars, but you should not specify
+     both of them.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 24th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slgaussinv.html" class="code" title="function R = slgaussinv(GS, fn, invparams)">slgaussinv</a>	SLGAUSSINV Computes the inverse of variance/covariance in Gaussian model</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function V = take_arrayform(name, v, dmax)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function GS = slgausscomb(varargin)</a>
+0002 <span class="comment">%SLGAUSSCOMB Collects the means and variances/covariances to form GS</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - GS = slgausscomb('means', means, 'vars', vars, ...)</span>
+0006 <span class="comment">%   - GS = slgausscomb('means', means, 'covs', covs, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - means:        the mean vectors</span>
+0010 <span class="comment">%   - vars:         the variance values</span>
+0011 <span class="comment">%   - covs:         the covariance matrices</span>
+0012 <span class="comment">%   - GS:           the formed Gaussian model struct</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - GS = slgausscomb('means', means, 'vars', vars) forms the Gaussian</span>
+0016 <span class="comment">%     model struct with varform being 'univar' or 'diagvar' using the mean</span>
+0017 <span class="comment">%     vectors and variance values.</span>
+0018 <span class="comment">%     The means can be given in either of the following forms:</span>
+0019 <span class="comment">%       - a d x k matrix</span>
+0020 <span class="comment">%       - a cell array with k cells, each cell being a d x 1 vector</span>
+0021 <span class="comment">%     The vars can be given in either of the following forms:</span>
+0022 <span class="comment">%       - a 1 x 1 scalar: for shared univar model</span>
+0023 <span class="comment">%       - a 1 x k vector: for non-shared univar model</span>
+0024 <span class="comment">%       - a d x 1 vector: for shared diagvar model</span>
+0025 <span class="comment">%       - a d x k matrix: for non-shared diagvar model</span>
+0026 <span class="comment">%       - a cell array of k scalars: for non-shared univar model</span>
+0027 <span class="comment">%       - a cell array of dx1 vectors: for non-shared diagvar model</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%   - GS = slgausscomb('means', means, 'covs', covs) forms the Gaussian</span>
+0030 <span class="comment">%     model struct with varform being 'covar' using the mean vector and</span>
+0031 <span class="comment">%     covariance matrices.</span>
+0032 <span class="comment">%     The form of means is as mentioned above.</span>
+0033 <span class="comment">%     The covs can be given in either of the following forms:</span>
+0034 <span class="comment">%       - a d x d matrix: for shared covar model</span>
+0035 <span class="comment">%       - a d x d x k matrix: for non-shared covar model</span>
+0036 <span class="comment">%       - a cell array of k dxd matrices: for non-shared covar model</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">%     You can specify other properties to control the process</span>
+0039 <span class="comment">%       - 'invparams'  the cell array of parameters to compute inverse</span>
+0040 <span class="comment">%                      (default = {})</span>
+0041 <span class="comment">%                      For invvars, the computation is done by</span>
+0042 <span class="comment">%                      slinvevals;</span>
+0043 <span class="comment">%                      For invcovs, the computation is done by</span>
+0044 <span class="comment">%                      slinvcovs;</span>
+0045 <span class="comment">%       - 'compinv'    whether to compute the inverse covariances</span>
+0046 <span class="comment">%                      (default = true)</span>
+0047 <span class="comment">%       - 'mixweights' the mixture weights (default = [])</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">% $ Remarks $</span>
+0050 <span class="comment">%   - You can specify either covs or vars, but you should not specify</span>
+0051 <span class="comment">%     both of them.</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">% $ History $</span>
+0054 <span class="comment">%   - Created by Dahua Lin, on Aug 24th, 2006</span>
+0055 <span class="comment">%</span>
+0056 
+0057 <span class="comment">%% Take arguments</span>
+0058 
+0059 args.means = [];
+0060 args.vars = [];
+0061 args.covs = [];
+0062 args.compinv = true;
+0063 args.invparams = {};
+0064 args.mixweights = [];
+0065 args = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(args, varargin{:});
+0066 
+0067 
+0068 <span class="keyword">if</span> isempty(args.means)
+0069     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0070         <span class="string">'The means should be specified'</span>);
+0071 <span class="keyword">end</span>
+0072 
+0073 <span class="keyword">if</span> isempty(args.vars) &amp;&amp; isempty(args.covs)
+0074     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0075         <span class="string">'You should specify either vars or covs'</span>);
+0076 <span class="keyword">end</span>
+0077 
+0078 <span class="keyword">if</span> ~isempty(args.vars) &amp;&amp; ~isempty(args.covs)
+0079     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0080         <span class="string">'You should specify both vars and covs'</span>);
+0081 <span class="keyword">end</span>
+0082 
+0083 
+0084 <span class="comment">%% Parse means</span>
+0085 
+0086 means = <a href="#_sub1" class="code" title="subfunction V = take_arrayform(name, v, dmax)">take_arrayform</a>(<span class="string">'means'</span>, args.means, 2);
+0087 [d, k] = size(means);
+0088 
+0089 GS.dim = d;
+0090 GS.nmodels = k;
+0091 GS.means = means;
+0092 
+0093 
+0094 <span class="comment">%% Parse variances / covariances</span>
+0095 
+0096 <span class="keyword">if</span> ~isempty(args.vars)
+0097 
+0098     vars = <a href="#_sub1" class="code" title="subfunction V = take_arrayform(name, v, dmax)">take_arrayform</a>(<span class="string">'vars'</span>, args.vars, 2);
+0099     [dv, kv] = size(vars);
+0100     
+0101     <span class="keyword">if</span> dv ~= 1 &amp;&amp; dv ~= d
+0102         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0103             <span class="string">'The size of vars is illegal'</span>);
+0104     <span class="keyword">end</span>    
+0105     <span class="keyword">if</span> kv ~= 1 &amp;&amp; kv ~= k
+0106         error(<span class="string">'sltoobox:sizmismatch'</span>, <span class="keyword">...</span>
+0107             <span class="string">'The size of vars is illegal'</span>);
+0108     <span class="keyword">end</span>        
+0109     
+0110     GS.vars = vars;
+0111     <span class="keyword">if</span> args.compinv
+0112         GS.invvars = <a href="slgaussinv.html" class="code" title="function R = slgaussinv(GS, fn, invparams)">slgaussinv</a>(GS, <span class="string">'vars'</span>, args.invparams);
+0113     <span class="keyword">end</span>
+0114             
+0115 <span class="keyword">else</span>
+0116    
+0117     covs = <a href="#_sub1" class="code" title="subfunction V = take_arrayform(name, v, dmax)">take_arrayform</a>(<span class="string">'covs'</span>, args.covs, 3);
+0118     [dcv, dcv2, kcv] = size(covs);
+0119     
+0120     <span class="keyword">if</span> dcv ~= d || dcv2 ~= d
+0121        error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0122            <span class="string">'The size of covs is illegal'</span>);
+0123     <span class="keyword">end</span>
+0124     
+0125     <span class="keyword">if</span> kcv ~= 1 &amp;&amp; kcv ~= k
+0126         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0127             <span class="string">'The size of covs is illegal'</span>);
+0128     <span class="keyword">end</span>
+0129     
+0130     GS.covs = covs;    
+0131     <span class="keyword">if</span> args.compinv
+0132         GS.invcovs = <a href="slgaussinv.html" class="code" title="function R = slgaussinv(GS, fn, invparams)">slgaussinv</a>(GS, <span class="string">'covs'</span>, args.invparams);
+0133     <span class="keyword">end</span>
+0134                     
+0135 <span class="keyword">end</span>
+0136 
+0137 <span class="comment">%% For mix weights</span>
+0138 
+0139 <span class="keyword">if</span> ~isempty(args.mixweights)
+0140     
+0141     mixweights = args.mixweights(:);
+0142     <span class="keyword">if</span> length(mixweights) ~= k
+0143         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0144             <span class="string">'The length of mix weights is illegal'</span>);
+0145     <span class="keyword">end</span>
+0146     
+0147     GS.mixweights = mixweights;
+0148     
+0149 <span class="keyword">end</span>
+0150 
+0151     
+0152 
+0153 
+0154 <span class="comment">%% Auxiliary functions</span>
+0155 
+0156 <a name="_sub1" href="#_subfunctions" class="code">function V = take_arrayform(name, v, dmax)</a>
+0157 
+0158 <span class="keyword">if</span> isnumeric(v)
+0159     V = v;
+0160 <span class="keyword">elseif</span> iscell(v)
+0161     V = v(:)';
+0162     <span class="keyword">if</span> dmax == 2
+0163         V = horzcat(V{:});
+0164     <span class="keyword">elseif</span> dmax == 3
+0165         V = cat(3, V{:});
+0166     <span class="keyword">end</span>
+0167 <span class="keyword">else</span>
+0168     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0169         <span class="string">'The %s should be either an numeric array or a cell array'</span>, name);
+0170 <span class="keyword">end</span>
+0171 
+0172 <span class="keyword">if</span> ndims(V) &gt; dmax
+0173     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0174         <span class="string">'The dimension of means should not exceed %d'</span>, dmax);
+0175 <span class="keyword">end</span>
+0176 
+0177 
+0178 
+0179 
+0180 
+0181 
+0182 
+0183 
+0184 
+0185 
+0186</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

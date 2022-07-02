@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slkmeans</title>
+  <meta name="keywords" content="slkmeans">
+  <meta name="description" content="SLKMEANS Performs K-Means Clustering on samples">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">cluster</a> &gt; slkmeans.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\cluster&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slkmeans
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLKMEANS Performs K-Means Clustering on samples</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [means, labels] = slkmeans(X, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLKMEANS Performs K-Means Clustering on samples
+
+ $ Syntax $
+   - [means, labels] = slkmeans(X, ...)
+
+ $ Arguments $
+   - X:        the sample matrix
+   - means:    the center(mean) vectors of the clusters
+   - labels:   the labels of the clusters which the samples belong to
+
+ $ Description $
+   - [means, labels] = slkmeans(X, ...) Performs K-Means Clustering on 
+     the data X with each column representing a sample. If k is the 
+     number of clusters. In the output argument, means are the d x k 
+     vectors representing the centers of clusters. labels indicates 
+     which cluster the elements belong to. You can specify the following
+     additional properties.
+
+     \*
+     \t  Table 1. Clustering properties
+     \h    name        &amp;     description
+          'K'          &amp; The number of initial clusters, default = 3.
+          'init_means' &amp; The initial values of cluster centers. 
+                         (default = [], that is random draw)
+          'clsfunc'    &amp; The function for classifying samples given
+                         the means of clusters. It can be one of the
+                         following string:
+                         1. 'normal' (default): use slmetric_pw for
+                            distance calculation;
+                         2. 'samplewise': classify samples one-by-one
+                         3. 'ann': classify samples using annsearch
+                            (annsearch is required)
+                         or, clsfunc can be a function handle using
+                         following syntax labels = f(centers, data).
+          'maxiter'    &amp; The maximum number of iterations (default = 100)
+          'annthres'   &amp; The threshold of center annealing
+                         (default = 0)
+          'weights'    &amp; The weights of the samples
+          'verbose'    &amp; Whether to show dynamic information in the 
+                         procedure (default = true)
+
+ $ History $
+   - Created by Dahua Lin on Oct 7th, 2005
+   - Modified by Dahua Lin on Apr 24th, 2006
+       - Upgrade the function to base on sltoolbox v4
+       - Add the clsfunc properties, so that the user can customize
+         the behaviour of classification step according to the context.
+   - Modified by Dahua Lin on Aug 28, 2006
+       - Based on the new framework function slkmeansex
+       - Incorporate the support of center annealing
+   - Modified by Dahua Lin on Sep 14th, 2006
+       - use sllabelinds to increase the efficiency of gathering the
+         samples in the same cluster in the estimation step.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/ann/annsearch.html" class="code" title="function [nnidx, dists] = annsearch(X0, X, k, varargin)">annsearch</a>	ANNSEARCH Approximate Nearest Neighbor Search</li><li><a href="slkmeansex.html" class="code" title="function [centers, labels, info] = slkmeansex(X, n, estfunctor, clsfunctor, varargin)">slkmeansex</a>	SLKMEANSEX Performs Generalized K-means</li><li><a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>	SLMETRIC_PW Compute the metric between column vectors pairwisely</li><li><a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>	SLMEAN Compute the mean vector of samples</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li><li><a href="../../sltoolbox/utils/sllabelinds.html" class="code" title="function Inds = sllabelinds(labels, labelset)">sllabelinds</a>	SLLABELINDS Extract indices corresponding to specified labels</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function centers = kmeans_est(centers, X, K, weights, labels)</a></li><li><a href="#_sub2" class="code">function labels = kmeans_classify(centers, X, n, fh_classify)</a></li><li><a href="#_sub3" class="code">function centers = kmeans_anneal(centers, inds_discard)</a></li><li><a href="#_sub4" class="code">function L = classify_normal(centers, data)</a></li><li><a href="#_sub5" class="code">function L = classify_samplewise(centers, data)</a></li><li><a href="#_sub6" class="code">function L = classify_ann(centers, data)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [means, labels] = slkmeans(X, varargin)</a>
+0002 <span class="comment">%SLKMEANS Performs K-Means Clustering on samples</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [means, labels] = slkmeans(X, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X:        the sample matrix</span>
+0009 <span class="comment">%   - means:    the center(mean) vectors of the clusters</span>
+0010 <span class="comment">%   - labels:   the labels of the clusters which the samples belong to</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - [means, labels] = slkmeans(X, ...) Performs K-Means Clustering on</span>
+0014 <span class="comment">%     the data X with each column representing a sample. If k is the</span>
+0015 <span class="comment">%     number of clusters. In the output argument, means are the d x k</span>
+0016 <span class="comment">%     vectors representing the centers of clusters. labels indicates</span>
+0017 <span class="comment">%     which cluster the elements belong to. You can specify the following</span>
+0018 <span class="comment">%     additional properties.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">%     \*</span>
+0021 <span class="comment">%     \t  Table 1. Clustering properties</span>
+0022 <span class="comment">%     \h    name        &amp;     description</span>
+0023 <span class="comment">%          'K'          &amp; The number of initial clusters, default = 3.</span>
+0024 <span class="comment">%          'init_means' &amp; The initial values of cluster centers.</span>
+0025 <span class="comment">%                         (default = [], that is random draw)</span>
+0026 <span class="comment">%          'clsfunc'    &amp; The function for classifying samples given</span>
+0027 <span class="comment">%                         the means of clusters. It can be one of the</span>
+0028 <span class="comment">%                         following string:</span>
+0029 <span class="comment">%                         1. 'normal' (default): use slmetric_pw for</span>
+0030 <span class="comment">%                            distance calculation;</span>
+0031 <span class="comment">%                         2. 'samplewise': classify samples one-by-one</span>
+0032 <span class="comment">%                         3. 'ann': classify samples using annsearch</span>
+0033 <span class="comment">%                            (annsearch is required)</span>
+0034 <span class="comment">%                         or, clsfunc can be a function handle using</span>
+0035 <span class="comment">%                         following syntax labels = f(centers, data).</span>
+0036 <span class="comment">%          'maxiter'    &amp; The maximum number of iterations (default = 100)</span>
+0037 <span class="comment">%          'annthres'   &amp; The threshold of center annealing</span>
+0038 <span class="comment">%                         (default = 0)</span>
+0039 <span class="comment">%          'weights'    &amp; The weights of the samples</span>
+0040 <span class="comment">%          'verbose'    &amp; Whether to show dynamic information in the</span>
+0041 <span class="comment">%                         procedure (default = true)</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% $ History $</span>
+0044 <span class="comment">%   - Created by Dahua Lin on Oct 7th, 2005</span>
+0045 <span class="comment">%   - Modified by Dahua Lin on Apr 24th, 2006</span>
+0046 <span class="comment">%       - Upgrade the function to base on sltoolbox v4</span>
+0047 <span class="comment">%       - Add the clsfunc properties, so that the user can customize</span>
+0048 <span class="comment">%         the behaviour of classification step according to the context.</span>
+0049 <span class="comment">%   - Modified by Dahua Lin on Aug 28, 2006</span>
+0050 <span class="comment">%       - Based on the new framework function slkmeansex</span>
+0051 <span class="comment">%       - Incorporate the support of center annealing</span>
+0052 <span class="comment">%   - Modified by Dahua Lin on Sep 14th, 2006</span>
+0053 <span class="comment">%       - use sllabelinds to increase the efficiency of gathering the</span>
+0054 <span class="comment">%         samples in the same cluster in the estimation step.</span>
+0055 <span class="comment">%</span>
+0056 
+0057 <span class="comment">%% parse and verify input arguments</span>
+0058 <span class="keyword">if</span> ndims(X) ~= 2 
+0059     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="string">'X should be a 2D matrix'</span>);
+0060 <span class="keyword">end</span>
+0061 
+0062 opts.K = 3;
+0063 opts.init_means = [];
+0064 opts.clsfunc = <span class="string">'normal'</span>;
+0065 opts.maxiter = 100;
+0066 opts.annthres = 0;
+0067 opts.weights = [];
+0068 opts.verbose = true;
+0069 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0070 
+0071 n = size(X, 2);
+0072 
+0073 <span class="keyword">if</span> ischar(opts.clsfunc)
+0074     <span class="keyword">switch</span> opts.clsfunc
+0075         <span class="keyword">case</span> <span class="string">'normal'</span>
+0076             fh_classify = @<a href="#_sub4" class="code" title="subfunction L = classify_normal(centers, data)">classify_normal</a>;
+0077         <span class="keyword">case</span> <span class="string">'samplewise'</span>
+0078             fh_classify = @<a href="#_sub5" class="code" title="subfunction L = classify_samplewise(centers, data)">classify_samplewise</a>;
+0079         <span class="keyword">case</span> <span class="string">'ann'</span>
+0080             fh_classify = @<a href="#_sub6" class="code" title="subfunction L = classify_ann(centers, data)">classify_ann</a>;
+0081         <span class="keyword">otherwise</span>
+0082             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0083                 <span class="string">'Invalid clsfunc option %s'</span>, opts.clsfunc);
+0084     <span class="keyword">end</span>
+0085 <span class="keyword">elseif</span> isa(opts.clsfunc, <span class="string">'function_handle'</span>)
+0086     fh_classify = opts.clsfunc;
+0087 <span class="keyword">else</span>
+0088     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0089         <span class="string">'clsfunc can be either a string or a function handle'</span>);
+0090 <span class="keyword">end</span>
+0091 
+0092 
+0093 <span class="comment">%% Perform K-means</span>
+0094 
+0095 estfunctor = {@<a href="#_sub1" class="code" title="subfunction centers = kmeans_est(centers, X, K, weights, labels)">kmeans_est</a>};
+0096 clsfunctor = {@<a href="#_sub2" class="code" title="subfunction labels = kmeans_classify(centers, X, n, fh_classify)">kmeans_classify</a>, fh_classify};
+0097 annfunc = @<a href="#_sub3" class="code" title="subfunction centers = kmeans_anneal(centers, inds_discard)">kmeans_anneal</a>;
+0098 
+0099 [means, labels] = <a href="slkmeansex.html" class="code" title="function [centers, labels, info] = slkmeansex(X, n, estfunctor, clsfunctor, varargin)">slkmeansex</a>(X, n, estfunctor, clsfunctor, <span class="keyword">...</span>
+0100     <span class="string">'K'</span>, opts.K, <span class="keyword">...</span>
+0101     <span class="string">'init_centers'</span>, opts.init_means, <span class="keyword">...</span>
+0102     <span class="string">'maxiter'</span>, opts.maxiter, <span class="keyword">...</span>
+0103     <span class="string">'annthres'</span>, opts.annthres, <span class="keyword">...</span>
+0104     <span class="string">'annfunc'</span>, annfunc, <span class="keyword">...</span>
+0105     <span class="string">'weights'</span>, opts.weights, <span class="keyword">...</span>
+0106     <span class="string">'verbose'</span>, opts.verbose);
+0107 
+0108 
+0109 
+0110 <span class="comment">%% Core slot functions</span>
+0111 
+0112 <a name="_sub1" href="#_subfunctions" class="code">function centers = kmeans_est(centers, X, K, weights, labels)</a>
+0113 
+0114 d = size(X, 1);
+0115 <span class="keyword">if</span> isempty(centers)
+0116     centers = zeros(d, K);
+0117 <span class="keyword">end</span>
+0118 
+0119 Inds = <a href="../../sltoolbox/utils/sllabelinds.html" class="code" title="function Inds = sllabelinds(labels, labelset)">sllabelinds</a>(labels, 1:K);
+0120 <span class="keyword">for</span> i = 1 : K    
+0121     si = Inds{i};
+0122     
+0123     <span class="keyword">if</span> ~isempty(si)
+0124         curX = X(:, si);    
+0125         <span class="keyword">if</span> isempty(weights)
+0126             curw = [];
+0127         <span class="keyword">else</span>
+0128             curw = weights(si);
+0129         <span class="keyword">end</span>        
+0130         centers(:, i) = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(curX, curw);    
+0131     <span class="keyword">end</span>
+0132 <span class="keyword">end</span>
+0133 
+0134 
+0135 <a name="_sub2" href="#_subfunctions" class="code">function labels = kmeans_classify(centers, X, n, fh_classify)</a>
+0136 
+0137 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(n);
+0138 labels = fh_classify(centers, X);
+0139 
+0140 
+0141 <a name="_sub3" href="#_subfunctions" class="code">function centers = kmeans_anneal(centers, inds_discard)</a>
+0142 
+0143 centers(:, inds_discard) = [];
+0144 
+0145 
+0146 
+0147 
+0148 <span class="comment">%% The functions for classifying samples to clusters</span>
+0149 
+0150 <a name="_sub4" href="#_subfunctions" class="code">function L = classify_normal(centers, data)</a>
+0151 
+0152 dists = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(centers, data, <span class="string">'eucdist'</span>);
+0153 [md, L] = min(dists, [], 1);
+0154 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(md);
+0155     
+0156 <a name="_sub5" href="#_subfunctions" class="code">function L = classify_samplewise(centers, data)</a>
+0157 
+0158 n = size(data, 2);
+0159 L = zeros(1, n);
+0160 <span class="keyword">for</span> i = 1 : n
+0161     curdists = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(centers, data(:, i), <span class="string">'eucdist'</span>);
+0162     [md, p] = min(curdists);
+0163     L(i) = p;
+0164 <span class="keyword">end</span>
+0165 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(md);
+0166 
+0167 <a name="_sub6" href="#_subfunctions" class="code">function L = classify_ann(centers, data)</a>
+0168 
+0169 L = <a href="../../sltoolbox/ann/annsearch.html" class="code" title="function [nnidx, dists] = annsearch(X0, X, k, varargin)">annsearch</a>(centers, data, 1);
+0170 L = L(:)';
+0171 
+0172 
+0173 
+0174 
+0175 
+0176 
+0177 
+0178     
+0179</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

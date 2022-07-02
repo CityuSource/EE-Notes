@@ -1,0 +1,70 @@
+Bond vs Stock
+
+- bonds are debt instruments as they provide a steady source of money to the owner
+- stocks are financial instruments
+
+- stocks give partial ownership in a corporation, but not bonds
+- liquidity of stocks and bonds is lower than cash or cheques
+
+- bonds provide steadier income than stocks
+
+# ---------------------------------------------------------------------------- #
+
+Tokenization
+- It is the process of exchanging sensitive data for non-sensitive data such as "tokens" that would be used
+in a database for authentication and authorization of services or actions.
+
+Sensitive data examples can be credit card number, pin, account name, etc.
+
+- So instead of directly providing sensitive data to perform an action or use a service, we would use
+"tokens" instead that represents the sensitive data in the service's database. This will prevent attacks
+that involve stealing information.
+
+for more security go to E1 page 21
+
+# ---------------------------------------------------------------------------- #
+
+Man in the middle attack
+- It is when a attacker secretly relays and possibly alters the communication between two parties who believe 
+they are directly communicating with each other.
+
+One example would be to setup fake wi-fi connections where they'll be able to track the online activity of the users
+and gain access to their personal login info, payment-related information and many more. This can be considered as a flaw in the
+mobile standards/protocols.
+
+Replay attacks
+- It is the action of recording communication and then replaying the recording to circumvent security.
+
+One example would be where the attacker would intercept NFC transactions and then replay it to authorize
+even more transactions.
+
+Repudiation
+- It is the process of modifying information (most of the time it is history, logs or receipts) in an unauthorized manner.
+
+One example would be if a mobile user sent transfer request of $150 but instead the attacker modifies this
+request when sent to be $15000 instead.
+
+Impersonation
+- It is the act of posing as a trusted contact to manipulate victims into doing certain actions for the attacker's benefit.
+
+One example would be where the attacker would pose as a bank employee and messaging the victim, and then tricking
+the victim into giving up sensitive information such as account name, number, pin, and everything else that the
+attacker would then use for their own benefit.
+
+Unauthorized access
+- It is the act of breaking into the victim's account without their knowledge to perform malicious actions.
+
+One example would be when a user would install malware into their mobile phones, and the malware
+would hijack their mobile payment apps into authorizing payments in which the victim does not approve of
+or have the knowledge of.
+
+# ---------------------------------------------------------------------------- #
+
+Cryptocurrency by definition is encrypted data that is denoted as a currency.
+
+# ---------------------------------------------------------------------------- #
+
+Blockchain advantages
+https://data-flair.training/blogs/features-of-blockchain/
+
+# ---------------------------------------------------------------------------- #

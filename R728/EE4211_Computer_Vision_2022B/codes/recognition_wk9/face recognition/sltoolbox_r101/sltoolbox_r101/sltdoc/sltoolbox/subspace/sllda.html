@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sllda</title>
+  <meta name="keywords" content="sllda">
+  <meta name="description" content="SLLDA Trains a Linear Discriminant Model using specified method">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace</a> &gt; sllda.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sllda
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLLDA Trains a Linear Discriminant Model using specified method</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function T = sllda(X, nums, method, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLLDA Trains a Linear Discriminant Model using specified method
+
+ $ Syntax $
+   - T = sllda(X, nums, method, ...)
+
+ $ Arguments $
+   - X:        the sample matrix, with each column representing a sample
+   - nums:     the numbers of samples in all classes
+   - method:   the selected method for training
+   - T:        the trained LDA model
+
+ $ Description $
+   - T = sllda(X, nums, method, ...) trains a LDA transform using
+     specified method. It is actually a wrapper of some underlying
+     LDA training functions such as slfld, sldlda, and slnlds etc,
+     and provides a more friendly interface for users.
+       
+     \*
+     \t    Table 1. The methods for LDA Training
+     \h    name      &amp;       description 
+          'pinv'     &amp; using pseudo inverse to invert to Sw
+          'efm'      &amp; using enhanced fisher model, with following params 
+          'boundev'  &amp; bounding the eigenvalues
+          'regdual'  &amp; the dual-space LDA based on simple regularization
+          'pvldual'  &amp; the dual-space LDA based on PVL
+          'nlda'     &amp; the null-space LDA
+          'dlda'     &amp; the direct LDA
+     \*          
+
+     You can specify addtional parameters to control the training
+     process as follows:
+
+     \*
+     \t    Table 2. The LDA Training properties
+     \h    name      &amp;         description
+           'prepca'  &amp;  whether to perform a preceding PCA step
+                        default = false, (for all methods except for dlda)
+           'rvalue'  &amp;  The r-value for whitening, typically it is the
+                        minimum ratio of effective eigenvalue to the
+                        largest eigenvalue. 
+                        default = [], that is to leave the corresponding
+                        method to decide the default value.
+           'dimset'  &amp;  the params to determine the number of output 
+                        features, default = {'rank'}. 
+                        You should use a cell to encompass the parameters
+                        fed to sldim_by_eigval.
+           'Sb'      &amp;  The pre-computed between-class scatter matrix
+                        or the cell array of params to compute Sb by
+                        slscatter. default = {'Sb'}
+           'Sw'      &amp;  The pre-computed between-class scatter matrix
+                        or the cell array of params to compute Sb by
+                        slscatter. default = {'Sw'}
+           'pdimset' &amp;  The params to determine the range space.
+                        (only for nlda and dlda, default = {}).
+           'weights' &amp;  The sample weights, default = [];
+     \*
+
+ $ History $
+   - Created by Dahua Lin, on Aug 16th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sldlda.html" class="code" title="function T = sldlda(X, nums, varargin)">sldlda</a>	SLDLDA Performs Direct Linear Discriminant Analysis</li><li><a href="slfld.html" class="code" title="function T = slfld(X, nums, varargin)">slfld</a>	SLFLD Performs Fisher Linear Discriminant Analysis</li><li><a href="slnlda.html" class="code" title="function T = slnlda(X, nums, varargin)">slnlda</a>	SLNLDA Performs Nullspace-based Linear Discriminant Analysis</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function T = delegate_fld(X, nums, opts, whitenopt)</a></li><li><a href="#_sub2" class="code">function T = delegate_nlda(X, nums, opts)</a></li><li><a href="#_sub3" class="code">function T = delegate_dlda(X, nums, opts)</a></li><li><a href="#_sub4" class="code">function v = take_value(v0, defaultv)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function T = sllda(X, nums, method, varargin)</a>
+0002 <span class="comment">%SLLDA Trains a Linear Discriminant Model using specified method</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - T = sllda(X, nums, method, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X:        the sample matrix, with each column representing a sample</span>
+0009 <span class="comment">%   - nums:     the numbers of samples in all classes</span>
+0010 <span class="comment">%   - method:   the selected method for training</span>
+0011 <span class="comment">%   - T:        the trained LDA model</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - T = sllda(X, nums, method, ...) trains a LDA transform using</span>
+0015 <span class="comment">%     specified method. It is actually a wrapper of some underlying</span>
+0016 <span class="comment">%     LDA training functions such as slfld, sldlda, and slnlds etc,</span>
+0017 <span class="comment">%     and provides a more friendly interface for users.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%     \*</span>
+0020 <span class="comment">%     \t    Table 1. The methods for LDA Training</span>
+0021 <span class="comment">%     \h    name      &amp;       description</span>
+0022 <span class="comment">%          'pinv'     &amp; using pseudo inverse to invert to Sw</span>
+0023 <span class="comment">%          'efm'      &amp; using enhanced fisher model, with following params</span>
+0024 <span class="comment">%          'boundev'  &amp; bounding the eigenvalues</span>
+0025 <span class="comment">%          'regdual'  &amp; the dual-space LDA based on simple regularization</span>
+0026 <span class="comment">%          'pvldual'  &amp; the dual-space LDA based on PVL</span>
+0027 <span class="comment">%          'nlda'     &amp; the null-space LDA</span>
+0028 <span class="comment">%          'dlda'     &amp; the direct LDA</span>
+0029 <span class="comment">%     \*</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%     You can specify addtional parameters to control the training</span>
+0032 <span class="comment">%     process as follows:</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">%     \*</span>
+0035 <span class="comment">%     \t    Table 2. The LDA Training properties</span>
+0036 <span class="comment">%     \h    name      &amp;         description</span>
+0037 <span class="comment">%           'prepca'  &amp;  whether to perform a preceding PCA step</span>
+0038 <span class="comment">%                        default = false, (for all methods except for dlda)</span>
+0039 <span class="comment">%           'rvalue'  &amp;  The r-value for whitening, typically it is the</span>
+0040 <span class="comment">%                        minimum ratio of effective eigenvalue to the</span>
+0041 <span class="comment">%                        largest eigenvalue.</span>
+0042 <span class="comment">%                        default = [], that is to leave the corresponding</span>
+0043 <span class="comment">%                        method to decide the default value.</span>
+0044 <span class="comment">%           'dimset'  &amp;  the params to determine the number of output</span>
+0045 <span class="comment">%                        features, default = {'rank'}.</span>
+0046 <span class="comment">%                        You should use a cell to encompass the parameters</span>
+0047 <span class="comment">%                        fed to sldim_by_eigval.</span>
+0048 <span class="comment">%           'Sb'      &amp;  The pre-computed between-class scatter matrix</span>
+0049 <span class="comment">%                        or the cell array of params to compute Sb by</span>
+0050 <span class="comment">%                        slscatter. default = {'Sb'}</span>
+0051 <span class="comment">%           'Sw'      &amp;  The pre-computed between-class scatter matrix</span>
+0052 <span class="comment">%                        or the cell array of params to compute Sb by</span>
+0053 <span class="comment">%                        slscatter. default = {'Sw'}</span>
+0054 <span class="comment">%           'pdimset' &amp;  The params to determine the range space.</span>
+0055 <span class="comment">%                        (only for nlda and dlda, default = {}).</span>
+0056 <span class="comment">%           'weights' &amp;  The sample weights, default = [];</span>
+0057 <span class="comment">%     \*</span>
+0058 <span class="comment">%</span>
+0059 <span class="comment">% $ History $</span>
+0060 <span class="comment">%   - Created by Dahua Lin, on Aug 16th, 2006</span>
+0061 <span class="comment">%</span>
+0062 
+0063 <span class="comment">%% parse and verify input arguments</span>
+0064 
+0065 <span class="keyword">if</span> nargin &lt; 3
+0066     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sllda'</span>, 3);
+0067 <span class="keyword">end</span>
+0068 
+0069 opts.prepca = false;
+0070 opts.rvalue = [];
+0071 opts.dimset = {<span class="string">'rank'</span>};
+0072 opts.Sb = {<span class="string">'Sb'</span>};
+0073 opts.Sw = {<span class="string">'Sw'</span>};
+0074 opts.weights = [];
+0075 opts.pdimset = {};
+0076 
+0077 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0078 
+0079 <span class="comment">%% delegate to concrete functions</span>
+0080 
+0081 <span class="keyword">switch</span> method
+0082     <span class="keyword">case</span> <span class="string">'pinv'</span>
+0083         whitenopt = {<span class="string">'std'</span>, eps};
+0084         T = <a href="#_sub1" class="code" title="subfunction T = delegate_fld(X, nums, opts, whitenopt)">delegate_fld</a>(X, nums, opts, whitenopt);
+0085     <span class="keyword">case</span> <span class="string">'efm'</span>
+0086         r = <a href="#_sub4" class="code" title="subfunction v = take_value(v0, defaultv)">take_value</a>(opts.rvalue, 1e-5);
+0087         whitenopt = {<span class="string">'std'</span>, r};
+0088         T = <a href="#_sub1" class="code" title="subfunction T = delegate_fld(X, nums, opts, whitenopt)">delegate_fld</a>(X, nums, opts, whitenopt);
+0089     <span class="keyword">case</span> <span class="string">'boundev'</span>
+0090         r = <a href="#_sub4" class="code" title="subfunction v = take_value(v0, defaultv)">take_value</a>(opts.rvalue, 1e-3);
+0091         whitenopt = {<span class="string">'bound'</span>, r};
+0092         T = <a href="#_sub1" class="code" title="subfunction T = delegate_fld(X, nums, opts, whitenopt)">delegate_fld</a>(X, nums, opts, whitenopt);
+0093     <span class="keyword">case</span> <span class="string">'regdual'</span>
+0094         r = <a href="#_sub4" class="code" title="subfunction v = take_value(v0, defaultv)">take_value</a>(opts.rvalue, 1e-3);
+0095         whitenopt = {<span class="string">'reg'</span>, r};
+0096         T = <a href="#_sub1" class="code" title="subfunction T = delegate_fld(X, nums, opts, whitenopt)">delegate_fld</a>(X, nums, opts, whitenopt);
+0097     <span class="keyword">case</span> <span class="string">'pvldual'</span>
+0098         r = <a href="#_sub4" class="code" title="subfunction v = take_value(v0, defaultv)">take_value</a>(opts.rvalue, 2e-3);
+0099         whitenopt = {<span class="string">'gapprox'</span>, r};
+0100         T = <a href="#_sub1" class="code" title="subfunction T = delegate_fld(X, nums, opts, whitenopt)">delegate_fld</a>(X, nums, opts, whitenopt);
+0101     <span class="keyword">case</span> <span class="string">'nlda'</span>
+0102         T = <a href="#_sub2" class="code" title="subfunction T = delegate_nlda(X, nums, opts)">delegate_nlda</a>(X, nums, opts);
+0103     <span class="keyword">case</span> <span class="string">'dlda'</span>
+0104         T = <a href="#_sub3" class="code" title="subfunction T = delegate_dlda(X, nums, opts)">delegate_dlda</a>(X, nums, opts);
+0105     <span class="keyword">otherwise</span>
+0106         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0107             <span class="string">'Invalid LDA method %s'</span>, method);
+0108 <span class="keyword">end</span>
+0109 
+0110 
+0111 <span class="comment">%% Delegation wrapper</span>
+0112 
+0113 <a name="_sub1" href="#_subfunctions" class="code">function T = delegate_fld(X, nums, opts, whitenopt)</a>
+0114 
+0115 ropts.prepca = opts.prepca;
+0116 ropts.whiten = {<span class="string">'scheme'</span>, <span class="string">'std'</span>, <span class="string">'evproc'</span>, whitenopt};
+0117 ropts.dimset = opts.dimset;
+0118 ropts.Sb = opts.Sb;
+0119 ropts.Sw = opts.Sw;
+0120 ropts.weights = opts.weights;
+0121 
+0122 T = <a href="slfld.html" class="code" title="function T = slfld(X, nums, varargin)">slfld</a>(X, nums, ropts);
+0123 
+0124 
+0125 <a name="_sub2" href="#_subfunctions" class="code">function T = delegate_nlda(X, nums, opts)</a>
+0126 
+0127 ropts.prepca = opts.prepca;
+0128 ropts.pdimset = opts.pdimset;
+0129 ropts.dimset = opts.dimset;
+0130 ropts.Sb = opts.Sb;
+0131 ropts.Sw = opts.Sw;
+0132 ropts.weights = opts.weights;
+0133 
+0134 T = <a href="slnlda.html" class="code" title="function T = slnlda(X, nums, varargin)">slnlda</a>(X, nums, ropts);
+0135 
+0136 <a name="_sub3" href="#_subfunctions" class="code">function T = delegate_dlda(X, nums, opts)</a>
+0137 
+0138 ropts.pdimset = opts.pdimset;
+0139 ropts.Sb = opts.Sb;
+0140 ropts.Sw = opts.Sw;
+0141 ropts.weights = opts.weights;
+0142 
+0143 T = <a href="sldlda.html" class="code" title="function T = sldlda(X, nums, varargin)">sldlda</a>(X, nums, ropts);
+0144 
+0145 
+0146 <span class="comment">%% Auxiliary function</span>
+0147 
+0148 <a name="_sub4" href="#_subfunctions" class="code">function v = take_value(v0, defaultv)</a>
+0149 
+0150 <span class="keyword">if</span> isempty(v0)
+0151     v = defaultv;
+0152 <span class="keyword">else</span>
+0153     v = v0;
+0154 <span class="keyword">end</span>
+0155</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

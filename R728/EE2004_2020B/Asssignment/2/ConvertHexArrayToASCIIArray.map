@@ -1,0 +1,56 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Sun Mar 28 13:49:15 2021
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x0000ca
+                   .org_2       code   0x000500    program   0x000010
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x0000c9      
+                            0x000500    0x00050f      
+            218 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                 Bittiess   0x00002e    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                  Convert   0x000056    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                     Init   0x000082    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                    Init2   0x000086    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                      LSB   0x000096    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                     Loop   0x000076    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                      MSB   0x00008a    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                     Main   0x000004    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                   ShiftR   0x00009a    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                    array   0x000500    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                  f_Retlw   0x0000a2    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                  f_Table   0x000064    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     Main   0x000004    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                 Bittiess   0x00002e    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                  Convert   0x000056    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                  f_Table   0x000064    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                     Loop   0x000076    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                     Init   0x000082    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                    Init2   0x000086    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                      MSB   0x00008a    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                      LSB   0x000096    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                   ShiftR   0x00009a    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                  f_Retlw   0x0000a2    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+                    array   0x000500    program     static D:\idk\Downloads\uni\Yr2 SemB\EE2004 Microshit\Asssignment\2\ConvertHexArrayToASCIIArray.asm
+
+

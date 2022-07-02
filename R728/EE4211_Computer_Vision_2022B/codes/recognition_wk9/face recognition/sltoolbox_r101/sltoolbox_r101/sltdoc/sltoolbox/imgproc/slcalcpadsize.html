@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcalcpadsize</title>
+  <meta name="keywords" content="slcalcpadsize">
+  <meta name="description" content="SLCALCPADSIZE Calculates the size of padding">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">imgproc</a> &gt; slcalcpadsize.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\imgproc&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcalcpadsize
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCALCPADSIZE Calculates the size of padding</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [paddedsiz, roi, bmg] = slcalcpadsize(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCALCPADSIZE Calculates the size of padding
+
+ $ Syntax $
+   - [paddedsiz, roi, bmg] = slcalcpadsize(imgsize, bmg0)
+   - [paddedsiz, roi, bmg] = slcalcpadsize(imgsize, roi0, bmg0)
+
+ $ Arguments $
+   - imgsize:      The whole size of the image
+   - roi0:         The rectangle of the target region 
+                   in the form of [t, b, l, m]
+   - bmg0:         The required boundary margins for the target region
+                   in the form [tm, bm, lm, rm]
+   - paddedsize:   The size of the padded image
+   - roi:          The rectangle of the target region in the padded image
+   - bmg:          The boundary margins for padding on the whole image
+
+ $ Description $
+   - [paddedsiz, roi, bmg] = slcalcpadsize(imgsize, bmg0) calculates
+     the padding size when the target region is the whole image.
+
+   - [paddedsiz, roi, bmg] = slcalcpadsize(imgsize, roi0, bmg0) calculates
+     the padding size with the target region explicitly specified.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 1st, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/sltakeval.html" class="code" title="function varargout = sltakeval(A)">sltakeval</a>	SLTAKEVAL Extracts the values in an array/cell array to output</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slpixneighbors.html" class="code" title="function [R, pixinds] = slpixneighbors(img, filtersize, varargin)">slpixneighbors</a>	SLPIXNEIGHBORS Extracts the neighborhood of pixels from an image</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [paddedsiz, roi, bmg] = slcalcpadsize(varargin)</a>
+0002 <span class="comment">%SLCALCPADSIZE Calculates the size of padding</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [paddedsiz, roi, bmg] = slcalcpadsize(imgsize, bmg0)</span>
+0006 <span class="comment">%   - [paddedsiz, roi, bmg] = slcalcpadsize(imgsize, roi0, bmg0)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - imgsize:      The whole size of the image</span>
+0010 <span class="comment">%   - roi0:         The rectangle of the target region</span>
+0011 <span class="comment">%                   in the form of [t, b, l, m]</span>
+0012 <span class="comment">%   - bmg0:         The required boundary margins for the target region</span>
+0013 <span class="comment">%                   in the form [tm, bm, lm, rm]</span>
+0014 <span class="comment">%   - paddedsize:   The size of the padded image</span>
+0015 <span class="comment">%   - roi:          The rectangle of the target region in the padded image</span>
+0016 <span class="comment">%   - bmg:          The boundary margins for padding on the whole image</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $ Description $</span>
+0019 <span class="comment">%   - [paddedsiz, roi, bmg] = slcalcpadsize(imgsize, bmg0) calculates</span>
+0020 <span class="comment">%     the padding size when the target region is the whole image.</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">%   - [paddedsiz, roi, bmg] = slcalcpadsize(imgsize, roi0, bmg0) calculates</span>
+0023 <span class="comment">%     the padding size with the target region explicitly specified.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% $ History $</span>
+0026 <span class="comment">%   - Created by Dahua Lin, on Sep 1st, 2006</span>
+0027 <span class="comment">%</span>
+0028 
+0029 <span class="comment">%% parse and verify input arguments</span>
+0030 
+0031 <span class="keyword">if</span> nargin &lt; 2
+0032     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slcalcpadsize'</span>, 2);
+0033 <span class="keyword">end</span>
+0034 
+0035 imgsize = varargin{1};
+0036 h0 = imgsize(1); w0 = imgsize(2);
+0037 <span class="keyword">if</span> nargin == 2 
+0038     roi0 = [1, h0, 1, w0];
+0039     bmg0 = varargin{2};
+0040 <span class="keyword">else</span> 
+0041     <span class="keyword">if</span> isempty(varargin{2})
+0042         roi0 = [1, h0, 1, w0];
+0043     <span class="keyword">else</span>
+0044         roi0 = varargin{2};
+0045     <span class="keyword">end</span>
+0046     bmg0 = varargin{3};
+0047 <span class="keyword">end</span>
+0048 
+0049 <span class="comment">%% compute padding boundary</span>
+0050 
+0051 [t0, b0, l0, r0] = <a href="../../sltoolbox/utils/sltakeval.html" class="code" title="function varargout = sltakeval(A)">sltakeval</a>(roi0);
+0052 inner_mgs = [t0 - 1, h0 - b0, l0 - 1, w0 - r0];
+0053 
+0054 bmg = max(bmg0 - inner_mgs, 0);
+0055 
+0056 <span class="comment">%% compute padded size</span>
+0057 
+0058 ph = h0 + bmg(1) + bmg(2);
+0059 pw = w0 + bmg(3) + bmg(4);
+0060 paddedsiz = [ph, pw];
+0061 
+0062 <span class="comment">%% compute roi in padded image</span>
+0063 
+0064 roi = [bmg(1) + t0, bmg(1) + b0, bmg(3) + l0, bmg(3) + r0];
+0065</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of dataset</title>
+  <meta name="keywords" content="dataset">
+  <meta name="description" content="DATASET Constructs a dataset object (conform to DSDML)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">sltoolbox</a> &gt; <a href="../index.html">ExpDL</a> &gt; <a href="index.html">@dataset</a> &gt; dataset.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL\@dataset&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>dataset
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>DATASET Constructs a dataset object (conform to DSDML)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function DS = dataset(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">DATASET Constructs a dataset object (conform to DSDML)
+
+ $ Syntax $
+   - DS = dataset()
+   - DS = dataset(attribs)
+   - DS = dataset(attrname1, attrvalue1, ...)
+   - DS = dataset(filename)
+   - DS = dataset('from:fns', name, format, fns, labels);
+
+ $ Arguments $
+   - DS:           the dataset constructed
+   - attribs:      the struct of the attributes
+   - filename:     the DSDML file describing the data set.
+
+ $ Description $
+   - DS = dataset() constructs an empty data set with default attributes.
+   
+   - DS = dataset(attribs) constructs an empty data set with some 
+     attributes specified in the struct attribs.
+
+   - DS = dataset(attrname1, attrvalue1, ...) constructs an empty 
+     dataset with some attributes specified in the attribute list.
+
+   - DS = dataset(filename) constructs the dataset by loading it from
+     a DSDML file.
+
+   - DS = dataset('from:fns', name, format, fns, labels) constructs the 
+     dataset by using construct_dataset_fns.m
+
+ $ History $
+   - Created by Dahua Lin on Jul 23rd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="construct_dataset_filenames.html" class="code" title="function ds = construct_dataset_fns(ds, name, format, filenames, labels)">construct_dataset_filenames</a>	CONSTRUCT_DATASET_FNS Constructs Dataset object from filenames</li><li><a href="readfile.html" class="code" title="function DS = readfile(DS, filename)">readfile</a>	READFILE Reads the dataset from DSDML file</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../sltoolbox/fileio/slimgsetprep.html" class="code" title="function slimgsetprep(srcfolder, dstpath, matsize, maxsec)">slimgsetprep</a>	SLIMGSETPREP organizes the images in a MATLAB friendly way</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function DS = dataset_setattribs(DS, n, attrnames, attrvalues)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function DS = dataset(varargin)</a>
+0002 <span class="comment">%DATASET Constructs a dataset object (conform to DSDML)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - DS = dataset()</span>
+0006 <span class="comment">%   - DS = dataset(attribs)</span>
+0007 <span class="comment">%   - DS = dataset(attrname1, attrvalue1, ...)</span>
+0008 <span class="comment">%   - DS = dataset(filename)</span>
+0009 <span class="comment">%   - DS = dataset('from:fns', name, format, fns, labels);</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Arguments $</span>
+0012 <span class="comment">%   - DS:           the dataset constructed</span>
+0013 <span class="comment">%   - attribs:      the struct of the attributes</span>
+0014 <span class="comment">%   - filename:     the DSDML file describing the data set.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - DS = dataset() constructs an empty data set with default attributes.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%   - DS = dataset(attribs) constructs an empty data set with some</span>
+0020 <span class="comment">%     attributes specified in the struct attribs.</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">%   - DS = dataset(attrname1, attrvalue1, ...) constructs an empty</span>
+0023 <span class="comment">%     dataset with some attributes specified in the attribute list.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%   - DS = dataset(filename) constructs the dataset by loading it from</span>
+0026 <span class="comment">%     a DSDML file.</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">%   - DS = dataset('from:fns', name, format, fns, labels) constructs the</span>
+0029 <span class="comment">%     dataset by using construct_dataset_fns.m</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% $ History $</span>
+0032 <span class="comment">%   - Created by Dahua Lin on Jul 23rd, 2006</span>
+0033 <span class="comment">%</span>
+0034 
+0035 
+0036 <span class="comment">%% Parse the input arguments</span>
+0037 
+0038 cway = <span class="string">''</span>;
+0039 <span class="keyword">if</span> ~isempty(varargin)
+0040     <span class="keyword">if</span> length(varargin) == 1
+0041         <span class="keyword">if</span> ischar(varargin{1})
+0042             cway = <span class="string">'file'</span>;
+0043             filename = varargin{1};
+0044         <span class="keyword">elseif</span> isstruct(varargin{1})
+0045             cway = <span class="string">'attr.struct'</span>;
+0046             attrs = varargin{1};
+0047         <span class="keyword">else</span>
+0048             error(<span class="string">'dsdml:invalidarg'</span>, <span class="keyword">...</span>
+0049                 <span class="string">'Invalid input arguments for dataset construction'</span>);
+0050         <span class="keyword">end</span>
+0051     <span class="keyword">else</span>
+0052         <span class="keyword">switch</span> varargin{1}
+0053             <span class="keyword">case</span> <span class="string">'from:fns'</span>
+0054                 cway = <span class="string">'from:fns'</span>;
+0055                 params = varargin(2:end);
+0056             <span class="keyword">otherwise</span>
+0057                 cway = <span class="string">'attr.list'</span>;
+0058                 attrs = varargin;
+0059         <span class="keyword">end</span>        
+0060     <span class="keyword">end</span>
+0061 <span class="keyword">end</span>
+0062                     
+0063 
+0064 <span class="comment">%% Initialize the default empty dataset</span>
+0065 
+0066 DS.version = <span class="string">'1.00'</span>;
+0067 DS.name = [];
+0068 DS.unittype = [];
+0069 DS.format = [];
+0070 DS.author = [];
+0071 DS.description = [];
+0072 DS.attribs = [];
+0073 DS.units = [];
+0074 
+0075 DS = class(DS, <span class="string">'dataset'</span>);
+0076 
+0077 <span class="comment">%% Further construction</span>
+0078 
+0079 <span class="keyword">switch</span> cway
+0080     <span class="keyword">case</span> <span class="string">'file'</span>        
+0081         DS = <a href="readfile.html" class="code" title="function DS = readfile(DS, filename)">readfile</a>(DS, filename);
+0082         
+0083     <span class="keyword">case</span> <span class="string">'attr.struct'</span>
+0084         attrnames = fieldnames(attrs);
+0085         nattrs = length(attrnames);
+0086         attrvalues = cell(nattrs, 1);
+0087         <span class="keyword">for</span> i = 1 : nattrs
+0088             v = attrs.(attrnames{i});
+0089             attrvalues{i} = v;
+0090         <span class="keyword">end</span>
+0091         DS = <a href="#_sub1" class="code" title="subfunction DS = dataset_setattribs(DS, n, attrnames, attrvalues)">dataset_setattribs</a>(DS, nattrs, attrnames, attrvalues);
+0092         
+0093     <span class="keyword">case</span> <span class="string">'attr.list'</span>
+0094         len = length(attrs);
+0095         <span class="keyword">if</span> mod(len, 2) ~= 0
+0096             error(<span class="string">'dsdml:invalidarg'</span>, <span class="keyword">...</span>
+0097                 <span class="string">'The length of the input argument list should be even when it specifies attribute list'</span>);
+0098         <span class="keyword">end</span>
+0099         nattrs = len / 2;
+0100         attrnames = attrs(1:2:end)';
+0101         attrvalues = attrs(2:2:end)';
+0102         DS = <a href="#_sub1" class="code" title="subfunction DS = dataset_setattribs(DS, n, attrnames, attrvalues)">dataset_setattribs</a>(DS, nattrs, attrnames, attrvalues);       
+0103         
+0104     <span class="keyword">case</span> <span class="string">'from:fns'</span>
+0105         DS = <a href="construct_dataset_filenames.html" class="code" title="function ds = construct_dataset_fns(ds, name, format, filenames, labels)">construct_dataset_filenames</a>(DS, params{:});
+0106 <span class="keyword">end</span>
+0107 
+0108 
+0109 <span class="comment">%%  Sub functions</span>
+0110 
+0111 <a name="_sub1" href="#_subfunctions" class="code">function DS = dataset_setattribs(DS, n, attrnames, attrvalues)</a>
+0112 
+0113 <span class="comment">% check values</span>
+0114 <span class="keyword">for</span> i = 1 : n
+0115     <span class="keyword">if</span> ~ischar(attrvalues{i})
+0116         error(<span class="string">'dsdml:invalidarg'</span>, <span class="keyword">...</span>
+0117             <span class="string">'The %d attribute value is not a char string'</span>, i);
+0118     <span class="keyword">end</span>
+0119 <span class="keyword">end</span>
+0120 
+0121 <span class="comment">% set values</span>
+0122 S = DS;
+0123 
+0124 <span class="keyword">for</span> i = 1 : n
+0125     aname = attrnames{i};
+0126     aval = attrvalues{i};
+0127     
+0128     <span class="keyword">if</span> isfield(S, aname)
+0129         S.(aname) = aval;
+0130     <span class="keyword">else</span>
+0131         S.attribs.(aname) = aval;
+0132     <span class="keyword">end</span>
+0133     
+0134 <span class="keyword">end</span>
+0135 
+0136 DS = S;
+0137 
+0138</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

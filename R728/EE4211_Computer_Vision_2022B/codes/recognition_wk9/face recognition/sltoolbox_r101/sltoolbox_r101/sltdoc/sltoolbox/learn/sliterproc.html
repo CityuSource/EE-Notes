@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sliterproc</title>
+  <meta name="keywords" content="sliterproc">
+  <meta name="description" content="SLITERPROC Runs a general iterative process">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">learn</a> &gt; sliterproc.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\learn&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sliterproc
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLITERPROC Runs a general iterative process</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLITERPROC Runs a general iterative process
+
+ $ Syntax $
+   - objects = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, ...)
+   - [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, ...)
+
+ $ Arguments $
+   - objects:      The models and data referred to in the process
+                   The input one is the initial objects
+                   The output one is the resulting objects.
+   - iterfunctor:  the functor invoked in each iteration, in the form:
+                   objects = f(objects, ...)
+                   If the process needs to be recorded, it is like:
+                   [objects, rec] = f(objects, ...)
+   - cmpfunctor:   The functor to compare two set of objects and 
+                   determine whether the process is converged.
+                   It is in the following form:
+                   is_converged = f(objects_prev, objects_current, ...)
+   - hasrecord:    whether the process is recorded
+   - info:         The struct of iteration information
+                   - converged:  whether the process has been converged
+                   - numiters:   the number of iterations
+                   - records:    the struct array of the records
+                     (this field exists when the process is recorded)
+   
+ $ Description $
+   - objects = sliterproc(objects, iterfunctor, cmpfunctor, ...) runs
+     a specified iterative process on a set of models and data. 
+     You can specify the following properties to control the iteration:
+     \*
+     \t    Table.  Iteration Process Control Parameters
+     \h      name      &amp;        description
+           'maxiter'   &amp;  The maximum number of iterations 
+                          (default = inf)
+           'cvgcount'  &amp;  How many continous converged iteration is 
+                          satisfied before it stops the whole process.
+                          (default = 1)
+           'verbose'   &amp;  Whether to show the process of iteration     
+                          (default = true)
+           'titlebreak'&amp;  Whether to break the line after displaying
+                          the iteration title. (default = true);
+     \*
+     The properties given above are called iteration control properties.
+     They are typically specified as a whole in a cell array in the
+     caller.
+
+ $ History $
+   - Created by Dahua Lin on Aug 31, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>	SLEVALFUNCTOR Evaluates a functor</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li><li><a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>	SLSHAREDISP Displays message using a shared configuration</li><li><a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>	SLSHAREDISP_ATTACH Attachs to global display options</li><li><a href="../../sltoolbox/utils/slsharedisp_decindent.html" class="code" title="function slsharedisp_decindent(nsteps)">slsharedisp_decindent</a>	SLSHAREDISP_DECINDENT Decreases the indent of the displayer</li><li><a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>	SLSHAREDISP_DETACH Detachs current function from global display</li><li><a href="../../sltoolbox/utils/slsharedisp_incindent.html" class="code" title="function slsharedisp_incindent(nsteps)">slsharedisp_incindent</a>	SLSHAREDISP_INCINDENT Increases the indent of the displayer</li><li><a href="../../sltoolbox/utils/slsharedisp_word.html" class="code" title="function slsharedisp_word(varargin)">slsharedisp_word</a>	SLSHAREDISP_WORD Displays message without line breaking</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slproglearn.html" class="code" title="function [models, info] = slproglearn(source, getter, learnfunctor, varargin)">slproglearn</a>	SLPROGLEARN Performs Progressive Learning from sample source</li><li><a href="slreevallearn.html" class="code" title="function [models, Q, info] = slreevallearn(models, Q, data, estfunctor, evalfunctor, cmpfunctor, varargin)">slreevallearn</a>	SLREEVALLEARN Performs an iterative learning based on re-evaluation</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, varargin)</a>
+0002 <span class="comment">%SLITERPROC Runs a general iterative process</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - objects = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, ...)</span>
+0006 <span class="comment">%   - [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - objects:      The models and data referred to in the process</span>
+0010 <span class="comment">%                   The input one is the initial objects</span>
+0011 <span class="comment">%                   The output one is the resulting objects.</span>
+0012 <span class="comment">%   - iterfunctor:  the functor invoked in each iteration, in the form:</span>
+0013 <span class="comment">%                   objects = f(objects, ...)</span>
+0014 <span class="comment">%                   If the process needs to be recorded, it is like:</span>
+0015 <span class="comment">%                   [objects, rec] = f(objects, ...)</span>
+0016 <span class="comment">%   - cmpfunctor:   The functor to compare two set of objects and</span>
+0017 <span class="comment">%                   determine whether the process is converged.</span>
+0018 <span class="comment">%                   It is in the following form:</span>
+0019 <span class="comment">%                   is_converged = f(objects_prev, objects_current, ...)</span>
+0020 <span class="comment">%   - hasrecord:    whether the process is recorded</span>
+0021 <span class="comment">%   - info:         The struct of iteration information</span>
+0022 <span class="comment">%                   - converged:  whether the process has been converged</span>
+0023 <span class="comment">%                   - numiters:   the number of iterations</span>
+0024 <span class="comment">%                   - records:    the struct array of the records</span>
+0025 <span class="comment">%                     (this field exists when the process is recorded)</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% $ Description $</span>
+0028 <span class="comment">%   - objects = sliterproc(objects, iterfunctor, cmpfunctor, ...) runs</span>
+0029 <span class="comment">%     a specified iterative process on a set of models and data.</span>
+0030 <span class="comment">%     You can specify the following properties to control the iteration:</span>
+0031 <span class="comment">%     \*</span>
+0032 <span class="comment">%     \t    Table.  Iteration Process Control Parameters</span>
+0033 <span class="comment">%     \h      name      &amp;        description</span>
+0034 <span class="comment">%           'maxiter'   &amp;  The maximum number of iterations</span>
+0035 <span class="comment">%                          (default = inf)</span>
+0036 <span class="comment">%           'cvgcount'  &amp;  How many continous converged iteration is</span>
+0037 <span class="comment">%                          satisfied before it stops the whole process.</span>
+0038 <span class="comment">%                          (default = 1)</span>
+0039 <span class="comment">%           'verbose'   &amp;  Whether to show the process of iteration</span>
+0040 <span class="comment">%                          (default = true)</span>
+0041 <span class="comment">%           'titlebreak'&amp;  Whether to break the line after displaying</span>
+0042 <span class="comment">%                          the iteration title. (default = true);</span>
+0043 <span class="comment">%     \*</span>
+0044 <span class="comment">%     The properties given above are called iteration control properties.</span>
+0045 <span class="comment">%     They are typically specified as a whole in a cell array in the</span>
+0046 <span class="comment">%     caller.</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">% $ History $</span>
+0049 <span class="comment">%   - Created by Dahua Lin on Aug 31, 2006</span>
+0050 <span class="comment">%</span>
+0051 
+0052 <span class="comment">%% parse and verify input</span>
+0053 
+0054 <span class="keyword">if</span> nargin &lt; 4
+0055     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sliterproc'</span>, 4);
+0056 <span class="keyword">end</span>
+0057 
+0058 opts.maxiter = inf;
+0059 opts.cvgcount = 1;
+0060 opts.verbose = true;
+0061 opts.titlebreak = true;
+0062 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0063 
+0064 <span class="comment">%% Main skeleton</span>
+0065 
+0066 <a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>(<span class="string">'sliterproc'</span>, <span class="string">'show'</span>, opts.verbose);
+0067 
+0068 niter = 0;
+0069 nconverged = 0;
+0070 <span class="keyword">while</span> niter &lt; opts.maxiter &amp;&amp; nconverged &lt; opts.cvgcount
+0071     
+0072     niter = niter + 1;
+0073     
+0074     <span class="keyword">if</span> opts.titlebreak
+0075         <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'Iteration %d'</span>, niter);
+0076     <span class="keyword">else</span>
+0077         <a href="../../sltoolbox/utils/slsharedisp_word.html" class="code" title="function slsharedisp_word(varargin)">slsharedisp_word</a>(<span class="string">'Iteration %d: '</span>, niter);
+0078     <span class="keyword">end</span>
+0079     
+0080     <a href="../../sltoolbox/utils/slsharedisp_incindent.html" class="code" title="function slsharedisp_incindent(nsteps)">slsharedisp_incindent</a>;
+0081     
+0082     <span class="comment">% run iteration</span>
+0083     objects_prev = objects;
+0084     <span class="keyword">if</span> hasrecord
+0085         [objects, records(niter, 1)] = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(iterfunctor, objects);
+0086     <span class="keyword">else</span>
+0087         objects = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(iterfunctor, objects);
+0088     <span class="keyword">end</span>
+0089     
+0090     <span class="comment">% compare and determine convergence</span>
+0091     isconverged = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(cmpfunctor, objects_prev, objects);
+0092     <span class="keyword">if</span> isconverged
+0093         nconverged = nconverged + 1;
+0094     <span class="keyword">else</span>
+0095         nconverged = 0;
+0096     <span class="keyword">end</span>        
+0097     
+0098     <a href="../../sltoolbox/utils/slsharedisp_decindent.html" class="code" title="function slsharedisp_decindent(nsteps)">slsharedisp_decindent</a>;
+0099     
+0100 <span class="keyword">end</span>
+0101 
+0102 isconverged = (nconverged &gt;= opts.cvgcount);
+0103 <span class="keyword">if</span> isconverged
+0104     <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'Iteration process converged'</span>);
+0105 <span class="keyword">end</span>
+0106 
+0107 
+0108 <a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>();
+0109 
+0110 <span class="comment">%% Output information</span>
+0111 
+0112 <span class="keyword">if</span> nargout &gt;= 2
+0113     info.converged = isconverged;
+0114     info.numiters = niter;
+0115     <span class="keyword">if</span> hasrecord
+0116         info.records = records;
+0117     <span class="keyword">end</span>
+0118 <span class="keyword">end</span>
+0119 
+0120</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

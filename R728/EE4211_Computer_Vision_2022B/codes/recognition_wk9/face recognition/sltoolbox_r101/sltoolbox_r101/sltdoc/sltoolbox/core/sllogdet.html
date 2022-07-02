@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sllogdet</title>
+  <meta name="keywords" content="sllogdet">
+  <meta name="description" content="SLLOGDET Computes the logarithm of determinant of a matrix in a robust way">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">core</a> &gt; sllogdet.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\core&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sllogdet
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLLOGDET Computes the logarithm of determinant of a matrix in a robust way</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function r = sllogdet(A) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLLOGDET Computes the logarithm of determinant of a matrix in a robust way
+
+ $ Syntax $
+   - r = sllogdet(A)
+
+ $ Arguments $
+   - A:       the square matrix whose log-determinant is to be solved
+   - r:       the log-determinant of A
+
+ $ Description $
+   - r = sllogdet(A) computes the logarithm of (absolute )determinant of a square
+     matrix A in a robust way, to reduce the risk of underflow or overflow.
+
+ $ Remarks $
+   - If the matrix is singular, inf or -inf would be return.
+
+ $ History $
+   - Created by Dahua Lin on Dec 28th, 2005</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/stat/slgausspdf.html" class="code" title="function P = slgausspdf(GS, X, varargin)">slgausspdf</a>	SLGAUSSPDF Computes the probability density of Gaussian models</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function r = sllogdet(A)</a>
+0002 <span class="comment">%SLLOGDET Computes the logarithm of determinant of a matrix in a robust way</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - r = sllogdet(A)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - A:       the square matrix whose log-determinant is to be solved</span>
+0009 <span class="comment">%   - r:       the log-determinant of A</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - r = sllogdet(A) computes the logarithm of (absolute )determinant of a square</span>
+0013 <span class="comment">%     matrix A in a robust way, to reduce the risk of underflow or overflow.</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ Remarks $</span>
+0016 <span class="comment">%   - If the matrix is singular, inf or -inf would be return.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $ History $</span>
+0019 <span class="comment">%   - Created by Dahua Lin on Dec 28th, 2005</span>
+0020 <span class="comment">%</span>
+0021 
+0022 <span class="comment">%% parse and verify input arguments</span>
+0023 <span class="keyword">if</span> ndims(A) ~= 2
+0024     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'A should be a 2D matrix'</span>);
+0025 <span class="keyword">end</span>
+0026 d = size(A, 1);
+0027 <span class="keyword">if</span> size(A, 2) ~= d
+0028     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'A shoule be a square matrix'</span>);
+0029 <span class="keyword">end</span>
+0030 
+0031 <span class="comment">%% compute</span>
+0032 
+0033 <span class="comment">% triangular decomposition</span>
+0034 [L, U] = lu(A);
+0035 diagU = diag(U);
+0036 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(L);
+0037 clear L U;
+0038 
+0039 <span class="comment">% sign controlling</span>
+0040 neg_u_entries = find(diagU &lt; 0);
+0041 <span class="keyword">if</span> ~isempty(neg_u_entries)
+0042     diagU(neg_u_entries) = -diagU(neg_u_entries);
+0043 <span class="keyword">end</span>
+0044 
+0045 <span class="comment">% log-product</span>
+0046 wid = <span class="string">'MATLAB:log:logOfZero'</span>;
+0047 st = warning(<span class="string">'query'</span>, wid);
+0048 st = st.state;
+0049 
+0050 warning(<span class="string">'off'</span>, wid);
+0051 r = sum(log(diagU));
+0052 warning(st, wid);
+0053 
+0054 
+0055 
+0056</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

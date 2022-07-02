@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sltensor_svd</title>
+  <meta name="keywords" content="sltensor_svd">
+  <meta name="description" content="SLTENSOR_SVD Performs a Higher-Order SVD on a Tensor">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">tensor</a> &gt; sltensor_svd.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\tensor&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sltensor_svd
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLTENSOR_SVD Performs a Higher-Order SVD on a Tensor</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = sltensor_svd(T, n) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLTENSOR_SVD Performs a Higher-Order SVD on a Tensor
+
+ $ Syntax $
+   - [S, U1, U2, ...] = sltensor_svd(T)
+   - [S, U1, U2, ...] = sltensor_svd(T, n)
+   - [S, Us] = sltensor_svd(...)
+
+ $ Description $
+   - [S, U1, U2, ...] = sltensor_svd(T) Performs a Higher Order Singular Value
+   Decomposition to a Tensor T. In the output arguments, S is the core
+   tensor, U1, U2, ... are the singular vector matrices of mode 1, 2,...
+
+   - [S, U1, U2, ...] = sltensor_svd(T, n) Here n specifies the order of the
+   tensor T, n should be not less than ndims(T). If n &gt; ndims(T) is just
+   regarded as a tensor of dimensions d1xd2x...x1. 
+
+   - [S, Us] = sltensor_svd(...) where all mode matrices are returned to Us,
+   which is an 1 x n cell array, with each cell containing a mode matrix.
+ 
+ $ History $
+   - Created by Dahua Lin on Dec 17th, 2005</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sltensor_multiply.html" class="code" title="function T2 = sltensor_multiply(T, varargin)">sltensor_multiply</a>	SLTENSOR_MULTIPLY Multiplies a tensor and a matrix</li><li><a href="sltensor_unfold.html" class="code" title="function M = sltensor_unfold(T, k)">sltensor_unfold</a>	SLTENSOR_UNFOLD Unfolds a tensor to a matrix</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = sltensor_svd(T, n)</a>
+0002 <span class="comment">%SLTENSOR_SVD Performs a Higher-Order SVD on a Tensor</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [S, U1, U2, ...] = sltensor_svd(T)</span>
+0006 <span class="comment">%   - [S, U1, U2, ...] = sltensor_svd(T, n)</span>
+0007 <span class="comment">%   - [S, Us] = sltensor_svd(...)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $ Description $</span>
+0010 <span class="comment">%   - [S, U1, U2, ...] = sltensor_svd(T) Performs a Higher Order Singular Value</span>
+0011 <span class="comment">%   Decomposition to a Tensor T. In the output arguments, S is the core</span>
+0012 <span class="comment">%   tensor, U1, U2, ... are the singular vector matrices of mode 1, 2,...</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%   - [S, U1, U2, ...] = sltensor_svd(T, n) Here n specifies the order of the</span>
+0015 <span class="comment">%   tensor T, n should be not less than ndims(T). If n &gt; ndims(T) is just</span>
+0016 <span class="comment">%   regarded as a tensor of dimensions d1xd2x...x1.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%   - [S, Us] = sltensor_svd(...) where all mode matrices are returned to Us,</span>
+0019 <span class="comment">%   which is an 1 x n cell array, with each cell containing a mode matrix.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% $ History $</span>
+0022 <span class="comment">%   - Created by Dahua Lin on Dec 17th, 2005</span>
+0023 <span class="comment">%</span>
+0024 
+0025 <span class="comment">%% parse and verify the arguments</span>
+0026 slchknargs(nargin, 1);
+0027 n0 = ndims(T);
+0028 <span class="keyword">if</span> nargin == 1
+0029     n = n0;
+0030 <span class="keyword">else</span>
+0031     <span class="keyword">if</span> n &lt; n0;
+0032         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0033             <span class="string">'The order %d is too small'</span>, n);
+0034     <span class="keyword">end</span>
+0035 <span class="keyword">end</span>
+0036 <span class="keyword">if</span> nargout &gt; 2 &amp;&amp; nargout ~= n+1
+0037     error(<span class="string">'sltoolbox:invalidnargout'</span>, <span class="keyword">...</span>
+0038         <span class="string">'The number of outputs is not valid'</span>);
+0039 <span class="keyword">end</span>
+0040 
+0041 <span class="comment">%% compute</span>
+0042 
+0043 Us = cell(n, 1);
+0044 S = T;
+0045 <span class="keyword">for</span> i = 1 : n0
+0046     M = <a href="sltensor_unfold.html" class="code" title="function M = sltensor_unfold(T, k)">sltensor_unfold</a>(T, i);
+0047     [d1, d2] = size(M);
+0048     <span class="keyword">if</span> d1 &lt; d2
+0049         [V, D, U] = svd(M', 0);
+0050     <span class="keyword">else</span>
+0051         [U, D, V] = svd(M, 0);
+0052     <span class="keyword">end</span>
+0053     <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(D, V);
+0054     clear D V;
+0055     
+0056     Us{i} = U;
+0057     S = <a href="sltensor_multiply.html" class="code" title="function T2 = sltensor_multiply(T, varargin)">sltensor_multiply</a>(S, U', i);
+0058 <span class="keyword">end</span>
+0059 <span class="keyword">if</span> n &gt; n0
+0060     <span class="keyword">for</span> i = n0+1 : n
+0061         Us{i} = 1;
+0062     <span class="keyword">end</span>
+0063 <span class="keyword">end</span>
+0064 
+0065 <span class="comment">%% output</span>
+0066 varargout{1} = S;
+0067 <span class="keyword">if</span> nargout == 2
+0068     varargout{2} = Us;
+0069 <span class="keyword">else</span>
+0070     varargout(2:n+1) = Us;
+0071 <span class="keyword">end</span>
+0072 
+0073 
+0074     
+0075 
+0076 
+0077 
+0078 
+0079 
+0080 
+0081     
+0082</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of edl_readenvvars</title>
+  <meta name="keywords" content="edl_readenvvars">
+  <meta name="description" content="EDL_READENVVARS Reads in a file with environment variables">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">ExpDL</a> &gt; edl_readenvvars.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>edl_readenvvars
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>EDL_READENVVARS Reads in a file with environment variables</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function S = edl_readenvvars(envfile) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">EDL_READENVVARS Reads in a file with environment variables
+
+ $ Syntax $
+   - S = edl_readenvvars(envfile)
+
+ $ Arguments $
+   - envfile:      the environment filename
+   - S:            the struct of all environment variables
+
+ $ Description $
+   - S = edl_readenvvars(envfile) reads in a set of environment variables
+     from an assignment file. The file contains a set of assignment 
+     string, and some comments (starting with # or % or /).
+
+ $ History $
+   - Created by Dahua Lin, on Aug 10th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/fileio/slreadtext.html" class="code" title="function T = slreadtext(filename)">slreadtext</a>	SLREADTEXT Reads in a text file into a cell array</li><li><a href="../../sltoolbox/text/slcompresstext.html" class="code" title="function Tc = slcompresstext(T, varargin)">slcompresstext</a>	SLCOMPRESSTEXT Compresses a cell array of text</li><li><a href="../../sltoolbox/text/slparse_assignment.html" class="code" title="function [name, value] = slparse_assignment(str)">slparse_assignment</a>	SLPARSE_ASSIGNMENT Parses an assignment string</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_readexpdefs.html" class="code" title="function ED = edl_readexpdefs(filename)">edl_readexpdefs</a>	EDL_READEXPDEFS Reads in an experiment definition from XML file</li><li><a href="edl_readexpdefs_old.html" class="code" title="function S = edl_readexpdefs(deffile)">edl_readexpdefs_old</a>	EDL_READEXPDEFS Reads in experiment definition XML file</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function b = iscomment(line)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function S = edl_readenvvars(envfile)</a>
+0002 <span class="comment">%EDL_READENVVARS Reads in a file with environment variables</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - S = edl_readenvvars(envfile)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - envfile:      the environment filename</span>
+0009 <span class="comment">%   - S:            the struct of all environment variables</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - S = edl_readenvvars(envfile) reads in a set of environment variables</span>
+0013 <span class="comment">%     from an assignment file. The file contains a set of assignment</span>
+0014 <span class="comment">%     string, and some comments (starting with # or % or /).</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ History $</span>
+0017 <span class="comment">%   - Created by Dahua Lin, on Aug 10th, 2006</span>
+0018 <span class="comment">%</span>
+0019 
+0020 <span class="comment">%% read file</span>
+0021 
+0022 T = <a href="../../sltoolbox/fileio/slreadtext.html" class="code" title="function T = slreadtext(filename)">slreadtext</a>(envfile);
+0023 T = <a href="../../sltoolbox/text/slcompresstext.html" class="code" title="function Tc = slcompresstext(T, varargin)">slcompresstext</a>(T);
+0024 
+0025 <span class="comment">%% parse assignments</span>
+0026 
+0027 n = length(T);
+0028 S = [];
+0029 
+0030 <span class="keyword">for</span> i = 1 : n
+0031     
+0032     curline = T{i};
+0033     <span class="keyword">if</span> ~<a href="#_sub1" class="code" title="subfunction b = iscomment(line)">iscomment</a>(curline)
+0034         [curname, curval] = <a href="../../sltoolbox/text/slparse_assignment.html" class="code" title="function [name, value] = slparse_assignment(str)">slparse_assignment</a>(curline);
+0035         S.(curname) = curval;
+0036     <span class="keyword">end</span>    
+0037     
+0038 <span class="keyword">end</span>
+0039 
+0040 <span class="comment">%% Auxiliary function</span>
+0041 
+0042 <a name="_sub1" href="#_subfunctions" class="code">function b = iscomment(line)</a>
+0043 
+0044 b = (line(1) == <span class="string">'#'</span> || line(1) == <span class="string">'%'</span> || line(1) == <span class="string">'/'</span>);</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

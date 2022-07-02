@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcovpca</title>
+  <meta name="keywords" content="slcovpca">
+  <meta name="description" content="SLCOVPCA Trains a PCA with the covariance matrix given">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace</a> &gt; slcovpca.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcovpca
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCOVPCA Trains a PCA with the covariance matrix given</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function S = slcovpca(vmean, C, preserve) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCOVPCA Trains a PCA with the covariance matrix given
+
+ $ Syntax $
+   - S = slcovpca(vmean, C)
+   - S = slcovpca(vmean, C, preserve)
+
+ $ Arguments $
+   - vmean:    the mean vector
+               (set vmean to zero indicates a zero mean vector)
+   - C:        the covariance matrix
+   - preserve: the scheme of determinaton of the subspace dimension
+               default = {'rank'}
+   - S:        the struct of PCA model
+
+ $ History $
+   - Created by Dahua Lin, on Aug 17, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="sldim_by_eigval.html" class="code" title="function d = sldim_by_eigval(eigvals, sch, varargin)">sldim_by_eigval</a>	SLDIM_BY_EIGVAL Determines the dimension of principal subspace by eigenvalues</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function S = slcovpca(vmean, C, preserve)</a>
+0002 <span class="comment">%SLCOVPCA Trains a PCA with the covariance matrix given</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - S = slcovpca(vmean, C)</span>
+0006 <span class="comment">%   - S = slcovpca(vmean, C, preserve)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - vmean:    the mean vector</span>
+0010 <span class="comment">%               (set vmean to zero indicates a zero mean vector)</span>
+0011 <span class="comment">%   - C:        the covariance matrix</span>
+0012 <span class="comment">%   - preserve: the scheme of determinaton of the subspace dimension</span>
+0013 <span class="comment">%               default = {'rank'}</span>
+0014 <span class="comment">%   - S:        the struct of PCA model</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ History $</span>
+0017 <span class="comment">%   - Created by Dahua Lin, on Aug 17, 2006</span>
+0018 <span class="comment">%</span>
+0019 
+0020 
+0021 [evals, evecs] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(C);
+0022 
+0023 evals = max(evals, 0);
+0024 <span class="keyword">if</span> nargin &lt; 3 || isempty(preserve)
+0025     k = <a href="sldim_by_eigval.html" class="code" title="function d = sldim_by_eigval(eigvals, sch, varargin)">sldim_by_eigval</a>(evals);
+0026 <span class="keyword">else</span>
+0027     k = <a href="sldim_by_eigval.html" class="code" title="function d = sldim_by_eigval(eigvals, sch, varargin)">sldim_by_eigval</a>(evals, preserve{:});
+0028 <span class="keyword">end</span>
+0029 
+0030 d = size(C, 1);
+0031 total_energy = sum(evals);
+0032 <span class="keyword">if</span> k &lt; d
+0033     evals = evals(1:k);
+0034     evecs = evecs(:, 1:k);
+0035     prin_energy = sum(evals);
+0036 <span class="keyword">else</span>
+0037     prin_energy = total_energy;
+0038 <span class="keyword">end</span>
+0039 
+0040 
+0041 S.sampledim = d;
+0042 S.feadim = k;
+0043 S.support = [];
+0044 <span class="keyword">if</span> isequal(vmean, 0)
+0045     S.vmean = zeros(d, 1);
+0046 <span class="keyword">else</span>
+0047     S.vmean = vmean;
+0048 <span class="keyword">end</span>
+0049 S.P = evecs;
+0050 S.eigvals = evals;
+0051 S.residue = total_energy - prin_energy;
+0052 S.energyratio = prin_energy / total_energy;
+0053 
+0054 
+0055 
+0056 
+0057 
+0058</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcumuscore</title>
+  <meta name="keywords" content="slcumuscore">
+  <meta name="description" content="SLCUMUSCORE Computes the cumulative score on multi-class classification">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">perfeval</a> &gt; slcumuscore.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\perfeval&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcumuscore
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCUMUSCORE Computes the cumulative score on multi-class classification</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function cs = slcumuscore(scores, clabels, qlabels, op, maxr) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCUMUSCORE Computes the cumulative score on multi-class classification
+
+ $ Syntax $
+   - cs = slcumuscore(scores, clabels, qlabels, op)
+   - cs = slcumuscore(scores, clabels, qlabels, op, maxr)
+
+ $ Arguments $
+   - scores:           the scores to support the classification
+   - clabels:          the labels of classes
+   - qlabels:          the groundtruth of the labels of query samples
+   - op:               the option of the score
+   - maxr:             the maximum number of ranked classes
+   - cs:               the matrix of cumulative scores
+
+ $ Description $
+   - cs = slcumuscore(scores, clabels, qlabels, op) Computes the 
+     cumulative scores of score-based classification. Suppose there 
+     are m classes and n query samples to be classified. Then scores
+     should be an m x n matrix with the entry at the i-th row and j-th
+     column representing the score of the j-th sample belonging to the
+     the i-th class. clabels and qlabels should be length-m and length-n
+     vectors respectively. op states the attributes of the scores, which
+     takes either of the two values: 'high' or 'low'. If op is 'high', a 
+     higher score indicates a better match; if op is 'low', a lower score
+     indicates a better match. The cumulative score will be computed
+     up to the number of all classes.
+
+   - cs = slcumuscore(scores, clabels, qlabels, op, maxr) computes the
+     cumulative scores of score-based classification up to the number 
+     of classes specified by maxr.
+
+ $ History $
+   - Created by Dahua Lin on Jun 10th, 2005
+   - Modified by Dahua Lin on May 1st, 2006
+     - Base on the sltoolbox v4</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function cs = slcumuscore(scores, clabels, qlabels, op, maxr)</a>
+0002 <span class="comment">%SLCUMUSCORE Computes the cumulative score on multi-class classification</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - cs = slcumuscore(scores, clabels, qlabels, op)</span>
+0006 <span class="comment">%   - cs = slcumuscore(scores, clabels, qlabels, op, maxr)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - scores:           the scores to support the classification</span>
+0010 <span class="comment">%   - clabels:          the labels of classes</span>
+0011 <span class="comment">%   - qlabels:          the groundtruth of the labels of query samples</span>
+0012 <span class="comment">%   - op:               the option of the score</span>
+0013 <span class="comment">%   - maxr:             the maximum number of ranked classes</span>
+0014 <span class="comment">%   - cs:               the matrix of cumulative scores</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - cs = slcumuscore(scores, clabels, qlabels, op) Computes the</span>
+0018 <span class="comment">%     cumulative scores of score-based classification. Suppose there</span>
+0019 <span class="comment">%     are m classes and n query samples to be classified. Then scores</span>
+0020 <span class="comment">%     should be an m x n matrix with the entry at the i-th row and j-th</span>
+0021 <span class="comment">%     column representing the score of the j-th sample belonging to the</span>
+0022 <span class="comment">%     the i-th class. clabels and qlabels should be length-m and length-n</span>
+0023 <span class="comment">%     vectors respectively. op states the attributes of the scores, which</span>
+0024 <span class="comment">%     takes either of the two values: 'high' or 'low'. If op is 'high', a</span>
+0025 <span class="comment">%     higher score indicates a better match; if op is 'low', a lower score</span>
+0026 <span class="comment">%     indicates a better match. The cumulative score will be computed</span>
+0027 <span class="comment">%     up to the number of all classes.</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%   - cs = slcumuscore(scores, clabels, qlabels, op, maxr) computes the</span>
+0030 <span class="comment">%     cumulative scores of score-based classification up to the number</span>
+0031 <span class="comment">%     of classes specified by maxr.</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">% $ History $</span>
+0034 <span class="comment">%   - Created by Dahua Lin on Jun 10th, 2005</span>
+0035 <span class="comment">%   - Modified by Dahua Lin on May 1st, 2006</span>
+0036 <span class="comment">%     - Base on the sltoolbox v4</span>
+0037 <span class="comment">%</span>
+0038 
+0039 <span class="comment">%% parse and verify input arguments</span>
+0040 <span class="keyword">if</span> nargin &lt; 4
+0041     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slcumuscore'</span>, 4);
+0042 <span class="keyword">end</span>
+0043 <span class="keyword">if</span> ndims(scores) ~= 2
+0044     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0045         <span class="string">'The matrix scores should be a 2D matrix'</span>);
+0046 <span class="keyword">end</span>
+0047 [nclasses, nsamples] = size(scores);
+0048 qlabels = qlabels(:);
+0049 clabels = clabels(:);
+0050 <span class="keyword">if</span> length(clabels) ~= nclasses || length(qlabels) ~= nsamples
+0051     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0052         <span class="string">'the labels vectors do not match the size of scores'</span>);
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="keyword">if</span> nargin &lt; 5 || isempty(maxr)
+0056     maxr = nclasses;
+0057 <span class="keyword">end</span>
+0058 
+0059 <span class="comment">%% compute</span>
+0060 <span class="keyword">switch</span> op
+0061     <span class="keyword">case</span> <span class="string">'low'</span>
+0062         [ss, sp] = sort(scores, 1, <span class="string">'ascend'</span>);
+0063     <span class="keyword">case</span> <span class="string">'high'</span>
+0064         [ss, sp] = sort(scores, 1, <span class="string">'descend'</span>);
+0065     <span class="keyword">otherwise</span>
+0066         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0067             <span class="string">'Invalid option %s for slcumuscore'</span>, op);
+0068 <span class="keyword">end</span>
+0069 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(ss);
+0070 
+0071 <span class="keyword">if</span> maxr &lt; nclasses
+0072     sp = sp(1:maxr, :);
+0073 <span class="keyword">else</span>
+0074     maxr = nclasses;
+0075 <span class="keyword">end</span>
+0076 decisions = clabels(sp);
+0077 matches = (decisions == repmat(qlabels', [maxr, 1]));
+0078 
+0079 cs = cumsum(sum(matches, 2), 1) / nsamples;
+0080 
+0081</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

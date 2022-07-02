@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slgaussrnd</title>
+  <meta name="keywords" content="slgaussrnd">
+  <meta name="description" content="SLGAUSSRND Generates random samples from Gaussian models">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slgaussrnd.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slgaussrnd
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLGAUSSRND Generates random samples from Gaussian models</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function X = slgaussrnd(GS, nums) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLGAUSSRND Generates random samples from Gaussian models
+
+ $ Syntax $
+   - X = slgaussrnd(GS, nums)
+
+ $ Arguments $
+   - GS:       The Gaussian model struct
+   - nums:     the number of samples from the models
+
+ $ Description $
+   - X = slgaussrnd(GS, nums) randomly draws samples from Gaussian models.
+     Suppose there are k constituent models. Then nums can be of
+     the following forms:
+       - length-k vector, representing the number of samples of the
+         models respectively.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 24, 2006
+   - Modified by Dahua Lin, on Sep 10, 2006
+       - Replace sladd by sladdvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="slgausstype.html" class="code" title="function tyinfo = slgausstype(GS)">slgausstype</a>	SLGAUSSTYPE Judges the type of a Gaussian model struct</li><li><a href="../../sltoolbox/utils/slpartition.html" class="code" title="function PS = slpartition(whole_size, spec_item, varargin)">slpartition</a>	SLPARTITION Partition a range into blocks in a specified manner</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function X = gensamples_univar(vmean, var, d, n)</a></li><li><a href="#_sub2" class="code">function X = gensamples_diagvar(vmean, vars, d, n)</a></li><li><a href="#_sub3" class="code">function X = gensamples_covar(vmean, C, d, n)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function X = slgaussrnd(GS, nums)</a>
+0002 <span class="comment">%SLGAUSSRND Generates random samples from Gaussian models</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - X = slgaussrnd(GS, nums)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - GS:       The Gaussian model struct</span>
+0009 <span class="comment">%   - nums:     the number of samples from the models</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - X = slgaussrnd(GS, nums) randomly draws samples from Gaussian models.</span>
+0013 <span class="comment">%     Suppose there are k constituent models. Then nums can be of</span>
+0014 <span class="comment">%     the following forms:</span>
+0015 <span class="comment">%       - length-k vector, representing the number of samples of the</span>
+0016 <span class="comment">%         models respectively.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $ History $</span>
+0019 <span class="comment">%   - Created by Dahua Lin, on Aug 24, 2006</span>
+0020 <span class="comment">%   - Modified by Dahua Lin, on Sep 10, 2006</span>
+0021 <span class="comment">%       - Replace sladd by sladdvec to increase efficiency</span>
+0022 <span class="comment">%</span>
+0023 
+0024 <span class="comment">%% parse and verify input arguments</span>
+0025 
+0026 tyinfo = <a href="slgausstype.html" class="code" title="function tyinfo = slgausstype(GS)">slgausstype</a>(GS);
+0027 d = GS.dim;
+0028 k = GS.nmodels;
+0029 
+0030 <span class="keyword">if</span> length(nums) ~= k
+0031     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0032         <span class="string">'The nums should be a length-k vector'</span>);
+0033 <span class="keyword">end</span>
+0034 
+0035 n = sum(nums);
+0036 ps = <a href="../../sltoolbox/utils/slpartition.html" class="code" title="function PS = slpartition(whole_size, spec_item, varargin)">slpartition</a>(n, <span class="string">'blksizes'</span>, nums);
+0037 
+0038 <span class="comment">%% generate samples</span>
+0039 
+0040 X = zeros(d, n);
+0041 
+0042 <span class="keyword">switch</span> tyinfo.varform
+0043     <span class="keyword">case</span> <span class="string">'univar'</span>
+0044         <span class="keyword">if</span> tyinfo.sharevar
+0045             <span class="keyword">for</span> i = 1 : k
+0046                 si = ps.sinds(i); ei = ps.einds(i);
+0047                 X(:, si:ei) = <a href="#_sub1" class="code" title="subfunction X = gensamples_univar(vmean, var, d, n)">gensamples_univar</a>(GS.means(:,i), GS.vars, d, nums(i));
+0048             <span class="keyword">end</span>
+0049         <span class="keyword">else</span>
+0050             <span class="keyword">for</span> i = 1 : k
+0051                 si = ps.sinds(i); ei = ps.einds(i);
+0052                 X(:, si:ei) = <a href="#_sub1" class="code" title="subfunction X = gensamples_univar(vmean, var, d, n)">gensamples_univar</a>(GS.means(:,i), GS.vars(i), d, nums(i));
+0053             <span class="keyword">end</span>                
+0054         <span class="keyword">end</span>
+0055         
+0056     <span class="keyword">case</span> <span class="string">'diagvar'</span>
+0057         <span class="keyword">if</span> tyinfo.sharevar
+0058             <span class="keyword">for</span> i = 1 : k
+0059                 si = ps.sinds(i); ei = ps.einds(i);
+0060                 X(:, si:ei) = <a href="#_sub2" class="code" title="subfunction X = gensamples_diagvar(vmean, vars, d, n)">gensamples_diagvar</a>(GS.means(:,i), GS.vars, d, nums(i));
+0061             <span class="keyword">end</span>
+0062         <span class="keyword">else</span>
+0063             <span class="keyword">for</span> i = 1 : k
+0064                 si = ps.sinds(i); ei = ps.einds(i);
+0065                 X(:, si:ei) = <a href="#_sub2" class="code" title="subfunction X = gensamples_diagvar(vmean, vars, d, n)">gensamples_diagvar</a>(GS.means(:,i), GS.vars(:,i), d, nums(i));
+0066             <span class="keyword">end</span>                
+0067         <span class="keyword">end</span>
+0068         
+0069     <span class="keyword">case</span> <span class="string">'covar'</span>
+0070         <span class="keyword">if</span> tyinfo.sharevar
+0071             <span class="keyword">for</span> i = 1 : k
+0072                 si = ps.sinds(i); ei = ps.einds(i);
+0073                 X(:, si:ei) = <a href="#_sub3" class="code" title="subfunction X = gensamples_covar(vmean, C, d, n)">gensamples_covar</a>(GS.means(:,i), GS.covs, d, nums(i));
+0074             <span class="keyword">end</span>
+0075         <span class="keyword">else</span>
+0076             <span class="keyword">for</span> i = 1 : k
+0077                 si = ps.sinds(i); ei = ps.einds(i);
+0078                 X(:, si:ei) = <a href="#_sub3" class="code" title="subfunction X = gensamples_covar(vmean, C, d, n)">gensamples_covar</a>(GS.means(:,i), GS.covs(:,:,i), d, nums(i));
+0079             <span class="keyword">end</span>                
+0080         <span class="keyword">end</span>
+0081         
+0082     <span class="keyword">otherwise</span>
+0083         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0084             <span class="string">'Invalid variance form in GS: %s'</span>, tyinfo.varform);
+0085         
+0086 <span class="keyword">end</span>
+0087 
+0088 
+0089 <span class="comment">%% Core generation routines</span>
+0090 
+0091 <a name="_sub1" href="#_subfunctions" class="code">function X = gensamples_univar(vmean, var, d, n)</a>
+0092 
+0093 X = randn(d, n) * sqrt(max(var, 0));
+0094 X = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, vmean, 1);
+0095 
+0096 <a name="_sub2" href="#_subfunctions" class="code">function X = gensamples_diagvar(vmean, vars, d, n)</a>
+0097 
+0098 X = randn(d, n);
+0099 X = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(X, sqrt(max(vars, 0)), 1);
+0100 X = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, vmean, 1);
+0101 
+0102 <a name="_sub3" href="#_subfunctions" class="code">function X = gensamples_covar(vmean, C, d, n)</a>
+0103 
+0104 X = randn(d, n);
+0105 [D, V] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(C);
+0106 T = V * diag(sqrt(max(D, 0)));
+0107 clear D V;
+0108 X = T * X;
+0109 clear T;
+0110 X = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, vmean, 1);
+0111 
+0112 
+0113 
+0114 
+0115 
+0116 
+0117 
+0118 
+0119 
+0120 
+0121</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

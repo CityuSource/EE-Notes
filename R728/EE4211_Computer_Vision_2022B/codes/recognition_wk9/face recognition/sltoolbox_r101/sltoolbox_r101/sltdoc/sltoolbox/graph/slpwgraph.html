@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpwgraph</title>
+  <meta name="keywords" content="slpwgraph">
+  <meta name="description" content="SLVALGRAPH Constructs a graph by computing values between nodes pairwisely">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">graph</a> &gt; slpwgraph.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\graph&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpwgraph
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLVALGRAPH Constructs a graph by computing values between nodes pairwisely</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function G = slpwgraph(Xs, Xt, n, nt, evalfunctor, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLVALGRAPH Constructs a graph by computing values between nodes pairwisely
+
+ $ Syntax $
+   - G = slpwgraph(X, Xt, n, nt, evalfunctor, ...)
+
+ $ Arguments $
+   - X:            The set of (source) nodes
+   - Xt:           The set of (target) nodes
+   - n:            The number of (source) nodes
+   - nt:           The number of (target) nodes
+   - evalfunctor:  The functor to evaluate the values between two sets of
+                   nodes, it should be like the following form:
+                   V = f(X, Xt, inds1, inds2, ...)
+                   Here, inds1 and inds2 are the indices selected in the
+                   subset for current batch of computation. If inds1 and
+                   inds2 respectively refer to n1 and n2 samples, then
+                   V should be a n1 x n2 matrix (full or sparse)
+   - G:            The constructed graph
+
+ $ Description $
+   - G = slpwgraph(X, Xt, n, nt, evalfunctor, ...) constructs a adjacency 
+     matrix of a graph by computing edge values between every pair of the 
+     nodes. If Xt is empty, then Xt is considered as the same as X,
+     nt is considered as equal to n.
+     You can specify the following properties:
+     \*
+     \t   The Properties of Graph Matrix construction           \\
+     \h      name     &amp;      description
+            'sparse'  &amp; whether the target graph G is sparse 
+                        (default = true)
+            'valtype' &amp; The type of values in G: 'logical'|'numeric'
+                        (default = 'numeric')
+                        The value output by evalfunctor should conform
+                        to the specified valtype
+            'maxblk'  &amp; The maximum number of elements that can be
+                        computed in each batch. (default = 1e7) 
+     \*
+  
+ $ History $
+   - Created by Dahua Lin, on Sep 8th, 2006
+   - Modified by Dahua Lin, on Sep 10th, 2006
+       - Use new graph construction functions
+       - Add support for bigraph</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slmakeadjmat.html" class="code" title="function A = slmakeadjmat(n, nt, edges, vals, islogic, isspar)">slmakeadjmat</a>	SLMAKEADJMAT Makes an adjacency matrix using edges and corresponing values</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slequalpar2D.html" class="code" title="function ps = slequalpar2D(siz, maxblk)">slequalpar2D</a>	SLEQUALPAR Partition a 2D array with balances for width and height</li><li><a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>	SLEVALFUNCTOR Evaluates a functor</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slpwmetricgraph.html" class="code" title="function G = slpwmetricgraph(X, varargin)">slpwmetricgraph</a>	SLPWMETRICGRAPH Constructs a graph based on pairwise metrics</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function G = slpwgraph(Xs, Xt, n, nt, evalfunctor, varargin)</a>
+0002 <span class="comment">%SLVALGRAPH Constructs a graph by computing values between nodes pairwisely</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - G = slpwgraph(X, Xt, n, nt, evalfunctor, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X:            The set of (source) nodes</span>
+0009 <span class="comment">%   - Xt:           The set of (target) nodes</span>
+0010 <span class="comment">%   - n:            The number of (source) nodes</span>
+0011 <span class="comment">%   - nt:           The number of (target) nodes</span>
+0012 <span class="comment">%   - evalfunctor:  The functor to evaluate the values between two sets of</span>
+0013 <span class="comment">%                   nodes, it should be like the following form:</span>
+0014 <span class="comment">%                   V = f(X, Xt, inds1, inds2, ...)</span>
+0015 <span class="comment">%                   Here, inds1 and inds2 are the indices selected in the</span>
+0016 <span class="comment">%                   subset for current batch of computation. If inds1 and</span>
+0017 <span class="comment">%                   inds2 respectively refer to n1 and n2 samples, then</span>
+0018 <span class="comment">%                   V should be a n1 x n2 matrix (full or sparse)</span>
+0019 <span class="comment">%   - G:            The constructed graph</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% $ Description $</span>
+0022 <span class="comment">%   - G = slpwgraph(X, Xt, n, nt, evalfunctor, ...) constructs a adjacency</span>
+0023 <span class="comment">%     matrix of a graph by computing edge values between every pair of the</span>
+0024 <span class="comment">%     nodes. If Xt is empty, then Xt is considered as the same as X,</span>
+0025 <span class="comment">%     nt is considered as equal to n.</span>
+0026 <span class="comment">%     You can specify the following properties:</span>
+0027 <span class="comment">%     \*</span>
+0028 <span class="comment">%     \t   The Properties of Graph Matrix construction           \\</span>
+0029 <span class="comment">%     \h      name     &amp;      description</span>
+0030 <span class="comment">%            'sparse'  &amp; whether the target graph G is sparse</span>
+0031 <span class="comment">%                        (default = true)</span>
+0032 <span class="comment">%            'valtype' &amp; The type of values in G: 'logical'|'numeric'</span>
+0033 <span class="comment">%                        (default = 'numeric')</span>
+0034 <span class="comment">%                        The value output by evalfunctor should conform</span>
+0035 <span class="comment">%                        to the specified valtype</span>
+0036 <span class="comment">%            'maxblk'  &amp; The maximum number of elements that can be</span>
+0037 <span class="comment">%                        computed in each batch. (default = 1e7)</span>
+0038 <span class="comment">%     \*</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">% $ History $</span>
+0041 <span class="comment">%   - Created by Dahua Lin, on Sep 8th, 2006</span>
+0042 <span class="comment">%   - Modified by Dahua Lin, on Sep 10th, 2006</span>
+0043 <span class="comment">%       - Use new graph construction functions</span>
+0044 <span class="comment">%       - Add support for bigraph</span>
+0045 <span class="comment">%</span>
+0046 
+0047 <span class="comment">%% parse and verify input arguments</span>
+0048 
+0049 <span class="keyword">if</span> nargin &lt; 5
+0050     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slpwgraph'</span>, 5);
+0051 <span class="keyword">end</span>
+0052 
+0053 <span class="keyword">if</span> isempty(Xt)
+0054     Xt = Xs;
+0055     nt = n;
+0056 <span class="keyword">end</span>
+0057 
+0058 tarsiz = [n, nt];
+0059 
+0060 opts.sparse = true;
+0061 opts.valtype = <span class="string">'numeric'</span>;
+0062 opts.maxblk = 1e7;
+0063 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0064 
+0065 <span class="keyword">if</span> ~ismember(opts.valtype, {<span class="string">'logical'</span>, <span class="string">'numeric'</span>})
+0066     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0067         <span class="string">'Invalid value type for graph: %s'</span>, opts.valtype);
+0068 <span class="keyword">end</span>
+0069 
+0070 
+0071 <span class="comment">%% compute</span>
+0072 
+0073 <span class="comment">% create partitions</span>
+0074 
+0075 ps = <a href="../../sltoolbox/utils/slequalpar2D.html" class="code" title="function ps = slequalpar2D(siz, maxblk)">slequalpar2D</a>(tarsiz, opts.maxblk);
+0076 nm = length(ps(1).sinds);
+0077 nn = length(ps(2).sinds);
+0078 
+0079 <span class="comment">% compute</span>
+0080 
+0081 <span class="keyword">if</span> opts.sparse
+0082     nblks = nm * nn;
+0083     CI = cell(nblks, 1);
+0084     CJ = cell(nblks, 1);
+0085     CV = cell(nblks, 1);
+0086     
+0087     k = 0;    
+0088     <span class="keyword">for</span> i = 1 : nm
+0089     <span class="keyword">for</span> j = 1 : nn
+0090         
+0091         <span class="comment">% get indices</span>
+0092         k = k + 1;
+0093         inds1 = ps(1).sinds(i):ps(1).einds(i);
+0094         inds2 = ps(2).sinds(j):ps(2).einds(j);
+0095         
+0096         <span class="comment">% compute</span>
+0097         curV = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(evalfunctor, Xs, Xt, inds1, inds2);
+0098         
+0099         <span class="comment">% filter</span>
+0100         [curI, curJ, curV] = find(curV);
+0101         curI = curI + (inds1(1) - 1);
+0102         curJ = curJ + (inds2(1) - 1);
+0103         
+0104         <span class="comment">% store</span>
+0105         CI{k} = curI;
+0106         CJ{k} = curJ;
+0107         CV{k} = curV;
+0108         
+0109     <span class="keyword">end</span>
+0110     <span class="keyword">end</span>
+0111     
+0112     CI = vertcat(CI{:});
+0113     CJ = vertcat(CJ{:});
+0114     CV = vertcat(CV{:});
+0115     
+0116     edges = [CI, CJ];
+0117     clear CI CJ;
+0118     
+0119     islogic = strcmp(opts.valtype, <span class="string">'logic'</span>);
+0120     
+0121     G = <a href="slmakeadjmat.html" class="code" title="function A = slmakeadjmat(n, nt, edges, vals, islogic, isspar)">slmakeadjmat</a>(n, nt, edges, CV, islogic, true);
+0122                         
+0123 <span class="keyword">else</span>
+0124     
+0125     <span class="keyword">switch</span> opts.valtype
+0126         <span class="keyword">case</span> <span class="string">'logical'</span>
+0127             G = false(n, nt);
+0128         <span class="keyword">case</span> <span class="string">'numeric'</span>
+0129             G = zeros(n, nt);
+0130     <span class="keyword">end</span>
+0131     
+0132     <span class="keyword">for</span> i = 1 : nm
+0133     <span class="keyword">for</span> j = 1 : nn
+0134         
+0135         <span class="comment">% get indices</span>
+0136         inds1 = ps(1).sinds(i):ps(1).einds(i);
+0137         inds2 = ps(2).sinds(j):ps(2).einds(j);
+0138         
+0139         <span class="comment">% compute</span>
+0140         curV = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(evalfunctor, Xs, Xt, inds1, inds2);
+0141         
+0142         <span class="comment">% store</span>
+0143         G(inds1, inds2) = curV;                
+0144         
+0145     <span class="keyword">end</span>
+0146     <span class="keyword">end</span>
+0147         
+0148 <span class="keyword">end</span>
+0149 
+0150                 
+0151 
+0152 
+0153 
+0154 
+0155 
+0156 
+0157</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

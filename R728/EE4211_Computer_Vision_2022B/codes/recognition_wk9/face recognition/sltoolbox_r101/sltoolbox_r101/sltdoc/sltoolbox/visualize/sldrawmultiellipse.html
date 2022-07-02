@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sldrawmultiellipse</title>
+  <meta name="keywords" content="sldrawmultiellipse">
+  <meta name="description" content="SLDRAWMULTIELLIPSE Draws multiple ellipses on axies">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">visualize</a> &gt; sldrawmultiellipse.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\visualize&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sldrawmultiellipse
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLDRAWMULTIELLIPSE Draws multiple ellipses on axies</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function h = sldrawmultiellipse(centers, vars, npts, plotsyms, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLDRAWMULTIELLIPSE Draws multiple ellipses on axies
+
+ $ Syntax $
+   - sldrawmultiellipse(centers, vars, npts)
+   - sldrawmultiellipse(centers, vars, npts, plotsyms, ...)
+   - h = sldrawmultiellipse(...)
+
+ $ Arguments $
+   - centers:      the centers of the ellipse 
+   - vars:         the variances/covariances of the ellipses
+   - npts:         the number of sample points on each ellipses
+                   (default = 300)
+   - plotsyms:     the cell array of plot symbols charcterizing the
+                   ellipses. It can be a char string, representing
+                   the symbol shared by all ellipses, or a cell array
+                   of symbols for different ellipses.
+   - h:            the column array of numbers identifying the plots
+
+ $ Description $
+    - sldrawmultiellipse(centers, vars, npts) plots one or multiple
+      ellipses on the same axis. The ellipses are charcterized by 
+      gaussian models parameterized by their centers and variances/
+      covariances. The plots are based on sampling points on the 
+      ellipse with Mahalanobis distance being 1. The number of samples
+      are specified through npts. 
+      If there are k ellipses, centers should be a 2 x k matrix, while
+      the vars can be either of the following forms:
+           - 1 x k matrix:     isotropic variance 
+           - 2 x k matrix:     diagonal variance
+           - 2 x 2 x k array:  normal covariance
+      If the variances/covariances are shared by all ellipses, they
+      can be encapsulated in a cell.
+           - {1 x 1 scalar}:   shared isotropic variance
+           - {2 x 1 vector}:   shared diagonal variance
+           - {2 x 2 matrix}:   shared covariance matrix
+           
+ $ Remarks $
+   - It is based on sldrawellipse for plotting.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 26, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="sldrawellipse.html" class="code" title="function h = sldrawellipse(center, shape, n, varargin)">sldrawellipse</a>	SLDRAWELLIPSE Draws an ellipse on current axis</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function r = dme_default_plotsyms(n)</a></li><li><a href="#_sub2" class="code">function C = dme_get_cov(vars, i, varform, sharevar)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function h = sldrawmultiellipse(centers, vars, npts, plotsyms, varargin)</a>
+0002 <span class="comment">%SLDRAWMULTIELLIPSE Draws multiple ellipses on axies</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - sldrawmultiellipse(centers, vars, npts)</span>
+0006 <span class="comment">%   - sldrawmultiellipse(centers, vars, npts, plotsyms, ...)</span>
+0007 <span class="comment">%   - h = sldrawmultiellipse(...)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $ Arguments $</span>
+0010 <span class="comment">%   - centers:      the centers of the ellipse</span>
+0011 <span class="comment">%   - vars:         the variances/covariances of the ellipses</span>
+0012 <span class="comment">%   - npts:         the number of sample points on each ellipses</span>
+0013 <span class="comment">%                   (default = 300)</span>
+0014 <span class="comment">%   - plotsyms:     the cell array of plot symbols charcterizing the</span>
+0015 <span class="comment">%                   ellipses. It can be a char string, representing</span>
+0016 <span class="comment">%                   the symbol shared by all ellipses, or a cell array</span>
+0017 <span class="comment">%                   of symbols for different ellipses.</span>
+0018 <span class="comment">%   - h:            the column array of numbers identifying the plots</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $ Description $</span>
+0021 <span class="comment">%    - sldrawmultiellipse(centers, vars, npts) plots one or multiple</span>
+0022 <span class="comment">%      ellipses on the same axis. The ellipses are charcterized by</span>
+0023 <span class="comment">%      gaussian models parameterized by their centers and variances/</span>
+0024 <span class="comment">%      covariances. The plots are based on sampling points on the</span>
+0025 <span class="comment">%      ellipse with Mahalanobis distance being 1. The number of samples</span>
+0026 <span class="comment">%      are specified through npts.</span>
+0027 <span class="comment">%      If there are k ellipses, centers should be a 2 x k matrix, while</span>
+0028 <span class="comment">%      the vars can be either of the following forms:</span>
+0029 <span class="comment">%           - 1 x k matrix:     isotropic variance</span>
+0030 <span class="comment">%           - 2 x k matrix:     diagonal variance</span>
+0031 <span class="comment">%           - 2 x 2 x k array:  normal covariance</span>
+0032 <span class="comment">%      If the variances/covariances are shared by all ellipses, they</span>
+0033 <span class="comment">%      can be encapsulated in a cell.</span>
+0034 <span class="comment">%           - {1 x 1 scalar}:   shared isotropic variance</span>
+0035 <span class="comment">%           - {2 x 1 vector}:   shared diagonal variance</span>
+0036 <span class="comment">%           - {2 x 2 matrix}:   shared covariance matrix</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">% $ Remarks $</span>
+0039 <span class="comment">%   - It is based on sldrawellipse for plotting.</span>
+0040 <span class="comment">%</span>
+0041 <span class="comment">% $ History $</span>
+0042 <span class="comment">%   - Created by Dahua Lin, on Aug 26, 2006</span>
+0043 <span class="comment">%</span>
+0044 
+0045 <span class="comment">%% parse and verify input arguments</span>
+0046 
+0047 <span class="keyword">if</span> nargin &lt; 2
+0048     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sldrawmultiellipse'</span>, 2);
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="keyword">if</span> ndims(centers) ~= 2 || size(centers, 1) ~= 2
+0052     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0053         <span class="string">'centers should be a 2 x k matrix'</span>);
+0054 <span class="keyword">end</span>
+0055 
+0056 k = size(centers, 2);
+0057 
+0058 <span class="comment">% parse variance/covariance</span>
+0059 
+0060 <span class="keyword">if</span> isnumeric(vars)
+0061     <span class="keyword">if</span> isequal(size(vars), [1 k])
+0062         varform = 1;
+0063     <span class="keyword">elseif</span> isequal(size(vars), [2 k])
+0064         varform = 2;
+0065     <span class="keyword">elseif</span> isequal(size(vars), [2 2 k])
+0066         varform = 3;
+0067     <span class="keyword">else</span>
+0068         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0069             <span class="string">'The size of vars is illegal'</span>);
+0070     <span class="keyword">end</span>
+0071     sharevar = false;
+0072 <span class="keyword">elseif</span> iscell(vars) &amp;&amp; numel(vars) == 1
+0073     vars = vars{1};
+0074     <span class="keyword">if</span> isequal(size(vars), [1 1])
+0075         varform = 1;
+0076     <span class="keyword">elseif</span> isequal(size(vars), [2 1])
+0077         varform = 2;
+0078     <span class="keyword">elseif</span> isequal(size(vars), [2 2])
+0079         varform = 3;
+0080     <span class="keyword">else</span>
+0081         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0082             <span class="string">'The size of vars is illegal'</span>);
+0083     <span class="keyword">end</span>
+0084     sharevar = true;
+0085 <span class="keyword">end</span>
+0086 
+0087 <span class="keyword">if</span> nargin &lt; 3 || isempty(npts)
+0088     npts = 300;
+0089 <span class="keyword">end</span>
+0090 
+0091 <span class="keyword">if</span> nargin &lt; 4 || isempty(plotsyms)
+0092     plotsyms = <a href="#_sub1" class="code" title="subfunction r = dme_default_plotsyms(n)">dme_default_plotsyms</a>(k);
+0093 <span class="keyword">else</span>
+0094     <span class="keyword">if</span> ischar(plotsyms)
+0095         ch = plotsyms;
+0096         plotsyms = cell(1, k);
+0097         [plotsyms{:}] = deal(ch);
+0098     <span class="keyword">elseif</span> iscell(plotsyms)
+0099         <span class="keyword">if</span> length(plotsyms) ~= k
+0100             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0101                 <span class="string">'The length of plotsyms is inconsistent with the number of ellipses'</span>);
+0102         <span class="keyword">end</span>
+0103     <span class="keyword">else</span>
+0104         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0105             <span class="string">'The plotsyms should be either a string or a cell array'</span>);
+0106     <span class="keyword">end</span>
+0107 <span class="keyword">end</span>
+0108 
+0109 <span class="keyword">if</span> nargin &lt; 5
+0110     plotprops = {};
+0111 <span class="keyword">else</span>
+0112     plotprops = varargin;
+0113 <span class="keyword">end</span>
+0114 
+0115 <span class="keyword">if</span> nargout &gt;= 1
+0116     outh = true;
+0117     h = zeros(k, 1);
+0118 <span class="keyword">else</span>
+0119     outh = false;
+0120 <span class="keyword">end</span>
+0121 
+0122 <span class="comment">%% Main body</span>
+0123 
+0124 <span class="keyword">for</span> i = 1 : k
+0125     vcenter = centers(:, i);
+0126     mcov = <a href="#_sub2" class="code" title="subfunction C = dme_get_cov(vars, i, varform, sharevar)">dme_get_cov</a>(vars, i, varform, sharevar);
+0127     curh = <a href="sldrawellipse.html" class="code" title="function h = sldrawellipse(center, shape, n, varargin)">sldrawellipse</a>(vcenter, mcov, npts, plotsyms{i}, plotprops{:});
+0128     <span class="keyword">if</span> outh 
+0129         h(i) = curh;
+0130     <span class="keyword">end</span>
+0131 <span class="keyword">end</span>
+0132 
+0133 
+0134 <span class="comment">%% Auxiliary functions</span>
+0135 
+0136 <a name="_sub1" href="#_subfunctions" class="code">function r = dme_default_plotsyms(n)</a>
+0137 
+0138 pss = {<span class="string">'b-'</span>, <span class="string">'g-'</span>, <span class="string">'r-'</span>, <span class="string">'c-'</span>, <span class="string">'m-'</span>, <span class="string">'y-'</span>, <span class="string">'k-'</span>};
+0139 inds = mod(0:n-1, 7) + 1;
+0140 r = pss(inds);
+0141 
+0142 <a name="_sub2" href="#_subfunctions" class="code">function C = dme_get_cov(vars, i, varform, sharevar)</a>
+0143 
+0144 <span class="keyword">switch</span> varform 
+0145     <span class="keyword">case</span> 1
+0146         <span class="keyword">if</span> sharevar
+0147             C = [vars 0; 0 vars];
+0148         <span class="keyword">else</span>
+0149             C = [vars(i) 0; 0 vars(i)];
+0150         <span class="keyword">end</span>
+0151     <span class="keyword">case</span> 2
+0152         <span class="keyword">if</span> sharevar
+0153             C = diag(vars);
+0154         <span class="keyword">else</span>
+0155             C = diag(vars(:, i));
+0156         <span class="keyword">end</span>
+0157     <span class="keyword">case</span> 3
+0158         <span class="keyword">if</span> sharevar
+0159             C = vars;
+0160         <span class="keyword">else</span>
+0161             C = vars(:,:,i);
+0162         <span class="keyword">end</span>            
+0163 <span class="keyword">end</span>
+0164     
+0165     
+0166 
+0167 
+0168 
+0169 
+0170 
+0171 
+0172 
+0173 
+0174     
+0175     
+0176</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

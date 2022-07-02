@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpwcomp_blks</title>
+  <meta name="keywords" content="slpwcomp_blks">
+  <meta name="description" content="SLPWCOMP_BLKS Computes pairwise value matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">core</a> &gt; slpwcomp_blks.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\core&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpwcomp_blks
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPWCOMP_BLKS Computes pairwise value matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function slpwcomp_blks(X1, X2, ps, dstpath, compfunc, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPWCOMP_BLKS Computes pairwise value matrix
+
+ $ Syntax $
+   - slpwcomp_blks(X1, X2, ps, dstpath, compfunc, ...)
+
+ $ Arguments $
+   - X1:           the first source sample matrix
+   - X2:           the second source sample matrix
+   - ps:           the partition structure of the target value matrix
+   - dstpath:      the destination path
+   - compfunc:     the normal pairwise computing function
+   
+ $ Description $
+   - slpwcomp_blks(X1, X2, ps, dstpath, compfunc, ...) computes the 
+     large scale pairwise value matrix in a block-wise way. Suppose
+     X1 has n1 columns, while X2 has n2 columns, it will produce a
+     n1 x n2 matrix, when both n1 and n2 are large, then the huge
+     value matrix may not be held entirely in the memory. The function
+     partition the value matrix into several blocks according to 
+     the partition structure specified in ps, which can be obtained 
+     by slpartition. Then for each block, the function will select
+     corresponding section of samples from X1 and X2, then compute the
+     corresponding value block and store it to an array file. 
+     The name of core output file is &lt;dstname&gt;.mat, so you need not
+     to add .mat when you input dstname. Please note that the core
+     mat file does not contain the actual value matrix, but some 
+     information for retrievaling them. There are following variables
+     in the mat file:
+       - 'parstruct':      the partition structure
+       - 'blocks':         the 2D cell array of block limits
+       - 'data':           the 2D cell array of filenames of array data
+       - 'matsize':        the whole size of the value matrix
+  
+ $ Remarks $
+   - compfunc is the underlying pairwise value matrix computation
+     function. It has a form f(X1, X2, ...), when it inputs X1 and
+     X2 with n1 and n2 columns respectively, it outputs an n1 x n2
+     value matrix. It can be function name, inline function or
+     function handle.
+     
+ $ History $
+   - Created by Dahua Lin, on Aug 8th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>	SLFILEPARTS Extracts a specified part of a file path string</li><li><a href="../../sltoolbox/fileio/slwritearray.html" class="code" title="function slwritearray(A, filename)">slwritearray</a>	SLWRITEARRAY Writes an array to an array file</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>	SLADDPATH Adds dirpath to precede the filenames</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li><li><a href="../../sltoolbox/utils/slparblocks.html" class="code" title="function blocks = slparblocks(ps)">slparblocks</a>	SLPARBLOCKS Gets the blocks from partition structure</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slmetric_pw_blks.html" class="code" title="function slmetric_pw_blks(X1, X2, ps, dstpath, mtype, varargin)">slmetric_pw_blks</a>	SLMETRIC_PW_BLKS Compute the pairwise metrics in a blockwise manner</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function slpwcomp_blks(X1, X2, ps, dstpath, compfunc, varargin)</a>
+0002 <span class="comment">%SLPWCOMP_BLKS Computes pairwise value matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - slpwcomp_blks(X1, X2, ps, dstpath, compfunc, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X1:           the first source sample matrix</span>
+0009 <span class="comment">%   - X2:           the second source sample matrix</span>
+0010 <span class="comment">%   - ps:           the partition structure of the target value matrix</span>
+0011 <span class="comment">%   - dstpath:      the destination path</span>
+0012 <span class="comment">%   - compfunc:     the normal pairwise computing function</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - slpwcomp_blks(X1, X2, ps, dstpath, compfunc, ...) computes the</span>
+0016 <span class="comment">%     large scale pairwise value matrix in a block-wise way. Suppose</span>
+0017 <span class="comment">%     X1 has n1 columns, while X2 has n2 columns, it will produce a</span>
+0018 <span class="comment">%     n1 x n2 matrix, when both n1 and n2 are large, then the huge</span>
+0019 <span class="comment">%     value matrix may not be held entirely in the memory. The function</span>
+0020 <span class="comment">%     partition the value matrix into several blocks according to</span>
+0021 <span class="comment">%     the partition structure specified in ps, which can be obtained</span>
+0022 <span class="comment">%     by slpartition. Then for each block, the function will select</span>
+0023 <span class="comment">%     corresponding section of samples from X1 and X2, then compute the</span>
+0024 <span class="comment">%     corresponding value block and store it to an array file.</span>
+0025 <span class="comment">%     The name of core output file is &lt;dstname&gt;.mat, so you need not</span>
+0026 <span class="comment">%     to add .mat when you input dstname. Please note that the core</span>
+0027 <span class="comment">%     mat file does not contain the actual value matrix, but some</span>
+0028 <span class="comment">%     information for retrievaling them. There are following variables</span>
+0029 <span class="comment">%     in the mat file:</span>
+0030 <span class="comment">%       - 'parstruct':      the partition structure</span>
+0031 <span class="comment">%       - 'blocks':         the 2D cell array of block limits</span>
+0032 <span class="comment">%       - 'data':           the 2D cell array of filenames of array data</span>
+0033 <span class="comment">%       - 'matsize':        the whole size of the value matrix</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% $ Remarks $</span>
+0036 <span class="comment">%   - compfunc is the underlying pairwise value matrix computation</span>
+0037 <span class="comment">%     function. It has a form f(X1, X2, ...), when it inputs X1 and</span>
+0038 <span class="comment">%     X2 with n1 and n2 columns respectively, it outputs an n1 x n2</span>
+0039 <span class="comment">%     value matrix. It can be function name, inline function or</span>
+0040 <span class="comment">%     function handle.</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">% $ History $</span>
+0043 <span class="comment">%   - Created by Dahua Lin, on Aug 8th, 2006</span>
+0044 <span class="comment">%</span>
+0045 
+0046 <span class="comment">%% parse and verify input arguments</span>
+0047     
+0048 <span class="keyword">if</span> nargin &lt; 5
+0049     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slpwcomp_blks'</span>, 5);
+0050 <span class="keyword">end</span>
+0051 <span class="keyword">if</span> ~isnumeric(X1) || ndims(X1) ~= 2 || ~isnumeric(X2) || ndims(X2) ~= 2
+0052     error(<span class="string">'sltoolbox:invalidargs'</span>, <span class="keyword">...</span>
+0053         <span class="string">'X1 and X2 should be 2D numeric matrices'</span>);
+0054 <span class="keyword">end</span>
+0055 <span class="keyword">if</span> ~isstruct(ps) || length(ps) ~= 2
+0056     error(<span class="string">'sltoolbox:invalidargs'</span>, <span class="keyword">...</span>
+0057         <span class="string">'ps should be a struct array with 2 elements'</span>);
+0058 <span class="keyword">end</span>
+0059 
+0060 n1 = size(X1, 2);
+0061 n2 = size(X2, 2);
+0062 
+0063 parstruct = ps;
+0064 matsize = [n1, n2];
+0065 
+0066 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(matsize);
+0067 
+0068 <span class="comment">%% Prepare Blocks</span>
+0069 
+0070 blocks = <a href="../../sltoolbox/utils/slparblocks.html" class="code" title="function blocks = slparblocks(ps)">slparblocks</a>(parstruct);
+0071 [nrows, ncols] = size(blocks);
+0072 nblocks = nrows * ncols;
+0073 
+0074 <span class="comment">%% Prepare Filenames</span>
+0075 
+0076 len1 = length(int2str(n1));
+0077 len2 = length(int2str(n2));
+0078 
+0079 dstcorepath = [dstpath, <span class="string">'.mat'</span>];
+0080 dstdir = <a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>(dstpath, <span class="string">'parent'</span>);
+0081 dsttitle = <a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>(dstpath, <span class="string">'name'</span>);
+0082 arrnamepat = sprintf(<span class="string">'%s.c%%0%dd-%%0%dd.r%%0%dd-%%0%dd.arr'</span>, dsttitle, len1, len1, len2, len2);
+0083 
+0084 data = cell(nrows, ncols);
+0085 <span class="keyword">for</span> i = 1 : nrows
+0086     <span class="keyword">for</span> j = 1 : ncols
+0087         cb = blocks{i, j};
+0088         data{i, j} = sprintf(arrnamepat, cb(1, 1), cb(2, 1), cb(1, 2), cb(2, 2));
+0089     <span class="keyword">end</span>
+0090 <span class="keyword">end</span>
+0091 
+0092 <span class="comment">%% Compute and store (blockwise)</span>
+0093 
+0094 <span class="keyword">if</span> ~isempty(dstdir) &amp;&amp; ~exist(dstdir, <span class="string">'dir'</span>)
+0095     mkdir(dstdir);
+0096 <span class="keyword">end</span>
+0097 
+0098 <span class="keyword">for</span> k = 1 : nblocks
+0099     curblock = blocks{k};
+0100     curpath = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(data{k}, dstdir);
+0101     
+0102     curX1 = X1(:, curblock(1,1):curblock(2,1));
+0103     curX2 = X2(:, curblock(1,2):curblock(2,2));
+0104     
+0105     M = feval(compfunc, curX1, curX2, varargin{:});
+0106     
+0107     <a href="../../sltoolbox/fileio/slwritearray.html" class="code" title="function slwritearray(A, filename)">slwritearray</a>(M, curpath);
+0108 <span class="keyword">end</span>
+0109 
+0110 <span class="comment">%% Save core file</span>
+0111 save(dstcorepath, <span class="string">'parstruct'</span>, <span class="string">'blocks'</span>, <span class="string">'data'</span>, <span class="string">'matsize'</span>, <span class="string">'-v6'</span>);
+0112 
+0113</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcompresstext</title>
+  <meta name="keywords" content="slcompresstext">
+  <meta name="description" content="SLCOMPRESSTEXT Compresses a cell array of text">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">text</a> &gt; slcompresstext.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\text&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcompresstext
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCOMPRESSTEXT Compresses a cell array of text</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function Tc = slcompresstext(T, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCOMPRESSTEXT Compresses a cell array of text
+
+ $ Syntax $
+   - Tc = slcompresstext(T, ...)
+
+ $ Arguments $
+   - T:        the source text to be compressed
+   - Tc:       the compressed text
+
+ $ Description $
+   - Tc = slcompresstext(T, ...) compresses the text T, represented in
+     cell array of lines. You can specify the properties to control the
+     process of compression.
+     \*
+     \t    Table 1. Properties of Text Compression
+     \h    name        &amp;    description
+          'rmempty'    &amp;  whether to remove empty line (default = true)
+          'proc'       &amp;  the method of processing each line
+                          (default='trim')
+                          - 'off': do not process
+                          - 'trim': trim the leading and trailing spaces
+                          - 'deblank': trim only the trailing spaces
+
+ $ History $
+   - Created by Dahua Lin, on Aug 9th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slfiltertext.html" class="code" title="function Tf = slfiltertext(T, f, varargin)">slfiltertext</a>	SLFILTERTEXT Processes the lines of text</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/ExpDL/edl_readenvvars.html" class="code" title="function S = edl_readenvvars(envfile)">edl_readenvvars</a>	EDL_READENVVARS Reads in a file with environment variables</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function Tc = slcompresstext(T, varargin)</a>
+0002 <span class="comment">%SLCOMPRESSTEXT Compresses a cell array of text</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - Tc = slcompresstext(T, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - T:        the source text to be compressed</span>
+0009 <span class="comment">%   - Tc:       the compressed text</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - Tc = slcompresstext(T, ...) compresses the text T, represented in</span>
+0013 <span class="comment">%     cell array of lines. You can specify the properties to control the</span>
+0014 <span class="comment">%     process of compression.</span>
+0015 <span class="comment">%     \*</span>
+0016 <span class="comment">%     \t    Table 1. Properties of Text Compression</span>
+0017 <span class="comment">%     \h    name        &amp;    description</span>
+0018 <span class="comment">%          'rmempty'    &amp;  whether to remove empty line (default = true)</span>
+0019 <span class="comment">%          'proc'       &amp;  the method of processing each line</span>
+0020 <span class="comment">%                          (default='trim')</span>
+0021 <span class="comment">%                          - 'off': do not process</span>
+0022 <span class="comment">%                          - 'trim': trim the leading and trailing spaces</span>
+0023 <span class="comment">%                          - 'deblank': trim only the trailing spaces</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% $ History $</span>
+0026 <span class="comment">%   - Created by Dahua Lin, on Aug 9th, 2006</span>
+0027 <span class="comment">%</span>
+0028 
+0029 <span class="comment">%% parse and verify input arguments</span>
+0030 
+0031 <span class="keyword">if</span> ~iscell(T)
+0032     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0033         <span class="string">'T should be a cell array of strings'</span>);
+0034 <span class="keyword">end</span>
+0035 
+0036 opts.rmempty = true;
+0037 opts.proc = <span class="string">'trim'</span>;
+0038 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0039 
+0040 <span class="keyword">switch</span> opts.proc
+0041     <span class="keyword">case</span> <span class="string">'off'</span>
+0042         procfunc = [];
+0043     <span class="keyword">case</span> <span class="string">'trim'</span>
+0044         procfunc = <span class="string">'strtrim'</span>;
+0045     <span class="keyword">case</span> <span class="string">'deblank'</span>
+0046         procfunc = <span class="string">'deblank'</span>;
+0047     <span class="keyword">otherwise</span>
+0048         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0049             <span class="string">'Invalid string processing method %s'</span>, opts.proc);
+0050 <span class="keyword">end</span>
+0051 
+0052 <span class="comment">%% Process</span>
+0053 
+0054 <span class="keyword">if</span> ~isempty(procfunc)
+0055     Tc = <a href="slfiltertext.html" class="code" title="function Tf = slfiltertext(T, f, varargin)">slfiltertext</a>(T, procfunc);
+0056 <span class="keyword">else</span>
+0057     Tc = T;
+0058 <span class="keyword">end</span>
+0059 
+0060 <span class="comment">%% Select</span>
+0061 
+0062 <span class="keyword">if</span> opts.rmempty
+0063     nlines = length(Tc);
+0064     is_effline = true(nlines, 1);
+0065     has_deleted = false;
+0066     <span class="keyword">for</span> i = 1 : nlines
+0067         <span class="keyword">if</span> isempty(Tc{i})
+0068             is_effline(i) = false;
+0069             has_deleted = true;
+0070         <span class="keyword">end</span>        
+0071     <span class="keyword">end</span>
+0072     
+0073     <span class="keyword">if</span> has_deleted
+0074         Tc = Tc(is_effline);
+0075     <span class="keyword">end</span>
+0076 <span class="keyword">end</span>
+0077 
+0078 
+0079 
+0080 
+0081</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

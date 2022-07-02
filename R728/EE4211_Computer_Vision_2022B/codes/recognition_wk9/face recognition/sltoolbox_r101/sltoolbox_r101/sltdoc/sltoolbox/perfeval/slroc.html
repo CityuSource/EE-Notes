@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slroc</title>
+  <meta name="keywords" content="slroc">
+  <meta name="description" content="SLROC Computes the ROC">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">perfeval</a> &gt; slroc.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\perfeval&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slroc
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLROC Computes the ROC</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [thrs, fars, frrs] = slroc(scores, signs, thres, op) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLROC Computes the ROC
+
+ $ Syntax $
+   - [thrs, fars, frrs] = slroc(scores, signs, thres, op) 
+
+ $ Arguments $
+   - scores:           the scores representing the signal intensities
+   - signs:            the signs representing the groundtruth (0 or 1)
+   - thres:            the descriptor indicating how to sample the 
+                       thresholds at which the rate is computed
+   - op:               the option stating the attributes of the scores.
+   - thrs:             the sampled threshold values
+   - fars:             the false accept rates at the sampled thresholds
+   - frrs:             the false reject rates at the sampled thresholds
+ 
+ $ Description $
+   - [thrs, fars, frrs] = slroc(scores, signs, thres, op) Computes the 
+     ROC of a receiver from the scores and groudtruth signs. The argument 
+     thres specifies the sampled thresholds at which the false accept 
+     rate and false reject rate is evaluated. If thres is an integer, 
+     say n, then n equal-interval integers from lowest to highest scores 
+     are taken as samples. The thres can also be a vector containing the 
+     sampled thresholds, which should be arranged in ascending order.
+     op states the attributes of the scores, which
+     takes either of the two values: 'high' or 'low'. If op is 'high', a 
+     higher score indicates a better match; if op is 'low', a lower score
+     indicates a better match. The cumulative score will be computed
+     up to the number of all classes.
+     For output, if n thresholds are sampled, then thrs, fars, and frrs
+     for all n x 1 vectors, containing the sampled threshold values,
+     and the corresponding false accept rates, and false reject rates.
+
+ $ History $
+   - Created by Dahua Lin on Jun 9th, 2005
+   - Modified by Dahua Lin on May 1st, 2006
+     - Base on the sltoolbox v4
+   - Modified by Dahua Lin on Aug 8th, 2006
+     - Base on slhistroc</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slhistroc.html" class="code" title="function [thrs, fars, frrs] = slhistroc(hist_a, hist_r, sepvals, op)">slhistroc</a>	SLHISTROC Computes the ROC curve from value histogram</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slverifyroc.html" class="code" title="function [thrs, fars, frrs] = slverifyroc(scores, labels1, labels2, op, npts)">slverifyroc</a>	SLVERIFYROC Computes the verification ROC</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [thrs, fars, frrs] = slroc(scores, signs, thres, op)</a>
+0002 <span class="comment">%SLROC Computes the ROC</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [thrs, fars, frrs] = slroc(scores, signs, thres, op)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - scores:           the scores representing the signal intensities</span>
+0009 <span class="comment">%   - signs:            the signs representing the groundtruth (0 or 1)</span>
+0010 <span class="comment">%   - thres:            the descriptor indicating how to sample the</span>
+0011 <span class="comment">%                       thresholds at which the rate is computed</span>
+0012 <span class="comment">%   - op:               the option stating the attributes of the scores.</span>
+0013 <span class="comment">%   - thrs:             the sampled threshold values</span>
+0014 <span class="comment">%   - fars:             the false accept rates at the sampled thresholds</span>
+0015 <span class="comment">%   - frrs:             the false reject rates at the sampled thresholds</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $ Description $</span>
+0018 <span class="comment">%   - [thrs, fars, frrs] = slroc(scores, signs, thres, op) Computes the</span>
+0019 <span class="comment">%     ROC of a receiver from the scores and groudtruth signs. The argument</span>
+0020 <span class="comment">%     thres specifies the sampled thresholds at which the false accept</span>
+0021 <span class="comment">%     rate and false reject rate is evaluated. If thres is an integer,</span>
+0022 <span class="comment">%     say n, then n equal-interval integers from lowest to highest scores</span>
+0023 <span class="comment">%     are taken as samples. The thres can also be a vector containing the</span>
+0024 <span class="comment">%     sampled thresholds, which should be arranged in ascending order.</span>
+0025 <span class="comment">%     op states the attributes of the scores, which</span>
+0026 <span class="comment">%     takes either of the two values: 'high' or 'low'. If op is 'high', a</span>
+0027 <span class="comment">%     higher score indicates a better match; if op is 'low', a lower score</span>
+0028 <span class="comment">%     indicates a better match. The cumulative score will be computed</span>
+0029 <span class="comment">%     up to the number of all classes.</span>
+0030 <span class="comment">%     For output, if n thresholds are sampled, then thrs, fars, and frrs</span>
+0031 <span class="comment">%     for all n x 1 vectors, containing the sampled threshold values,</span>
+0032 <span class="comment">%     and the corresponding false accept rates, and false reject rates.</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">% $ History $</span>
+0035 <span class="comment">%   - Created by Dahua Lin on Jun 9th, 2005</span>
+0036 <span class="comment">%   - Modified by Dahua Lin on May 1st, 2006</span>
+0037 <span class="comment">%     - Base on the sltoolbox v4</span>
+0038 <span class="comment">%   - Modified by Dahua Lin on Aug 8th, 2006</span>
+0039 <span class="comment">%     - Base on slhistroc</span>
+0040 <span class="comment">%</span>
+0041 
+0042 <span class="comment">%% parse and verify the input arguments</span>
+0043 <span class="keyword">if</span> nargin &lt; 4
+0044     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slroc'</span>, 4);
+0045 <span class="keyword">end</span>
+0046 <span class="keyword">if</span> ~isequal(size(scores), size(signs))
+0047     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0048         <span class="string">'The sizes of scores and signs are not match'</span>);
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="comment">% the following two statements are disabled in the 2006-08-08 modification</span>
+0052 <span class="comment">% since scores(signs) will automatic serialize the values</span>
+0053 <span class="comment">% there is no need to write this statement, just a waste of time and mem</span>
+0054 <span class="comment">% scores = scores(:);</span>
+0055 <span class="comment">% signs = logical(signs(:));</span>
+0056 
+0057 <span class="keyword">if</span> numel(thres) == 1
+0058     n = thres;
+0059     highscore = max(max(scores));
+0060     lowscore = min(min(scores));
+0061     thrs = linspace(lowscore, highscore, n)';
+0062 <span class="keyword">else</span>
+0063     thrs = thres(:);
+0064 <span class="keyword">end</span>
+0065 
+0066     
+0067 
+0068 <span class="comment">%% compute</span>
+0069 scores_a = scores(signs);
+0070 scores_r = scores(~signs);
+0071 
+0072 hist_a = histc(scores_a, thrs);
+0073 hist_r = histc(scores_r, thrs);
+0074 
+0075 [thrs, fars, frrs] = <a href="slhistroc.html" class="code" title="function [thrs, fars, frrs] = slhistroc(hist_a, hist_r, sepvals, op)">slhistroc</a>(hist_a, hist_r, thrs, op);
+0076 
+0077 
+0078 
+0079 
+0080</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

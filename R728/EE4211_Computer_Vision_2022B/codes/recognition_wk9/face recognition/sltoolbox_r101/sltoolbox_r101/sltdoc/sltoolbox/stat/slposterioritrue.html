@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slposterioritrue</title>
+  <meta name="keywords" content="slposterioritrue">
+  <meta name="description" content="SLPOSTERIORITRUE Computes the posteriori that samples belong to true class">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slposterioritrue.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slposterioritrue
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPOSTERIORITRUE Computes the posteriori that samples belong to true class</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function posteriori = slposterioritrue(condprops, nums, priori, op) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPOSTERIORITRUE Computes the posteriori that samples belong to true class
+
+ $ Syntax $
+   - posteriori = slposterioritrue(condprops, nums, priori)
+   - posteriori = slposterioritrue(condprops, nums, priori, 'log')
+
+ $ Arguments $
+   - condprods:      the conditional probabilities of classes: C x n
+   - nums:           the number of samples belong to the classes: 1 x C
+   - priori:         the prior probabilities of classes: 1 x C
+   - posteriori:     the resulting posterior probabilities: 1 x n
+
+ $ Description $
+   - posteriori = slposteriori(condprops, nums, priori) Computes the 
+     posterior probability that the samples belong to the true class 
+     according to the given conditional probabilities of all samples 
+     to all classes and the priori of the classes. 
+     In the input argument, each column in condprops represent the 
+     conditional probabilities of that sample belong to all the 
+     C classes. The samples from the same underlying classes should be
+     put together and the ownership is given by nums.
+     The priori can be given by an 1 x C row vector or [], which 
+     means that all classes have equal prior.
+
+   - posteriori = slposterioritrue(condprops, nums, priori, 'log') means
+     that the input condprops are given by its logarithm.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 16th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>	SLNUMS2BOUNDS Compute the index-boundaries from section sizes</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/regression/sllogistreg.html" class="code" title="function [A, b, props, info] = sllogistreg(X, nums, varargin)">sllogistreg</a>	SLLOGISTREG Performs Multivariate Logistic Regression</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function posteriori = slposterioritrue(condprops, nums, priori, op)</a>
+0002 <span class="comment">%SLPOSTERIORITRUE Computes the posteriori that samples belong to true class</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - posteriori = slposterioritrue(condprops, nums, priori)</span>
+0006 <span class="comment">%   - posteriori = slposterioritrue(condprops, nums, priori, 'log')</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - condprods:      the conditional probabilities of classes: C x n</span>
+0010 <span class="comment">%   - nums:           the number of samples belong to the classes: 1 x C</span>
+0011 <span class="comment">%   - priori:         the prior probabilities of classes: 1 x C</span>
+0012 <span class="comment">%   - posteriori:     the resulting posterior probabilities: 1 x n</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - posteriori = slposteriori(condprops, nums, priori) Computes the</span>
+0016 <span class="comment">%     posterior probability that the samples belong to the true class</span>
+0017 <span class="comment">%     according to the given conditional probabilities of all samples</span>
+0018 <span class="comment">%     to all classes and the priori of the classes.</span>
+0019 <span class="comment">%     In the input argument, each column in condprops represent the</span>
+0020 <span class="comment">%     conditional probabilities of that sample belong to all the</span>
+0021 <span class="comment">%     C classes. The samples from the same underlying classes should be</span>
+0022 <span class="comment">%     put together and the ownership is given by nums.</span>
+0023 <span class="comment">%     The priori can be given by an 1 x C row vector or [], which</span>
+0024 <span class="comment">%     means that all classes have equal prior.</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">%   - posteriori = slposterioritrue(condprops, nums, priori, 'log') means</span>
+0027 <span class="comment">%     that the input condprops are given by its logarithm.</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% $ History $</span>
+0030 <span class="comment">%   - Created by Dahua Lin, on Sep 16th, 2006</span>
+0031 <span class="comment">%</span>
+0032 
+0033 <span class="comment">%% parse and verify input arguments</span>
+0034 
+0035 <span class="keyword">if</span> nargin &lt; 2
+0036     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slposterioritrue'</span>, 2);
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> ~isnumeric(condprops) || ndims(condprops) ~= 2
+0040     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0041         <span class="string">'The condprops should be a 2D numeric matrix'</span>);
+0042 <span class="keyword">end</span>
+0043 [C, n] = size(condprops);
+0044 
+0045 <span class="keyword">if</span> ~isequal(size(nums), [1, C])
+0046     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0047         <span class="string">'The nums should be an 1 x C row vector'</span>);
+0048 <span class="keyword">end</span>
+0049 <span class="keyword">if</span> nargin &lt; 3 || isempty(priori)
+0050     priori = [];
+0051 <span class="keyword">else</span>
+0052     <span class="keyword">if</span> ~isequal(size(priori), [1, C])
+0053         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0054             <span class="string">'The priori should be a an 1 x C row vector'</span>);
+0055     <span class="keyword">end</span>
+0056 <span class="keyword">end</span>
+0057 
+0058 <span class="keyword">if</span> nargin &gt;= 4 &amp;&amp; strcmpi(op, <span class="string">'log'</span>)
+0059     is_log = true;
+0060 <span class="keyword">else</span>
+0061     is_log = false;
+0062 <span class="keyword">end</span>
+0063 
+0064 <span class="comment">%% compute</span>
+0065 
+0066 <span class="keyword">if</span> is_log
+0067     <span class="keyword">if</span> isempty(priori)
+0068         P = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(condprops, -max(condprops, [], 1), 2);
+0069     <span class="keyword">else</span>
+0070         P = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(condprops, log(priori)', 1);
+0071         P = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(P, -max(condprops, [], 1), 2);
+0072     <span class="keyword">end</span>
+0073     P = exp(P);
+0074 <span class="keyword">else</span>
+0075     <span class="keyword">if</span> isempty(priori)
+0076         P = condprops;
+0077     <span class="keyword">else</span>
+0078         P = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(condprops, priori', 1);
+0079     <span class="keyword">end</span>
+0080 <span class="keyword">end</span>
+0081 
+0082 tP = sum(P, 1);
+0083 [sp, ep] = <a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>(nums);
+0084 posteriori = zeros(1, n);
+0085 
+0086 <span class="keyword">for</span> k = 1 : C
+0087     sk = sp(k);
+0088     ek = ep(k);
+0089     posteriori(sk:ek) = P(k, sk:ek);
+0090 <span class="keyword">end</span>
+0091 posteriori = posteriori ./ tP;
+0092</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

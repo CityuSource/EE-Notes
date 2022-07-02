@@ -1,0 +1,27 @@
+3
+A+B
+A+B*C-D
+A+B*(C-D)
+
+
+================================================================================
+
+Input:
+The first line of input contains an integer T denoting the number of test cases.
+Each test case contains a single line of infix expression.
+
+Output:
+Case 1
+Infix:          A+B
+Postfix:        AB+
+
+Case 2
+Infix:          A+B*C-D
+Postfix:        ABC*+D-
+
+Case 3
+Infix:          A+B*(C-D)
+Postfix:        ABCD-*+
+
+
+

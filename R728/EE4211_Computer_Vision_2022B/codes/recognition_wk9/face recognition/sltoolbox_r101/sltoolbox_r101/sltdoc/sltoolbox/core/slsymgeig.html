@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slsymgeig</title>
+  <meta name="keywords" content="slsymgeig">
+  <meta name="description" content="SLSYMGEIG Solve the generalized eigen decomposition for symmetric matrices">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">core</a> &gt; slsymgeig.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\core&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slsymgeig
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLSYMGEIG Solve the generalized eigen decomposition for symmetric matrices</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [evals, evecs] = slsymgeig(A, B, method, r) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLSYMGEIG Solve the generalized eigen decomposition for symmetric matrices
+
+ $ Syntax $
+   - [evals, evecs] = slsymgeig(A, B)
+   - [evals, evecs] = slsymgeig(A, B, method, r)
+
+ $ Description $
+   - [evals, evecs] = slsymgeig(A, B) solves the generalized eigenvalue
+     and eigenvectors problem by default method. The problem is formulated
+     by A * v = lambda * B * v. The default method is 'std'.
+
+   - [evals, evecs] = slsymeig(A, B, method, r) solves the generalized
+     eigenvalue and eigenvectors problem using the specified method.
+     r is the parameter for the method.
+     \*
+     \t   Table 1. Methods for Solving symmetric GEVD problem  \\
+           name    &amp;   description                             \\
+          'std'    &amp;  Keep only the eigenvectors of B, which correspond
+                      to non-trivial eigenvalues. r is the ratio of
+                      minimum allowable nontrivial eigenvalues to the
+                      maximum eigenvalue.  (default r = 1e-7) \\
+          'reg'    &amp;  Regularize the eigenvalues by adding a small 
+                      positive value to all eigenvalues. r is the ratio
+                      of the addend to the maximum eigenvalue. 
+                      (default r = 1e-6)                      \\
+          'bound'  &amp;  Enforce a lower bound on the eigenvalues. All 
+                      eigenvalues smaller than the lower bound is 
+                      forced to be the lower bound. r is the ratio of
+                      the lower bound to the maximum eigenvalue. 
+                      (default r = 1e-6)                       \\
+     \*
+
+ $ Remarks $
+   -# It is required that B be a positive semidefinite matrix.
+
+   -# In the output, the eigenvalues are sorted in descending order,
+      with the eigenvectors arranged according to the eigenvalues.
+      
+   -# The eigenvectors are scaled, so that v^T * B * v = 1. Moreover,
+      for the whole set of eigenvectors V, it has V^T * B * V = I.
+
+   -# The problem are solved as follows: first solve the whiten transform
+      B^(-1/2), then solve the standard eigen-problem given by the matrix
+      B^(-1/2) * A * B^(-1/2) and obtain the eigenvectors Y. Finally, we
+      compute the generalized eigenvectors by B^(-1/2) * Y. It can be
+      shown that the generalized eigenvalues are equal to those of the
+      converted standard eigen-problem.
+
+   -# In mathematically, solve the generalized eigen-problem can be
+      considered as solving the following optimization problem, given
+      that B is non-singular:
+           max v^T * A * v,  s.t. v^T * B * v = I.
+
+ $ History $
+   - Created by Dahua Lin on May 3rd, 2006
+   - Modified by Dahua Lin on Sep 10, 2006
+       - replace slmul by slmulvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/kernel/slgda.html" class="code" title="function A = slgda(K, nums, sol)">slgda</a>	SLGDA Performs Baudat's Generalized Discriminant Analysis</li><li><a href="../../sltoolbox/kernel/slkfd.html" class="code" title="function A = slkfd(K, nums, varargin)">slkfd</a>	SLKFD Perform Kernelized Fisher Discriminant Analysis</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function revs = proc_evals_std(evs, r)</a></li><li><a href="#_sub2" class="code">function revs = proc_evals_reg(evs, r)</a></li><li><a href="#_sub3" class="code">function revs = proc_evals_bound(evs, r)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [evals, evecs] = slsymgeig(A, B, method, r)</a>
+0002 <span class="comment">%SLSYMGEIG Solve the generalized eigen decomposition for symmetric matrices</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [evals, evecs] = slsymgeig(A, B)</span>
+0006 <span class="comment">%   - [evals, evecs] = slsymgeig(A, B, method, r)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Description $</span>
+0009 <span class="comment">%   - [evals, evecs] = slsymgeig(A, B) solves the generalized eigenvalue</span>
+0010 <span class="comment">%     and eigenvectors problem by default method. The problem is formulated</span>
+0011 <span class="comment">%     by A * v = lambda * B * v. The default method is 'std'.</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%   - [evals, evecs] = slsymeig(A, B, method, r) solves the generalized</span>
+0014 <span class="comment">%     eigenvalue and eigenvectors problem using the specified method.</span>
+0015 <span class="comment">%     r is the parameter for the method.</span>
+0016 <span class="comment">%     \*</span>
+0017 <span class="comment">%     \t   Table 1. Methods for Solving symmetric GEVD problem  \\</span>
+0018 <span class="comment">%           name    &amp;   description                             \\</span>
+0019 <span class="comment">%          'std'    &amp;  Keep only the eigenvectors of B, which correspond</span>
+0020 <span class="comment">%                      to non-trivial eigenvalues. r is the ratio of</span>
+0021 <span class="comment">%                      minimum allowable nontrivial eigenvalues to the</span>
+0022 <span class="comment">%                      maximum eigenvalue.  (default r = 1e-7) \\</span>
+0023 <span class="comment">%          'reg'    &amp;  Regularize the eigenvalues by adding a small</span>
+0024 <span class="comment">%                      positive value to all eigenvalues. r is the ratio</span>
+0025 <span class="comment">%                      of the addend to the maximum eigenvalue.</span>
+0026 <span class="comment">%                      (default r = 1e-6)                      \\</span>
+0027 <span class="comment">%          'bound'  &amp;  Enforce a lower bound on the eigenvalues. All</span>
+0028 <span class="comment">%                      eigenvalues smaller than the lower bound is</span>
+0029 <span class="comment">%                      forced to be the lower bound. r is the ratio of</span>
+0030 <span class="comment">%                      the lower bound to the maximum eigenvalue.</span>
+0031 <span class="comment">%                      (default r = 1e-6)                       \\</span>
+0032 <span class="comment">%     \*</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">% $ Remarks $</span>
+0035 <span class="comment">%   -# It is required that B be a positive semidefinite matrix.</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">%   -# In the output, the eigenvalues are sorted in descending order,</span>
+0038 <span class="comment">%      with the eigenvectors arranged according to the eigenvalues.</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">%   -# The eigenvectors are scaled, so that v^T * B * v = 1. Moreover,</span>
+0041 <span class="comment">%      for the whole set of eigenvectors V, it has V^T * B * V = I.</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">%   -# The problem are solved as follows: first solve the whiten transform</span>
+0044 <span class="comment">%      B^(-1/2), then solve the standard eigen-problem given by the matrix</span>
+0045 <span class="comment">%      B^(-1/2) * A * B^(-1/2) and obtain the eigenvectors Y. Finally, we</span>
+0046 <span class="comment">%      compute the generalized eigenvectors by B^(-1/2) * Y. It can be</span>
+0047 <span class="comment">%      shown that the generalized eigenvalues are equal to those of the</span>
+0048 <span class="comment">%      converted standard eigen-problem.</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">%   -# In mathematically, solve the generalized eigen-problem can be</span>
+0051 <span class="comment">%      considered as solving the following optimization problem, given</span>
+0052 <span class="comment">%      that B is non-singular:</span>
+0053 <span class="comment">%           max v^T * A * v,  s.t. v^T * B * v = I.</span>
+0054 <span class="comment">%</span>
+0055 <span class="comment">% $ History $</span>
+0056 <span class="comment">%   - Created by Dahua Lin on May 3rd, 2006</span>
+0057 <span class="comment">%   - Modified by Dahua Lin on Sep 10, 2006</span>
+0058 <span class="comment">%       - replace slmul by slmulvec to increase efficiency</span>
+0059 <span class="comment">%</span>
+0060 
+0061 <span class="comment">%% parse and verify input arguments</span>
+0062 
+0063 <span class="keyword">if</span> nargin &lt; 2
+0064     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slsymgeig'</span>, 2);
+0065 <span class="keyword">end</span>
+0066 
+0067 <span class="comment">% for A and B</span>
+0068 d = size(A, 1);
+0069 <span class="keyword">if</span> ~isequal(size(A), [d d])
+0070     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0071         <span class="string">'A should be a sqaure matrix'</span>);
+0072 <span class="keyword">end</span>
+0073 <span class="keyword">if</span> ~isequal(size(B), [d d])
+0074     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0075         <span class="string">'The size of B is inconsistent with that of A'</span>);
+0076 <span class="keyword">end</span>
+0077 
+0078 <span class="comment">% for method</span>
+0079 <span class="keyword">if</span> nargin &lt; 3 || isempty(method)
+0080     method = <span class="string">'std'</span>;
+0081 <span class="keyword">end</span>
+0082 
+0083 <span class="comment">% for r</span>
+0084 <span class="keyword">if</span> nargin &lt; 4 || isempty(r)
+0085     use_default_r = true;
+0086 <span class="keyword">else</span>
+0087     use_default_r = false;
+0088 <span class="keyword">end</span>
+0089 
+0090 
+0091 <span class="comment">%%  Configure methods</span>
+0092 
+0093 <span class="keyword">switch</span> method
+0094     <span class="keyword">case</span> <span class="string">'std'</span>
+0095         fh_proc_evals = @<a href="#_sub1" class="code" title="subfunction revs = proc_evals_std(evs, r)">proc_evals_std</a>;
+0096         <span class="keyword">if</span> use_default_r
+0097             r = 1e-7;
+0098         <span class="keyword">end</span>
+0099     <span class="keyword">case</span> <span class="string">'reg'</span>
+0100         fh_proc_evals = @<a href="#_sub2" class="code" title="subfunction revs = proc_evals_reg(evs, r)">proc_evals_reg</a>;
+0101         <span class="keyword">if</span> use_default_r
+0102             r = 1e-6;
+0103         <span class="keyword">end</span>
+0104     <span class="keyword">case</span> <span class="string">'bound'</span>
+0105         fh_proc_evals = @<a href="#_sub3" class="code" title="subfunction revs = proc_evals_bound(evs, r)">proc_evals_bound</a>;
+0106         <span class="keyword">if</span> use_default_r
+0107             r = 1e-6;
+0108         <span class="keyword">end</span>
+0109     <span class="keyword">otherwise</span>
+0110         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0111             <span class="string">'Invalid method %s for slsymgeig'</span>, method);
+0112 <span class="keyword">end</span>
+0113 
+0114 <span class="comment">%% Compute</span>
+0115 
+0116 <span class="comment">% step 0: enforce symmetry for A and B</span>
+0117 A = (A + A') / 2;
+0118 B = (B + B') / 2;
+0119 
+0120 
+0121 <span class="comment">% step 1: solve the whiten transform B^(1/2)</span>
+0122 
+0123 [B_evals, B_evecs] = <a href="slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(B);
+0124 B_inv_evals = fh_proc_evals(B_evals, r);
+0125 clear B_evals;
+0126 B_inv_evals = max(B_inv_evals, 0);    <span class="comment">% enforce non-negative</span>
+0127 k = length(B_inv_evals);
+0128 <span class="keyword">if</span> k &lt; d
+0129     B_evecs = B_evecs(:, 1:k);
+0130 <span class="keyword">end</span>
+0131 W = <a href="slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(B_evecs, sqrt(B_inv_evals)');
+0132 clear B_evecs B_inv_evals;
+0133 
+0134 <span class="comment">% step 2: solve the converted EVD problem</span>
+0135 
+0136 A = W' * A * W;
+0137 [evals, Y] = <a href="slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(A);
+0138 
+0139 <span class="comment">% step 3: convert the eigenvectors</span>
+0140 
+0141 evecs = W * Y;
+0142 
+0143 
+0144 <span class="comment">%% The sub-functions for processing eigenvalues</span>
+0145 
+0146 <a name="_sub1" href="#_subfunctions" class="code">function revs = proc_evals_std(evs, r)</a>
+0147 
+0148 lb = r * evs(1);
+0149 k = sum(evs &gt; lb);
+0150 revs = 1 ./ evs(1:k);
+0151 
+0152 <a name="_sub2" href="#_subfunctions" class="code">function revs = proc_evals_reg(evs, r)</a>
+0153 
+0154 a = r * evs(1);
+0155 revs = 1 ./ (max(evs, 0) + a);
+0156 
+0157 <a name="_sub3" href="#_subfunctions" class="code">function revs = proc_evals_bound(evs, r)</a>
+0158 
+0159 lb = r * evs(1);
+0160 k = sum(evs &gt; lb);
+0161 <span class="keyword">if</span> k &lt; length(evs)
+0162     evs(k+1:end) = lb;
+0163 <span class="keyword">end</span>
+0164 revs = 1 ./ evs;</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

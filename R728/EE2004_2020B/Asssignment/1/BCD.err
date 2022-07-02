@@ -1,0 +1,4 @@
+Warning[215] D:\IDK\DOWNLOADS\UNI\YR2 SEMB\EE2004 MICROSHIT\ASSSIGNMENT\1\BCD.ASM 1 : Processor superseded by command line.  Verify processor symbol.
+Message[301] D:\PROGRAM FILES\MICROCHIP\MPASM SUITE\P18F4520.INC 33 : MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+Warning[205] D:\IDK\DOWNLOADS\UNI\YR2 SEMB\EE2004 MICROSHIT\ASSSIGNMENT\1\BCD.ASM 8 : Found directive in column 1. (CBLOCK)
+Warning[205] D:\IDK\DOWNLOADS\UNI\YR2 SEMB\EE2004 MICROSHIT\ASSSIGNMENT\1\BCD.ASM 19 : Found directive in column 1. (ENDC)

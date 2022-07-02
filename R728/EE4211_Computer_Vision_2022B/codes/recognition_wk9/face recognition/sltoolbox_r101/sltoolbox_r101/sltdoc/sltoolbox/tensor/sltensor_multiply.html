@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sltensor_multiply</title>
+  <meta name="keywords" content="sltensor_multiply">
+  <meta name="description" content="SLTENSOR_MULTIPLY Multiplies a tensor and a matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">tensor</a> &gt; sltensor_multiply.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\tensor&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sltensor_multiply
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLTENSOR_MULTIPLY Multiplies a tensor and a matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function T2 = sltensor_multiply(T, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLTENSOR_MULTIPLY Multiplies a tensor and a matrix
+
+ $ Syntax $
+   - T2 = sltensor_multiply(T, M, k)
+   - T2 = sltensor_multiply(T, Ms)
+   - T2 = sltensor_multiply(T, Ms, ks)
+   - T2 = sltensor_multiply(T, M1, k1, M2, k2, ...)
+
+ $ Description $
+   - T2 = sltensor_multiply(T, M, k) Computes the tensor multiplication between
+   a tensor and a 2D matrix along the k-th mode.
+
+   - T2 = sltensor_multiply(T, Ms) Sequentially multiplies the tensor with
+   the elements in Ms, which is a cell array from the mode 1 to n. n is
+   the number of matrices in Ms. It should be that n == ndims(T).
+
+   - T2 = sltensor_multiply(T, Ms, ks) Sequentially multiplies the tensor
+   with the matrices in the cell array Ms along the modes specified in
+   corresponding element in ks. ks should be an array with the same size
+   as Ms.
+
+   - T2 = sltensor_multiply(T, M1, k1, M2, k2, ...) Sequentially multiplies 
+   the tensor with the matrices M1, M2, ... along the modes k1, k2, ...
+
+ $ History $
+   - Created by Dahua Lin on Dec 17th, 2005</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sltensor_fold.html" class="code" title="function T = sltensor_fold(M, dims, k)">sltensor_fold</a>	SLTENSOR_FOLD Folds a matrix into a tensor</li><li><a href="sltensor_unfold.html" class="code" title="function M = sltensor_unfold(T, k)">sltensor_unfold</a>	SLTENSOR_UNFOLD Unfolds a tensor to a matrix</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sltensor_svd.html" class="code" title="function varargout = sltensor_svd(T, n)">sltensor_svd</a>	SLTENSOR_SVD Performs a Higher-Order SVD on a Tensor</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function T2 = multiply_tensor_matrix(T, M, k, dims)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function T2 = sltensor_multiply(T, varargin)</a>
+0002 <span class="comment">%SLTENSOR_MULTIPLY Multiplies a tensor and a matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - T2 = sltensor_multiply(T, M, k)</span>
+0006 <span class="comment">%   - T2 = sltensor_multiply(T, Ms)</span>
+0007 <span class="comment">%   - T2 = sltensor_multiply(T, Ms, ks)</span>
+0008 <span class="comment">%   - T2 = sltensor_multiply(T, M1, k1, M2, k2, ...)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% $ Description $</span>
+0011 <span class="comment">%   - T2 = sltensor_multiply(T, M, k) Computes the tensor multiplication between</span>
+0012 <span class="comment">%   a tensor and a 2D matrix along the k-th mode.</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%   - T2 = sltensor_multiply(T, Ms) Sequentially multiplies the tensor with</span>
+0015 <span class="comment">%   the elements in Ms, which is a cell array from the mode 1 to n. n is</span>
+0016 <span class="comment">%   the number of matrices in Ms. It should be that n == ndims(T).</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%   - T2 = sltensor_multiply(T, Ms, ks) Sequentially multiplies the tensor</span>
+0019 <span class="comment">%   with the matrices in the cell array Ms along the modes specified in</span>
+0020 <span class="comment">%   corresponding element in ks. ks should be an array with the same size</span>
+0021 <span class="comment">%   as Ms.</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%   - T2 = sltensor_multiply(T, M1, k1, M2, k2, ...) Sequentially multiplies</span>
+0024 <span class="comment">%   the tensor with the matrices M1, M2, ... along the modes k1, k2, ...</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">% $ History $</span>
+0027 <span class="comment">%   - Created by Dahua Lin on Dec 17th, 2005</span>
+0028 <span class="comment">%</span>
+0029 
+0030 <span class="comment">%% parse and verify input arguments</span>
+0031 <span class="keyword">if</span> nargin &lt; 2
+0032     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sltensot_multiply'</span>, 2);
+0033 <span class="keyword">end</span>
+0034 n0 = ndims(T);
+0035 <span class="keyword">if</span> iscell(varargin{1});
+0036     Ms = varargin{1};
+0037     <span class="keyword">if</span> nargin == 2
+0038         n = numel(Ms);
+0039         <span class="keyword">if</span> n ~= n0
+0040             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0041                 <span class="string">'For the case no specifying mode indices, it should be n == ndims(T)'</span>);
+0042         <span class="keyword">end</span>
+0043         ks = 1:n;
+0044     <span class="keyword">elseif</span> nargin == 3
+0045         ks = varargin{2};
+0046         <span class="keyword">if</span> ~isequal(size(Ms), size(k))
+0047             error(<span class="string">'sltoolbox:argmismatch'</span>, <span class="keyword">...</span>
+0048                 <span class="string">'The size of ks does not match that of Ms'</span>);
+0049         <span class="keyword">end</span>    
+0050     <span class="keyword">else</span>
+0051         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0052             <span class="string">'Invalid input arguments'</span>);
+0053     <span class="keyword">end</span>
+0054 <span class="keyword">else</span>
+0055     <span class="keyword">if</span> mod(length(varargin), 2) ~= 0
+0056         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0057             <span class="string">'Invalid input arguments'</span>);
+0058     <span class="keyword">end</span>
+0059     Ms = varargin(1:2:end);
+0060     ks = [varargin{2:2:end}];
+0061     <span class="keyword">if</span> numel(Ms) ~= numel(ks)
+0062         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0063             <span class="string">'Invalid input arguments'</span>);
+0064     <span class="keyword">end</span>
+0065 <span class="keyword">end</span>
+0066 <span class="keyword">if</span> any(ks(:) &lt; 1)
+0067     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0068         <span class="string">'mode indices should all be positive integers'</span>);
+0069 <span class="keyword">end</span>
+0070 maxk = max(ks(:));
+0071 dims = size(T);
+0072 <span class="keyword">if</span> maxk &gt; n0
+0073     dims = [dims, ones(1, maxk-n0)];
+0074 <span class="keyword">end</span>
+0075 nmat = numel(ks);
+0076     
+0077 <span class="comment">%% compute</span>
+0078 <span class="keyword">if</span> nmat == 1
+0079     T2 = <a href="#_sub1" class="code" title="subfunction T2 = multiply_tensor_matrix(T, M, k, dims)">multiply_tensor_matrix</a>(T, Ms{1}, ks, dims);
+0080 <span class="keyword">else</span>
+0081     T2 = T;
+0082     <span class="keyword">for</span> i = 1 : nmat
+0083         T2 = <a href="#_sub1" class="code" title="subfunction T2 = multiply_tensor_matrix(T, M, k, dims)">multiply_tensor_matrix</a>(T2, Ms{i}, ks(i), dims);
+0084     <span class="keyword">end</span>
+0085 <span class="keyword">end</span>
+0086     
+0087 
+0088 
+0089 <span class="comment">%% compute (by converting to matrix product)</span>
+0090 
+0091 <a name="_sub1" href="#_subfunctions" class="code">function T2 = multiply_tensor_matrix(T, M, k, dims)</a>
+0092 
+0093 Tk = <a href="sltensor_unfold.html" class="code" title="function M = sltensor_unfold(T, k)">sltensor_unfold</a>(T, k);
+0094 T2 = M * Tk;
+0095 clear Tk;
+0096 dims(k) = size(M, 1);
+0097 T2 = <a href="sltensor_fold.html" class="code" title="function T = sltensor_fold(M, dims, k)">sltensor_fold</a>(T2, dims, k);
+0098 
+0099 
+0100 
+0101 
+0102</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

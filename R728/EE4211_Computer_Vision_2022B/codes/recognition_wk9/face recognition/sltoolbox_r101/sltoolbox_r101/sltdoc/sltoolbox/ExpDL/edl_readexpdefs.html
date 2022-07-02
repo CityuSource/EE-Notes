@@ -1,0 +1,557 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of edl_readexpdefs</title>
+  <meta name="keywords" content="edl_readexpdefs">
+  <meta name="description" content="EDL_READEXPDEFS Reads in an experiment definition from XML file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">ExpDL</a> &gt; edl_readexpdefs.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>edl_readexpdefs
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>EDL_READEXPDEFS Reads in an experiment definition from XML file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function ED = edl_readexpdefs(filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">EDL_READEXPDEFS Reads in an experiment definition from XML file
+
+ $ Syntax $
+   - ED = edl_readexpdefs(filename)
+
+ $ Arguments $
+   - filename:     the filename of the experiment definition XML
+   - ED:           the read experiment definition struct
+
+ $ Description $
+   - ED = edl_readexpdefs(filename) reads in an experiment definition
+     struct from an XML file. The format of XML can be referred to 
+     the edl.spec.txt. The struct ED has following fields:
+
+       - name: the experiment definition name
+       - selfpath: the absolute path of the experiment definition self
+       - envconf: the filename of environment configuration
+       - env:     the environment configuration struct
+       - scriptdir: the script directory
+       - reportdir: the report directory
+       - mfiledir:  the m-files directory
+       - logfile:   the path of log file
+       - logger:    the logger
+
+       - variables: a struct of all variables, 
+           using variable names as field names
+           using variable values as field values
+       - scripts: the struct of scripts
+           - using name as fieldnames, each field is a struct with
+               - func:     the scripting function
+               - path:     the path of the script file
+               - ctrlpath: the path of the control file
+               - params:   the other parameters
+               - refs:     the struct array of referenced scripts
+                   using role as field name
+                   using script name as field value
+               - refreps:  the struct array of referenced reports
+                   using role as field name
+                   using report name as field value            
+               - refpaths: the struct array of referenced paths
+                   using role as field name
+                   using xml path of (script or report) as field value
+               - refscopes: the struct array of scope names of references
+                            (scripts | reports)
+                   using role as field name
+                   using scope names as field values
+       - experiments: the struct of experiments
+           - using name as fieldnames, each field is a struct with
+               - func:         the experiment function
+               - script:       the script name
+               - scriptpath:   the script filepath
+               - ctrlpath:     the control filepath
+       - reports: the struct array of reports
+           similar to scripts, except for that there is no ctrlpath
+       
+ $ History $
+   - Created by Dahua Lin, on Aug 12nd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_readenvvars.html" class="code" title="function S = edl_readenvvars(envfile)">edl_readenvvars</a>	EDL_READENVVARS Reads in a file with environment variables</li><li><a href="../../sltoolbox/fileio/@sllog/addfiles.html" class="code" title="function logger = addfiles(logger, files, initstatus)">addfiles</a>	ADDFILES add a set of log files to the logger</li><li><a href="../../sltoolbox/fileio/@sllog/sllog.html" class="code" title="function logger = sllog(varargin)">sllog</a>	SLLOG Constructs a logger</li><li><a href="../../sltoolbox/fileio/slchangefilepart.html" class="code" title="function newfp = slchangefilepart(fp, varargin)">slchangefilepart</a>	SLCHANGEFILEPART Changes some parts of the file path</li><li><a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>	SLFILEPARTS Extracts a specified part of a file path string</li><li><a href="../../sltoolbox/fileio/slisabspath.html" class="code" title="function b = slisabspath(pstr)">slisabspath</a>	SLISABSPATH Judges whether the path string is a absolute path</li><li><a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>	SLADDPATH Adds dirpath to precede the filenames</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li><li><a href="../../sltoolbox/xmlkits/xml_getattribs.html" class="code" title="function A = xml_getattribs(xelem, varargin)">xml_getattribs</a>	XML_GETATTRIBS Constructs an attribte struct from an XML element</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_go.html" class="code" title="function edl_go(expdef, type, name, filter, runopt)">edl_go</a>	EDL_GO The Top interface for doing experiments in EDL</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function ED = first_pass(ED, xelem, groupvars)</a></li><li><a href="#_sub2" class="code">function S = build_refpaths(ED, S)</a></li><li><a href="#_sub3" class="code">function S = build_refpaths_fortype(ED, name, S, typeset, typefield)</a></li><li><a href="#_sub4" class="code">function ES = build_exppaths(ED, ES)</a></li><li><a href="#_sub5" class="code">function [vname, vval] = parse_var(ED, xelem)</a></li><li><a href="#_sub6" class="code">function [sname, scr] = parse_script(ED, xelem)</a></li><li><a href="#_sub7" class="code">function [rname, rep] = parse_report(ED, xelem)</a></li><li><a href="#_sub8" class="code">function [expname, es] = parse_experiment(ED, xelem)</a></li><li><a href="#_sub9" class="code">function newvars = parse_group(ED, gvars, xelem)</a></li><li><a href="#_sub10" class="code">function val = translate_attribval(ED, attrval)</a></li><li><a href="#_sub11" class="code">function aval = get_tattrib(ED, xelem, scope, elemname, attrname)</a></li><li><a href="#_sub12" class="code">function A = get_tattribs(ED, xelem, varargin)</a></li><li><a href="#_sub13" class="code">function name = make_name(ED, scope, xelem)</a></li><li><a href="#_sub14" class="code">function S = update_fields(ED, S, xelem, fns)</a></li><li><a href="#_sub15" class="code">function S = weak_update(S, Scomp)</a></li><li><a href="#_sub16" class="code">function S = build_reftables(ED, S, xelem)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ED = edl_readexpdefs(filename)</a>
+0002 <span class="comment">%EDL_READEXPDEFS Reads in an experiment definition from XML file</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - ED = edl_readexpdefs(filename)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - filename:     the filename of the experiment definition XML</span>
+0009 <span class="comment">%   - ED:           the read experiment definition struct</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - ED = edl_readexpdefs(filename) reads in an experiment definition</span>
+0013 <span class="comment">%     struct from an XML file. The format of XML can be referred to</span>
+0014 <span class="comment">%     the edl.spec.txt. The struct ED has following fields:</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%       - name: the experiment definition name</span>
+0017 <span class="comment">%       - selfpath: the absolute path of the experiment definition self</span>
+0018 <span class="comment">%       - envconf: the filename of environment configuration</span>
+0019 <span class="comment">%       - env:     the environment configuration struct</span>
+0020 <span class="comment">%       - scriptdir: the script directory</span>
+0021 <span class="comment">%       - reportdir: the report directory</span>
+0022 <span class="comment">%       - mfiledir:  the m-files directory</span>
+0023 <span class="comment">%       - logfile:   the path of log file</span>
+0024 <span class="comment">%       - logger:    the logger</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">%       - variables: a struct of all variables,</span>
+0027 <span class="comment">%           using variable names as field names</span>
+0028 <span class="comment">%           using variable values as field values</span>
+0029 <span class="comment">%       - scripts: the struct of scripts</span>
+0030 <span class="comment">%           - using name as fieldnames, each field is a struct with</span>
+0031 <span class="comment">%               - func:     the scripting function</span>
+0032 <span class="comment">%               - path:     the path of the script file</span>
+0033 <span class="comment">%               - ctrlpath: the path of the control file</span>
+0034 <span class="comment">%               - params:   the other parameters</span>
+0035 <span class="comment">%               - refs:     the struct array of referenced scripts</span>
+0036 <span class="comment">%                   using role as field name</span>
+0037 <span class="comment">%                   using script name as field value</span>
+0038 <span class="comment">%               - refreps:  the struct array of referenced reports</span>
+0039 <span class="comment">%                   using role as field name</span>
+0040 <span class="comment">%                   using report name as field value</span>
+0041 <span class="comment">%               - refpaths: the struct array of referenced paths</span>
+0042 <span class="comment">%                   using role as field name</span>
+0043 <span class="comment">%                   using xml path of (script or report) as field value</span>
+0044 <span class="comment">%               - refscopes: the struct array of scope names of references</span>
+0045 <span class="comment">%                            (scripts | reports)</span>
+0046 <span class="comment">%                   using role as field name</span>
+0047 <span class="comment">%                   using scope names as field values</span>
+0048 <span class="comment">%       - experiments: the struct of experiments</span>
+0049 <span class="comment">%           - using name as fieldnames, each field is a struct with</span>
+0050 <span class="comment">%               - func:         the experiment function</span>
+0051 <span class="comment">%               - script:       the script name</span>
+0052 <span class="comment">%               - scriptpath:   the script filepath</span>
+0053 <span class="comment">%               - ctrlpath:     the control filepath</span>
+0054 <span class="comment">%       - reports: the struct array of reports</span>
+0055 <span class="comment">%           similar to scripts, except for that there is no ctrlpath</span>
+0056 <span class="comment">%</span>
+0057 <span class="comment">% $ History $</span>
+0058 <span class="comment">%   - Created by Dahua Lin, on Aug 12nd, 2006</span>
+0059 <span class="comment">%</span>
+0060 
+0061 <span class="comment">%% Read file</span>
+0062 
+0063 xdoc = xmlread(filename);
+0064 edparent = <a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>(filename, <span class="string">'parent'</span>);
+0065 docelem = xdoc.getDocumentElement;
+0066 
+0067 
+0068 <span class="comment">%% Read Header</span>
+0069 
+0070 headerfns = { <span class="keyword">...</span>
+0071     <span class="string">'name'</span>, <span class="keyword">...</span>
+0072     <span class="string">'envconf'</span>, <span class="keyword">...</span>
+0073     <span class="string">'scriptdir'</span>, <span class="keyword">...</span>
+0074     <span class="string">'reportdir'</span>, <span class="keyword">...</span>
+0075     <span class="string">'mfiledir'</span>, <span class="keyword">...</span>
+0076     <span class="string">'logfile'</span>};
+0077 ED = cell2struct(cell(1, length(headerfns)), headerfns, 2);
+0078 headers = <a href="../../sltoolbox/xmlkits/xml_getattribs.html" class="code" title="function A = xml_getattribs(xelem, varargin)">xml_getattribs</a>(docelem);
+0079 ED = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(ED, headers);
+0080 
+0081 <span class="keyword">if</span> <a href="../../sltoolbox/fileio/slisabspath.html" class="code" title="function b = slisabspath(pstr)">slisabspath</a>(filename)
+0082     ED.selfpath = filename;
+0083 <span class="keyword">else</span>
+0084     ED.selfpath = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(filename, cd());
+0085 <span class="keyword">end</span>
+0086 
+0087 <span class="keyword">if</span> isempty(ED.envconf)
+0088     ED.env = [];
+0089 <span class="keyword">else</span>
+0090     envpath = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(ED.envconf, edparent);
+0091     ED.env = <a href="edl_readenvvars.html" class="code" title="function S = edl_readenvvars(envfile)">edl_readenvvars</a>(envpath);
+0092 <span class="keyword">end</span>
+0093 
+0094 <span class="keyword">if</span> isempty(ED.env) || ~isfield(ED.env, <span class="string">'envname'</span>)
+0095     error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0096         <span class="string">'The environment must has variable named %s'</span>, <span class="string">'envname'</span>);
+0097 <span class="keyword">end</span>
+0098 envname = ED.env.envname;
+0099 
+0100 ED.logger = <a href="../../sltoolbox/fileio/@sllog/sllog.html" class="code" title="function logger = sllog(varargin)">sllog</a>(<span class="string">'rootpath'</span>, edparent);
+0101 <span class="keyword">if</span> ~isempty(ED.logfile)
+0102     ED.logfile = [ED.logfile, <span class="string">'.'</span>, envname, <span class="string">'.log'</span>];
+0103     ED.logger = <a href="../../sltoolbox/fileio/@sllog/addfiles.html" class="code" title="function logger = addfiles(logger, files, initstatus)">addfiles</a>(ED.logger, ED.logfile);
+0104 <span class="keyword">end</span>
+0105 
+0106 <span class="comment">%% First-Pass Parsing</span>
+0107 <span class="comment">% 1. Build variable table progressively</span>
+0108 <span class="comment">% 2. Build basic structures</span>
+0109 <span class="comment">% 3. Translate variables</span>
+0110 
+0111 ED.variables = [];
+0112 ED.scripts = [];
+0113 ED.experiments = [];
+0114 ED.reports = [];
+0115 
+0116 ED = <a href="#_sub1" class="code" title="subfunction ED = first_pass(ED, xelem, groupvars)">first_pass</a>(ED, docelem, struct(<span class="string">'workdir'</span>, <span class="string">''</span>));
+0117 
+0118 
+0119 <span class="comment">%% Second-Pass Parsing</span>
+0120 <span class="comment">% 1. Extract paths from cross-references</span>
+0121 <span class="comment">%   (a) build refpaths for scripts and reports</span>
+0122 <span class="comment">%   (b) build scriptpath and ctrlpath for experiments</span>
+0123 <span class="comment">%</span>
+0124 
+0125 <span class="comment">% 1.(a)</span>
+0126 ED.scripts = <a href="#_sub2" class="code" title="subfunction S = build_refpaths(ED, S)">build_refpaths</a>(ED, ED.scripts);
+0127 ED.reports = <a href="#_sub2" class="code" title="subfunction S = build_refpaths(ED, S)">build_refpaths</a>(ED, ED.reports);
+0128 
+0129 <span class="comment">% 1.(b)</span>
+0130 ED.experiments = <a href="#_sub4" class="code" title="subfunction ES = build_exppaths(ED, ES)">build_exppaths</a>(ED, ED.experiments);
+0131 
+0132 
+0133 
+0134 <span class="comment">%% Core function for First-Pass (recursive invoking)</span>
+0135 
+0136 <a name="_sub1" href="#_subfunctions" class="code">function ED = first_pass(ED, xelem, groupvars)</a>
+0137 
+0138 nodeList = xelem.getChildNodes;
+0139 n = nodeList.getLength;
+0140 
+0141 <span class="keyword">for</span> i = 1 : n   <span class="comment">% enumerate all children</span>
+0142     
+0143     node = nodeList.item(i-1);    
+0144     <span class="keyword">if</span> (node.getNodeType == node.ELEMENT_NODE)       
+0145         tag = char(node.getTagName);
+0146         
+0147         <span class="keyword">switch</span> tag
+0148             
+0149             <span class="keyword">case</span> <span class="string">'Var'</span>
+0150                 [varname, varval] = <a href="#_sub5" class="code" title="subfunction [vname, vval] = parse_var(ED, xelem)">parse_var</a>(ED, node);
+0151                 ED.variables.(varname) = varval;
+0152                 
+0153             <span class="keyword">case</span> <span class="string">'Script'</span>
+0154                 [scriptname, scriptstruct] = <a href="#_sub6" class="code" title="subfunction [sname, scr] = parse_script(ED, xelem)">parse_script</a>(ED, node);
+0155                 scriptstruct.params = <a href="#_sub15" class="code" title="subfunction S = weak_update(S, Scomp)">weak_update</a>(scriptstruct.params, groupvars);
+0156                 ED.scripts.(scriptname) = scriptstruct;
+0157             
+0158             <span class="keyword">case</span> <span class="string">'Report'</span>
+0159                 [reportname, reportstruct] = <a href="#_sub7" class="code" title="subfunction [rname, rep] = parse_report(ED, xelem)">parse_report</a>(ED, node);
+0160                 ED.reports.(reportname) = reportstruct;
+0161                 
+0162             <span class="keyword">case</span> <span class="string">'Experiment'</span>
+0163                 [expname, expstruct] = <a href="#_sub8" class="code" title="subfunction [expname, es] = parse_experiment(ED, xelem)">parse_experiment</a>(ED, node);
+0164                 ED.experiments.(expname) = expstruct; 
+0165                 
+0166             <span class="keyword">case</span> <span class="string">'Group'</span>                
+0167                 subgroupvars = <a href="#_sub9" class="code" title="subfunction newvars = parse_group(ED, gvars, xelem)">parse_group</a>(ED, groupvars, node);
+0168                 ED = <a href="#_sub1" class="code" title="subfunction ED = first_pass(ED, xelem, groupvars)">first_pass</a>(ED, node, subgroupvars);
+0169                 
+0170             <span class="keyword">otherwise</span>
+0171                 error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0172                     <span class="string">'Invalid element with tag name %s'</span>, tag);                            
+0173         <span class="keyword">end</span>
+0174                 
+0175     <span class="keyword">end</span>
+0176     
+0177 <span class="keyword">end</span>
+0178 
+0179 
+0180 <span class="comment">%% Core functions for Second-Pass</span>
+0181 
+0182 <a name="_sub2" href="#_subfunctions" class="code">function S = build_refpaths(ED, S)</a>
+0183 
+0184 fns = fieldnames(S);
+0185 n = length(fns);
+0186 
+0187 <span class="keyword">for</span> i = 1 : n
+0188     fn = fns{i};
+0189     
+0190     S.(fn) = <a href="#_sub3" class="code" title="subfunction S = build_refpaths_fortype(ED, name, S, typeset, typefield)">build_refpaths_fortype</a>(ED, fn, S.(fn), <span class="string">'scripts'</span>, <span class="string">'refs'</span>);
+0191     S.(fn) = <a href="#_sub3" class="code" title="subfunction S = build_refpaths_fortype(ED, name, S, typeset, typefield)">build_refpaths_fortype</a>(ED, fn, S.(fn), <span class="string">'reports'</span>, <span class="string">'refreps'</span>);
+0192         
+0193 <span class="keyword">end</span>
+0194 
+0195 
+0196 <a name="_sub3" href="#_subfunctions" class="code">function S = build_refpaths_fortype(ED, name, S, typeset, typefield)</a>
+0197 
+0198 <span class="keyword">if</span> ~isfield(S, <span class="string">'refpaths'</span>)
+0199     S.refpaths = [];
+0200 <span class="keyword">end</span>
+0201 <span class="keyword">if</span> ~isfield(S, <span class="string">'refscopes'</span>)
+0202     S.refscopes = [];
+0203 <span class="keyword">end</span>
+0204 
+0205 curset = S.(typefield);
+0206 <span class="keyword">if</span> isempty(curset)
+0207     <span class="keyword">return</span>;
+0208 <span class="keyword">end</span>
+0209 
+0210 fns = fieldnames(curset);
+0211 n = length(fns);
+0212 pool = ED.(typeset);
+0213 
+0214 <span class="keyword">for</span> i = 1 : n
+0215     role = fns{i};    
+0216     refname = curset.(role);
+0217     <span class="keyword">if</span> ~isfield(pool, refname)
+0218         error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0219             <span class="string">'The reference with role %s (name = %s) in %s is not found in pool %s'</span>, <span class="keyword">...</span>
+0220             role, refname, name, typeset);
+0221     <span class="keyword">end</span>
+0222     
+0223     S.refpaths.(role) = pool.(refname).path;    
+0224     S.refscopes.(role) = typeset;
+0225 <span class="keyword">end</span>
+0226 
+0227 
+0228 <a name="_sub4" href="#_subfunctions" class="code">function ES = build_exppaths(ED, ES)</a>
+0229 
+0230 <span class="keyword">if</span> isempty(ES)
+0231     <span class="keyword">return</span>;
+0232 <span class="keyword">end</span>
+0233 
+0234 fns = fieldnames(ES);
+0235 n = length(fns);
+0236 
+0237 <span class="keyword">for</span> i = 1 : n
+0238     fn = fns{i};
+0239     scriptname = ES.(fn).script;
+0240     <span class="keyword">if</span> ~isfield(ED.scripts, scriptname)
+0241         error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0242             <span class="string">'The referred script named %s for %s is not found'</span>, <span class="keyword">...</span>
+0243             scriptname, fn);
+0244     <span class="keyword">end</span>
+0245     
+0246     curscript = ED.scripts.(scriptname);
+0247     
+0248     ES.(fn).scriptpath = curscript.path;
+0249     ES.(fn).ctrlpath = curscript.ctrlpath;
+0250 <span class="keyword">end</span>
+0251 
+0252 
+0253 
+0254 <span class="comment">%% Node Parsing functions</span>
+0255 
+0256 <span class="comment">% variable parsing</span>
+0257 
+0258 <a name="_sub5" href="#_subfunctions" class="code">function [vname, vval] = parse_var(ED, xelem)</a>
+0259 
+0260 vname = <a href="#_sub13" class="code" title="subfunction name = make_name(ED, scope, xelem)">make_name</a>(ED, <span class="string">'variables'</span>, xelem);
+0261 vval = <a href="#_sub11" class="code" title="subfunction aval = get_tattrib(ED, xelem, scope, elemname, attrname)">get_tattrib</a>(ED, xelem, <span class="string">'variables'</span>, vname, <span class="string">'val'</span>);
+0262 
+0263 
+0264 <span class="comment">% script parsing</span>
+0265 
+0266 <a name="_sub6" href="#_subfunctions" class="code">function [sname, scr] = parse_script(ED, xelem)</a>
+0267 
+0268 sname = <a href="#_sub13" class="code" title="subfunction name = make_name(ED, scope, xelem)">make_name</a>(ED, <span class="string">'scripts'</span>, xelem);
+0269 
+0270 scr.func = <a href="#_sub11" class="code" title="subfunction aval = get_tattrib(ED, xelem, scope, elemname, attrname)">get_tattrib</a>(ED, xelem, <span class="string">'scripts'</span>, sname, <span class="string">'func'</span>);
+0271 scr.func = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(scr.func, ED.mfiledir);
+0272 
+0273 scr.path = <span class="string">''</span>;
+0274 scr.ctrlpath = <span class="string">''</span>;
+0275 scr = <a href="#_sub14" class="code" title="subfunction S = update_fields(ED, S, xelem, fns)">update_fields</a>(ED, scr, xelem, {<span class="string">'path'</span>, <span class="string">'ctrlpath'</span>});
+0276 scr.params = <a href="#_sub12" class="code" title="subfunction A = get_tattribs(ED, xelem, varargin)">get_tattribs</a>(ED, xelem, <span class="keyword">...</span>
+0277     <span class="string">'exclude'</span>, {<span class="string">'name'</span>, <span class="string">'func'</span>, <span class="string">'path'</span>, <span class="string">'ctrlpath'</span>});
+0278 
+0279 <span class="keyword">if</span> isempty(scr.path)
+0280     scr.path = [sname, <span class="string">'.script.xml'</span>];
+0281 <span class="keyword">end</span>
+0282 <span class="keyword">if</span> isempty(scr.ctrlpath)
+0283     scrfiletitle = <a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>(scr.path, <span class="string">'title'</span>);
+0284     scr.ctrlpath = <a href="../../sltoolbox/fileio/slchangefilepart.html" class="code" title="function newfp = slchangefilepart(fp, varargin)">slchangefilepart</a>(scr.path, <span class="string">'title'</span>, [scrfiletitle, <span class="string">'.control'</span>]);
+0285 <span class="keyword">end</span>
+0286 
+0287 scr.path = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(scr.path, ED.scriptdir);
+0288 
+0289 scr = <a href="#_sub16" class="code" title="subfunction S = build_reftables(ED, S, xelem)">build_reftables</a>(ED, scr, xelem);
+0290 
+0291 
+0292 <span class="comment">% report parsing</span>
+0293 
+0294 <a name="_sub7" href="#_subfunctions" class="code">function [rname, rep] = parse_report(ED, xelem)</a>
+0295 
+0296 rname = <a href="#_sub13" class="code" title="subfunction name = make_name(ED, scope, xelem)">make_name</a>(ED, <span class="string">'reports'</span>, xelem);
+0297 
+0298 rep.func = <a href="#_sub11" class="code" title="subfunction aval = get_tattrib(ED, xelem, scope, elemname, attrname)">get_tattrib</a>(ED, xelem, <span class="string">'reports'</span>, rname, <span class="string">'func'</span>);
+0299 rep.func = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(rep.func, ED.mfiledir);
+0300 
+0301 rep.path = <span class="string">''</span>;
+0302 rep = <a href="#_sub14" class="code" title="subfunction S = update_fields(ED, S, xelem, fns)">update_fields</a>(ED, rep, xelem, {<span class="string">'path'</span>});
+0303 rep.params = <a href="#_sub12" class="code" title="subfunction A = get_tattribs(ED, xelem, varargin)">get_tattribs</a>(ED, xelem, <span class="keyword">...</span>
+0304     <span class="string">'exclude'</span>, {<span class="string">'name'</span>, <span class="string">'func'</span>, <span class="string">'path'</span>, <span class="string">'ctrlpath'</span>});
+0305 
+0306 <span class="keyword">if</span> isempty(rep.path)
+0307     rep.path = [rname, <span class="string">'.report.xml'</span>];
+0308 <span class="keyword">end</span>
+0309 rep.path = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(rep.path, ED.reportdir);
+0310 
+0311 rep = <a href="#_sub16" class="code" title="subfunction S = build_reftables(ED, S, xelem)">build_reftables</a>(ED, rep, xelem);
+0312 
+0313 
+0314 <span class="comment">% experiment parsing</span>
+0315 
+0316 <a name="_sub8" href="#_subfunctions" class="code">function [expname, es] = parse_experiment(ED, xelem)</a>
+0317 
+0318 expname = <a href="#_sub13" class="code" title="subfunction name = make_name(ED, scope, xelem)">make_name</a>(ED, <span class="string">'experiments'</span>, xelem);
+0319 
+0320 es.func = <a href="#_sub11" class="code" title="subfunction aval = get_tattrib(ED, xelem, scope, elemname, attrname)">get_tattrib</a>(ED, xelem, <span class="string">'experiments'</span>, expname, <span class="string">'func'</span>); 
+0321 es.func = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(es.func, ED.mfiledir);
+0322 
+0323 es.script = <span class="string">''</span>;
+0324 es = <a href="#_sub14" class="code" title="subfunction S = update_fields(ED, S, xelem, fns)">update_fields</a>(ED, es, xelem, {<span class="string">'script'</span>});
+0325 
+0326 <span class="keyword">if</span> isempty(es.script)
+0327     es.script = expname;
+0328 <span class="keyword">end</span>
+0329 
+0330 
+0331 <span class="comment">% group parsing</span>
+0332 
+0333 <a name="_sub9" href="#_subfunctions" class="code">function newvars = parse_group(ED, gvars, xelem)</a>
+0334 
+0335 newvars = <a href="#_sub12" class="code" title="subfunction A = get_tattribs(ED, xelem, varargin)">get_tattribs</a>(ED, xelem, <span class="string">'exclude'</span>, {<span class="string">'title'</span>});
+0336 
+0337 <span class="keyword">if</span> ~isfield(newvars, <span class="string">'workdir'</span>) || isempty(newvars.workdir)
+0338     newvars.workdir = gvars.workdir;
+0339 <span class="keyword">else</span>
+0340     newvars.workdir = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(newvars.workdir, gvars.workdir);
+0341 <span class="keyword">end</span>
+0342 
+0343 newvars = <a href="#_sub15" class="code" title="subfunction S = weak_update(S, Scomp)">weak_update</a>(newvars, gvars);
+0344 
+0345 
+0346 
+0347 
+0348 
+0349 
+0350 <span class="comment">%% Auxiliary functions</span>
+0351 
+0352 
+0353 <a name="_sub10" href="#_subfunctions" class="code">function val = translate_attribval(ED, attrval)</a>
+0354 
+0355 val = attrval;
+0356 <span class="keyword">if</span> length(val) &gt; 1 &amp;&amp; val(1) == <span class="string">'$'</span>
+0357     varname = val(2:end);
+0358     <span class="keyword">if</span> ~isfield(ED.variables, varname)
+0359         error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0360             <span class="string">'The variable %s is not found'</span>, varname);
+0361     <span class="keyword">end</span>
+0362     val = ED.variables.(varname);
+0363 <span class="keyword">end</span>
+0364 
+0365 
+0366 <a name="_sub11" href="#_subfunctions" class="code">function aval = get_tattrib(ED, xelem, scope, elemname, attrname)</a>
+0367 
+0368 <span class="keyword">if</span> xelem.hasAttribute(attrname)
+0369     aval = char(xelem.getAttribute(attrname));
+0370     aval = <a href="#_sub10" class="code" title="subfunction val = translate_attribval(ED, attrval)">translate_attribval</a>(ED, aval);
+0371 <span class="keyword">else</span>
+0372     error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0373         <span class="string">'The attribute %s is not found in %s of %s'</span>, attrname, elemname, scope);
+0374 <span class="keyword">end</span>
+0375 
+0376 
+0377 <a name="_sub12" href="#_subfunctions" class="code">function A = get_tattribs(ED, xelem, varargin)</a>
+0378 
+0379 A = <a href="../../sltoolbox/xmlkits/xml_getattribs.html" class="code" title="function A = xml_getattribs(xelem, varargin)">xml_getattribs</a>(xelem, varargin{:});
+0380 
+0381 <span class="keyword">if</span> ~isempty(A)
+0382     fns = fieldnames(A);
+0383     n = length(fns);
+0384     <span class="keyword">for</span> i = 1 : n
+0385         fn = fns{i};
+0386         A.(fn) = <a href="#_sub10" class="code" title="subfunction val = translate_attribval(ED, attrval)">translate_attribval</a>(ED, A.(fn));
+0387     <span class="keyword">end</span>
+0388 <span class="keyword">end</span>    
+0389 
+0390 
+0391 <a name="_sub13" href="#_subfunctions" class="code">function name = make_name(ED, scope, xelem)</a>
+0392 
+0393 <span class="keyword">if</span> xelem.hasAttribute(<span class="string">'name'</span>)
+0394     name = char(xelem.getAttribute(<span class="string">'name'</span>));
+0395     <span class="keyword">if</span> isfield(ED.(scope), name)
+0396         error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0397             <span class="string">'Redefinition of %s in %s'</span>, name, scope);
+0398     <span class="keyword">end</span>
+0399 <span class="keyword">else</span>
+0400     error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0401         <span class="string">'Encounter an element without name in %s'</span>, scope);
+0402 <span class="keyword">end</span>
+0403 
+0404 
+0405 <a name="_sub14" href="#_subfunctions" class="code">function S = update_fields(ED, S, xelem, fns)</a>
+0406 
+0407 S = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(S, <a href="#_sub12" class="code" title="subfunction A = get_tattribs(ED, xelem, varargin)">get_tattribs</a>(ED, xelem, <span class="keyword">...</span>
+0408     <span class="string">'select'</span>, fns, <span class="keyword">...</span>
+0409     <span class="string">'forceexist'</span>, false));
+0410 
+0411 
+0412 <a name="_sub15" href="#_subfunctions" class="code">function S = weak_update(S, Scomp)</a>
+0413 
+0414 fns = fieldnames(Scomp);
+0415 n = length(fns);
+0416 <span class="keyword">for</span> i = 1 : n
+0417     fn = fns{i};
+0418     <span class="keyword">if</span> ~isfield(S, fn)
+0419         S.(fn) = Scomp.(fn);
+0420     <span class="keyword">end</span>
+0421 <span class="keyword">end</span>
+0422 
+0423 
+0424 <a name="_sub16" href="#_subfunctions" class="code">function S = build_reftables(ED, S, xelem)</a>
+0425 
+0426 refNodes = xelem.getElementsByTagName(<span class="string">'Ref'</span>);
+0427 nrs = refNodes.getLength;
+0428 
+0429 S.refs = [];
+0430 S.refreps = [];
+0431 
+0432 <span class="keyword">for</span> i = 1 : nrs
+0433     curnode = refNodes.item(i-1);
+0434     cur = <a href="#_sub12" class="code" title="subfunction A = get_tattribs(ED, xelem, varargin)">get_tattribs</a>(ED, curnode, <span class="string">'select'</span>, {<span class="string">'role'</span>, <span class="string">'name'</span>});
+0435     S.refs.(cur.role) = cur.name;
+0436 <span class="keyword">end</span>
+0437 
+0438 refrepNodes = xelem.getElementsByTagName(<span class="string">'RefReport'</span>);
+0439 nrr = refrepNodes.getLength;
+0440 
+0441 <span class="keyword">for</span> i = 1 : nrr
+0442     curnode = refrepNodes.item(i-1);
+0443     cur = <a href="#_sub12" class="code" title="subfunction A = get_tattribs(ED, xelem, varargin)">get_tattribs</a>(ED, curnode, <span class="string">'select'</span>, {<span class="string">'role'</span>, <span class="string">'name'</span>});
+0444     S.refreps.(cur.role) = cur.name;
+0445 <span class="keyword">end</span>
+0446 
+0447 
+0448 
+0449 
+0450 
+0451 
+0452 
+0453</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slinvoke</title>
+  <meta name="keywords" content="slinvoke">
+  <meta name="description" content="SLINVOKE Invokes a function">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">utils</a> &gt; slinvoke.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\utils&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slinvoke
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLINVOKE Invokes a function</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = slinvoke(invoke_descr, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLINVOKE Invokes a function
+
+ $ Syntax $
+   - [y1, y2, ..., yn] = slinvoke(invoke_descr, x1, x2, ..., xm)
+
+ $ Arguments $
+   - invoke_descr:       the invoking descriptor
+   - x1, x2, ..., xm:    the input arguments
+   - y1, y2, ..., yn:    the output arguments
+
+ $ Description $
+   - [y1, y2, ..., yn] = slinvoke(invoke_descr, placepos, x1, x2, ..., xm) 
+     invokes some function with a specified manner. The invoking descriptor
+     can be in following form:
+     1. a string representing the function name, a function handle or an 
+        inline object. In this case, no fixed argument is binded. The x1, 
+        x2, ..., xm are directly fed to the function.
+     2. a cell array like {func, var_pos, fa1, fa2, ... fak}. Here
+        func is the function name, function handle or inline object that
+        is to be invoked. var_pos is the positions of variable arguments.
+        fa1, fa2, ... are the fixed(binded) arguments. If var_pos is [],
+        the variable arguments will be put first.
+
+ $ Examples $
+   - Invoke a function without fixed arguments
+     \{
+           slinvoke('plot', x, y);
+           y = slinvoke({'sin', []}, x);
+     \}
+
+   - Invoke a function with fixed arguments binded, the following pairs
+     of statements are equivalent.
+     \{
+           K = slinvoke({'strfind', 1, 'pattern'}, s);
+           K = strfind(s, 'pattern');
+
+           slinvoke({'plot', [1 2], 'r-'}, x, y);
+           plot(x, y, 'r-');
+
+           slinvoke({'plot', 2, x, 'b+'}, y);
+           plot(x, y, 'b+');
+
+           b = slinvoke({'isequal', [], 0}, x);
+           b = isequal(x, 0);
+     \}
+
+ $ History $
+   - Created by Dahua Lin on Dec 28th, 2005</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = slinvoke(invoke_descr, varargin)</a>
+0002 <span class="comment">%SLINVOKE Invokes a function</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [y1, y2, ..., yn] = slinvoke(invoke_descr, x1, x2, ..., xm)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - invoke_descr:       the invoking descriptor</span>
+0009 <span class="comment">%   - x1, x2, ..., xm:    the input arguments</span>
+0010 <span class="comment">%   - y1, y2, ..., yn:    the output arguments</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - [y1, y2, ..., yn] = slinvoke(invoke_descr, placepos, x1, x2, ..., xm)</span>
+0014 <span class="comment">%     invokes some function with a specified manner. The invoking descriptor</span>
+0015 <span class="comment">%     can be in following form:</span>
+0016 <span class="comment">%     1. a string representing the function name, a function handle or an</span>
+0017 <span class="comment">%        inline object. In this case, no fixed argument is binded. The x1,</span>
+0018 <span class="comment">%        x2, ..., xm are directly fed to the function.</span>
+0019 <span class="comment">%     2. a cell array like {func, var_pos, fa1, fa2, ... fak}. Here</span>
+0020 <span class="comment">%        func is the function name, function handle or inline object that</span>
+0021 <span class="comment">%        is to be invoked. var_pos is the positions of variable arguments.</span>
+0022 <span class="comment">%        fa1, fa2, ... are the fixed(binded) arguments. If var_pos is [],</span>
+0023 <span class="comment">%        the variable arguments will be put first.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% $ Examples $</span>
+0026 <span class="comment">%   - Invoke a function without fixed arguments</span>
+0027 <span class="comment">%     \{</span>
+0028 <span class="comment">%           slinvoke('plot', x, y);</span>
+0029 <span class="comment">%           y = slinvoke({'sin', []}, x);</span>
+0030 <span class="comment">%     \}</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%   - Invoke a function with fixed arguments binded, the following pairs</span>
+0033 <span class="comment">%     of statements are equivalent.</span>
+0034 <span class="comment">%     \{</span>
+0035 <span class="comment">%           K = slinvoke({'strfind', 1, 'pattern'}, s);</span>
+0036 <span class="comment">%           K = strfind(s, 'pattern');</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">%           slinvoke({'plot', [1 2], 'r-'}, x, y);</span>
+0039 <span class="comment">%           plot(x, y, 'r-');</span>
+0040 <span class="comment">%</span>
+0041 <span class="comment">%           slinvoke({'plot', 2, x, 'b+'}, y);</span>
+0042 <span class="comment">%           plot(x, y, 'b+');</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">%           b = slinvoke({'isequal', [], 0}, x);</span>
+0045 <span class="comment">%           b = isequal(x, 0);</span>
+0046 <span class="comment">%     \}</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">% $ History $</span>
+0049 <span class="comment">%   - Created by Dahua Lin on Dec 28th, 2005</span>
+0050 <span class="comment">%</span>
+0051 
+0052 
+0053 <span class="comment">%% parse input arguments</span>
+0054 <span class="keyword">if</span> ~iscell(invoke_descr)
+0055     func = invoke_descr;
+0056     var_pos =[];
+0057     fix_args = {};
+0058 <span class="keyword">else</span>
+0059     len_invoke_descr = length(invoke_descr);
+0060     func = invoke_descr{1};
+0061     <span class="keyword">if</span> len_invoke_descr &gt;= 2
+0062         var_pos = invoke_descr{2};
+0063     <span class="keyword">else</span>
+0064         var_pos = [];
+0065     <span class="keyword">end</span>
+0066     <span class="keyword">if</span> len_invoke_descr &gt;= 3
+0067         fix_args = invoke_descr(3:end);
+0068     <span class="keyword">else</span>
+0069         fix_args = {};
+0070     <span class="keyword">end</span>
+0071 <span class="keyword">end</span>
+0072 
+0073 <span class="keyword">if</span> isempty(var_pos) &amp;&amp; ~isempty(varargin)
+0074     var_pos = 1:length(varargin);
+0075 <span class="keyword">end</span>
+0076 n_fix_args = length(fix_args);
+0077 n_var_args = length(var_pos);
+0078 <span class="keyword">if</span> length(varargin) ~= n_var_args
+0079     error(<span class="string">'sltoolbox:argmismatch'</span>, <span class="keyword">...</span>
+0080         <span class="string">'The variable input arguments do not match that described in invoking descriptor'</span>);
+0081 <span class="keyword">end</span>
+0082 
+0083 
+0084 <span class="comment">%% organize input arguments</span>
+0085 <span class="keyword">if</span> n_fix_args == 0 &amp;&amp; n_var_args == 0
+0086     <span class="keyword">if</span> nargout == 0
+0087         feval(func);
+0088     <span class="keyword">else</span>
+0089         [varargout{1:nargout}] = feval(func);
+0090     <span class="keyword">end</span>
+0091 <span class="keyword">elseif</span> n_var_args == 0
+0092     <span class="keyword">if</span> nargout == 0
+0093         feval(func, fix_args{:});
+0094     <span class="keyword">else</span>
+0095         [varargout{1:nargout}] = feval(func, fix_args{:});
+0096     <span class="keyword">end</span>
+0097 <span class="keyword">else</span>
+0098     n_args = max(n_fix_args + n_var_args, max(var_pos));
+0099     input_args = cell(1, n_args);
+0100     indicator_var = false(1, n_args);
+0101     indicator_var(var_pos) = true; 
+0102     fix_pos = find(~indicator_var);
+0103     
+0104     <span class="keyword">for</span> i = 1 : n_var_args
+0105         input_args{var_pos(i)} = varargin{i};
+0106     <span class="keyword">end</span>
+0107     
+0108     <span class="keyword">for</span> i = 1 : n_fix_args
+0109         input_args{fix_pos(i)} = fix_args{i};
+0110     <span class="keyword">end</span>
+0111     
+0112     <span class="keyword">if</span> nargout == 0
+0113         feval(func, input_args{:});
+0114     <span class="keyword">else</span>
+0115         [varargout{1:nargout}] = feval(func, input_args{:});
+0116     <span class="keyword">end</span>
+0117 <span class="keyword">end</span>
+0118 
+0119 
+0120     
+0121 
+0122 
+0123</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slconfine</title>
+  <meta name="keywords" content="slconfine">
+  <meta name="description" content="SLCONFINE Confines the values in a range">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">core</a> &gt; slconfine.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\core&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slconfine
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCONFINE Confines the values in a range</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function Ac = slconfine(A, lb, ub) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCONFINE Confines the values in a range
+
+ $ Syntax $
+   - Ac = slconfine(A, lb) 
+   - Ac = slconfine(A, lb, [])
+   - Ac = slconfine(A, [], ub)
+   - Ac = slconfine(A, lb, ub)
+
+ $ Arguments $
+   - A:        the input array
+   - lb:       the lower bound to be enforced
+   - ub:       the upper bound to be enforced
+   - Ac:       the confined array
+
+ $ Description $
+   - Ac = slconfine(A, lb) confines the values in A to be no less than the 
+          lower bound lb. It is equivalent to Ac = slconfine(A, lb, []).
+
+   - Ac = slconfine(A, [], ub) confines the values in A to be no much than
+          the higher bound ub. 
+
+   - Ac = slconfine(A, lb, ub) confines the values in A to be within the
+          range between lb and ub.
+
+ $ Remarks $
+   # The lb and ub can be either a scalar or an array of the same size as
+     the input matrix A.
+
+ $ History $
+   - Created by Dahua Lin on Nov 18th, 2005</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slenforce.html" class="code" title="function Ae = slenforce(A, varargin)">slenforce</a>	SLENFORCE Enforce some property on the array A</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function Ac = slconfine(A, lb, ub)</a>
+0002 <span class="comment">%SLCONFINE Confines the values in a range</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - Ac = slconfine(A, lb)</span>
+0006 <span class="comment">%   - Ac = slconfine(A, lb, [])</span>
+0007 <span class="comment">%   - Ac = slconfine(A, [], ub)</span>
+0008 <span class="comment">%   - Ac = slconfine(A, lb, ub)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% $ Arguments $</span>
+0011 <span class="comment">%   - A:        the input array</span>
+0012 <span class="comment">%   - lb:       the lower bound to be enforced</span>
+0013 <span class="comment">%   - ub:       the upper bound to be enforced</span>
+0014 <span class="comment">%   - Ac:       the confined array</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - Ac = slconfine(A, lb) confines the values in A to be no less than the</span>
+0018 <span class="comment">%          lower bound lb. It is equivalent to Ac = slconfine(A, lb, []).</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">%   - Ac = slconfine(A, [], ub) confines the values in A to be no much than</span>
+0021 <span class="comment">%          the higher bound ub.</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%   - Ac = slconfine(A, lb, ub) confines the values in A to be within the</span>
+0024 <span class="comment">%          range between lb and ub.</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">% $ Remarks $</span>
+0027 <span class="comment">%   # The lb and ub can be either a scalar or an array of the same size as</span>
+0028 <span class="comment">%     the input matrix A.</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% $ History $</span>
+0031 <span class="comment">%   - Created by Dahua Lin on Nov 18th, 2005</span>
+0032 <span class="comment">%</span>
+0033 
+0034 <span class="comment">%% parse and verify input arguments</span>
+0035 <span class="keyword">if</span> nargin &lt; 2
+0036     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slconfine'</span>, 2);
+0037 <span class="keyword">end</span>
+0038 <span class="keyword">if</span> nargin &lt; 3
+0039     ub = [];
+0040 <span class="keyword">end</span>
+0041 
+0042 <span class="comment">%% compute</span>
+0043 Ac = A;
+0044 <span class="keyword">if</span> ~isempty(lb)
+0045     Ac = max(Ac, lb);
+0046 <span class="keyword">end</span>
+0047 <span class="keyword">if</span> ~isempty(ub)
+0048     Ac = min(Ac, ub);
+0049 <span class="keyword">end</span>
+0050 
+0051</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

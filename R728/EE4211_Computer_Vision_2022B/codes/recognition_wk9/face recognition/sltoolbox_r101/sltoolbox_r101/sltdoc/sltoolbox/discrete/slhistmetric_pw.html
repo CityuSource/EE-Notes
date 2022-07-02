@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slhistmetric_pw</title>
+  <meta name="keywords" content="slhistmetric_pw">
+  <meta name="description" content="SLHISTMETRIC_PW Computes distance metrics between histograms pairwisely">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">discrete</a> &gt; slhistmetric_pw.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\discrete&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slhistmetric_pw
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLHISTMETRIC_PW Computes distance metrics between histograms pairwisely</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function D = slhistmetric_pw(H1, H2, mtype, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLHISTMETRIC_PW Computes distance metrics between histograms pairwisely
+
+ $ Syntax $
+   - D = slhistmetric_pw(H1, H2, mtype, ...)
+
+ $ Arguments $
+   - H1, H2:       The matrices of histogram sets (d1 x n1, d2 x n2)
+   - mtype:        The metric type
+   - D:            The resulting pairwise metric matrix (n1 x n2)
+
+ $ Description $
+   - D = slhistmetric_cp(H1, H2, mtype, ...) computes the distance metrics
+     between all histograms in H1 and H2 pairwisely. If H1 and H2 have
+     n1 and n2 bins respectively, then D will be an n1 x n2 matrix.
+     The function support following types of histogram distances:
+     \*
+     \t   Table.  The Histogram Metrics
+     \h      name     &amp;          description
+          'L1dist'    &amp;  The sum of absolute differences: 
+                         d = sum |h1(i) - h2(i)|               \\
+          'L2dist'    &amp;  Euclidean distance: 
+                         d = sqrt(sum( (h1(i) - h2(i))^2 ))    \\
+          'quaddist'  &amp;  Quadratic-Form distance: 
+                         d = sqrt((h1 - h2)^T * Q * (h1 - h2)) \\
+                         use Q (d x d matrix) as the first extra param.
+          'hamming'   &amp;  Hamming distance with threshold
+                         ht1 = h1 &gt; t
+                         ht2 = h2 &gt; t
+                         d = sum(ht1 ~= ht2)                  
+                         use threshold t as the first extra param.\\
+          'intersect' &amp;  Histogram Intersection: 
+                         d = 1 - 
+                         sum min(h1(i), h2(i))) / sum h2(i) \\
+          'chisq'     &amp;  Chi-Square Distance:
+                         d = sum (h1(i) - h2(i))^2 / (2 * (h1(i)+h2(i)) \\
+          'kolsm'     &amp;  Kolmogorov-Smirnov distance: 
+                         d = max |F1(i) - F2(i)| 
+                         only suitable for scalar histogram.   \\
+          'kramvon'   &amp;  Kramer/Von Mises:
+                         d = sum (F1(i) - F2(i))^2              \\
+          'kldiv'     &amp;  Kull-back Leibler divergence
+                         d = sum h1(i) log h1(i) / h2(i)        \\
+          'jeffrey'   &amp;  Jeffrey divergence
+                         d = KL(h1, (h1+h2)/2) + KL(h2, (h1+h2)/2) \\
+     \*     
+          
+ $ History $
+   - Created by Dahua Lin, on Sep 18, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/sldiff_pw.html" class="code" title="function D = sldiff_pw(X1, X2, type)">sldiff_pw</a>	SLDIFF_PW Measures the pair-wise difference</li><li><a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>	SLMETRIC_PW Compute the metric between column vectors pairwisely</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function d = checkhistdim(H1, H2)</a></li><li><a href="#_sub2" class="code">function D = kldivergence(H1, H2)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function D = slhistmetric_pw(H1, H2, mtype, varargin)</a>
+0002 <span class="comment">%SLHISTMETRIC_PW Computes distance metrics between histograms pairwisely</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - D = slhistmetric_pw(H1, H2, mtype, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - H1, H2:       The matrices of histogram sets (d1 x n1, d2 x n2)</span>
+0009 <span class="comment">%   - mtype:        The metric type</span>
+0010 <span class="comment">%   - D:            The resulting pairwise metric matrix (n1 x n2)</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - D = slhistmetric_cp(H1, H2, mtype, ...) computes the distance metrics</span>
+0014 <span class="comment">%     between all histograms in H1 and H2 pairwisely. If H1 and H2 have</span>
+0015 <span class="comment">%     n1 and n2 bins respectively, then D will be an n1 x n2 matrix.</span>
+0016 <span class="comment">%     The function support following types of histogram distances:</span>
+0017 <span class="comment">%     \*</span>
+0018 <span class="comment">%     \t   Table.  The Histogram Metrics</span>
+0019 <span class="comment">%     \h      name     &amp;          description</span>
+0020 <span class="comment">%          'L1dist'    &amp;  The sum of absolute differences:</span>
+0021 <span class="comment">%                         d = sum |h1(i) - h2(i)|               \\</span>
+0022 <span class="comment">%          'L2dist'    &amp;  Euclidean distance:</span>
+0023 <span class="comment">%                         d = sqrt(sum( (h1(i) - h2(i))^2 ))    \\</span>
+0024 <span class="comment">%          'quaddist'  &amp;  Quadratic-Form distance:</span>
+0025 <span class="comment">%                         d = sqrt((h1 - h2)^T * Q * (h1 - h2)) \\</span>
+0026 <span class="comment">%                         use Q (d x d matrix) as the first extra param.</span>
+0027 <span class="comment">%          'hamming'   &amp;  Hamming distance with threshold</span>
+0028 <span class="comment">%                         ht1 = h1 &gt; t</span>
+0029 <span class="comment">%                         ht2 = h2 &gt; t</span>
+0030 <span class="comment">%                         d = sum(ht1 ~= ht2)</span>
+0031 <span class="comment">%                         use threshold t as the first extra param.\\</span>
+0032 <span class="comment">%          'intersect' &amp;  Histogram Intersection:</span>
+0033 <span class="comment">%                         d = 1 -</span>
+0034 <span class="comment">%                         sum min(h1(i), h2(i))) / sum h2(i) \\</span>
+0035 <span class="comment">%          'chisq'     &amp;  Chi-Square Distance:</span>
+0036 <span class="comment">%                         d = sum (h1(i) - h2(i))^2 / (2 * (h1(i)+h2(i)) \\</span>
+0037 <span class="comment">%          'kolsm'     &amp;  Kolmogorov-Smirnov distance:</span>
+0038 <span class="comment">%                         d = max |F1(i) - F2(i)|</span>
+0039 <span class="comment">%                         only suitable for scalar histogram.   \\</span>
+0040 <span class="comment">%          'kramvon'   &amp;  Kramer/Von Mises:</span>
+0041 <span class="comment">%                         d = sum (F1(i) - F2(i))^2              \\</span>
+0042 <span class="comment">%          'kldiv'     &amp;  Kull-back Leibler divergence</span>
+0043 <span class="comment">%                         d = sum h1(i) log h1(i) / h2(i)        \\</span>
+0044 <span class="comment">%          'jeffrey'   &amp;  Jeffrey divergence</span>
+0045 <span class="comment">%                         d = KL(h1, (h1+h2)/2) + KL(h2, (h1+h2)/2) \\</span>
+0046 <span class="comment">%     \*</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">% $ History $</span>
+0049 <span class="comment">%   - Created by Dahua Lin, on Sep 18, 2006</span>
+0050 <span class="comment">%</span>
+0051 
+0052 <span class="comment">%% parse and verify input arguments</span>
+0053 
+0054 <span class="keyword">if</span> nargin &lt; 3
+0055     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slhistmetric_cp'</span>, 3);
+0056 <span class="keyword">end</span>
+0057 <span class="keyword">if</span> ~isnumeric(H1) || ~isnumeric(H2) || ndims(H1) ~= 2 || ndims(H2) ~= 2
+0058     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0059         <span class="string">'H1 and H2 should be 2D numeric matrices'</span>);
+0060 <span class="keyword">end</span>
+0061 
+0062 
+0063 <span class="comment">%% main delegation</span>
+0064 
+0065 <span class="keyword">switch</span> mtype
+0066     <span class="keyword">case</span> <span class="string">'L1dist'</span>
+0067         <a href="#_sub1" class="code" title="subfunction d = checkhistdim(H1, H2)">checkhistdim</a>(H1, H2);
+0068         D = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(H1, H2, <span class="string">'cityblk'</span>);
+0069         
+0070     <span class="keyword">case</span> <span class="string">'L2dist'</span>
+0071         <a href="#_sub1" class="code" title="subfunction d = checkhistdim(H1, H2)">checkhistdim</a>(H1, H2);
+0072         D = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(H1, H2, <span class="string">'eucdist'</span>);
+0073                 
+0074     <span class="keyword">case</span> <span class="string">'quaddist'</span>
+0075         <span class="keyword">if</span> length(varargin) ~= 1
+0076             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0077                 <span class="string">'quaddist has one extra parameter Q'</span>);
+0078         <span class="keyword">end</span>
+0079         <a href="#_sub1" class="code" title="subfunction d = checkhistdim(H1, H2)">checkhistdim</a>(H1, H2);
+0080         D = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(H1, H2, <span class="string">'quaddiff'</span>, varargin{1});
+0081         D = sqrt(D);
+0082         
+0083     <span class="keyword">case</span> <span class="string">'hamming'</span>
+0084         <a href="#_sub1" class="code" title="subfunction d = checkhistdim(H1, H2)">checkhistdim</a>(H1, H2);
+0085         <span class="keyword">if</span> length(varargin) ~= 1
+0086             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0087                 <span class="string">'quaddist has one extra parameter t'</span>);
+0088         <span class="keyword">end</span>
+0089         t = varargin{1};
+0090         D = <a href="../../sltoolbox/core/sldiff_pw.html" class="code" title="function D = sldiff_pw(X1, X2, type)">sldiff_pw</a>(double(H1 &gt; t), double(H2 &gt; t), <span class="string">'abssum'</span>);
+0091         
+0092     <span class="keyword">case</span> <span class="string">'intersect'</span>
+0093         <a href="#_sub1" class="code" title="subfunction d = checkhistdim(H1, H2)">checkhistdim</a>(H1, H2);
+0094         D = histmetricpw_core(H1, H2, 1);
+0095                 
+0096     <span class="keyword">case</span> <span class="string">'chisq'</span>
+0097         <a href="#_sub1" class="code" title="subfunction d = checkhistdim(H1, H2)">checkhistdim</a>(H1, H2);
+0098         D = histmetricpw_core(H1, H2, 2);        
+0099         
+0100     <span class="keyword">case</span> <span class="string">'kolsm'</span>
+0101         <a href="#_sub1" class="code" title="subfunction d = checkhistdim(H1, H2)">checkhistdim</a>(H1, H2);
+0102         F1 = cumsum(H1, 1);
+0103         F2 = cumsum(H2, 1);
+0104         D = <a href="../../sltoolbox/core/sldiff_pw.html" class="code" title="function D = sldiff_pw(X1, X2, type)">sldiff_pw</a>(F1, F2, <span class="string">'maxdiff'</span>);
+0105         
+0106     <span class="keyword">case</span> <span class="string">'kramvon'</span>
+0107         <a href="#_sub1" class="code" title="subfunction d = checkhistdim(H1, H2)">checkhistdim</a>(H1, H2);
+0108         F1 = cumsum(H1, 1);
+0109         F2 = cumsum(H2, 1);
+0110         D = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(F1, F2, <span class="string">'sqdist'</span>);        
+0111         
+0112     <span class="keyword">case</span> <span class="string">'kldiv'</span>
+0113         <a href="#_sub1" class="code" title="subfunction d = checkhistdim(H1, H2)">checkhistdim</a>(H1, H2);
+0114         D = <a href="#_sub2" class="code" title="subfunction D = kldivergence(H1, H2)">kldivergence</a>(H1, H2);
+0115         
+0116     <span class="keyword">case</span> <span class="string">'jeffrey'</span>
+0117         <a href="#_sub1" class="code" title="subfunction d = checkhistdim(H1, H2)">checkhistdim</a>(H1, H2);
+0118         D = histmetricpw_core(H1, H2, 3);
+0119                       
+0120     <span class="keyword">otherwise</span>
+0121         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0122             <span class="string">'Invalid histogram metric type: %s'</span>, mtype);
+0123 <span class="keyword">end</span>
+0124         
+0125 
+0126 <span class="comment">%% Auxiliary functions</span>
+0127 
+0128 <a name="_sub1" href="#_subfunctions" class="code">function d = checkhistdim(H1, H2)</a>
+0129 
+0130 d = size(H1, 1);
+0131 <span class="keyword">if</span> size(H2, 1) ~= d
+0132     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="string">'H1 and H2 have different dimensions.'</span>);
+0133 <span class="keyword">end</span>
+0134 
+0135 <a name="_sub2" href="#_subfunctions" class="code">function D = kldivergence(H1, H2)</a>
+0136 
+0137 V = zeros(size(H1));
+0138 not_zero = H1 &gt; 0;
+0139 V(not_zero) = H1(not_zero) .* log(H1(not_zero));
+0140 v1 = sum(V, 1)';
+0141 clear V;
+0142 
+0143 H2(~not_zero) = 1;
+0144 L2 = log(H2);
+0145 D = -H1' * L2;
+0146 D = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(D, v1, 1);
+0147 
+0148 
+0149 
+0150</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

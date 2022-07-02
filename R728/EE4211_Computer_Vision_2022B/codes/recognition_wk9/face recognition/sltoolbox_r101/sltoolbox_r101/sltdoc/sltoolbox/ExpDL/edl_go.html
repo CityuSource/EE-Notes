@@ -1,0 +1,371 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of edl_go</title>
+  <meta name="keywords" content="edl_go">
+  <meta name="description" content="EDL_GO The Top interface for doing experiments in EDL">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">ExpDL</a> &gt; edl_go.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>edl_go
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>EDL_GO The Top interface for doing experiments in EDL</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function edl_go(expdef, type, name, filter, runopt) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">EDL_GO The Top interface for doing experiments in EDL
+
+ $ Syntax $
+   - edl_go(expdef, type, name)
+   - edl_go(expdef, type, name, filter, runopt)
+
+ $ Arguments $
+   - expdef:       the experiment definition
+   - type:         the type of the action
+                   'script'|'experiment'|'report'
+   - name:         the name of action to take
+   - filter:       the filter of selecting experiment part
+   - runopt:       the running option
+                   'restart':  run all specified experiments 
+                               (default follows edl_batchexp)
+                   'resume':   run the experiments that not succeeded
+
+ $ Description $
+   - edl_go(expdef, type, name) takes a specified action identified 
+     by its type and name. expdef can be a experiment definition 
+     file or a loaded structure.
+
+   - edl_go(expdef, type, name, filter) takes a specified action and 
+     selects the filtered parts to run. Such a syntax is only applicable 
+     for 'experiment' action.
+
+ $ Remarks $
+   - This function should be started from experiment root.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 10th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_batchexp.html" class="code" title="function edl_batchexp(expfun, scrpath, env, logger, filter, runopt)">edl_batchexp</a>	EDL_BATCHEXP Performs Batch experiments according to scheme</li><li><a href="edl_logerror.html" class="code" title="function edl_logerror(caller, err, logger, varargin)">edl_logerror</a>	EDL_LOGERROR Logs an error into logger</li><li><a href="edl_readexpdefs.html" class="code" title="function ED = edl_readexpdefs(filename)">edl_readexpdefs</a>	EDL_READEXPDEFS Reads in an experiment definition from XML file</li><li><a href="edl_readreport.html" class="code" title="function report = edl_readreport(filename)">edl_readreport</a>	EDL_READREPORT Reads in a EDL report</li><li><a href="edl_readscript.html" class="code" title="function script = edl_readscript(filename)">edl_readscript</a>	EDL_READSCRIPT Reads in a EDL script</li><li><a href="edl_writereport.html" class="code" title="function edl_writereport(filename, guid, props)">edl_writereport</a>	EDL_WRITEREPORT Writes an EDL report</li><li><a href="edl_writescript.html" class="code" title="function edl_writescript(filename, guid, workdir, ctrlpath, props)">edl_writescript</a>	EDL_WRITESCRIPT Writes an EDL script</li><li><a href="../../sltoolbox/fileio/@sllog/close.html" class="code" title="function logger = close(logger)">close</a>	CLOSE Closes the logger</li><li><a href="../../sltoolbox/fileio/@sllog/incindent.html" class="code" title="function logger = incindent(logger, d)">incindent</a>	INCINDENT Increases the indent by a specified amount</li><li><a href="../../sltoolbox/fileio/@sllog/write.html" class="code" title="function write(logger, varargin)">write</a>	WRITE Writes message to a logger</li><li><a href="../../sltoolbox/fileio/@sllog/writeblank.html" class="code" title="function writeblank(logger)">writeblank</a>	WRITEBLANK Writes a blank line to log</li><li><a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>	WRITEINFO Writes information to logger without time-stamp</li><li><a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>	SLFILEPARTS Extracts a specified part of a file path string</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>	SLADDPATH Adds dirpath to precede the filenames</li><li><a href="../../sltoolbox/utils_ex/slguid.html" class="code" title="function gid = slguid()">slguid</a>	SLGUID Generates a GUID (Global Unique Identifier)</li><li><a href="../../sltoolbox/utils_ex/slguidstr.html" class="code" title="function str = slguidstr(gid)">slguidstr</a>	SLGUIDSTR Converts a guid to a string</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function main_proc_go(expdef, type, name, filter, logger, runopt)</a></li><li><a href="#_sub2" class="code">function log_scriptinfo(s, logger)</a></li><li><a href="#_sub3" class="code">function log_reportinfo(s, logger)</a></li><li><a href="#_sub4" class="code">function log_expinfo(s, logger)</a></li><li><a href="#_sub5" class="code">function log_reftable(s, logger)</a></li><li><a href="#_sub6" class="code">function funcname = prepare_runfunc(funcpath, rootdir)</a></li><li><a href="#_sub7" class="code">function R = take_element(expdef, scope, name)</a></li><li><a href="#_sub8" class="code">function gidstr = init_instance(S, startmsg, logger, genguid, funcloginfo)</a></li><li><a href="#_sub9" class="code">function refs = load_references(name, elem, rootdir)</a></li><li><a href="#_sub10" class="code">function log_params(params, logger)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function edl_go(expdef, type, name, filter, runopt)</a>
+0002 <span class="comment">%EDL_GO The Top interface for doing experiments in EDL</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - edl_go(expdef, type, name)</span>
+0006 <span class="comment">%   - edl_go(expdef, type, name, filter, runopt)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - expdef:       the experiment definition</span>
+0010 <span class="comment">%   - type:         the type of the action</span>
+0011 <span class="comment">%                   'script'|'experiment'|'report'</span>
+0012 <span class="comment">%   - name:         the name of action to take</span>
+0013 <span class="comment">%   - filter:       the filter of selecting experiment part</span>
+0014 <span class="comment">%   - runopt:       the running option</span>
+0015 <span class="comment">%                   'restart':  run all specified experiments</span>
+0016 <span class="comment">%                               (default follows edl_batchexp)</span>
+0017 <span class="comment">%                   'resume':   run the experiments that not succeeded</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% $ Description $</span>
+0020 <span class="comment">%   - edl_go(expdef, type, name) takes a specified action identified</span>
+0021 <span class="comment">%     by its type and name. expdef can be a experiment definition</span>
+0022 <span class="comment">%     file or a loaded structure.</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">%   - edl_go(expdef, type, name, filter) takes a specified action and</span>
+0025 <span class="comment">%     selects the filtered parts to run. Such a syntax is only applicable</span>
+0026 <span class="comment">%     for 'experiment' action.</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% $ Remarks $</span>
+0029 <span class="comment">%   - This function should be started from experiment root.</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% $ History $</span>
+0032 <span class="comment">%   - Created by Dahua Lin, on Aug 10th, 2006</span>
+0033 <span class="comment">%</span>
+0034 
+0035 <span class="comment">%% parse and verify input arguments</span>
+0036 
+0037 <span class="keyword">if</span> nargin &lt; 3
+0038     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'edl_go'</span>, 3);
+0039 <span class="keyword">end</span>
+0040 
+0041 need_close_logger = false;
+0042 <span class="keyword">if</span> ischar(expdef)
+0043     expdef = <a href="edl_readexpdefs.html" class="code" title="function ED = edl_readexpdefs(filename)">edl_readexpdefs</a>(expdef);
+0044     need_close_logger = true;
+0045 <span class="keyword">end</span>
+0046 <span class="keyword">if</span> ~isstruct(expdef)
+0047     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0048         <span class="string">'Experiment definition should either be a filename or the loaded struct'</span>);
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="keyword">if</span> nargin &lt; 4
+0052     filter = [];
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="keyword">if</span> nargin &lt; 5
+0056     runopt = [];
+0057 <span class="keyword">end</span>
+0058 
+0059 current_folder = cd();
+0060 
+0061 <span class="comment">%% Main Procedure wrapper</span>
+0062 
+0063 logger = expdef.logger;
+0064 
+0065 <span class="keyword">try</span>
+0066     <a href="#_sub1" class="code" title="subfunction main_proc_go(expdef, type, name, filter, logger, runopt)">main_proc_go</a>(expdef, type, name, filter, logger, runopt);
+0067 <span class="keyword">catch</span>
+0068     err = lasterror();
+0069     <a href="edl_logerror.html" class="code" title="function edl_logerror(caller, err, logger, varargin)">edl_logerror</a>(<span class="string">'edl_go'</span>, err, logger);
+0070     lasterror(<span class="string">'reset'</span>);    
+0071 <span class="keyword">end</span>
+0072 
+0073 <span class="keyword">if</span> need_close_logger
+0074     <a href="../../sltoolbox/fileio/@sllog/close.html" class="code" title="function logger = close(logger)">close</a>(logger);
+0075 <span class="keyword">end</span>
+0076 
+0077 cd(current_folder);
+0078 
+0079 
+0080 <span class="comment">%% Main Procedure function</span>
+0081 
+0082 <a name="_sub1" href="#_subfunctions" class="code">function main_proc_go(expdef, type, name, filter, logger, runopt)</a>
+0083 
+0084 rootdir = <a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>(expdef.selfpath, <span class="string">'parent'</span>);
+0085 
+0086 <a href="../../sltoolbox/fileio/@sllog/write.html" class="code" title="function write(logger, varargin)">write</a>(logger, <span class="string">'on Experiment Definition: %s'</span>, expdef.name);
+0087 <a href="../../sltoolbox/fileio/@sllog/writeblank.html" class="code" title="function writeblank(logger)">writeblank</a>(logger);
+0088 
+0089 <span class="keyword">switch</span> type
+0090     <span class="keyword">case</span> <span class="string">'script'</span>
+0091         scope = <span class="string">'scripts'</span>;
+0092         curscript = <a href="#_sub7" class="code" title="subfunction R = take_element(expdef, scope, name)">take_element</a>(expdef, scope, name);
+0093         
+0094         <span class="comment">% output script info</span>
+0095         
+0096         gidstr = <a href="#_sub8" class="code" title="subfunction gidstr = init_instance(S, startmsg, logger, genguid, funcloginfo)">init_instance</a>(curscript, <span class="keyword">...</span>
+0097             sprintf(<span class="string">'Starting scripting %s'</span>, name), <span class="keyword">...</span>
+0098             logger, true, <span class="string">'log_scriptinfo'</span>);
+0099                                 
+0100         <span class="comment">% do scripting</span>
+0101         funcname = <a href="#_sub6" class="code" title="subfunction funcname = prepare_runfunc(funcpath, rootdir)">prepare_runfunc</a>(curscript.func, rootdir);
+0102         
+0103         scriptpath = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(curscript.path, rootdir);
+0104         ctrlpath = curscript.ctrlpath;
+0105         refs = <a href="#_sub9" class="code" title="subfunction refs = load_references(name, elem, rootdir)">load_references</a>(name, curscript, rootdir);
+0106         workdir = curscript.params.workdir;
+0107         
+0108         props = feval(funcname, refs, curscript.params);
+0109         <a href="edl_writescript.html" class="code" title="function edl_writescript(filename, guid, workdir, ctrlpath, props)">edl_writescript</a>(scriptpath, gidstr, workdir, ctrlpath, props);
+0110                                 
+0111         <a href="../../sltoolbox/fileio/@sllog/write.html" class="code" title="function write(logger, varargin)">write</a>(logger, <span class="string">'Finishing scripting'</span>);
+0112         <a href="../../sltoolbox/fileio/@sllog/writeblank.html" class="code" title="function writeblank(logger)">writeblank</a>(logger);
+0113             
+0114         
+0115     <span class="keyword">case</span> <span class="string">'experiment'</span>
+0116                 
+0117         scope = <span class="string">'experiments'</span>;
+0118         curexp = <a href="#_sub7" class="code" title="subfunction R = take_element(expdef, scope, name)">take_element</a>(expdef, scope, name);
+0119         
+0120         <span class="comment">% output experiment</span>
+0121                 
+0122         <a href="#_sub8" class="code" title="subfunction gidstr = init_instance(S, startmsg, logger, genguid, funcloginfo)">init_instance</a>(curexp, <span class="keyword">...</span>
+0123             sprintf(<span class="string">'Starting experiment %s'</span>, name), <span class="keyword">...</span>
+0124             logger, false, <span class="string">'log_expinfo'</span>);
+0125         
+0126         <span class="comment">% do experiment</span>
+0127         
+0128         funcname = <a href="#_sub6" class="code" title="subfunction funcname = prepare_runfunc(funcpath, rootdir)">prepare_runfunc</a>(curexp.func, rootdir);    
+0129         scriptpath = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(curexp.scriptpath, rootdir);
+0130         
+0131         <a href="edl_batchexp.html" class="code" title="function edl_batchexp(expfun, scrpath, env, logger, filter, runopt)">edl_batchexp</a>(funcname, scriptpath, expdef.env, logger, filter, runopt);
+0132         
+0133         <a href="../../sltoolbox/fileio/@sllog/write.html" class="code" title="function write(logger, varargin)">write</a>(logger, <span class="string">'Finishing experiment'</span>);
+0134         <a href="../../sltoolbox/fileio/@sllog/writeblank.html" class="code" title="function writeblank(logger)">writeblank</a>(logger);
+0135         
+0136     <span class="keyword">case</span> <span class="string">'report'</span>
+0137         
+0138         scope = <span class="string">'reports'</span>;
+0139         curreport = <a href="#_sub7" class="code" title="subfunction R = take_element(expdef, scope, name)">take_element</a>(expdef, scope, name);
+0140         
+0141         <span class="comment">% output script info</span>
+0142         
+0143         gidstr = <a href="#_sub8" class="code" title="subfunction gidstr = init_instance(S, startmsg, logger, genguid, funcloginfo)">init_instance</a>(curreport, <span class="keyword">...</span>
+0144             sprintf(<span class="string">'Starting reporting %s'</span>, name), <span class="keyword">...</span>
+0145             logger, true, <span class="string">'log_reportinfo'</span>);
+0146                                 
+0147         <span class="comment">% do reporting</span>
+0148         funcname = <a href="#_sub6" class="code" title="subfunction funcname = prepare_runfunc(funcpath, rootdir)">prepare_runfunc</a>(curreport.func, rootdir); 
+0149         refs = <a href="#_sub9" class="code" title="subfunction refs = load_references(name, elem, rootdir)">load_references</a>(name, curreport, rootdir);
+0150         reportpath = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(curreport.path, rootdir);
+0151         
+0152         props = feval(funcname, refs, curreport.params, expdef.env);
+0153         <a href="edl_writereport.html" class="code" title="function edl_writereport(filename, guid, props)">edl_writereport</a>(reportpath, gidstr, props);
+0154                                 
+0155         <a href="../../sltoolbox/fileio/@sllog/write.html" class="code" title="function write(logger, varargin)">write</a>(logger, <span class="string">'Finishing reporting'</span>);
+0156         <a href="../../sltoolbox/fileio/@sllog/writeblank.html" class="code" title="function writeblank(logger)">writeblank</a>(logger);
+0157                         
+0158     <span class="keyword">otherwise</span>
+0159         error(<span class="string">'Invalid action type for EDL: %s'</span>, type);
+0160 <span class="keyword">end</span>
+0161 
+0162 
+0163 
+0164 <span class="comment">%% Information Loggings</span>
+0165 
+0166 <a name="_sub2" href="#_subfunctions" class="code">function log_scriptinfo(s, logger)</a>
+0167 
+0168 <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'function = %s'</span>, s.func);
+0169 <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'script path = %s'</span>, s.path);
+0170 <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'control path = %s'</span>, s.ctrlpath);
+0171 <a href="#_sub5" class="code" title="subfunction log_reftable(s, logger)">log_reftable</a>(s, logger);
+0172 <a href="#_sub10" class="code" title="subfunction log_params(params, logger)">log_params</a>(s.params, logger);
+0173 
+0174 <a name="_sub3" href="#_subfunctions" class="code">function log_reportinfo(s, logger)</a>
+0175 
+0176 <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'function = %s'</span>, s.func);
+0177 <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'script path = %s'</span>, s.path);
+0178 <a href="#_sub5" class="code" title="subfunction log_reftable(s, logger)">log_reftable</a>(s, logger);
+0179 <a href="#_sub10" class="code" title="subfunction log_params(params, logger)">log_params</a>(s.params, logger);
+0180 
+0181 <a name="_sub4" href="#_subfunctions" class="code">function log_expinfo(s, logger)</a>
+0182 
+0183 <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'function = %s'</span>, s.func);
+0184 <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'script path = %s'</span>, s.scriptpath);
+0185 
+0186 
+0187 <a name="_sub5" href="#_subfunctions" class="code">function log_reftable(s, logger)</a>
+0188 
+0189 rps = s.refpaths;
+0190 
+0191 <span class="keyword">if</span> ~isempty(rps)
+0192     <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'references:'</span>);
+0193     logger = <a href="../../sltoolbox/fileio/@sllog/incindent.html" class="code" title="function logger = incindent(logger, d)">incindent</a>(logger, 1);
+0194     
+0195     roles = fieldnames(rps);
+0196     n = length(roles);    
+0197     <span class="keyword">for</span> i = 1 : n
+0198         role = roles{i};
+0199         <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'%s = %s'</span>, role, rps.(role));
+0200     <span class="keyword">end</span>
+0201 <span class="keyword">end</span>
+0202 
+0203 
+0204 <span class="comment">%% Auxiliary functions</span>
+0205 
+0206 <a name="_sub6" href="#_subfunctions" class="code">function funcname = prepare_runfunc(funcpath, rootdir)</a>
+0207 
+0208 funcdir = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(<a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>(funcpath, <span class="string">'parent'</span>), rootdir);
+0209 funcname = <a href="../../sltoolbox/fileio/slfilepart.html" class="code" title="function s = slfilepart(fp, partname)">slfilepart</a>(funcpath, <span class="string">'title'</span>);
+0210 cd(funcdir);
+0211 
+0212 <a name="_sub7" href="#_subfunctions" class="code">function R = take_element(expdef, scope, name)</a>
+0213 
+0214 sset = expdef.(scope);
+0215 <span class="keyword">if</span> ~isfield(sset, name)
+0216     error(<span class="string">'edl:interperror'</span>, <span class="keyword">...</span>
+0217         <span class="string">'The specified name %s is not found in %s of the experiment definition'</span>, <span class="keyword">...</span>
+0218         name, scope);
+0219 <span class="keyword">end</span>
+0220 R = sset.(name);
+0221 
+0222 <a name="_sub8" href="#_subfunctions" class="code">function gidstr = init_instance(S, startmsg, logger, genguid, funcloginfo)</a>
+0223 
+0224 <span class="keyword">if</span> genguid
+0225     gidstr = <a href="../../sltoolbox/utils_ex/slguidstr.html" class="code" title="function str = slguidstr(gid)">slguidstr</a>(<a href="../../sltoolbox/utils_ex/slguid.html" class="code" title="function gid = slguid()">slguid</a>);
+0226     <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'[%s]'</span>, gidstr);
+0227 <span class="keyword">else</span>
+0228     gidstr = <span class="string">''</span>;
+0229 <span class="keyword">end</span>
+0230 
+0231 <span class="keyword">if</span> ~isempty(startmsg)
+0232     <a href="../../sltoolbox/fileio/@sllog/write.html" class="code" title="function write(logger, varargin)">write</a>(logger, startmsg);
+0233 <span class="keyword">else</span>
+0234     <a href="../../sltoolbox/fileio/@sllog/write.html" class="code" title="function write(logger, varargin)">write</a>(logger, <span class="string">'Start Instance'</span>);
+0235 <span class="keyword">end</span>
+0236 
+0237 logger = <a href="../../sltoolbox/fileio/@sllog/incindent.html" class="code" title="function logger = incindent(logger, d)">incindent</a>(logger, 1);
+0238 
+0239 <span class="keyword">if</span> ~isempty(funcloginfo)
+0240     feval(funcloginfo, S, logger);
+0241 <span class="keyword">end</span>
+0242 
+0243 <a href="../../sltoolbox/fileio/@sllog/writeblank.html" class="code" title="function writeblank(logger)">writeblank</a>(logger);
+0244 
+0245 
+0246 <a name="_sub9" href="#_subfunctions" class="code">function refs = load_references(name, elem, rootdir)</a>
+0247 
+0248 <span class="keyword">if</span> isempty(elem.refpaths)
+0249     refs = [];
+0250 <span class="keyword">else</span>
+0251     fns = fieldnames(elem.refpaths);
+0252     n = length(fns);
+0253     <span class="keyword">for</span> i = 1 : n
+0254         fn = fns{i};
+0255         
+0256         curscope = elem.refscopes.(fn);
+0257         curpath = <a href="../../sltoolbox/utils/sladdpath.html" class="code" title="function paths = sladdpath(filenames, dirpath)">sladdpath</a>(elem.refpaths.(fn), rootdir);
+0258         
+0259         <span class="keyword">switch</span> curscope
+0260             <span class="keyword">case</span> <span class="string">'scripts'</span>
+0261                 curref = <a href="edl_readscript.html" class="code" title="function script = edl_readscript(filename)">edl_readscript</a>(curpath);
+0262             <span class="keyword">case</span> <span class="string">'reports'</span>
+0263                 curref = <a href="edl_readreport.html" class="code" title="function report = edl_readreport(filename)">edl_readreport</a>(curpath);
+0264             <span class="keyword">otherwise</span>
+0265                 error(<span class="string">'edl:interperror'</span>, <span class="keyword">...</span>
+0266                     <span class="string">'Invalid scope name %s for item %s in %s'</span>, <span class="keyword">...</span>
+0267                     curscope, fn, name);                
+0268         <span class="keyword">end</span>
+0269         
+0270         refs.(fn) = curref;        
+0271     <span class="keyword">end</span>
+0272     
+0273 <span class="keyword">end</span>
+0274 
+0275 <a name="_sub10" href="#_subfunctions" class="code">function log_params(params, logger)</a>
+0276 
+0277 <span class="keyword">if</span> ~isempty(params)
+0278     fns = fieldnames(params);
+0279     n = length(fns);
+0280     <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'parameters: '</span>);
+0281     logger = <a href="../../sltoolbox/fileio/@sllog/incindent.html" class="code" title="function logger = incindent(logger, d)">incindent</a>(logger, 1);
+0282 
+0283     <span class="keyword">for</span> i = 1 : n
+0284         fn = fns{i};
+0285         <a href="../../sltoolbox/fileio/@sllog/writeinfo.html" class="code" title="function writeinfo(logger, varargin)">writeinfo</a>(logger, <span class="string">'%s = %s'</span>, fn, params.(fn));
+0286     <span class="keyword">end</span>
+0287 
+0288 <span class="keyword">end</span>
+0289 
+0290 
+0291 
+0292 
+0293</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

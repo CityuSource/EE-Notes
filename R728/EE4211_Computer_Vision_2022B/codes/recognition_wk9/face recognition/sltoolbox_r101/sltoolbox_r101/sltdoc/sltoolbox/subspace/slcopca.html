@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slcopca</title>
+  <meta name="keywords" content="slcopca">
+  <meta name="description" content="SLCOPCA Performs Coupled PCA Learning">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace</a> &gt; slcopca.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slcopca
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLCOPCA Performs Coupled PCA Learning</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [P1, P2, spectrum] = slcopca(X1, X2, d, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLCOPCA Performs Coupled PCA Learning
+
+ $ Syntax $
+   - [P1, P2] = slcopca(X1, X2, sch, ...)
+   - [P1, P2, spectrum] = slcopca(...)
+
+ $ Arguments $
+   - X1:       The samples in the first modality
+   - X2:       The samples in the second modality
+   - d:        The target space dimension
+   - P1:       The projection matrix (bases) of the first modality space
+   - P2:       The projection matrix (bases) of the second modality space
+   - spectrum: The covariance energy along dimensions of target space
+   
+ $ Description $
+   - [P1, P2] = slcopca(X1, X2, sch, ...) performs coupled PCA learning
+     for two correlated sample spaces. The learning objective is to
+     pursue two subspaces such that they are maximally correlated. The
+     objective function is formulated as
+
+       maximize trace( P1^T * C_12 * P2 * P2^T * C_21 * P1 ) / n
+           s.t. P1^T * P1 = I, and  P2^T * P2 = I
+       where C_12 is the covariance between X1 and X2, 
+             C_21 is the covariance between X2 and X1
+
+     Suppose the dimensions for the two spaces are d1 and d2 respectively, 
+     and n pairs of corresponding samples are given in X1 and X2. Then X1 
+     and X2 should be d1 x n and d2 x n matrices respectively. 
+     You can further specify the following properties to control the
+     learning procedure:
+       - 'weights':    The weights of the samples, default = []
+       - 'mean1':      The pre-computed mean vector for X1, default = []
+                       if mean1 is set as 0, then it means that X1 has 
+                       been centralized.
+       - 'mean2':      The pre-computed mean vector for X2, default = []
+       
+   - [P1, P2, spectrum] = slcopca(...) also outputs the spectrum. You
+     can specify the following properties to control the type of the
+     output spectrum:
+       - 'spectype':   The type of output spectrum
+                       - 'normal': The average energies along target
+                                   dimensions.
+                       - 'ratio':  The ratio of preserved energy along
+                                   target dimensions to the total
+                                   energy.
+                       default = 'normal'.
+ 
+ $ History $
+   - Created by Dahua Lin, on Sep 16, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>	SLMEAN Compute the mean vector of samples</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function Xp = preprocess_samples(X, vmean, w)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [P1, P2, spectrum] = slcopca(X1, X2, d, varargin)</a>
+0002 <span class="comment">%SLCOPCA Performs Coupled PCA Learning</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [P1, P2] = slcopca(X1, X2, sch, ...)</span>
+0006 <span class="comment">%   - [P1, P2, spectrum] = slcopca(...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - X1:       The samples in the first modality</span>
+0010 <span class="comment">%   - X2:       The samples in the second modality</span>
+0011 <span class="comment">%   - d:        The target space dimension</span>
+0012 <span class="comment">%   - P1:       The projection matrix (bases) of the first modality space</span>
+0013 <span class="comment">%   - P2:       The projection matrix (bases) of the second modality space</span>
+0014 <span class="comment">%   - spectrum: The covariance energy along dimensions of target space</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - [P1, P2] = slcopca(X1, X2, sch, ...) performs coupled PCA learning</span>
+0018 <span class="comment">%     for two correlated sample spaces. The learning objective is to</span>
+0019 <span class="comment">%     pursue two subspaces such that they are maximally correlated. The</span>
+0020 <span class="comment">%     objective function is formulated as</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">%       maximize trace( P1^T * C_12 * P2 * P2^T * C_21 * P1 ) / n</span>
+0023 <span class="comment">%           s.t. P1^T * P1 = I, and  P2^T * P2 = I</span>
+0024 <span class="comment">%       where C_12 is the covariance between X1 and X2,</span>
+0025 <span class="comment">%             C_21 is the covariance between X2 and X1</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%     Suppose the dimensions for the two spaces are d1 and d2 respectively,</span>
+0028 <span class="comment">%     and n pairs of corresponding samples are given in X1 and X2. Then X1</span>
+0029 <span class="comment">%     and X2 should be d1 x n and d2 x n matrices respectively.</span>
+0030 <span class="comment">%     You can further specify the following properties to control the</span>
+0031 <span class="comment">%     learning procedure:</span>
+0032 <span class="comment">%       - 'weights':    The weights of the samples, default = []</span>
+0033 <span class="comment">%       - 'mean1':      The pre-computed mean vector for X1, default = []</span>
+0034 <span class="comment">%                       if mean1 is set as 0, then it means that X1 has</span>
+0035 <span class="comment">%                       been centralized.</span>
+0036 <span class="comment">%       - 'mean2':      The pre-computed mean vector for X2, default = []</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">%   - [P1, P2, spectrum] = slcopca(...) also outputs the spectrum. You</span>
+0039 <span class="comment">%     can specify the following properties to control the type of the</span>
+0040 <span class="comment">%     output spectrum:</span>
+0041 <span class="comment">%       - 'spectype':   The type of output spectrum</span>
+0042 <span class="comment">%                       - 'normal': The average energies along target</span>
+0043 <span class="comment">%                                   dimensions.</span>
+0044 <span class="comment">%                       - 'ratio':  The ratio of preserved energy along</span>
+0045 <span class="comment">%                                   target dimensions to the total</span>
+0046 <span class="comment">%                                   energy.</span>
+0047 <span class="comment">%                       default = 'normal'.</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">% $ History $</span>
+0050 <span class="comment">%   - Created by Dahua Lin, on Sep 16, 2006</span>
+0051 <span class="comment">%</span>
+0052 
+0053 <span class="comment">%% parse and verify input arguments</span>
+0054 
+0055 <span class="keyword">if</span> nargin &lt; 3
+0056     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slcopca'</span>, 3);
+0057 <span class="keyword">end</span>
+0058 
+0059 <span class="keyword">if</span> ~isnumeric(X1) || ~isnumeric(X2) || ndims(X1) ~= 2 || ndims(X2) ~= 2
+0060     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0061         <span class="string">'X1 and X2 should be 2D numeric matrices'</span>);
+0062 <span class="keyword">end</span>
+0063 
+0064 [d1, n] = size(X1);
+0065 [d2, n2] = size(X2);
+0066 <span class="keyword">if</span> n ~= n2
+0067     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0068         <span class="string">'The numbers of samples in X1 and X2 do not match'</span>);
+0069 <span class="keyword">end</span>
+0070 
+0071 dmax = min(d1, d2);
+0072 <span class="keyword">if</span> d &gt; dmax
+0073     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0074         <span class="string">'The target dimension d should not exceed d1 or d2'</span>);
+0075 <span class="keyword">end</span>
+0076 
+0077 opts.weights = [];
+0078 opts.mean1 = [];
+0079 opts.mean2 = [];
+0080 opts.spectype = <span class="string">'normal'</span>;
+0081 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0082 
+0083 w = opts.weights;
+0084 <span class="keyword">if</span> ~isempty(w)
+0085     <span class="keyword">if</span> ~isequal(size(w), [1, n])
+0086         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0087             <span class="string">'w should be a 1 x n row vector'</span>);
+0088     <span class="keyword">end</span>
+0089 <span class="keyword">end</span>
+0090 
+0091 vmean1 = opts.mean1;
+0092 vmean2 = opts.mean2;
+0093 <span class="keyword">if</span> ~isempty(vmean1) &amp;&amp; ~isequal(vmean1, 0) &amp;&amp; ~isequal(size(vmean1), [d1, 1])
+0094     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0095         <span class="string">'The size of mean1 is illegal'</span>);
+0096 <span class="keyword">end</span>
+0097 <span class="keyword">if</span> ~isempty(vmean2) &amp;&amp; ~isequal(vmean2, 0) &amp;&amp; ~isequal(size(vmean2), [d2, 1])
+0098     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0099         <span class="string">'The size of mean1 is illegal'</span>);
+0100 <span class="keyword">end</span>
+0101 
+0102 <span class="comment">%% main skeleton</span>
+0103 
+0104 <span class="comment">% preprocess sample matrices</span>
+0105 
+0106 X1 = <a href="#_sub1" class="code" title="subfunction Xp = preprocess_samples(X, vmean, w)">preprocess_samples</a>(X1, vmean1, w);
+0107 X2 = <a href="#_sub1" class="code" title="subfunction Xp = preprocess_samples(X, vmean, w)">preprocess_samples</a>(X2, vmean2, w);
+0108 
+0109 <span class="comment">% construct problem</span>
+0110 S = X1 * X2';
+0111 
+0112 <span class="keyword">switch</span> opts.spectype
+0113     <span class="keyword">case</span> <span class="string">'normal'</span>
+0114         <span class="keyword">if</span> isempty(w)
+0115             tw = n;
+0116         <span class="keyword">else</span>
+0117             tw = sum(w);
+0118         <span class="keyword">end</span>
+0119     <span class="keyword">case</span> <span class="string">'ratio'</span>
+0120         tw = trace(S * S');
+0121     <span class="keyword">otherwise</span>
+0122         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0123             <span class="string">'Invalid spectrum type: %s'</span>, opts.spectype);
+0124 <span class="keyword">end</span>
+0125 
+0126 
+0127 <span class="keyword">if</span> d &gt; dmax / 3;
+0128     [P1, D, P2] = svd(S, <span class="string">'econ'</span>);
+0129     spectrum = diag(D);
+0130     spectrum = spectrum(1:d);
+0131     P1 = P1(:, 1:d);
+0132     P2 = P2(:, 1:d);
+0133 <span class="keyword">else</span>
+0134     [P1, D, P2] = svds(S, d);
+0135     spectrum = diag(D);
+0136 <span class="keyword">end</span>
+0137 
+0138 <span class="comment">% post-process spectrum</span>
+0139 <span class="keyword">if</span> nargout &gt;= 3
+0140     spectrum = spectrum .* spectrum / tw;
+0141 <span class="keyword">end</span>
+0142 
+0143 
+0144 <span class="comment">%% Auxiliary functions</span>
+0145 
+0146 <a name="_sub1" href="#_subfunctions" class="code">function Xp = preprocess_samples(X, vmean, w)</a>
+0147 
+0148 <span class="keyword">if</span> ~isequal(vmean, 0)
+0149     <span class="keyword">if</span> isempty(vmean)
+0150         vmean = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X, w, true);
+0151     <span class="keyword">end</span>
+0152     Xp = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, -vmean, 1);
+0153 <span class="keyword">else</span>
+0154     Xp = X;
+0155 <span class="keyword">end</span>
+0156 
+0157 <span class="keyword">if</span> ~isempty(w) 
+0158     Xp = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(Xp, w, 2);
+0159 <span class="keyword">end</span>
+0160 
+0161 
+0162     
+0163     
+0164     
+0165 
+0166 
+0167 
+0168 
+0169 
+0170 
+0171 
+0172 
+0173 
+0174  
+0175  
+0176</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

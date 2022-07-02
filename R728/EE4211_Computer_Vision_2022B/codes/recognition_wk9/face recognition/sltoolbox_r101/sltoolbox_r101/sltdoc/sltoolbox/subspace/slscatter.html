@@ -1,0 +1,413 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slscatter</title>
+  <meta name="keywords" content="slscatter">
+  <meta name="description" content="SLSCATTER Compute the scatter matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace</a> &gt; slscatter.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slscatter
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLSCATTER Compute the scatter matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function S = slscatter(X, type, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLSCATTER Compute the scatter matrix 
+
+ $ Syntax $
+   - S = slscatter(X, type, ...)
+
+ $ Arguments $
+   - X:        the sample matrix with each column representing a sample
+   - type:     the type of scatter matrix to compute
+   - S:        the resulting scatter matrix 
+
+ $ Description $
+   - S = slscatter(X, type, ...) computes the scatter matrix for the 
+     samples in X of specific type according to the properties specified.
+     \*
+     \t    Table 1. The types of scatter matrix          \\
+     \h    name   &amp;     description                      \\
+           'Sw'   &amp;  Within class scatter matrix. That is to compute
+                     scatter matrix within the samples in each class, and
+                     sum up the class-specific scatters. \\
+           'Sb'   &amp;  Between class scatter matrix. That is to compute
+                     scatter matrix on the means of the classes. And uses
+                     the number of samples in each class or the total
+                     sample weight for each class as the weight for
+                     the mean vectors.                   \\
+           'St'   &amp;  Total scatter matrix. That is to compute the scatter
+                     matrix on all the samples. The class-specific info.
+                     is ignored for St.                  \\
+     \*
+     
+     You can specify following properties to customize the computation
+     of the scatter matrix.
+     \*
+     \t    Table 2. The properties of scatter computation       \\
+     \h    name      &amp;      description                         \\
+          'method'   &amp;  The method of computation, can be 'std' or 'pw'.
+                        'std' computes the scatter in standard manner
+                        S = sum_i w_i (x_i - mv)(x_i - m_v)';
+                        'pw' computes the scatter in pairwise manner
+                        S = sum_{ij} w_{ij} (x_i - x_j) (x_i - x_j)'; 
+                        default = [].                           \\
+          'nums'     &amp;  The numbers of samples in all classes. These 
+                        numbers are used for groupping the samples for
+                        'Sw' and 'Sb'. It is ignored for 'St'. If 
+                        it is set to empty, all samples are considered
+                        from the same class. default = [].      \\
+          'sweights' &amp;  The weights of samples. Suppose there are n
+                        samples. Then sweights should be an 1 x n row
+                        vector. default = [].                   \\
+          'dwrule'   &amp;  The rule for determining the weights from 
+                        distances. It should be an invokable object 
+                        determining the weights from distances either
+                        from samples to corresponding class centers
+                        for 'std' method or between samples of pairs 
+                        for 'pw' method. default = {}.           \\
+     \*
+
+ $ Remarks $
+   -# The invokable object for determining weights from distances has
+      two forms. In the non-parametric form, it can be a function name,
+      function handle, or an inline object, the array of distances would 
+      be the unique argument input. In the parametric form, it
+      is given in a cell {f, ...}, f can be a function name, function
+      handle, or an inline object. The array of distances followed by
+      the additonal arguments in the cell will be input to f. 
+           
+   -# For weighting, if not specified all weights are considered to be 1.
+      In 'std' method, the weights w_i for each term is given by 
+      the multiplication of sweights(i) and the weights determined by
+      dwrule. In 'pw' method, the weights w_{ij} for each term is 
+      given by sweights(i) * sweights(j) * the value determined by dwrule.
+
+   -# The computation in 'std' method is based on slcov and its result
+      will be scaled by n or total weight. The computation in 'pw' method
+      is based on slpwscatter.
+
+ $ History $
+   - Created by Dahua Lin on Apr 27, 2005</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>	SLMETRIC_PW Compute the metric between column vectors pairwisely</li><li><a href="../../sltoolbox/stat/slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>	SLCOV Compute the covariance matrix</li><li><a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>	SLMEAN Compute the mean vector of samples</li><li><a href="../../sltoolbox/stat/slmeans.html" class="code" title="function varargout = slmeans(X, w, nums)">slmeans</a>	SLMEANS Compute the mean vectors</li><li><a href="../../sltoolbox/stat/slpwscatter.html" class="code" title="function S = slpwscatter(tar, W)">slpwscatter</a>	SLPWSCATTER Compute the pairwise scatter matrix</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>	SLNUMS2BOUNDS Compute the index-boundaries from section sizes</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/kernel/slkernelscatter.html" class="code" title="function S = slkernelscatter(K, type, varargin)">slkernelscatter</a>	SLKERNELSCATTER Compute the kernelized scatter matrix</li><li><a href="../../sltoolbox/kernel/slkfd.html" class="code" title="function A = slkfd(K, nums, varargin)">slkfd</a>	SLKFD Perform Kernelized Fisher Discriminant Analysis</li><li><a href="sldlda.html" class="code" title="function T = sldlda(X, nums, varargin)">sldlda</a>	SLDLDA Performs Direct Linear Discriminant Analysis</li><li><a href="slfld.html" class="code" title="function T = slfld(X, nums, varargin)">slfld</a>	SLFLD Performs Fisher Linear Discriminant Analysis</li><li><a href="slnlda.html" class="code" title="function T = slnlda(X, nums, varargin)">slnlda</a>	SLNLDA Performs Nullspace-based Linear Discriminant Analysis</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function w = get_weights_std(X, sweights, dwrule)</a></li><li><a href="#_sub2" class="code">function w = get_weights_pw(X, sweights, dwrule)</a></li><li><a href="#_sub3" class="code">function [curX, curw] = get_cur_class(X, sp, ep, opts, fhgetw)</a></li><li><a href="#_sub4" class="code">function w = get_class_weights(sweights, nums, sp, ep)</a></li><li><a href="#_sub5" class="code">function S = scatter_core_std(X, w)</a></li><li><a href="#_sub6" class="code">function S = scatter_core_pw(X, w)</a></li><li><a href="#_sub7" class="code">function w = invoke_dwrule(dwrule, dists)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function S = slscatter(X, type, varargin)</a>
+0002 <span class="comment">%SLSCATTER Compute the scatter matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - S = slscatter(X, type, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X:        the sample matrix with each column representing a sample</span>
+0009 <span class="comment">%   - type:     the type of scatter matrix to compute</span>
+0010 <span class="comment">%   - S:        the resulting scatter matrix</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - S = slscatter(X, type, ...) computes the scatter matrix for the</span>
+0014 <span class="comment">%     samples in X of specific type according to the properties specified.</span>
+0015 <span class="comment">%     \*</span>
+0016 <span class="comment">%     \t    Table 1. The types of scatter matrix          \\</span>
+0017 <span class="comment">%     \h    name   &amp;     description                      \\</span>
+0018 <span class="comment">%           'Sw'   &amp;  Within class scatter matrix. That is to compute</span>
+0019 <span class="comment">%                     scatter matrix within the samples in each class, and</span>
+0020 <span class="comment">%                     sum up the class-specific scatters. \\</span>
+0021 <span class="comment">%           'Sb'   &amp;  Between class scatter matrix. That is to compute</span>
+0022 <span class="comment">%                     scatter matrix on the means of the classes. And uses</span>
+0023 <span class="comment">%                     the number of samples in each class or the total</span>
+0024 <span class="comment">%                     sample weight for each class as the weight for</span>
+0025 <span class="comment">%                     the mean vectors.                   \\</span>
+0026 <span class="comment">%           'St'   &amp;  Total scatter matrix. That is to compute the scatter</span>
+0027 <span class="comment">%                     matrix on all the samples. The class-specific info.</span>
+0028 <span class="comment">%                     is ignored for St.                  \\</span>
+0029 <span class="comment">%     \*</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%     You can specify following properties to customize the computation</span>
+0032 <span class="comment">%     of the scatter matrix.</span>
+0033 <span class="comment">%     \*</span>
+0034 <span class="comment">%     \t    Table 2. The properties of scatter computation       \\</span>
+0035 <span class="comment">%     \h    name      &amp;      description                         \\</span>
+0036 <span class="comment">%          'method'   &amp;  The method of computation, can be 'std' or 'pw'.</span>
+0037 <span class="comment">%                        'std' computes the scatter in standard manner</span>
+0038 <span class="comment">%                        S = sum_i w_i (x_i - mv)(x_i - m_v)';</span>
+0039 <span class="comment">%                        'pw' computes the scatter in pairwise manner</span>
+0040 <span class="comment">%                        S = sum_{ij} w_{ij} (x_i - x_j) (x_i - x_j)';</span>
+0041 <span class="comment">%                        default = [].                           \\</span>
+0042 <span class="comment">%          'nums'     &amp;  The numbers of samples in all classes. These</span>
+0043 <span class="comment">%                        numbers are used for groupping the samples for</span>
+0044 <span class="comment">%                        'Sw' and 'Sb'. It is ignored for 'St'. If</span>
+0045 <span class="comment">%                        it is set to empty, all samples are considered</span>
+0046 <span class="comment">%                        from the same class. default = [].      \\</span>
+0047 <span class="comment">%          'sweights' &amp;  The weights of samples. Suppose there are n</span>
+0048 <span class="comment">%                        samples. Then sweights should be an 1 x n row</span>
+0049 <span class="comment">%                        vector. default = [].                   \\</span>
+0050 <span class="comment">%          'dwrule'   &amp;  The rule for determining the weights from</span>
+0051 <span class="comment">%                        distances. It should be an invokable object</span>
+0052 <span class="comment">%                        determining the weights from distances either</span>
+0053 <span class="comment">%                        from samples to corresponding class centers</span>
+0054 <span class="comment">%                        for 'std' method or between samples of pairs</span>
+0055 <span class="comment">%                        for 'pw' method. default = {}.           \\</span>
+0056 <span class="comment">%     \*</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">% $ Remarks $</span>
+0059 <span class="comment">%   -# The invokable object for determining weights from distances has</span>
+0060 <span class="comment">%      two forms. In the non-parametric form, it can be a function name,</span>
+0061 <span class="comment">%      function handle, or an inline object, the array of distances would</span>
+0062 <span class="comment">%      be the unique argument input. In the parametric form, it</span>
+0063 <span class="comment">%      is given in a cell {f, ...}, f can be a function name, function</span>
+0064 <span class="comment">%      handle, or an inline object. The array of distances followed by</span>
+0065 <span class="comment">%      the additonal arguments in the cell will be input to f.</span>
+0066 <span class="comment">%</span>
+0067 <span class="comment">%   -# For weighting, if not specified all weights are considered to be 1.</span>
+0068 <span class="comment">%      In 'std' method, the weights w_i for each term is given by</span>
+0069 <span class="comment">%      the multiplication of sweights(i) and the weights determined by</span>
+0070 <span class="comment">%      dwrule. In 'pw' method, the weights w_{ij} for each term is</span>
+0071 <span class="comment">%      given by sweights(i) * sweights(j) * the value determined by dwrule.</span>
+0072 <span class="comment">%</span>
+0073 <span class="comment">%   -# The computation in 'std' method is based on slcov and its result</span>
+0074 <span class="comment">%      will be scaled by n or total weight. The computation in 'pw' method</span>
+0075 <span class="comment">%      is based on slpwscatter.</span>
+0076 <span class="comment">%</span>
+0077 <span class="comment">% $ History $</span>
+0078 <span class="comment">%   - Created by Dahua Lin on Apr 27, 2005</span>
+0079 <span class="comment">%</span>
+0080 
+0081 <span class="comment">%% parse and verify input arguments</span>
+0082 
+0083 <span class="keyword">if</span> nargin &lt; 2
+0084     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slscatter'</span>, 2);
+0085 <span class="keyword">end</span>
+0086 
+0087 <span class="comment">% check sample matrix X</span>
+0088 
+0089 <span class="keyword">if</span> ndims(X) ~= 2
+0090     error(<span class="string">'sltoolbox:invaliddims'</span>, <span class="keyword">...</span>
+0091         <span class="string">'The sample matrix X should be a 2D matrix'</span>);
+0092 <span class="keyword">end</span>
+0093 [d, n] = size(X);
+0094 
+0095 <span class="comment">% check type</span>
+0096 
+0097 <span class="keyword">if</span> ~ismember(type, <span class="keyword">...</span>
+0098         {<span class="string">'Sw'</span>, <span class="string">'Sb'</span>, <span class="string">'St'</span>})
+0099     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0100         <span class="string">'Invalid type of scatter matrix: %s'</span>, type);
+0101 <span class="keyword">end</span>
+0102 
+0103 <span class="comment">% check options</span>
+0104 
+0105 opts.method = <span class="string">'std'</span>;
+0106 opts.nums = [];
+0107 opts.sweights = [];
+0108 opts.dwrule = {};
+0109 
+0110 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0111 
+0112 <span class="keyword">switch</span> opts.method
+0113     <span class="keyword">case</span> <span class="string">'std'</span>
+0114         fh_scatter_core = @<a href="#_sub5" class="code" title="subfunction S = scatter_core_std(X, w)">scatter_core_std</a>;
+0115         fh_get_weights = @<a href="#_sub1" class="code" title="subfunction w = get_weights_std(X, sweights, dwrule)">get_weights_std</a>;
+0116     <span class="keyword">case</span> <span class="string">'pw'</span>
+0117         fh_scatter_core = @<a href="#_sub6" class="code" title="subfunction S = scatter_core_pw(X, w)">scatter_core_pw</a>;
+0118         fh_get_weights = @<a href="#_sub2" class="code" title="subfunction w = get_weights_pw(X, sweights, dwrule)">get_weights_pw</a>;
+0119     <span class="keyword">otherwise</span>
+0120         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0121         <span class="string">'Invalid method for scatter computing: %s'</span>, opts.method);
+0122 <span class="keyword">end</span>
+0123         
+0124     
+0125 <span class="keyword">if</span> isempty(opts.nums)
+0126     k = 1;
+0127     opts.nums = n;
+0128 <span class="keyword">else</span>
+0129     k = length(opts.nums);
+0130     <span class="keyword">if</span> ~isequal(size(opts.nums), [1, k])
+0131         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0132             <span class="string">'nums should be an 1 x k row vector'</span>);
+0133     <span class="keyword">end</span>
+0134     <span class="keyword">if</span> sum(opts.nums) ~= n
+0135         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0136             <span class="string">'The total number is consistent with that in X'</span>);
+0137     <span class="keyword">end</span>
+0138 <span class="keyword">end</span>
+0139 
+0140 <span class="keyword">if</span> ~isempty(opts.sweights) 
+0141     <span class="keyword">if</span> ~isequal(size(opts.sweights), [1, n])
+0142         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0143             <span class="string">'sample weights should be an 1 x n row vector.'</span>);
+0144     <span class="keyword">end</span>
+0145 <span class="keyword">end</span>
+0146     
+0147 
+0148 <span class="comment">%% Compute</span>
+0149 
+0150 <span class="keyword">switch</span> type
+0151     
+0152 <span class="comment">%% Compute Sw</span>
+0153     <span class="keyword">case</span> <span class="string">'Sw'</span>        
+0154         <span class="keyword">if</span> k == 1   <span class="comment">% single class</span>
+0155             w = fh_get_weights(X, opts.sweights, opts.dwrule);
+0156             S = fh_scatter_core(X, w);
+0157         <span class="keyword">else</span>        <span class="comment">% multiple classes</span>
+0158             S = zeros(d, d);
+0159             [sp, ep] = <a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>(opts.nums);
+0160             <span class="keyword">for</span> i = 1 : k
+0161                 [curX, curw] = <a href="#_sub3" class="code" title="subfunction [curX, curw] = get_cur_class(X, sp, ep, opts, fhgetw)">get_cur_class</a>(X, sp(i), ep(i), opts, fh_get_weights);
+0162                 S = S + fh_scatter_core(curX, curw);
+0163             <span class="keyword">end</span>
+0164         <span class="keyword">end</span>                
+0165         
+0166 <span class="comment">%% Compute Sb</span>
+0167     <span class="keyword">case</span> <span class="string">'Sb'</span>
+0168         <span class="keyword">if</span> k == 1   <span class="comment">% single class (no between class scattering)</span>
+0169             S = zeros(d, d);
+0170         <span class="keyword">else</span>        <span class="comment">% multiple classes</span>
+0171             centers = <a href="../../sltoolbox/stat/slmeans.html" class="code" title="function varargout = slmeans(X, w, nums)">slmeans</a>(X, opts.sweights, opts.nums);
+0172             [sp, ep] = <a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>(opts.nums);
+0173             sw = <a href="#_sub4" class="code" title="subfunction w = get_class_weights(sweights, nums, sp, ep)">get_class_weights</a>(opts.sweights, opts.nums, sp, ep);
+0174             w = fh_get_weights(centers, sw, opts.dwrule);
+0175             S = fh_scatter_core(centers, w);
+0176         <span class="keyword">end</span>    
+0177                         
+0178 <span class="comment">%% Compute St</span>
+0179     <span class="keyword">case</span> <span class="string">'St'</span>        
+0180         w = fh_get_weights(X, opts.sweights, opts.dwrule);
+0181         S = fh_scatter_core(X, w);                
+0182         
+0183 <span class="keyword">end</span>
+0184         
+0185         
+0186 
+0187 
+0188 <span class="comment">%% The function for computing weights</span>
+0189 <a name="_sub1" href="#_subfunctions" class="code">function w = get_weights_std(X, sweights, dwrule)</a>
+0190 
+0191 <span class="keyword">if</span> isempty(sweights)    
+0192     <span class="keyword">if</span> isempty(dwrule)      <span class="comment">% default weights</span>
+0193         w = [];        
+0194     <span class="keyword">else</span>                    <span class="comment">% weights from dwrule</span>
+0195         mv = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X, [], true);
+0196         dists = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(mv, X, <span class="string">'eucdist'</span>);
+0197         w = <a href="#_sub7" class="code" title="subfunction w = invoke_dwrule(dwrule, dists)">invoke_dwrule</a>(dwrule, dists);
+0198     <span class="keyword">end</span>        
+0199 <span class="keyword">else</span>
+0200     <span class="keyword">if</span> isempty(dwrule)      <span class="comment">% weights from sweights</span>
+0201         w = sweights;
+0202     <span class="keyword">else</span>                    <span class="comment">% both sweights and dwrule</span>
+0203         mv = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X, sweights, true);
+0204         dists = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(mv, X, <span class="string">'eucdist'</span>);
+0205         w = <a href="#_sub7" class="code" title="subfunction w = invoke_dwrule(dwrule, dists)">invoke_dwrule</a>(dwrule, dists) .* sweights;
+0206     <span class="keyword">end</span>
+0207 <span class="keyword">end</span>
+0208 
+0209        
+0210 <a name="_sub2" href="#_subfunctions" class="code">function w = get_weights_pw(X, sweights, dwrule)</a>
+0211 
+0212 <span class="keyword">if</span> isempty(sweights)
+0213     <span class="keyword">if</span> isempty(dwrule)      <span class="comment">% default weights</span>
+0214         w = [];
+0215     <span class="keyword">else</span>                    <span class="comment">% weights from dwrule</span>
+0216         dists = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(X, X, <span class="string">'eucdist'</span>);
+0217         w = <a href="#_sub7" class="code" title="subfunction w = invoke_dwrule(dwrule, dists)">invoke_dwrule</a>(dwrule, dists);
+0218     <span class="keyword">end</span>
+0219 <span class="keyword">else</span>
+0220     <span class="keyword">if</span> isempty(dwrule)      <span class="comment">% weights from sweights</span>
+0221         w = sweights' * sweights;   
+0222     <span class="keyword">else</span>                    <span class="comment">% both sweights and dwrule</span>
+0223         w = sweights' * sweights;
+0224         dists = <a href="../../sltoolbox/core/slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>(X, X, <span class="string">'eucdist'</span>);
+0225         w = <a href="#_sub7" class="code" title="subfunction w = invoke_dwrule(dwrule, dists)">invoke_dwrule</a>(dwrule, dists) .* w;
+0226     <span class="keyword">end</span>
+0227 <span class="keyword">end</span>
+0228         
+0229         
+0230 <span class="comment">%% The auxiliary function to extracting a class of samples and weights</span>
+0231 <a name="_sub3" href="#_subfunctions" class="code">function [curX, curw] = get_cur_class(X, sp, ep, opts, fhgetw)</a>
+0232 
+0233 curX = X(:, sp:ep);
+0234 <span class="keyword">if</span> isempty(opts.sweights)
+0235     sw = [];
+0236 <span class="keyword">else</span>
+0237     sw = opts.sweights(sp:ep);
+0238 <span class="keyword">end</span>
+0239 curw = fhgetw(curX, sw, opts.dwrule);
+0240 
+0241 
+0242 <span class="comment">%% The auxiliary function to getting the class weights</span>
+0243 <a name="_sub4" href="#_subfunctions" class="code">function w = get_class_weights(sweights, nums, sp, ep)</a>
+0244 
+0245 <span class="keyword">if</span> isempty(sweights)
+0246     w = nums;
+0247 <span class="keyword">else</span>
+0248     k = length(nums);    
+0249     w = zeros(1, k);
+0250     <span class="keyword">for</span> i = 1 : k
+0251         w(i) = sum(sweights(sp(i):ep(i)));
+0252     <span class="keyword">end</span>
+0253 <span class="keyword">end</span>
+0254     
+0255 
+0256 
+0257 <span class="comment">%% The core computing function for compute a single scattering</span>
+0258 
+0259 <a name="_sub5" href="#_subfunctions" class="code">function S = scatter_core_std(X, w)</a>
+0260 
+0261 <span class="keyword">if</span> isempty(w)
+0262     n = size(X, 2);
+0263     S = <a href="../../sltoolbox/stat/slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X) * n;
+0264 <span class="keyword">else</span>
+0265     tw = sum(w);
+0266     S = <a href="../../sltoolbox/stat/slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(X, w) * tw;
+0267 <span class="keyword">end</span>
+0268 
+0269 
+0270 <a name="_sub6" href="#_subfunctions" class="code">function S = scatter_core_pw(X, w)</a>
+0271 
+0272 S = <a href="../../sltoolbox/stat/slpwscatter.html" class="code" title="function S = slpwscatter(tar, W)">slpwscatter</a>(X, w);
+0273 
+0274 
+0275         
+0276 <span class="comment">%% The auxiliary function for computing weights from dwrule</span>
+0277 <a name="_sub7" href="#_subfunctions" class="code">function w = invoke_dwrule(dwrule, dists)</a>
+0278 
+0279 <span class="keyword">if</span> ~iscell(dwrule)
+0280     w = feval(dwrule, dists);
+0281 <span class="keyword">else</span>
+0282     <span class="keyword">if</span> length(dwrule) == 1
+0283         w = feval(dwrule{1}, dists);
+0284     <span class="keyword">else</span>
+0285         w = feval(dwrule{1}, dists, dwrule{2:end});
+0286     <span class="keyword">end</span>
+0287 <span class="keyword">end</span>
+0288 
+0289</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

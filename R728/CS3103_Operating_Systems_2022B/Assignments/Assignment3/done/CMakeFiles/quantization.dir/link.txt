@@ -1,0 +1,1 @@
+/usr/bin/c++  -std=c++17 -pthread  -rdynamic CMakeFiles/quantization.dir/55724681.cpp.o  -o bin/quantization 

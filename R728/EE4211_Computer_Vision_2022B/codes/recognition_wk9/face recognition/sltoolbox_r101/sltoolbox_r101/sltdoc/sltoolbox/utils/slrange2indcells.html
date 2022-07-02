@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slrange2indcells</title>
+  <meta name="keywords" content="slrange2indcells">
+  <meta name="description" content="SLRANGE2INDCELLS Converts a range array to indices cell array">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">utils</a> &gt; slrange2indcells.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\utils&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slrange2indcells
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLRANGE2INDCELLS Converts a range array to indices cell array</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function C = slrange2indcells(range) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLRANGE2INDCELLS Converts a range array to indices cell array
+
+ $ Syntax $
+   - C = slrange2indcells(range)
+
+ $ Arguments $
+   - range:        the 2 x d array specifying the range
+   - C:            the 1 x d indices array
+
+ $ Description $
+   - C = slrange2indcells(range) converts an range array to a cell array
+     of indices. 
+     For example, for a range array in the form:
+     [s1, s2, ..., sd; e1, e2, ..., ed], it will outputs the cell array as
+     C = {s1:e1, s2:e2, ..., sd:ed}.
+     So that A(C{:}) will give A(s1:e1, s2:e2, ..., sd:ed).
+
+ $ History $
+   - Created by Dahua Lin, on Jul 29th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/subspace_ex/slpartitionpca.html" class="code" title="function slpartitionpca(data, arrsiz, n, ps, filepath, varargin)">slpartitionpca</a>	SLPARTITIONPCA Performs Partition-based PCA and saves the models</li><li><a href="../../sltoolbox/subspace_ex/slpartitionpca_apply.html" class="code" title="function feas = slpartitionpca_apply(S, modeldir, data, n, k)">slpartitionpca_apply</a>	SLPARTITIONPCA_APPLY applies partition-based PCA to a set of arrays</li><li><a href="../../sltoolbox/subspace_ex/slpartitionpca_construct.html" class="code" title="function A = slpartitionpca_construct(S, modeldir, feas)">slpartitionpca_construct</a>	SLPARTITIONPCA_CONSTRUCT Constructs the array from features</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function C = slrange2indcells(range)</a>
+0002 <span class="comment">%SLRANGE2INDCELLS Converts a range array to indices cell array</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - C = slrange2indcells(range)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - range:        the 2 x d array specifying the range</span>
+0009 <span class="comment">%   - C:            the 1 x d indices array</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $ Description $</span>
+0012 <span class="comment">%   - C = slrange2indcells(range) converts an range array to a cell array</span>
+0013 <span class="comment">%     of indices.</span>
+0014 <span class="comment">%     For example, for a range array in the form:</span>
+0015 <span class="comment">%     [s1, s2, ..., sd; e1, e2, ..., ed], it will outputs the cell array as</span>
+0016 <span class="comment">%     C = {s1:e1, s2:e2, ..., sd:ed}.</span>
+0017 <span class="comment">%     So that A(C{:}) will give A(s1:e1, s2:e2, ..., sd:ed).</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% $ History $</span>
+0020 <span class="comment">%   - Created by Dahua Lin, on Jul 29th, 2006</span>
+0021 <span class="comment">%</span>
+0022 
+0023 d = size(range, 2);
+0024 C = cell(1, d);
+0025 
+0026 <span class="keyword">for</span> i = 1 : d
+0027     C{i} = range(1, i) : range(2, i);
+0028 <span class="keyword">end</span>
+0029</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

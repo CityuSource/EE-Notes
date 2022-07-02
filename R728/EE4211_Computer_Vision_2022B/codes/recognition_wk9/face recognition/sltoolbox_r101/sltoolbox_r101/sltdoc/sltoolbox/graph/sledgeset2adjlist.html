@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sledgeset2adjlist</title>
+  <meta name="keywords" content="sledgeset2adjlist">
+  <meta name="description" content="SLEDGESET2ADJLIST Converts edge set to adjacency list">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">graph</a> &gt; sledgeset2adjlist.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\graph&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sledgeset2adjlist
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLEDGESET2ADJLIST Converts edge set to adjacency list</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function targets = sledgeset2adjlist(n, edges, sch) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLEDGESET2ADJLIST Converts edge set to adjacency list
+
+ $ Syntax $
+   - targets = sledgeset2adjlist(n, edges, sch)
+
+ $ Arguments $
+   - n:        The number of (source) nodes
+   - edges:    The set of edges (nedges x 2 or nedges x 3)
+   - sch:      The id of scheme of conversion to take
+               - 0:    no value -&gt; no value
+               - 1:    no value -&gt; has value
+               - 2:    has value -&gt; no value
+               - 3:    has value -&gt; has value
+   - targets:  The cell array of targets in adj list
+
+ $ Remarks $
+   - an internal function for graph representation conversion.
+     no checking of input arguments would be performed.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 9, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/slcount.html" class="code" title="function [nums, U] = slcount(A)">slcount</a>	SLCOUNT Count the number of sum entities</li><li><a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>	SLNUMS2BOUNDS Compute the index-boundaries from section sizes</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sladjlist.html" class="code" title="function Gd = sladjlist(G, uv)">sladjlist</a>	SLADJLIST Construct the adjacency list representation of a graph</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function targets = sledgeset2adjlist(n, edges, sch)</a>
+0002 <span class="comment">%SLEDGESET2ADJLIST Converts edge set to adjacency list</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - targets = sledgeset2adjlist(n, edges, sch)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - n:        The number of (source) nodes</span>
+0009 <span class="comment">%   - edges:    The set of edges (nedges x 2 or nedges x 3)</span>
+0010 <span class="comment">%   - sch:      The id of scheme of conversion to take</span>
+0011 <span class="comment">%               - 0:    no value -&gt; no value</span>
+0012 <span class="comment">%               - 1:    no value -&gt; has value</span>
+0013 <span class="comment">%               - 2:    has value -&gt; no value</span>
+0014 <span class="comment">%               - 3:    has value -&gt; has value</span>
+0015 <span class="comment">%   - targets:  The cell array of targets in adj list</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $ Remarks $</span>
+0018 <span class="comment">%   - an internal function for graph representation conversion.</span>
+0019 <span class="comment">%     no checking of input arguments would be performed.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% $ History $</span>
+0022 <span class="comment">%   - Created by Dahua Lin, on Sep 9, 2006</span>
+0023 <span class="comment">%</span>
+0024 
+0025 <span class="comment">%% prepare storage</span>
+0026 
+0027 targets = cell(n, 1);
+0028 
+0029 <span class="comment">%% sort edges</span>
+0030 
+0031 I = edges(:, 1);
+0032 J = edges(:, 2);
+0033 
+0034 [I, si] = sort(I);
+0035 J = J(si);
+0036 
+0037 <span class="keyword">if</span> sch == 3
+0038     V = edges(si, 3);
+0039 <span class="keyword">elseif</span> sch == 1
+0040     nedges = length(I);
+0041     V = ones(nedges, 1);
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="comment">%% group targets</span>
+0045 
+0046 nums = <a href="../../sltoolbox/utils/slcount.html" class="code" title="function [nums, U] = slcount(A)">slcount</a>(I);
+0047 ni = length(nums);
+0048 [spos, epos] = <a href="../../sltoolbox/utils/slnums2bounds.html" class="code" title="function [spos, epos] = slnums2bounds(nums)">slnums2bounds</a>(nums);
+0049 
+0050 <span class="keyword">if</span> sch == 1 || sch == 3
+0051     <span class="keyword">for</span> i = 1 : ni
+0052         s = spos(i); e = epos(i);
+0053         <span class="keyword">if</span> s &lt;= e
+0054             targets{I(s)} = [J(s:e), V(s:e)];
+0055         <span class="keyword">end</span>
+0056     <span class="keyword">end</span>
+0057 <span class="keyword">else</span>
+0058     <span class="keyword">for</span> i = 1 : ni
+0059         s = spos(i); e = epos(i);
+0060         <span class="keyword">if</span> s &lt;= e
+0061             targets{I(s)} = J(s:e);
+0062         <span class="keyword">end</span>
+0063     <span class="keyword">end</span>
+0064 <span class="keyword">end</span>
+0065 
+0066 
+0067</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

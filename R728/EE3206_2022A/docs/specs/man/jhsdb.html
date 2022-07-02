@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc,fixuphtml" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>The jhsdb Command</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../../resources/jdk-default.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">The jhsdb Command</h1>
+</header>
+<nav id="TOC" title="Table Of Contents">
+<ul>
+<li><a href="#name">Name</a></li>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#description">Description</a></li>
+<li><a href="#options-for-the-debugd-mode">Options for the debugd Mode</a></li>
+<li><a href="#options-for-the-jinfo-mode">Options for the jinfo Mode</a></li>
+<li><a href="#options-for-the-jmap-mode">Options for the jmap Mode</a></li>
+<li><a href="#options-for-the-jstack-mode">Options for the jstack Mode</a></li>
+<li><a href="#options-for-the-jsnap-mode">Options for the jsnap Mode</a></li>
+</ul>
+</nav>
+<main><h2 id="name">Name</h2>
+<p>jhsdb - attach to a Java process or launch a postmortem debugger to analyze the content of a core dump from a crashed Java Virtual Machine (JVM)</p>
+<h2 id="synopsis">Synopsis</h2>
+<p><code>jhsdb</code> <code>clhsdb</code> [<code>--pid</code> <em>pid</em> | <code>--exe</code> <em>executable</em> <code>--core</code> <em>coredump</em>]</p>
+<p><code>jhsdb</code> <code>hsdb</code> [<code>--pid</code> <em>pid</em> | <code>--exe</code> <em>executable</em> <code>--core</code> <em>coredump</em>]</p>
+<p><code>jhsdb</code> <code>debugd</code> (<code>--pid</code> <em>pid</em> | <code>--exe</code> <em>executable</em> <code>--core</code> <em>coredump</em>) [<em>options</em>]</p>
+<p><code>jhsdb</code> <code>jstack</code> (<code>--pid</code> <em>pid</em> | <code>--exe</code> <em>executable</em> <code>--core</code> <em>coredump</em> | <code>--connect</code> <em>[server-id@]debugd-host</em>) [<em>options</em>]</p>
+<p><code>jhsdb</code> <code>jmap</code> (<code>--pid</code> <em>pid</em> | <code>--exe</code> <em>executable</em> <code>--core</code> <em>coredump</em> | <code>--connect</code> <em>[server-id@]debugd-host</em>) [<em>options</em>]</p>
+<p><code>jhsdb</code> <code>jinfo</code> (<code>--pid</code> <em>pid</em> | <code>--exe</code> <em>executable</em> <code>--core</code> <em>coredump</em> | <code>--connect</code> <em>[server-id@]debugd-host</em>) [<em>options</em>]</p>
+<p><code>jhsdb</code> <code>jsnap</code> (<code>--pid</code> <em>pid</em> | <code>--exe</code> <em>executable</em> <code>--core</code> <em>coredump</em> | <code>--connect</code> <em>[server-id@]debugd-host</em>) [<em>options</em>]</p>
+<dl>
+<dt><em>pid</em></dt>
+<dd>The process ID to which the <code>jhsdb</code> tool should attach. The process must be a Java process. To get a list of Java processes running on a machine, use the <code>ps</code> command or, if the JVM processes are not running in a separate docker instance, the <a href="jps.html">jps</a> command.
+</dd>
+<dt><em>executable</em></dt>
+<dd>The Java executable file from which the core dump was produced.
+</dd>
+<dt><em>coredump</em></dt>
+<dd>The core file to which the <code>jhsdb</code> tool should attach.
+</dd>
+<dt><em>[server-id@]debugd-host</em></dt>
+<dd>An optional server ID and the address of the remote debug server (debugd).
+</dd>
+<dt><em>options</em></dt>
+<dd>The command-line options for a <code>jhsdb</code> mode. See <a href="#options-for-the-debugd-mode">Options for the debugd Mode</a>, <a href="#options-for-the-jstack-mode">Options for the jstack Mode</a>, <a href="#options-for-the-jmap-mode">Options for the jmap Mode</a>, <a href="#options-for-the-jinfo-mode">Options for the jinfo Mode</a>, and <a href="#options-for-the-jsnap-mode">Options for the jsnap Mode</a>.
+</dd>
+</dl>
+<p><strong>Note:</strong></p>
+<p>Either the <em>pid</em> or the pair of <em>executable</em> and <em>core</em> files or the <em>[server-id@]debugd-host</em> must be provided for <code>debugd</code>, <code>jstack</code>, <code>jmap</code>, <code>jinfo</code> and <code>jsnap</code> modes.</p>
+<h2 id="description">Description</h2>
+<p>You can use the <code>jhsdb</code> tool to attach to a Java process or to launch a postmortem debugger to analyze the content of a core-dump from a crashed Java Virtual Machine (JVM). This command is experimental and unsupported.</p>
+<p><strong>Note:</strong></p>
+<p>Attaching the <code>jhsdb</code> tool to a live process will cause the process to hang and the process will probably crash when the debugger detaches.</p>
+<p>The <code>jhsdb</code> tool can be launched in any one of the following modes:</p>
+<dl>
+<dt><code>jhsdb clhsdb</code></dt>
+<dd>Starts the interactive command-line debugger.
+</dd>
+<dt><code>jhsdb hsdb</code></dt>
+<dd>Starts the interactive GUI debugger.
+</dd>
+<dt><code>jhsdb debugd</code></dt>
+<dd>Starts the remote debug server.
+</dd>
+<dt><code>jhsdb jstack</code></dt>
+<dd>Prints stack and locks information.
+</dd>
+<dt><code>jhsdb jmap</code></dt>
+<dd>Prints heap information.
+</dd>
+<dt><code>jhsdb jinfo</code></dt>
+<dd>Prints basic JVM information.
+</dd>
+<dt><code>jhsdb jsnap</code></dt>
+<dd>Prints performance counter information.
+</dd>
+<dt><code>jhsdb</code> <em>command</em> <code>--help</code></dt>
+<dd>Displays the options available for the <em>command</em>.
+</dd>
+</dl>
+<h2 id="options-for-the-debugd-mode">Options for the debugd Mode</h2>
+<dl>
+<dt><code>--serverid</code> <em>server-id</em></dt>
+<dd>An optional unique ID for this debug server. This is required if multiple debug servers are run on the same machine.
+</dd>
+<dt><code>--rmiport</code> <em>port</em></dt>
+<dd>Sets the port number to which the RMI connector is bound. If not specified a random available port is used.
+</dd>
+<dt><code>--registryport</code> <em>port</em></dt>
+<dd>Sets the RMI registry port. This option overrides the system property 'sun.jvm.hotspot.rmi.port'. If not specified, the system property is used. If the system property is not set, the default port 1099 is used.
+</dd>
+<dt><code>--hostname</code> <em>hostname</em></dt>
+<dd>Sets the hostname the RMI connector is bound. The value could be a hostname or an IPv4/IPv6 address. This option overrides the system property 'java.rmi.server.hostname'. If not specified, the system property is used. If the system property is not set, a system hostname is used.
+</dd>
+</dl>
+<h2 id="options-for-the-jinfo-mode">Options for the jinfo Mode</h2>
+<dl>
+<dt><code>--flags</code></dt>
+<dd>Prints the VM flags.
+</dd>
+<dt><code>--sysprops</code></dt>
+<dd>Prints the Java system properties.
+</dd>
+<dt>no option</dt>
+<dd>Prints the VM flags and the Java system properties.
+</dd>
+</dl>
+<h2 id="options-for-the-jmap-mode">Options for the jmap Mode</h2>
+<dl>
+<dt>no option</dt>
+<dd>Prints the same information as Solaris <code>pmap</code>.
+</dd>
+<dt><code>--heap</code></dt>
+<dd>Prints the <code>java</code> heap summary.
+</dd>
+<dt><code>--binaryheap</code></dt>
+<dd>Dumps the <code>java</code> heap in <code>hprof</code> binary format.
+</dd>
+<dt><code>--dumpfile</code> <em>name</em></dt>
+<dd>The name of the dumpfile.
+</dd>
+<dt><code>--histo</code></dt>
+<dd>Prints the histogram of <code>java</code> object heap.
+</dd>
+<dt><code>--clstats</code></dt>
+<dd>Prints the class loader statistics.
+</dd>
+<dt><code>--finalizerinfo</code></dt>
+<dd>Prints the information on objects awaiting finalization.
+</dd>
+</dl>
+<h2 id="options-for-the-jstack-mode">Options for the jstack Mode</h2>
+<dl>
+<dt><code>--locks</code></dt>
+<dd>Prints the <code>java.util.concurrent</code> locks information.
+</dd>
+<dt><code>--mixed</code></dt>
+<dd>Attempts to print both <code>java</code> and native frames if the platform allows it.
+</dd>
+</dl>
+<h2 id="options-for-the-jsnap-mode">Options for the jsnap Mode</h2>
+<dl>
+<dt><code>--all</code></dt>
+<dd>Prints all performance counters.
+</dd>
+</dl>
+</main><footer class="legal-footer"><hr/><a href="../../legal/copyright.html">Copyright</a> &copy; 1993, 2021, Oracle and/or its affiliates, 500 Oracle Parkway, Redwood Shores, CA 94065 USA.<br>All rights reserved. Use is subject to <a href="https://www.oracle.com/java/javase/terms/license/java17.0.1speclicense.html">license terms</a> and the <a href="https://www.oracle.com/technetwork/java/redist-137594.html">documentation redistribution policy</a>. <!-- Version 17.0.1+12-LTS-39 --></footer>
+</body>
+</html>

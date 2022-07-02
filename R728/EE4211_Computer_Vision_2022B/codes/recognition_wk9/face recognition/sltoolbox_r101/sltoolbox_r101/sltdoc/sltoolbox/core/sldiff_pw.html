@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sldiff_pw</title>
+  <meta name="keywords" content="sldiff_pw">
+  <meta name="description" content="SLDIFF_PW Measures the pair-wise difference">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">core</a> &gt; sldiff_pw.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\core&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sldiff_pw
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLDIFF_PW Measures the pair-wise difference</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function D = sldiff_pw(X1, X2, type) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLDIFF_PW Measures the pair-wise difference
+
+ $ Synatx $
+   - D = sldiff_pw(X1, X2, type)
+
+ $ Arguments $
+   - X1, X2:             the two sample matrices
+   - type:               the type of difference measurement
+                         default = 'abssum'
+
+ $ Description $
+   - D = sldiff_pw(X1, X2, type) computes the measurment of differences
+     between the samples in X1 and those in X2 in a pairwise manner.
+     All samples should be stored in columns. And the samples in X1 and 
+     X2 should be of the same dimension. If X1 and X2 are of sizes
+     dxn1 and dxn2 respectively. Then D is a matrix of size n1 x n2.
+
+   - The measurment types supported are listed below
+     \*
+     \t  Table 1. The difference measurement types                 \\
+     \h    name      &amp;         description                         \\
+          'abssum'   &amp;   sum of absolute values of differences     \\
+          'maxdiff'  &amp;   maximum of absolute values of differences \\
+          'mindiff'  &amp;   minimum of absolute values of differences \\
+     \*
+
+ $ History $
+   - Created by Dahua Lin on Dec 06th, 2005
+   - Modified by Dahua Lin on Sep 10th, 2006
+       - Re-implement the core in C++: pwdiff_core
+       - The efficiency is increased by 10 times.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slmetric_pw.html" class="code" title="function M = slmetric_pw(X1, X2, mtype, varargin)">slmetric_pw</a>	SLMETRIC_PW Compute the metric between column vectors pairwisely</li><li><a href="../../sltoolbox/discrete/slhistmetric_pw.html" class="code" title="function D = slhistmetric_pw(H1, H2, mtype, varargin)">slhistmetric_pw</a>	SLHISTMETRIC_PW Computes distance metrics between histograms pairwisely</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function D = sldiff_pw(X1, X2, type)</a>
+0002 <span class="comment">%SLDIFF_PW Measures the pair-wise difference</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Synatx $</span>
+0005 <span class="comment">%   - D = sldiff_pw(X1, X2, type)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X1, X2:             the two sample matrices</span>
+0009 <span class="comment">%   - type:               the type of difference measurement</span>
+0010 <span class="comment">%                         default = 'abssum'</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - D = sldiff_pw(X1, X2, type) computes the measurment of differences</span>
+0014 <span class="comment">%     between the samples in X1 and those in X2 in a pairwise manner.</span>
+0015 <span class="comment">%     All samples should be stored in columns. And the samples in X1 and</span>
+0016 <span class="comment">%     X2 should be of the same dimension. If X1 and X2 are of sizes</span>
+0017 <span class="comment">%     dxn1 and dxn2 respectively. Then D is a matrix of size n1 x n2.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%   - The measurment types supported are listed below</span>
+0020 <span class="comment">%     \*</span>
+0021 <span class="comment">%     \t  Table 1. The difference measurement types                 \\</span>
+0022 <span class="comment">%     \h    name      &amp;         description                         \\</span>
+0023 <span class="comment">%          'abssum'   &amp;   sum of absolute values of differences     \\</span>
+0024 <span class="comment">%          'maxdiff'  &amp;   maximum of absolute values of differences \\</span>
+0025 <span class="comment">%          'mindiff'  &amp;   minimum of absolute values of differences \\</span>
+0026 <span class="comment">%     \*</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% $ History $</span>
+0029 <span class="comment">%   - Created by Dahua Lin on Dec 06th, 2005</span>
+0030 <span class="comment">%   - Modified by Dahua Lin on Sep 10th, 2006</span>
+0031 <span class="comment">%       - Re-implement the core in C++: pwdiff_core</span>
+0032 <span class="comment">%       - The efficiency is increased by 10 times.</span>
+0033 <span class="comment">%</span>
+0034 
+0035 <span class="comment">%% parse and verify input arguments</span>
+0036 
+0037 <span class="keyword">if</span> nargin &lt; 3 || isempty(type)
+0038     type = <span class="string">'abssum'</span>;
+0039 <span class="keyword">end</span>
+0040 
+0041 <span class="keyword">switch</span> type
+0042     <span class="keyword">case</span> <span class="string">'abssum'</span>
+0043         pdmcode = 1;
+0044     <span class="keyword">case</span> <span class="string">'maxdiff'</span>
+0045         pdmcode = 2;
+0046     <span class="keyword">case</span> <span class="string">'mindiff'</span>
+0047         pdmcode = 3;
+0048     <span class="keyword">otherwise</span>
+0049         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0050             <span class="string">'Invalid type of pwdiff computation: %s'</span>, type);
+0051 <span class="keyword">end</span>
+0052 
+0053 <span class="comment">%% Compute</span>
+0054 
+0055 D = pwdiff_core(X1, X2, pdmcode);
+0056 
+0057 
+0058     
+0059     
+0060</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

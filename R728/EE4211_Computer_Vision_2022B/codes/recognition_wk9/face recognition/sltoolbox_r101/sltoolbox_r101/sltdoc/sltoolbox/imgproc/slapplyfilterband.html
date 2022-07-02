@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slapplyfilterband</title>
+  <meta name="keywords" content="slapplyfilterband">
+  <meta name="description" content="SLAPPLYFILTERBAND Applies filter band to filter images in batch">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">imgproc</a> &gt; slapplyfilterband.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\imgproc&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slapplyfilterband
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLAPPLYFILTERBAND Applies filter band to filter images in batch</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function fimgs = slapplyfilterband(imgs, filterband, filtersize, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLAPPLYFILTERBAND Applies filter band to filter images in batch
+
+ $ Syntax $
+   - fimgs = slapplyfilterband(imgs, filterband, filtersize, ...)
+
+ $ Arguments $
+   - imgs:         The images to be filtered
+   - filterband:   The set of filter band
+   - filtersize:   The spec of filter size
+   - fimgs:        The filtered images
+
+ $ Description $
+   - fimgs = slapplyfilterband(imgs, filterband, filtersize, ...) applies 
+     a set of filterbands to images in batch. Suppose there are k filters, 
+     imgs is an array of size h0 x w0 x n1 x n2 x ... x nm, then fimgs is
+     an array of size h x w x n1 x n2 x ... x nm x k, here h and w are
+     respectively the height and width of the filtered image.
+     You can further specify the following properties:
+       - 'roi':    The ROI in original image (default = 'full')
+                   'full'|'confined'|[t, b, l, r]
+                   Please refer to slpixneighbors for details on ROI.
+       - 'fbform': The form of filterband (default = 'normal')
+                   - 'normal':  normal form
+                   - 'vec':     vectorized form
+     
+ $ History $
+   - Created by Dahua Lin, on Sep 2nd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slfiltersize.html" class="code" title="function [fs, bmg] = slfiltersize(fs0)">slfiltersize</a>	SLFILTERSIZE Extracts information from filtersize</li><li><a href="slpixneighbors.html" class="code" title="function [R, pixinds] = slpixneighbors(img, filtersize, varargin)">slpixneighbors</a>	SLPIXNEIGHBORS Extracts the neighborhood of pixels from an image</li><li><a href="slvecfilters.html" class="code" title="function vfb = slvecfilters(fb)">slvecfilters</a>	SLVECFILTERS Vectorizes the filter band</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slbenchmark_batchfilter.html" class="code" title="function recs = slbenchmark_batchfilter(imgsiz, nimgs, filtersiz, nfilters)">slbenchmark_batchfilter</a>	SLBENCHMARK_BATCHFILTER Compares the efficiency of batch filter</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function fimg = filter_oneimg(img, roi, vfb, filtersize, h, w, k)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function fimgs = slapplyfilterband(imgs, filterband, filtersize, varargin)</a>
+0002 <span class="comment">%SLAPPLYFILTERBAND Applies filter band to filter images in batch</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - fimgs = slapplyfilterband(imgs, filterband, filtersize, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - imgs:         The images to be filtered</span>
+0009 <span class="comment">%   - filterband:   The set of filter band</span>
+0010 <span class="comment">%   - filtersize:   The spec of filter size</span>
+0011 <span class="comment">%   - fimgs:        The filtered images</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - fimgs = slapplyfilterband(imgs, filterband, filtersize, ...) applies</span>
+0015 <span class="comment">%     a set of filterbands to images in batch. Suppose there are k filters,</span>
+0016 <span class="comment">%     imgs is an array of size h0 x w0 x n1 x n2 x ... x nm, then fimgs is</span>
+0017 <span class="comment">%     an array of size h x w x n1 x n2 x ... x nm x k, here h and w are</span>
+0018 <span class="comment">%     respectively the height and width of the filtered image.</span>
+0019 <span class="comment">%     You can further specify the following properties:</span>
+0020 <span class="comment">%       - 'roi':    The ROI in original image (default = 'full')</span>
+0021 <span class="comment">%                   'full'|'confined'|[t, b, l, r]</span>
+0022 <span class="comment">%                   Please refer to slpixneighbors for details on ROI.</span>
+0023 <span class="comment">%       - 'fbform': The form of filterband (default = 'normal')</span>
+0024 <span class="comment">%                   - 'normal':  normal form</span>
+0025 <span class="comment">%                   - 'vec':     vectorized form</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% $ History $</span>
+0028 <span class="comment">%   - Created by Dahua Lin, on Sep 2nd, 2006</span>
+0029 <span class="comment">%</span>
+0030 
+0031 <span class="comment">%% parse and verify input</span>
+0032 
+0033 <span class="keyword">if</span> nargin &lt; 2
+0034     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slapplyfilterband'</span>, 2);
+0035 <span class="keyword">end</span>
+0036 
+0037 imgsiz = size(imgs);
+0038 
+0039 <span class="keyword">if</span> ndims(imgs) == 2
+0040     n = 1;
+0041 <span class="keyword">else</span>
+0042     n = prod(imgsiz(3:end));
+0043 <span class="keyword">end</span>
+0044 
+0045 [filtsiz, bmg] = <a href="slfiltersize.html" class="code" title="function [fs, bmg] = slfiltersize(fs0)">slfiltersize</a>(filtersize);
+0046 fh = filtsiz(1);
+0047 fw = filtsiz(2);
+0048 
+0049 
+0050 opts.roi = <span class="string">'full'</span>;
+0051 opts.fbform = <span class="string">'normal'</span>;
+0052 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0053 
+0054 <span class="keyword">if</span> ischar(opts.roi)
+0055     <span class="keyword">switch</span> opts.roi
+0056         <span class="keyword">case</span> <span class="string">'full'</span>
+0057             h = imgsiz(1); w = imgsiz(2);
+0058         <span class="keyword">case</span> <span class="string">'confined'</span>
+0059             h = imgsiz(1) - bmg(1) - bmg(2);
+0060             w = imgsiz(2) - bmg(3) - bmg(4);
+0061         <span class="keyword">otherwise</span>
+0062             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0063                 <span class="string">'Invalid ROI option: %s'</span>, opts.roi);
+0064     <span class="keyword">end</span>
+0065 <span class="keyword">elseif</span> isnumeric(opts.roi)
+0066     h = opts.roi(2) - opts.roi(1) + 1;
+0067     w = opts.roi(4) - opts.roi(3) + 1;
+0068 <span class="keyword">else</span>
+0069     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'Invalid ROI parameter'</span>);
+0070 <span class="keyword">end</span>
+0071 
+0072 fimgs = [];
+0073 <span class="keyword">if</span> h &lt;= 0 || w &lt;= 0
+0074     <span class="keyword">return</span>;
+0075 <span class="keyword">end</span>
+0076 
+0077 <span class="keyword">if</span> ~ismember(opts.fbform, {<span class="string">'normal'</span>, <span class="string">'vec'</span>})
+0078     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'Invalid fbform: %s'</span>, opts.fbform);
+0079 <span class="keyword">end</span>
+0080 
+0081 <span class="comment">%% Main</span>
+0082 
+0083 <span class="comment">% prepare vectorized filterband</span>
+0084 
+0085 <span class="keyword">switch</span> opts.fbform
+0086     <span class="keyword">case</span> <span class="string">'normal'</span>
+0087         <span class="keyword">if</span> size(filterband, 1) ~= fh || size(filterband, 2) ~= fw
+0088             error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0089                 <span class="string">'The size of filterband is not consistent.'</span>);
+0090         <span class="keyword">end</span>
+0091         vfb = <a href="slvecfilters.html" class="code" title="function vfb = slvecfilters(fb)">slvecfilters</a>(filterband);
+0092     <span class="keyword">case</span> <span class="string">'vec'</span>
+0093         vfb = filterband;
+0094 <span class="keyword">end</span>
+0095 k = size(vfb, 1);
+0096 
+0097 <span class="comment">% do filtering</span>
+0098 
+0099 <span class="keyword">if</span> n == 1
+0100     fimgs = <a href="#_sub1" class="code" title="subfunction fimg = filter_oneimg(img, roi, vfb, filtersize, h, w, k)">filter_oneimg</a>(imgs, opts.roi, vfb, filtersize, h, w, k);
+0101 <span class="keyword">else</span>
+0102     fsiz = [h, w, imgsiz(3:end), k];
+0103     chsiz = [h, w, 1, k]; 
+0104     fimgs = zeros(h, w, n, k);
+0105     <span class="keyword">for</span> i = 1 : n
+0106         curimg = imgs(:,:,i);
+0107         curf = <a href="#_sub1" class="code" title="subfunction fimg = filter_oneimg(img, roi, vfb, filtersize, h, w, k)">filter_oneimg</a>(curimg, opts.roi, vfb, filtersize, h, w, k);        
+0108         fimgs(:,:,i,:) = reshape(curf, chsiz);
+0109     <span class="keyword">end</span>
+0110     fimgs = reshape(fimgs, fsiz);
+0111 <span class="keyword">end</span>
+0112 
+0113 
+0114 
+0115 <span class="comment">%% Core function</span>
+0116 
+0117 <a name="_sub1" href="#_subfunctions" class="code">function fimg = filter_oneimg(img, roi, vfb, filtersize, h, w, k)</a>
+0118     
+0119 NBs = <a href="slpixneighbors.html" class="code" title="function [R, pixinds] = slpixneighbors(img, filtersize, varargin)">slpixneighbors</a>(img, filtersize, <span class="string">'roi'</span>, roi, <span class="string">'output'</span>, <span class="string">'cols'</span>);
+0120 fimg = vfb * NBs;  <span class="comment">% k x npix</span>
+0121 fimg = fimg';     <span class="comment">% npix x k</span>
+0122 fimg = reshape(fimg, [h, w, k]);
+0123 
+0124 
+0125 
+0126             
+0127 
+0128 
+0129 
+0130 
+0131 
+0132 
+0133 
+0134</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

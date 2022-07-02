@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sl2dpca_apply</title>
+  <meta name="keywords" content="sl2dpca_apply">
+  <meta name="description" content="SL2DPCA_APPLY Applies 2D PCA onto a set of matrices to extract features">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace_ex</a> &gt; sl2dpca_apply.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace_ex&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sl2dpca_apply
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SL2DPCA_APPLY Applies 2D PCA onto a set of matrices to extract features</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function Y = sl2dpca_apply(Mm, PL, PR, data, matsiz, n) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SL2DPCA_APPLY Applies 2D PCA onto a set of matrices to extract features
+
+ $ Syntax $
+   - Y = sl2dpca_apply(Mm, PL, PR, data, matsiz, n)
+
+ $ Description $
+   - Mm:           the mean matrix
+   - PL:           the left projection matrix
+   - PR:           the right projection matrix
+   - data:         the matrix samples or the cell array of filenames
+   - matsiz:       the original matrix size
+   - n:            the number of samples
+   - Y:            the extracted 2D features
+
+ $ Description $
+   - Y = sl2dpca_apply(data, Mm, PL, PR) extracts 2D features for 
+     the matrices given in data, in either a 3D array or a set of
+     array filenames. Suppose the original matrix size is d1 x d2,
+     PL be d1 x k1, PR be d2 x k2, then the feature matrix would be
+     of size k1 x k2. Y is a k1 x k2 x n array.
+
+ $ History $
+   - Created by Dahua Lin, on Jul 31st, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>	SLREADARRAY Reads an array from an array file</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function Y = computeY(X, Mm, PL, PR)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function Y = sl2dpca_apply(Mm, PL, PR, data, matsiz, n)</a>
+0002 <span class="comment">%SL2DPCA_APPLY Applies 2D PCA onto a set of matrices to extract features</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - Y = sl2dpca_apply(Mm, PL, PR, data, matsiz, n)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Description $</span>
+0008 <span class="comment">%   - Mm:           the mean matrix</span>
+0009 <span class="comment">%   - PL:           the left projection matrix</span>
+0010 <span class="comment">%   - PR:           the right projection matrix</span>
+0011 <span class="comment">%   - data:         the matrix samples or the cell array of filenames</span>
+0012 <span class="comment">%   - matsiz:       the original matrix size</span>
+0013 <span class="comment">%   - n:            the number of samples</span>
+0014 <span class="comment">%   - Y:            the extracted 2D features</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - Y = sl2dpca_apply(data, Mm, PL, PR) extracts 2D features for</span>
+0018 <span class="comment">%     the matrices given in data, in either a 3D array or a set of</span>
+0019 <span class="comment">%     array filenames. Suppose the original matrix size is d1 x d2,</span>
+0020 <span class="comment">%     PL be d1 x k1, PR be d2 x k2, then the feature matrix would be</span>
+0021 <span class="comment">%     of size k1 x k2. Y is a k1 x k2 x n array.</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% $ History $</span>
+0024 <span class="comment">%   - Created by Dahua Lin, on Jul 31st, 2006</span>
+0025 <span class="comment">%</span>
+0026 
+0027 <span class="comment">%% Parse and verify input arguments</span>
+0028 
+0029 <span class="keyword">if</span> nargin &lt; 6
+0030     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sl2dpca_apply'</span>, 6);
+0031 <span class="keyword">end</span>
+0032 
+0033 matsiz = matsiz(:)';
+0034 <span class="keyword">if</span> length(matsiz) ~= 2
+0035     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0036         <span class="string">'matsiz should be a 2-elem vector'</span>);
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> ~isequal(size(Mm), matsiz)
+0040     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0041         <span class="string">'the sample size does not match the model'</span>);
+0042 <span class="keyword">end</span>
+0043 d1 = matsiz(1);
+0044 d2 = matsiz(2);
+0045 
+0046 <span class="keyword">if</span> size(PL, 1) ~= d1 || size(PR, 1) ~= d2
+0047     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0048         <span class="string">'the size of projection matrices are illegal'</span>);
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="comment">%% Compute</span>
+0052 
+0053 <span class="keyword">if</span> isnumeric(data)
+0054     
+0055     <span class="keyword">if</span> size(data, 3) ~= n
+0056         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0057             <span class="string">'The number of samples is not as specified'</span>);
+0058     <span class="keyword">end</span>
+0059     
+0060     Y = <a href="#_sub1" class="code" title="subfunction Y = computeY(X, Mm, PL, PR)">computeY</a>(data, Mm, PL, PR);
+0061     
+0062 <span class="keyword">elseif</span> iscell(data)
+0063     
+0064     Y = zeros(size(PL, 2), size(PR, 2), n);
+0065     
+0066     nfiles = length(data);
+0067     cf = 0;
+0068     <span class="keyword">for</span> i = 1 : nfiles
+0069         curdata = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(data{i});
+0070         curn = size(curdata, 3);
+0071         Y(:,:,cf+1:cf+curn) = <a href="#_sub1" class="code" title="subfunction Y = computeY(X, Mm, PL, PR)">computeY</a>(curdata, Mm, PL, PR);
+0072         cf = cf + curn;
+0073     <span class="keyword">end</span>
+0074     
+0075 <span class="keyword">else</span>
+0076     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0077         <span class="string">'data should be a numeric array or a cell array of filenames'</span>);    
+0078  
+0079 <span class="keyword">end</span>
+0080 
+0081 
+0082 <span class="comment">%% Core compute function</span>
+0083 
+0084 <a name="_sub1" href="#_subfunctions" class="code">function Y = computeY(X, Mm, PL, PR)</a>
+0085 
+0086 n = size(X, 3);
+0087 Y = zeros(size(PL, 2), size(PR, 2), n);
+0088 PLT = PL';
+0089 
+0090 <span class="keyword">for</span> i = 1 : n
+0091     Y(:,:,i) = PLT * (X(:,:,i) - Mm) * PR;
+0092 <span class="keyword">end</span>
+0093 
+0094 
+0095 
+0096 
+0097 
+0098     
+0099 
+0100 
+0101 
+0102</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpwcalc</title>
+  <meta name="keywords" content="slpwcalc">
+  <meta name="description" content="SLPWCALC Calculates a table pairwisely on two set of scalars">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">core</a> &gt; slpwcalc.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\core&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpwcalc
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPWCALC Calculates a table pairwisely on two set of scalars</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function M = slpwcalc(v1, v2, op) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPWCALC Calculates a table pairwisely on two set of scalars
+
+ $ Syntax $
+   - M = slpwcalc(v1, v2, op)
+
+ $ Arguments $
+   - v1:       The vector of the first set of numbers (length n1)     
+   - v2:       The vector of the second set of numbers (length n2)
+   - op:       The calculation type
+   - M:        The calculated table (n1 x n2)
+
+ $ Description $
+   - M = slpwcalc(v1, v2, op) calculates theon the scalars in v1 and v2
+     pairwisely to make the result table M. op is the string indicating
+     the calculation type to take. Available op include:
+       'add':      addition:       M(i, j) = v1(i) + v2(j)
+       'mul':      multiplication: M(i, j) = v1(i) * v2(j)
+       'absdiff':  absolute diff:  M(i, j) = abs(v1(i) - v2(j))
+       'max':      maximum value:  M(i, j) = max(v1(i), v2(j))
+       'min':      minimum value:  M(i, j) = min(v1(i), v2(j))
+
+ $ Remarks $
+   - It simply wraps the core mex: pwcalc_core
+
+   - both v1 and v2 should be vectors
+ 
+ $ History $
+   - Created by Dahua Lin, on Sep 11st, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function M = slpwcalc(v1, v2, op)</a>
+0002 <span class="comment">%SLPWCALC Calculates a table pairwisely on two set of scalars</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - M = slpwcalc(v1, v2, op)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - v1:       The vector of the first set of numbers (length n1)</span>
+0009 <span class="comment">%   - v2:       The vector of the second set of numbers (length n2)</span>
+0010 <span class="comment">%   - op:       The calculation type</span>
+0011 <span class="comment">%   - M:        The calculated table (n1 x n2)</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%   - M = slpwcalc(v1, v2, op) calculates theon the scalars in v1 and v2</span>
+0015 <span class="comment">%     pairwisely to make the result table M. op is the string indicating</span>
+0016 <span class="comment">%     the calculation type to take. Available op include:</span>
+0017 <span class="comment">%       'add':      addition:       M(i, j) = v1(i) + v2(j)</span>
+0018 <span class="comment">%       'mul':      multiplication: M(i, j) = v1(i) * v2(j)</span>
+0019 <span class="comment">%       'absdiff':  absolute diff:  M(i, j) = abs(v1(i) - v2(j))</span>
+0020 <span class="comment">%       'max':      maximum value:  M(i, j) = max(v1(i), v2(j))</span>
+0021 <span class="comment">%       'min':      minimum value:  M(i, j) = min(v1(i), v2(j))</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% $ Remarks $</span>
+0024 <span class="comment">%   - It simply wraps the core mex: pwcalc_core</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">%   - both v1 and v2 should be vectors</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% $ History $</span>
+0029 <span class="comment">%   - Created by Dahua Lin, on Sep 11st, 2006</span>
+0030 <span class="comment">%</span>
+0031 
+0032 <span class="comment">%% parse and verify input</span>
+0033 
+0034 <span class="keyword">if</span> nargin &lt; 3
+0035     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slpwcalc'</span>, 3);
+0036 <span class="keyword">end</span>
+0037 
+0038 <span class="keyword">if</span> ~isvector(v1) || ~isvector(v2)
+0039     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'both v1 and v2 should be vectors'</span>);
+0040 <span class="keyword">end</span>
+0041 
+0042 <span class="keyword">switch</span> op
+0043     <span class="keyword">case</span> <span class="string">'add'</span>
+0044         opcode = 1;
+0045     <span class="keyword">case</span> <span class="string">'mul'</span>
+0046         opcode = 2;
+0047     <span class="keyword">case</span> <span class="string">'absdiff'</span>
+0048         opcode = 3;
+0049     <span class="keyword">case</span> <span class="string">'max'</span>
+0050         opcode = 4;
+0051     <span class="keyword">case</span> <span class="string">'min'</span>
+0052         opcode = 5;
+0053     <span class="keyword">otherwise</span>
+0054         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'Invalid op type for pwcalc: %s'</span>, op);
+0055 <span class="keyword">end</span>
+0056 
+0057 <span class="comment">%% main</span>
+0058 
+0059 M = pwcalc_core(v1, v2, opcode);
+0060         
+0061 
+0062 
+0063 
+0064 
+0065 
+0066</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

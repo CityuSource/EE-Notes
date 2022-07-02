@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slverifyroc_blks</title>
+  <meta name="keywords" content="slverifyroc_blks">
+  <meta name="description" content="SLVERIFYROC_BLKS Computes the verification ROC for blockwise score matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">perfeval</a> &gt; slverifyroc_blks.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\perfeval&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slverifyroc_blks
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLVERIFYROC_BLKS Computes the verification ROC for blockwise score matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [thrs, fars, frrs] = slverifyroc_blks(scores, blocks, labels1, labels2, op, npts) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLVERIFYROC_BLKS Computes the verification ROC for blockwise score matrix
+
+ $ Syntax $
+   - [thrs, fars, frrs] = slverifyroc_blks(scores, blocks, labels1, labels2, op)
+   - [thrs, fars, frrs] = slverifyroc_blks(scores, blocks, labels1, labels2, op, npts)
+ 
+ $ Arguments $
+   - scores:       the cell array of array filenames of the scores
+   - blocks:       the division blocks
+   - labels1:      the labels of referred samples
+   - labels2:      the labels of query samples
+   - op:           the option stating the attributes of the scores
+   - npts:         the number of threshold points (default = 500)
+   - thrs:         the sampled thresholds
+   - fars:         the false accept rates at the sampled thresholds
+   - frrs:         the false reject rates at the sampled thresholds
+
+ $ Remarks $
+   - This function is an extension of slverifyroc to support blockwise
+     scores in large scale experiments. However, the implementation is
+     fundamentally changed.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 8th, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>	SLREADARRAY Reads an array from an array file</li><li><a href="slhistroc.html" class="code" title="function [thrs, fars, frrs] = slhistroc(hist_a, hist_r, sepvals, op)">slhistroc</a>	SLHISTROC Computes the ROC curve from value histogram</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [maxv, minv] = collect_maxmin(S)</a></li><li><a href="#_sub2" class="code">function H = collect_scorehist(S, l1, l2, thrs)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [thrs, fars, frrs] = slverifyroc_blks(scores, blocks, labels1, labels2, op, npts)</a>
+0002 <span class="comment">%SLVERIFYROC_BLKS Computes the verification ROC for blockwise score matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [thrs, fars, frrs] = slverifyroc_blks(scores, blocks, labels1, labels2, op)</span>
+0006 <span class="comment">%   - [thrs, fars, frrs] = slverifyroc_blks(scores, blocks, labels1, labels2, op, npts)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - scores:       the cell array of array filenames of the scores</span>
+0010 <span class="comment">%   - blocks:       the division blocks</span>
+0011 <span class="comment">%   - labels1:      the labels of referred samples</span>
+0012 <span class="comment">%   - labels2:      the labels of query samples</span>
+0013 <span class="comment">%   - op:           the option stating the attributes of the scores</span>
+0014 <span class="comment">%   - npts:         the number of threshold points (default = 500)</span>
+0015 <span class="comment">%   - thrs:         the sampled thresholds</span>
+0016 <span class="comment">%   - fars:         the false accept rates at the sampled thresholds</span>
+0017 <span class="comment">%   - frrs:         the false reject rates at the sampled thresholds</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% $ Remarks $</span>
+0020 <span class="comment">%   - This function is an extension of slverifyroc to support blockwise</span>
+0021 <span class="comment">%     scores in large scale experiments. However, the implementation is</span>
+0022 <span class="comment">%     fundamentally changed.</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% $ History $</span>
+0025 <span class="comment">%   - Created by Dahua Lin, on Aug 8th, 2006</span>
+0026 <span class="comment">%</span>
+0027 
+0028 <span class="comment">%% parse and verify input arguments</span>
+0029 
+0030 <span class="keyword">if</span> nargin &lt; 5
+0031     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slverifyroc_blks'</span>, 5);
+0032 <span class="keyword">end</span>
+0033 <span class="keyword">if</span> isempty(labels2)
+0034     labels2 = labels1;
+0035 <span class="keyword">end</span>
+0036 <span class="keyword">if</span> ~iscell(scores)
+0037     error(<span class="string">'sltoolbox:invalidargs'</span>, <span class="keyword">...</span>
+0038         <span class="string">'The scores should be a cell array of filenames'</span>);
+0039 <span class="keyword">end</span>
+0040 <span class="keyword">if</span> nargin &lt; 6 || isempty(npts)
+0041     npts = 500;
+0042 <span class="keyword">end</span>
+0043 nblks = numel(scores);
+0044 <span class="keyword">if</span> ~isequal(size(scores), size(blocks))
+0045     error(<span class="string">'The sizes of scores and blocks are inconsistent'</span>);
+0046 <span class="keyword">end</span>
+0047 
+0048 
+0049 <span class="comment">%% Collect Histogram</span>
+0050 
+0051 <span class="comment">% collect min, max value</span>
+0052 maxv = -inf;
+0053 minv = inf;
+0054 <span class="keyword">for</span> k = 1 : nblks
+0055     [curmaxv, curminv] = <a href="#_sub1" class="code" title="subfunction [maxv, minv] = collect_maxmin(S)">collect_maxmin</a>(<a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(scores{k}));
+0056     <span class="keyword">if</span> curmaxv &gt; maxv
+0057         maxv = curmaxv;
+0058     <span class="keyword">end</span>
+0059     <span class="keyword">if</span> curminv &lt; minv
+0060         minv = curminv;
+0061     <span class="keyword">end</span>
+0062 <span class="keyword">end</span>
+0063 
+0064 <span class="keyword">if</span> minv &gt;= maxv
+0065     error(<span class="string">'sltoolbox:valuerror'</span>, <span class="keyword">...</span>
+0066         <span class="string">'The minv should be less than maxv'</span>);
+0067 <span class="keyword">end</span>
+0068 
+0069 <span class="comment">% determine thresholds</span>
+0070 thrs = linspace(minv, maxv, npts)';
+0071 
+0072 <span class="comment">% collect histograms</span>
+0073 
+0074 H = zeros(npts, 2);
+0075 <span class="keyword">for</span> k = 1 : nblks
+0076     cb = blocks{k};
+0077     l1 = labels1(cb(1,1):cb(2,1));
+0078     l2 = labels2(cb(1,2):cb(2,2));
+0079     curscores = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(scores{k});    
+0080     curH = <a href="#_sub2" class="code" title="subfunction H = collect_scorehist(S, l1, l2, thrs)">collect_scorehist</a>(curscores, l1, l2, thrs);
+0081     
+0082     H = H + curH;
+0083 <span class="keyword">end</span>
+0084 
+0085 
+0086 <span class="comment">%% Compute ROC</span>
+0087 
+0088 hist_a = H(:, 1);
+0089 hist_r = H(:, 2);
+0090 
+0091 [thrs, fars, frrs] = <a href="slhistroc.html" class="code" title="function [thrs, fars, frrs] = slhistroc(hist_a, hist_r, sepvals, op)">slhistroc</a>(hist_a, hist_r, thrs, op);
+0092 
+0093 
+0094 <span class="comment">%% The internal functions</span>
+0095 
+0096 <a name="_sub1" href="#_subfunctions" class="code">function [maxv, minv] = collect_maxmin(S)</a>
+0097 
+0098 S = S(:);
+0099 maxv = max(S);
+0100 minv = min(S);
+0101 
+0102 
+0103 <a name="_sub2" href="#_subfunctions" class="code">function H = collect_scorehist(S, l1, l2, thrs)</a>
+0104 <span class="comment">% H is an nbins x 2 matrix stored as [hist_a, hist_r]</span>
+0105 
+0106 m = length(l1);
+0107 n = length(l2);
+0108 <span class="keyword">if</span> ~isequal(size(S), [m, n])
+0109     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0110         <span class="string">'The sizes of labels and score matrix are mismatch'</span>);
+0111 <span class="keyword">end</span>
+0112 
+0113 l1 = l1(:);
+0114 l2 = l2(:)';
+0115 L1 = l1(:, ones(1, n));
+0116 L2 = l2(ones(m, 1), :);
+0117 signals = (L1 == L2);
+0118 clear L1 L2;
+0119 
+0120 scores_a = S(signals);
+0121 scores_r = S(~signals);
+0122 
+0123 <span class="keyword">if</span> ~isempty(scores_a)
+0124     hist_a = histc(scores_a, thrs);
+0125 <span class="keyword">else</span>
+0126     hist_a = zeros(length(thrs), 1);
+0127 <span class="keyword">end</span>
+0128 
+0129 <span class="keyword">if</span> ~isempty(scores_r)
+0130     hist_r = histc(scores_r, thrs);
+0131 <span class="keyword">else</span>
+0132     hist_r = zeros(length(thrs), 1);
+0133 <span class="keyword">end</span>
+0134 
+0135 H = [hist_a, hist_r];
+0136 
+0137</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slproglearn</title>
+  <meta name="keywords" content="slproglearn">
+  <meta name="description" content="SLPROGLEARN Performs Progressive Learning from sample source">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">learn</a> &gt; slproglearn.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\learn&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slproglearn
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPROGLEARN Performs Progressive Learning from sample source</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [models, info] = slproglearn(source, getter, learnfunctor, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPROGLEARN Performs Progressive Learning from sample source
+
+ $ Syntax $
+   - models = slproglearn(source, getter, learnfunctor, ...)
+   - [models, info] = slproglearn(source, getter, learnfunctor, ...)   
+
+ $ Arguments $
+   - source:       the source from which the data are fetched
+   - getter:       the functor to fetch data from source, in the form:
+                   data= f(source, ...)
+   - learnfunctor: the functor to construct/update models from data,
+                   it is given in the following form:
+                   models = f(models, data, ...)
+                   If the learning is recorded, it is like:
+                   [models, record] = f(models, data, ...)
+                   On initial construction, the input models is [].
+   - models:       The constructed models
+   
+ $ Description $
+   - models = slproglearn(source, getter, learnfunctor, ...) 
+     construct models based on source, from which the samples are
+     fetched. It is assumed that the source can continuously offer
+     infinite number of samples. The construction is controlled by 
+     the following properties.
+     \*
+     \t   Table. Properties of Progressive Learning
+     \h       name        &amp;            description             \\
+          'isrecorded'    &amp;  Whether each iteration is recorded 
+                             (default = false)                 \\
+          'gtuner'        &amp;  The functor to tune the getter, in the form:
+                             getter = f(getter, models, ...)   
+                             (default = {})                      \\
+          'cmpfunctor'    &amp;  The functor to compare two set of models
+                             and judge whether discrepancies meet the
+                             criteria of convergence.
+                             It is given in the following form:
+                             isconverged = f(models1, models2, ...)
+                             This properties must be specified.     \\
+          'iter'          &amp;  The iteration control properties for
+                             sliterproc, default = {}.
+          'verbose'       &amp;  whether to show progress information 
+                             (default = true)                       \\
+          'initmodels'    &amp;  The initial models, (default = [])
+     \*
+
+   - [models, info] = slproglearn(source, getter, learnfunctor, ...) also
+     returns the information of iterative process.
+
+ $ History $
+   - Created by Dahua Lin, on Aug 31, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sliterproc.html" class="code" title="function [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, varargin)">sliterproc</a>	SLITERPROC Runs a general iterative process</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>	SLEVALFUNCTOR Evaluates a functor</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li><li><a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>	SLSHAREDISP Displays message using a shared configuration</li><li><a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>	SLSHAREDISP_ATTACH Attachs to global display options</li><li><a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>	SLSHAREDISP_DETACH Detachs current function from global display</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function varargout = proglearn_iter(objects, learnfunctor, opts)</a></li><li><a href="#_sub2" class="code">function isconverged = proglearn_cmp(objects_prev, objects, opts)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [models, info] = slproglearn(source, getter, learnfunctor, varargin)</a>
+0002 <span class="comment">%SLPROGLEARN Performs Progressive Learning from sample source</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - models = slproglearn(source, getter, learnfunctor, ...)</span>
+0006 <span class="comment">%   - [models, info] = slproglearn(source, getter, learnfunctor, ...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - source:       the source from which the data are fetched</span>
+0010 <span class="comment">%   - getter:       the functor to fetch data from source, in the form:</span>
+0011 <span class="comment">%                   data= f(source, ...)</span>
+0012 <span class="comment">%   - learnfunctor: the functor to construct/update models from data,</span>
+0013 <span class="comment">%                   it is given in the following form:</span>
+0014 <span class="comment">%                   models = f(models, data, ...)</span>
+0015 <span class="comment">%                   If the learning is recorded, it is like:</span>
+0016 <span class="comment">%                   [models, record] = f(models, data, ...)</span>
+0017 <span class="comment">%                   On initial construction, the input models is [].</span>
+0018 <span class="comment">%   - models:       The constructed models</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $ Description $</span>
+0021 <span class="comment">%   - models = slproglearn(source, getter, learnfunctor, ...)</span>
+0022 <span class="comment">%     construct models based on source, from which the samples are</span>
+0023 <span class="comment">%     fetched. It is assumed that the source can continuously offer</span>
+0024 <span class="comment">%     infinite number of samples. The construction is controlled by</span>
+0025 <span class="comment">%     the following properties.</span>
+0026 <span class="comment">%     \*</span>
+0027 <span class="comment">%     \t   Table. Properties of Progressive Learning</span>
+0028 <span class="comment">%     \h       name        &amp;            description             \\</span>
+0029 <span class="comment">%          'isrecorded'    &amp;  Whether each iteration is recorded</span>
+0030 <span class="comment">%                             (default = false)                 \\</span>
+0031 <span class="comment">%          'gtuner'        &amp;  The functor to tune the getter, in the form:</span>
+0032 <span class="comment">%                             getter = f(getter, models, ...)</span>
+0033 <span class="comment">%                             (default = {})                      \\</span>
+0034 <span class="comment">%          'cmpfunctor'    &amp;  The functor to compare two set of models</span>
+0035 <span class="comment">%                             and judge whether discrepancies meet the</span>
+0036 <span class="comment">%                             criteria of convergence.</span>
+0037 <span class="comment">%                             It is given in the following form:</span>
+0038 <span class="comment">%                             isconverged = f(models1, models2, ...)</span>
+0039 <span class="comment">%                             This properties must be specified.     \\</span>
+0040 <span class="comment">%          'iter'          &amp;  The iteration control properties for</span>
+0041 <span class="comment">%                             sliterproc, default = {}.</span>
+0042 <span class="comment">%          'verbose'       &amp;  whether to show progress information</span>
+0043 <span class="comment">%                             (default = true)                       \\</span>
+0044 <span class="comment">%          'initmodels'    &amp;  The initial models, (default = [])</span>
+0045 <span class="comment">%     \*</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">%   - [models, info] = slproglearn(source, getter, learnfunctor, ...) also</span>
+0048 <span class="comment">%     returns the information of iterative process.</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% $ History $</span>
+0051 <span class="comment">%   - Created by Dahua Lin, on Aug 31, 2006</span>
+0052 <span class="comment">%</span>
+0053 
+0054 <span class="comment">%% Parse and verify input arguments</span>
+0055 
+0056 <span class="keyword">if</span> nargin &lt; 3
+0057     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slproglearn'</span>, 3);
+0058 <span class="keyword">end</span>
+0059 
+0060 opts.isrecorded = false;
+0061 opts.gtuner = [];
+0062 opts.cmpfunctor = [];
+0063 opts.iter = {};
+0064 opts.verbose = true;
+0065 opts.initmodels = [];
+0066 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0067 
+0068 <span class="keyword">if</span> isempty(opts.cmpfunctor)
+0069     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0070         <span class="string">'You should specify a models comparison functor'</span>);
+0071 <span class="keyword">end</span>
+0072 
+0073 
+0074 <span class="comment">%% Main Skeleton</span>
+0075 
+0076 <a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>(<span class="string">'slproglearn'</span>, <span class="string">'show'</span>, opts.verbose);
+0077 
+0078 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(opts, <span class="string">'Progressive Learning from source'</span>);
+0079 
+0080 objects = {source, opts.initmodels, getter};
+0081 iterfunctor = {@<a href="#_sub1" class="code" title="subfunction varargout = proglearn_iter(objects, learnfunctor, opts)">proglearn_iter</a>, learnfunctor, opts};
+0082 cmpfunctor = {@<a href="#_sub2" class="code" title="subfunction isconverged = proglearn_cmp(objects_prev, objects, opts)">proglearn_cmp</a>, opts};
+0083 <span class="keyword">if</span> nargout &lt; 2
+0084     objects = <span class="keyword">...</span>
+0085         <a href="sliterproc.html" class="code" title="function [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, varargin)">sliterproc</a>(objects, iterfunctor, cmpfunctor, opts.isrecorded, opts.iter{:});
+0086 <span class="keyword">else</span>
+0087     [objects, info] = <span class="keyword">...</span>
+0088         <a href="sliterproc.html" class="code" title="function [objects, info] = sliterproc(objects, iterfunctor, cmpfunctor, hasrecord, varargin)">sliterproc</a>(objects, iterfunctor, cmpfunctor, opts.isrecorded, opts.iter{:});
+0089 <span class="keyword">end</span>
+0090 
+0091 models = objects{2};
+0092 
+0093 <a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>();
+0094 
+0095 
+0096 
+0097 <span class="comment">%% Core Iteration function</span>
+0098 
+0099 <a name="_sub1" href="#_subfunctions" class="code">function varargout = proglearn_iter(objects, learnfunctor, opts)</a>
+0100 <span class="comment">% objects = {source, models, getter}</span>
+0101 
+0102 <span class="comment">% take input</span>
+0103 source = objects{1};
+0104 models = objects{2};
+0105 getter = objects{3};
+0106 
+0107 <span class="comment">% fetch data</span>
+0108 data = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(getter, source);
+0109 
+0110 <span class="comment">% learn models</span>
+0111 <span class="keyword">if</span> ~opts.isrecorded
+0112     models = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(learnfunctor, models, data);
+0113 <span class="keyword">else</span>
+0114     [models, rec] = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(learnfunctor, models, data);
+0115 <span class="keyword">end</span>
+0116 
+0117 <span class="comment">% tune getter</span>
+0118 <span class="keyword">if</span> ~isempty(opts.gtuner)
+0119     getter = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(opts.gtuner, getter, models);
+0120 <span class="keyword">end</span>
+0121 
+0122 <span class="comment">% make output</span>
+0123 objects = {source, models, getter};
+0124 <span class="keyword">if</span> ~opts.isrecorded
+0125     varargout = {objects};
+0126 <span class="keyword">else</span>
+0127     varargout = {objects, rec};
+0128 <span class="keyword">end</span>
+0129 
+0130 
+0131 <a name="_sub2" href="#_subfunctions" class="code">function isconverged = proglearn_cmp(objects_prev, objects, opts)</a>
+0132 
+0133 models_prev = objects_prev{2};
+0134 models = objects{2};
+0135 
+0136 isconverged = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(opts.cmpfunctor, models_prev, models);
+0137 
+0138 
+0139 
+0140 
+0141 
+0142</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

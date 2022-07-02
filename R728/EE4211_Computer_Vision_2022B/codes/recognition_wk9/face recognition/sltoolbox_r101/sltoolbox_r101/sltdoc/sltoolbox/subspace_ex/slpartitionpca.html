@@ -1,0 +1,789 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpartitionpca</title>
+  <meta name="keywords" content="slpartitionpca">
+  <meta name="description" content="SLPARTITIONPCA Performs Partition-based PCA and saves the models">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace_ex</a> &gt; slpartitionpca.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace_ex&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpartitionpca
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPARTITIONPCA Performs Partition-based PCA and saves the models</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function slpartitionpca(data, arrsiz, n, ps, filepath, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPARTITIONPCA Performs Partition-based PCA and saves the models
+
+ $ Syntax $
+   - slpartitionpca(data, arrsiz, n, ps, filepath, ...)
+   
+ $ Arguments $
+   - data:         the super-array of the unit arrays, or the set of
+                   filenames storing the arrays.
+   - arrsiz:       the size of each unit array
+   - n:            the number of samples
+   - ps:           the partition structure for each unit
+   - filepath:     the destination filepath (without extension)
+   
+ $ Description $
+   - slpartitionpca(data, arrsiz, n, ps, filepath, ...) applies PCA to 
+     large arrays. To make the computation tractable, it divides the 
+     whole matrix into several partitions according to the structure
+     specified in ps. The trained models be stored in filepath and
+     related files. 
+     It will creates a core file named filepath.mat to give basic
+     information of the PCA model, which contains the following variables:
+       - 'parstruct':      the parition structure
+       - 'blocks':         the cell array of specification of blocks
+                           if the partition structure divides the whole
+                           array unit into m1 x m2 x ... blocks, then
+                           blocks would be a m1 x m2 x ... cell array,
+                           with each cell being a 2 x d matrix in the form
+                           of [s1 s2, ... sd; e1, e2, ..., ed]
+                           then the actual block extracted from an array
+                           unit A would be A(s1:e1, s2:e2, ..., sd:ed)
+       - 'projfiles'       The cell array of projection array files 
+                           corresponding to the blocks.
+       - 'combprojfile'    The filename of the combined projection. If
+                           the combined model is not learned, this
+                           filename is empty.
+       - 'meanarr'         The mean array
+       - 'energy'          The structure representing the energy info
+                           - 'total': the original total energy;
+                           - 'intpreserved': the total preserved energy of
+                             all partitions
+                           - 'combpreserved': the preserved energy of
+                             combination model
+                           - 'par':  the original partition enegies:
+                              an m1 x m2 x ... array.
+                           - 'parpreserved': the preserved partition 
+                              energy. an m1 x m2 x ... array.
+       - 'diminfo'         The information of the space dimension
+                           - 'size':   the size of the whole array unit
+                           - 'oridim': the original total dimension
+                           - 'dims':   the original dimensions of the 
+                             partitions: an m1 x m2 x ... array.
+                           - 'subdims': the subspace dimension of the
+                             partitions: an m1 x m2 x ... array
+                           - 'intdim': the dimension of the intermediate
+                             stacked vector space.
+                           - 'feadim': the dimension of the combined
+                             subspace. (If the combined model is not
+                             learned, subdim = intdim)
+       - 'evalset'         The eigenvalues preserved for all partitions
+       - 'combevals'       The eigenvalues of the combination model
+
+     The projection matrices will be stored in a set of array files 
+     named as filepath.proj.01, ...., the the combined model is learned
+     its projection matrix is given by filepath.proj.comb.
+     In addition, you can specify following properties to control the
+     learning of partition-based PCA.
+     \*
+     \t    Properties of Partition-based PCA Learning
+     \h     name        &amp;      description
+           'combmodel'  &amp;  Whether to learn a combined PCA model, 
+                           default = true;
+           'er0'        &amp;  The level-0 of energy preservation ratio
+                           (default = 0.99)
+           'er1'        &amp;  The level-1 of energy preservation ratio 
+                           (default = 0.95, only takes effect in the 
+                            training of combined model)
+           'mixev'      &amp;  Whether to mix up the eigenvalues of all PCA
+                           models when selecting the principal components
+                           (default = 0)
+           'meanarr'    &amp;  The precomputed mean array (default = [])
+           'weights'    &amp;  The weights of individual samples 
+                           (default = [])
+           'verbose'    &amp;  Whether to show intermediate step information
+                           (default = true)
+     \*
+   
+
+ $ Remarks $
+   - The algorithm implements a divide and conquer strategy, it first
+     divides the whole array unit into smaller partitions, then train PCA
+     for each partition. The principal components for all the partitions 
+     are stacked together and then a combined PCA model is trained based 
+     on the stacked space. The combined model is learned when 
+   - On the selection of principal components for individual partitions,
+     there are two strategies. The simpler one is the separate strategy,
+     that is to select principal components merely based on the
+     eigenspectrum of the parition PCA model itself and select the 
+     components corresponding to the largest eigenvalues so that the 
+     energy of this partition is preserved up to the ratio of er0.
+     Another strategy is mix-up strategy, which pools all eigenvalues
+     from all paritions together, and select the eigenvectors 
+     corresponding to the largest eigenvalues according to the overall
+     ranking. It can be proved that the mix-up strategy is more efficient.
+     The property mixev is to balance the two strategies, its value
+     ranges in [0, 1]. When mixev is 0, then purely separate strategy 
+     would be used; when mixev is 1, then purely mix-up strategy would
+     be used. When 0 &lt; mixev &lt; 1, we first use separate strategy to 
+     guarantee that each partition preserve up to (1 - mixev) of energy, 
+     then the other mixev of total energy is preserved by pooling all the
+     rest components and select according to overall ranking.
+
+ $ History $
+   - Created by Dahua Lin, on Jul 29th, 2006
+   - Modified by Dahua Lin, on Sep 10th, 2006
+       - replace sladd by sladdvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>	DISP displays the dataset fields</li><li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>	SLREADARRAY Reads an array from an array file</li><li><a href="../../sltoolbox/fileio/slwritearray.html" class="code" title="function slwritearray(A, filename)">slwritearray</a>	SLWRITEARRAY Writes an array to an array file</li><li><a href="../../sltoolbox/stat/slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>	SLCOV Compute the covariance matrix</li><li><a href="slarrmean.html" class="code" title="function arrMean = slarrmean(data, arrsiz, n, varargin)">slarrmean</a>	SLARRMEAN Computes the mean of a set of arrays</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slallsubinds.html" class="code" title="function S = slallsubinds(arrsiz)">slallsubinds</a>	SLALLSUBINDS Generate all sub-indices for all elements of the array</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li><li><a href="../../sltoolbox/utils/slparblocks.html" class="code" title="function blocks = slparblocks(ps)">slparblocks</a>	SLPARBLOCKS Gets the blocks from partition structure</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li><li><a href="../../sltoolbox/utils/slrange2indcells.html" class="code" title="function C = slrange2indcells(range)">slrange2indcells</a>	SLRANGE2INDCELLS Converts a range array to indices cell array</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function C = compute_localcov(data, meanarr, rangecell, d, n, w)</a></li><li><a href="#_sub2" class="code">function V = generate_pvecs(data, rangecell, oridim, subdim, n, meanarr, projmat)</a></li><li><a href="#_sub3" class="code">function check_valuerange(var, name, minval, maxval)</a></li><li><a href="#_sub4" class="code">function str = generate_indexstring(nums, inds)</a></li><li><a href="#_sub5" class="code">function rk = decide_rank(evals, er)</a></li><li><a href="#_sub6" class="code">function showinfo(message, opts)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function slpartitionpca(data, arrsiz, n, ps, filepath, varargin)</a>
+0002 <span class="comment">%SLPARTITIONPCA Performs Partition-based PCA and saves the models</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - slpartitionpca(data, arrsiz, n, ps, filepath, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - data:         the super-array of the unit arrays, or the set of</span>
+0009 <span class="comment">%                   filenames storing the arrays.</span>
+0010 <span class="comment">%   - arrsiz:       the size of each unit array</span>
+0011 <span class="comment">%   - n:            the number of samples</span>
+0012 <span class="comment">%   - ps:           the partition structure for each unit</span>
+0013 <span class="comment">%   - filepath:     the destination filepath (without extension)</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $ Description $</span>
+0016 <span class="comment">%   - slpartitionpca(data, arrsiz, n, ps, filepath, ...) applies PCA to</span>
+0017 <span class="comment">%     large arrays. To make the computation tractable, it divides the</span>
+0018 <span class="comment">%     whole matrix into several partitions according to the structure</span>
+0019 <span class="comment">%     specified in ps. The trained models be stored in filepath and</span>
+0020 <span class="comment">%     related files.</span>
+0021 <span class="comment">%     It will creates a core file named filepath.mat to give basic</span>
+0022 <span class="comment">%     information of the PCA model, which contains the following variables:</span>
+0023 <span class="comment">%       - 'parstruct':      the parition structure</span>
+0024 <span class="comment">%       - 'blocks':         the cell array of specification of blocks</span>
+0025 <span class="comment">%                           if the partition structure divides the whole</span>
+0026 <span class="comment">%                           array unit into m1 x m2 x ... blocks, then</span>
+0027 <span class="comment">%                           blocks would be a m1 x m2 x ... cell array,</span>
+0028 <span class="comment">%                           with each cell being a 2 x d matrix in the form</span>
+0029 <span class="comment">%                           of [s1 s2, ... sd; e1, e2, ..., ed]</span>
+0030 <span class="comment">%                           then the actual block extracted from an array</span>
+0031 <span class="comment">%                           unit A would be A(s1:e1, s2:e2, ..., sd:ed)</span>
+0032 <span class="comment">%       - 'projfiles'       The cell array of projection array files</span>
+0033 <span class="comment">%                           corresponding to the blocks.</span>
+0034 <span class="comment">%       - 'combprojfile'    The filename of the combined projection. If</span>
+0035 <span class="comment">%                           the combined model is not learned, this</span>
+0036 <span class="comment">%                           filename is empty.</span>
+0037 <span class="comment">%       - 'meanarr'         The mean array</span>
+0038 <span class="comment">%       - 'energy'          The structure representing the energy info</span>
+0039 <span class="comment">%                           - 'total': the original total energy;</span>
+0040 <span class="comment">%                           - 'intpreserved': the total preserved energy of</span>
+0041 <span class="comment">%                             all partitions</span>
+0042 <span class="comment">%                           - 'combpreserved': the preserved energy of</span>
+0043 <span class="comment">%                             combination model</span>
+0044 <span class="comment">%                           - 'par':  the original partition enegies:</span>
+0045 <span class="comment">%                              an m1 x m2 x ... array.</span>
+0046 <span class="comment">%                           - 'parpreserved': the preserved partition</span>
+0047 <span class="comment">%                              energy. an m1 x m2 x ... array.</span>
+0048 <span class="comment">%       - 'diminfo'         The information of the space dimension</span>
+0049 <span class="comment">%                           - 'size':   the size of the whole array unit</span>
+0050 <span class="comment">%                           - 'oridim': the original total dimension</span>
+0051 <span class="comment">%                           - 'dims':   the original dimensions of the</span>
+0052 <span class="comment">%                             partitions: an m1 x m2 x ... array.</span>
+0053 <span class="comment">%                           - 'subdims': the subspace dimension of the</span>
+0054 <span class="comment">%                             partitions: an m1 x m2 x ... array</span>
+0055 <span class="comment">%                           - 'intdim': the dimension of the intermediate</span>
+0056 <span class="comment">%                             stacked vector space.</span>
+0057 <span class="comment">%                           - 'feadim': the dimension of the combined</span>
+0058 <span class="comment">%                             subspace. (If the combined model is not</span>
+0059 <span class="comment">%                             learned, subdim = intdim)</span>
+0060 <span class="comment">%       - 'evalset'         The eigenvalues preserved for all partitions</span>
+0061 <span class="comment">%       - 'combevals'       The eigenvalues of the combination model</span>
+0062 <span class="comment">%</span>
+0063 <span class="comment">%     The projection matrices will be stored in a set of array files</span>
+0064 <span class="comment">%     named as filepath.proj.01, ...., the the combined model is learned</span>
+0065 <span class="comment">%     its projection matrix is given by filepath.proj.comb.</span>
+0066 <span class="comment">%     In addition, you can specify following properties to control the</span>
+0067 <span class="comment">%     learning of partition-based PCA.</span>
+0068 <span class="comment">%     \*</span>
+0069 <span class="comment">%     \t    Properties of Partition-based PCA Learning</span>
+0070 <span class="comment">%     \h     name        &amp;      description</span>
+0071 <span class="comment">%           'combmodel'  &amp;  Whether to learn a combined PCA model,</span>
+0072 <span class="comment">%                           default = true;</span>
+0073 <span class="comment">%           'er0'        &amp;  The level-0 of energy preservation ratio</span>
+0074 <span class="comment">%                           (default = 0.99)</span>
+0075 <span class="comment">%           'er1'        &amp;  The level-1 of energy preservation ratio</span>
+0076 <span class="comment">%                           (default = 0.95, only takes effect in the</span>
+0077 <span class="comment">%                            training of combined model)</span>
+0078 <span class="comment">%           'mixev'      &amp;  Whether to mix up the eigenvalues of all PCA</span>
+0079 <span class="comment">%                           models when selecting the principal components</span>
+0080 <span class="comment">%                           (default = 0)</span>
+0081 <span class="comment">%           'meanarr'    &amp;  The precomputed mean array (default = [])</span>
+0082 <span class="comment">%           'weights'    &amp;  The weights of individual samples</span>
+0083 <span class="comment">%                           (default = [])</span>
+0084 <span class="comment">%           'verbose'    &amp;  Whether to show intermediate step information</span>
+0085 <span class="comment">%                           (default = true)</span>
+0086 <span class="comment">%     \*</span>
+0087 <span class="comment">%</span>
+0088 <span class="comment">%</span>
+0089 <span class="comment">% $ Remarks $</span>
+0090 <span class="comment">%   - The algorithm implements a divide and conquer strategy, it first</span>
+0091 <span class="comment">%     divides the whole array unit into smaller partitions, then train PCA</span>
+0092 <span class="comment">%     for each partition. The principal components for all the partitions</span>
+0093 <span class="comment">%     are stacked together and then a combined PCA model is trained based</span>
+0094 <span class="comment">%     on the stacked space. The combined model is learned when</span>
+0095 <span class="comment">%   - On the selection of principal components for individual partitions,</span>
+0096 <span class="comment">%     there are two strategies. The simpler one is the separate strategy,</span>
+0097 <span class="comment">%     that is to select principal components merely based on the</span>
+0098 <span class="comment">%     eigenspectrum of the parition PCA model itself and select the</span>
+0099 <span class="comment">%     components corresponding to the largest eigenvalues so that the</span>
+0100 <span class="comment">%     energy of this partition is preserved up to the ratio of er0.</span>
+0101 <span class="comment">%     Another strategy is mix-up strategy, which pools all eigenvalues</span>
+0102 <span class="comment">%     from all paritions together, and select the eigenvectors</span>
+0103 <span class="comment">%     corresponding to the largest eigenvalues according to the overall</span>
+0104 <span class="comment">%     ranking. It can be proved that the mix-up strategy is more efficient.</span>
+0105 <span class="comment">%     The property mixev is to balance the two strategies, its value</span>
+0106 <span class="comment">%     ranges in [0, 1]. When mixev is 0, then purely separate strategy</span>
+0107 <span class="comment">%     would be used; when mixev is 1, then purely mix-up strategy would</span>
+0108 <span class="comment">%     be used. When 0 &lt; mixev &lt; 1, we first use separate strategy to</span>
+0109 <span class="comment">%     guarantee that each partition preserve up to (1 - mixev) of energy,</span>
+0110 <span class="comment">%     then the other mixev of total energy is preserved by pooling all the</span>
+0111 <span class="comment">%     rest components and select according to overall ranking.</span>
+0112 <span class="comment">%</span>
+0113 <span class="comment">% $ History $</span>
+0114 <span class="comment">%   - Created by Dahua Lin, on Jul 29th, 2006</span>
+0115 <span class="comment">%   - Modified by Dahua Lin, on Sep 10th, 2006</span>
+0116 <span class="comment">%       - replace sladd by sladdvec to increase efficiency</span>
+0117 <span class="comment">%</span>
+0118 
+0119 <span class="comment">%% parse and verify input arguments</span>
+0120 
+0121 <span class="keyword">if</span> nargin &lt; 5
+0122     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slpartitionpca'</span>, 5);
+0123 <span class="keyword">end</span>
+0124 arrsiz = arrsiz(:)';
+0125 <span class="keyword">if</span> ~ischar(filepath)
+0126     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0127         <span class="string">'The filepath should be a char string'</span>);
+0128 <span class="keyword">end</span>
+0129 arrdim = length(arrsiz);
+0130 
+0131 <span class="keyword">if</span> length(ps) ~= arrdim
+0132     error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0133         <span class="string">'The dimension of partition structure is not consisitent with the array unit'</span>);
+0134 <span class="keyword">end</span>
+0135 
+0136 opts.combmodel = true;
+0137 opts.er0 = 0.99;
+0138 opts.er1 = 0.95;
+0139 opts.mixev = 0;
+0140 opts.meanarr = [];
+0141 opts.weights = [];
+0142 opts.verbose = true;
+0143 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0144 
+0145 <a href="#_sub3" class="code" title="subfunction check_valuerange(var, name, minval, maxval)">check_valuerange</a>(opts.er0, <span class="string">'er0'</span>, 0, 1);
+0146 <a href="#_sub3" class="code" title="subfunction check_valuerange(var, name, minval, maxval)">check_valuerange</a>(opts.er1, <span class="string">'er1'</span>, 0, opts.er0);
+0147 <a href="#_sub3" class="code" title="subfunction check_valuerange(var, name, minval, maxval)">check_valuerange</a>(opts.mixev, <span class="string">'mixev'</span>, 0, 1);
+0148 
+0149 meanarr = opts.meanarr;
+0150 <span class="keyword">if</span> ~isempty(meanarr)
+0151     <span class="keyword">if</span> ~isequal(size(meanarr), arrmatdim)
+0152         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0153             <span class="string">'The mean array offered is not consistent with the array unit size'</span>);
+0154     <span class="keyword">end</span>
+0155 <span class="keyword">end</span>
+0156 
+0157 <span class="keyword">if</span> ~isempty(opts.weights)
+0158     opts.weights = opts.weights(:);
+0159     <span class="keyword">if</span> length(opts.weights) ~= n
+0160         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0161             <span class="string">'The length of given weights is inconsistent with the number of samples'</span>);
+0162     <span class="keyword">end</span>
+0163     hasweights = true;
+0164 <span class="keyword">else</span>
+0165     hasweights = false;
+0166 <span class="keyword">end</span>
+0167     
+0168 
+0169 
+0170 <span class="comment">%% Initialization on Partitions and Filenames</span>
+0171 
+0172 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Initializing Blocks ...'</span>, opts);
+0173 
+0174 <span class="comment">% partition structure</span>
+0175 parstruct = ps;
+0176 
+0177 blocks =  <a href="../../sltoolbox/utils/slparblocks.html" class="code" title="function blocks = slparblocks(ps)">slparblocks</a>(parstruct);
+0178 blkinds = <a href="../../sltoolbox/utils/slallsubinds.html" class="code" title="function S = slallsubinds(arrsiz)">slallsubinds</a>(size(blocks));
+0179 NBlks = numel(blocks);
+0180 
+0181 projfiles = cell(size(blocks));
+0182 <span class="keyword">for</span> i = 1 : NBlks
+0183     projfiles{i} = [filepath, <span class="string">'.proj.'</span>, <a href="#_sub4" class="code" title="subfunction str = generate_indexstring(nums, inds)">generate_indexstring</a>(size(blocks), blkinds(:, i)')];
+0184 <span class="keyword">end</span>
+0185 
+0186 <span class="keyword">if</span> opts.combmodel
+0187     combprojfile = [filepath, <span class="string">'.proj.comb'</span>];
+0188 <span class="keyword">else</span>
+0189     combprojfile = [];
+0190 <span class="keyword">end</span>
+0191 
+0192 clear curinds currange;
+0193 
+0194 
+0195 <span class="comment">%% Prepare Info Structures</span>
+0196 
+0197 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Preparing Info Structure ...'</span>, opts);
+0198 
+0199 energy.total = 0;
+0200 energy.intpreserved = 0;
+0201 energy.combpreserved = 0;
+0202 energy.par = zeros(size(blocks));
+0203 energy.parpreserved = zeros(size(blocks));
+0204 
+0205 diminfo.size = arrsiz;
+0206 diminfo.oridim = prod(arrsiz);
+0207 diminfo.dims = zeros(size(blocks));
+0208 diminfo.subdims = zeros(size(blocks));
+0209 diminfo.intdim = 0;
+0210 diminfo.feadim = 0;
+0211 
+0212 
+0213 
+0214 <span class="comment">%% Compute the mean array</span>
+0215 
+0216 <span class="keyword">if</span> isempty(meanarr)
+0217     
+0218     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Computing Mean Array ...'</span>, opts);
+0219     
+0220     <span class="keyword">if</span> ~hasweights
+0221         meanarr = <a href="slarrmean.html" class="code" title="function arrMean = slarrmean(data, arrsiz, n, varargin)">slarrmean</a>(data, arrsiz, n);
+0222     <span class="keyword">else</span>
+0223         meanarr = <a href="slarrmean.html" class="code" title="function arrMean = slarrmean(data, arrsiz, n, varargin)">slarrmean</a>(data, arrsiz, n, <span class="string">'weights'</span>, opts.weights);
+0224     <span class="keyword">end</span>
+0225 <span class="keyword">end</span>
+0226 
+0227 
+0228 <span class="comment">%% Learn the individual PCA models</span>
+0229 
+0230 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Learning Individual PCA Models ...'</span>, opts);
+0231 
+0232 evalset = cell(size(blocks));
+0233 <span class="keyword">for</span> ib = 1 : NBlks
+0234     
+0235     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(sprintf(<span class="string">'   PCA Model %d'</span>, ib), opts);   
+0236     
+0237     curblk = blocks{ib};
+0238     rgncell = <a href="../../sltoolbox/utils/slrange2indcells.html" class="code" title="function C = slrange2indcells(range)">slrange2indcells</a>(curblk);
+0239     vecd = prod(curblk(2,:) - curblk(1,:) + 1);
+0240     
+0241     <span class="comment">% compute covariance</span>
+0242     blkcov = <a href="#_sub1" class="code" title="subfunction C = compute_localcov(data, meanarr, rangecell, d, n, w)">compute_localcov</a>(data, meanarr, rgncell, vecd, n, opts.weights);
+0243     
+0244     <span class="comment">% compute eigen spectrum</span>
+0245     [evals, evecs] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(blkcov);
+0246     
+0247     <span class="comment">% initial truncate</span>
+0248     currk = sum(evals &gt;= eps(evals(1)) / 10);    
+0249     evals = evals(1:currk);
+0250     evecs = evecs(:, 1:currk);
+0251                       
+0252     <span class="comment">% initial save</span>
+0253     evalset{ib} = evals; 
+0254     <a href="../../sltoolbox/fileio/slwritearray.html" class="code" title="function slwritearray(A, filename)">slwritearray</a>(evecs, projfiles{ib});
+0255     
+0256     energy.par(ib) = sum(evals);
+0257     diminfo.dims(ib) = vecd; 
+0258     
+0259 <span class="keyword">end</span>
+0260 
+0261 energy.total = sum(energy.par(:));
+0262 
+0263 
+0264 <span class="comment">%% Principal Components Selection</span>
+0265 
+0266 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Performing Principal Components Selection ...'</span>, opts);
+0267 
+0268 <span class="keyword">if</span> opts.mixev == 0 <span class="comment">% separate strategy</span>
+0269     
+0270     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'   Use Separate Strategy'</span>, opts);
+0271     
+0272     <span class="keyword">for</span> ib = 1 : NBlks
+0273                 
+0274         evals = evalset{ib};
+0275         currk = <a href="#_sub5" class="code" title="subfunction rk = decide_rank(evals, er)">decide_rank</a>(evals, opts.er0);     
+0276         
+0277         evals = evals(1:currk);
+0278         evalset{ib} = evals;
+0279         
+0280         evecs = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(projfiles{ib});
+0281         evecs = evecs(:, 1:currk);
+0282         <a href="../../sltoolbox/fileio/slwritearray.html" class="code" title="function slwritearray(A, filename)">slwritearray</a>(evecs, projfiles{ib});
+0283                         
+0284         energy.parpreserved(ib) = sum(evals);
+0285         diminfo.subdims(ib) = currk;
+0286         
+0287         clear evals evecs
+0288     <span class="keyword">end</span>               
+0289     
+0290 <span class="keyword">else</span> <span class="comment">% using mix-up strategy</span>
+0291     
+0292     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'   Use Mix-Up Strategy'</span>, opts);
+0293     
+0294     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'   Individual Preservation'</span>, opts);
+0295     
+0296     <span class="comment">% preserve individual projections</span>
+0297     <span class="keyword">if</span> opts.mixev &lt; 1
+0298         er0 = opts.er0 * (1 - opts.mixev);              
+0299         <span class="keyword">for</span> ib = 1 : NBlks
+0300             evals = evalset{ib};
+0301             diminfo.subdims(ib) = <a href="#_sub5" class="code" title="subfunction rk = decide_rank(evals, er)">decide_rank</a>(evals, er0);            
+0302             energy.parpreserved(ib) = sum(evals(1:diminfo.subdims(ib)));
+0303         <span class="keyword">end</span>        
+0304     <span class="keyword">else</span>
+0305         diminfo.subdims(:) = 1;
+0306         <span class="keyword">for</span> ib = 1 : NBlks
+0307             evals = evalset{ib};
+0308             energy.parpreserved(ib) = evals(1);
+0309         <span class="keyword">end</span>
+0310     <span class="keyword">end</span>
+0311         
+0312     indv_preserved = sum(energy.parpreserved(:));
+0313     
+0314     <span class="comment">% add additional components from mixed pool</span>
+0315     <span class="keyword">if</span> indv_preserved &lt; energy.total * opts.er0
+0316         
+0317         <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'   Collecting Information for Mix-up ...'</span>, opts);
+0318         
+0319         <span class="comment">% analyze target</span>
+0320         rest_target_energy = energy.total * opts.er0 - indv_preserved;
+0321         
+0322         <span class="comment">% collect rest eigenvalues</span>
+0323         restevnums = zeros(NBlks, 1);
+0324         <span class="keyword">for</span> ib = 1 : NBlks
+0325             evals = evalset{ib};
+0326             restevnums(ib) = length(evals) - diminfo.subdims(ib);
+0327         <span class="keyword">end</span>
+0328         total_restevnum = sum(restevnums(:));
+0329         
+0330         evspool = zeros(total_restevnum, 1);
+0331         evsbid = zeros(total_restevnum, 1);
+0332         cn = 0;
+0333         <span class="keyword">for</span> ib = 1 : NBlks
+0334             <span class="keyword">if</span> restevnums(ib) &gt; 0
+0335                 evals = evalset{ib};
+0336                 evspool(cn+1:cn+restevnums(ib)) = <span class="keyword">...</span>
+0337                     evals(diminfo.subdims(ib)+1:end);
+0338                 evsbid(cn+1:cn+restevnums(ib)) = ib;
+0339                 cn = cn + restevnums(ib);
+0340             <span class="keyword">end</span>            
+0341         <span class="keyword">end</span>                
+0342         
+0343         <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'   Overall Ranking ...'</span>, opts);
+0344         
+0345         <span class="comment">% overall ranking</span>
+0346         [evspool, sortord] = sort(evspool, <span class="string">'descend'</span>);
+0347         evsbid = evsbid(sortord);
+0348         
+0349         <span class="comment">% threshold</span>
+0350         er0 = rest_target_energy / sum(evspool);
+0351         rk = <a href="#_sub5" class="code" title="subfunction rk = decide_rank(evals, er)">decide_rank</a>(evspool, er0);
+0352         
+0353         <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'   Updating Selection ...'</span>, opts);
+0354         
+0355         <span class="comment">% update selection</span>
+0356         evsbid = evsbid(1:rk);
+0357         <span class="keyword">for</span> ib = 1 : NBlks
+0358             knew = sum(evsbid == ib);
+0359             <span class="keyword">if</span> knew &gt; 0
+0360                 evals = evalset{ib};
+0361                 diminfo.subdims(ib) = diminfo.subdims(ib) + knew;
+0362                 energy.parpreserved(ib) = sum(evals(1:diminfo.subdims(ib)));
+0363                 evalset{ib} = evals(1:diminfo.subdims(ib));
+0364             <span class="keyword">end</span>
+0365         <span class="keyword">end</span>
+0366         
+0367         <span class="comment">% truncate the projections</span>
+0368         
+0369         <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'   Truncating Projections ...'</span>, opts);
+0370         <span class="keyword">for</span> ib = 1 : NBlks
+0371             pfn = projfiles{ib};
+0372             curprojmat = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(pfn);
+0373             curprojmat = curprojmat(:, 1:diminfo.subdims(ib));
+0374             <a href="../../sltoolbox/fileio/slwritearray.html" class="code" title="function slwritearray(A, filename)">slwritearray</a>(curprojmat, pfn);            
+0375         <span class="keyword">end</span>
+0376         
+0377         clear restevnums total_restevnum rest_target_energy;
+0378         clear evsbid evspool sortord;
+0379                 
+0380     <span class="keyword">end</span>   
+0381             
+0382 <span class="keyword">end</span>
+0383 
+0384 energy.intpreserved = sum(energy.parpreserved(:));
+0385 diminfo.intdim = sum(diminfo.subdims(:));
+0386 
+0387 
+0388 <span class="comment">%% Combined PCA model</span>
+0389 
+0390 <span class="keyword">if</span> opts.combmodel
+0391     
+0392     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Learning Combined PCA Model ...'</span>, opts);
+0393     
+0394     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'   Generating Intermediate Stacked Vectors ...'</span>, opts);
+0395     
+0396     <span class="comment">% generate intermediate stacked vectors</span>
+0397     intvecs = zeros(diminfo.intdim, n);
+0398     dc = 0;
+0399     <span class="keyword">for</span> ib = 1 : NBlks
+0400         
+0401         curblk = blocks{ib};
+0402         rgncell = <a href="../../sltoolbox/utils/slrange2indcells.html" class="code" title="function C = slrange2indcells(range)">slrange2indcells</a>(curblk);
+0403         vecd = prod(curblk(2,:) - curblk(1,:) + 1);
+0404         cursubdim = diminfo.subdims(ib);    
+0405         
+0406         projmat = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(projfiles{ib});
+0407         
+0408         V = <a href="#_sub2" class="code" title="subfunction V = generate_pvecs(data, rangecell, oridim, subdim, n, meanarr, projmat)">generate_pvecs</a>(data, rgncell, vecd, cursubdim, n, meanarr, projmat);
+0409         
+0410         intvecs(dc+1:dc+cursubdim, :) = V;
+0411         dc = dc + cursubdim;
+0412         
+0413         clear projmat V;        
+0414     <span class="keyword">end</span>
+0415     
+0416     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'   Learning Combined PCA ...'</span>, opts);
+0417     
+0418     <span class="comment">% learn the combined model</span>
+0419     covcomb = <a href="../../sltoolbox/stat/slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(intvecs, opts.weights, 0);
+0420     [combevals, evecs] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(covcomb);
+0421     
+0422     <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'   Truncating Combined PCA ...'</span>, opts);
+0423     
+0424     <span class="comment">% truncate</span>
+0425     rk = <a href="#_sub5" class="code" title="subfunction rk = decide_rank(evals, er)">decide_rank</a>(combevals, (opts.er1 * energy.total) / energy.intpreserved);
+0426     combevals = combevals(1:rk);
+0427     combproj = evecs(:,1:rk);
+0428     <a href="../../sltoolbox/fileio/slwritearray.html" class="code" title="function slwritearray(A, filename)">slwritearray</a>(combproj, combprojfile); 
+0429     
+0430     energy.combpreserved = sum(combevals);
+0431     diminfo.feadim = rk;
+0432     
+0433 <span class="keyword">else</span>
+0434     energy.combpreserved = energy.intpreserved;
+0435     diminfo.feadim = diminfo.intdim;
+0436     
+0437     combevals = [];   
+0438     <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(combevals);
+0439 <span class="keyword">end</span>
+0440 
+0441 
+0442 <span class="comment">%% Output</span>
+0443 
+0444 <a href="#_sub6" class="code" title="subfunction showinfo(message, opts)">showinfo</a>(<span class="string">'Outputing Core file ...'</span>, opts);
+0445 
+0446 corefilename = [filepath, <span class="string">'.mat'</span>];
+0447 
+0448 <span class="comment">% change the inner file paths to relative path</span>
+0449 dstdir = fileparts(filepath);
+0450 <span class="keyword">if</span> isempty(dstdir) 
+0451     pathprelen = 0;
+0452 <span class="keyword">elseif</span> dstdir(end) ~= <span class="string">'\'</span>
+0453     pathprelen = length(dstdir) + 1;
+0454 <span class="keyword">else</span>
+0455     pathprelen = length(dstdir);
+0456 <span class="keyword">end</span>
+0457 
+0458 <span class="keyword">if</span> pathprelen &gt; 0
+0459     <span class="keyword">for</span> ib = 1 : NBlks
+0460         fn = projfiles{ib};
+0461         fn = fn(pathprelen+1:end);
+0462         projfiles{ib} = fn;
+0463     <span class="keyword">end</span>
+0464     <span class="keyword">if</span> ~isempty(combprojfile)
+0465         combprojfile = combprojfile(pathprelen+1:end);
+0466     <span class="keyword">end</span>
+0467 <span class="keyword">end</span>    
+0468 
+0469 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(combprojfile);
+0470 
+0471 
+0472 save(corefilename, <span class="keyword">...</span>
+0473     <span class="string">'parstruct'</span>, <span class="keyword">...</span>
+0474     <span class="string">'blocks'</span>, <span class="keyword">...</span>
+0475     <span class="string">'projfiles'</span>, <span class="keyword">...</span>
+0476     <span class="string">'combprojfile'</span>, <span class="keyword">...</span>
+0477     <span class="string">'meanarr'</span>, <span class="keyword">...</span>
+0478     <span class="string">'energy'</span>, <span class="keyword">...</span>
+0479     <span class="string">'diminfo'</span>, <span class="keyword">...</span>
+0480     <span class="string">'evalset'</span>, <span class="keyword">...</span>
+0481     <span class="string">'combevals'</span>, <span class="keyword">...</span>
+0482     <span class="string">'-v6'</span>);
+0483 
+0484 
+0485 
+0486 
+0487 <span class="comment">%% Core Computing functions</span>
+0488 
+0489 <a name="_sub1" href="#_subfunctions" class="code">function C = compute_localcov(data, meanarr, rangecell, d, n, w)</a>
+0490 
+0491 localmean = meanarr(rangecell{:});
+0492 localmean = reshape(localmean, [d, 1]);
+0493 
+0494 <span class="keyword">if</span> isnumeric(data)
+0495     
+0496     localarr = data(rangecell{:}, :);
+0497     localarr = reshape(localarr, [d, n]);
+0498     
+0499     C = <a href="../../sltoolbox/stat/slcov.html" class="code" title="function C = slcov(X, w, vmean, hasbeenchecked)">slcov</a>(localarr, w, localmean);
+0500     
+0501 <span class="keyword">else</span>
+0502     
+0503     C = zeros(d, d);
+0504     nfiles = length(data);
+0505     
+0506     cf = 0;
+0507     <span class="keyword">for</span> i = 1 : nfiles
+0508         localarr = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(data{i});
+0509         curn = size(localarr, length(rangecell)+1);
+0510         
+0511         <span class="keyword">if</span> isempty(w)
+0512             curw = [];
+0513             tw = curn;
+0514         <span class="keyword">else</span>
+0515             curw = w(cf+1:cf+curn);
+0516             tw = sum(curw);
+0517         <span class="keyword">end</span>
+0518         
+0519         curcov = <a href="#_sub1" class="code" title="subfunction C = compute_localcov(data, meanarr, rangecell, d, n, w)">compute_localcov</a>(localarr, meanarr, rangecell, d, curn, curw);        
+0520         C = C + curcov * tw;
+0521         
+0522         cf = cf + curn;
+0523     <span class="keyword">end</span>
+0524     
+0525     <span class="keyword">if</span> cf ~= n
+0526         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0527             <span class="string">'The total number of units in the set of array files is not n'</span>);
+0528     <span class="keyword">end</span>  
+0529     
+0530     <span class="keyword">if</span> isempty(w)
+0531         C = C / n;
+0532     <span class="keyword">else</span>
+0533         C = C / sum(w);
+0534     <span class="keyword">end</span>
+0535     
+0536 <span class="keyword">end</span>
+0537 
+0538 
+0539 <a name="_sub2" href="#_subfunctions" class="code">function V = generate_pvecs(data, rangecell, oridim, subdim, n, meanarr, projmat)</a>
+0540 
+0541 <span class="keyword">if</span> isnumeric(data)
+0542 
+0543     localarr = data(rangecell{:}, :);
+0544     localarr = reshape(localarr, [oridim, n]);
+0545     localmean = meanarr(rangecell{:});
+0546     localmean = reshape(localmean, [oridim, 1]);
+0547     D = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(localarr, -localmean, 1);    
+0548     clear localmean localarr;
+0549     V = projmat' * D;
+0550     
+0551     <span class="keyword">if</span> size(V, 1) ~= subdim
+0552         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0553             <span class="string">'Inconsistent sub dimension'</span>);
+0554     <span class="keyword">end</span>
+0555         
+0556 <span class="keyword">else</span>
+0557 
+0558     V = zeros(subdim, n);
+0559     nfiles = length(data);
+0560     cf = 0;
+0561     <span class="keyword">for</span> i = 1 : nfiles
+0562         curdata = <a href="../../sltoolbox/fileio/slreadarray.html" class="code" title="function A = slreadarray(filename)">slreadarray</a>(data{i});
+0563         curn = size(curdata, length(rangecell) + 1);
+0564         curV = <a href="#_sub2" class="code" title="subfunction V = generate_pvecs(data, rangecell, oridim, subdim, n, meanarr, projmat)">generate_pvecs</a>(curdata, rangecell, oridim, subdim, curn, meanarr, projmat);
+0565         clear curdata;
+0566         V(:, cf+1:cf+curn) = curV;
+0567         cf = cf + curn;
+0568     <span class="keyword">end</span>
+0569     
+0570     <span class="keyword">if</span> cf ~= n
+0571         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0572             <span class="string">'The total number of units in the set of array files is not n'</span>);
+0573     <span class="keyword">end</span>  
+0574 <span class="keyword">end</span>
+0575 
+0576 
+0577 
+0578 <span class="comment">%%  Auxiliary Functions</span>
+0579 
+0580 <a name="_sub3" href="#_subfunctions" class="code">function check_valuerange(var, name, minval, maxval)</a>
+0581 
+0582 <span class="keyword">if</span> var &lt; minval || var &gt; maxval
+0583     error(<span class="string">'sltoolbox:outofrange'</span>, <span class="keyword">...</span>
+0584         <span class="string">'The variable %s should be between %f and %f'</span>, <span class="keyword">...</span>
+0585         name, minval, maxval);
+0586 <span class="keyword">end</span>
+0587 
+0588 
+0589 <a name="_sub4" href="#_subfunctions" class="code">function str = generate_indexstring(nums, inds)</a>
+0590 
+0591 d = length(nums);
+0592 <span class="keyword">if</span> any(inds &lt;= 0) || any(inds &gt; nums)
+0593     error(<span class="string">'The indices are beyond boundary'</span>);
+0594 <span class="keyword">end</span>
+0595 
+0596 <span class="comment">% generate pattern</span>
+0597 pats = cell(1, d);
+0598 <span class="keyword">for</span> i = 1 : d
+0599     curlen = length(int2str(nums(i)));
+0600     pats{i} = sprintf(<span class="string">'%%0%dd.'</span>, curlen);
+0601 <span class="keyword">end</span>
+0602 
+0603 <span class="comment">% generate sub-strings</span>
+0604 sstrs = cell(1, d);
+0605 <span class="keyword">for</span> i = 1 : d    
+0606     sstrs{i} = sprintf(pats{i}, inds(i));
+0607 <span class="keyword">end</span>
+0608 
+0609 <span class="comment">% concatenate sub-strings</span>
+0610 str = strcat(sstrs{:});
+0611 str(end) = [];   <span class="comment">% delete the trailing point</span>
+0612 
+0613 
+0614 <a name="_sub5" href="#_subfunctions" class="code">function rk = decide_rank(evals, er)</a>
+0615 
+0616 cumevs = cumsum(evals);
+0617 rk = min(sum(cumevs &lt; sum(evals) * er) + 1, length(evals));
+0618 
+0619 
+0620 <a name="_sub6" href="#_subfunctions" class="code">function showinfo(message, opts)</a>
+0621 
+0622 <span class="keyword">if</span> opts.verbose
+0623     <a href="../../sltoolbox/ExpDL/@dataset/disp.html" class="code" title="function disp(DS)">disp</a>(message);
+0624 <span class="keyword">end</span>
+0625 
+0626 
+0627</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slgbfe</title>
+  <meta name="keywords" content="slgbfe">
+  <meta name="description" content="SLGBFE Performs Graph-based Feature Extraction Learning">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">subspace</a> &gt; slgbfe.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\subspace&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slgbfe
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLGBFE Performs Graph-based Feature Extraction Learning</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function T = slgbfe(X, G, Gc, dy, fm, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLGBFE Performs Graph-based Feature Extraction Learning
+
+ $ Syntax $
+   - T = slgbfe(X, G, Gc, dy, fm, ...)
+
+ $ Arguments $
+   - X:        The sample matrix 
+   - G:        The graph to be optimized
+   - Gc:       The constraint graph
+   - dy:       The dimension of feature space
+   - fm:       The formulation type
+   - T:        The learned transform matrix (dx x dy)
+               the transform is done by y = T' * x
+
+ $ Description $
+   - T = slgbfe(X, G, Gc, dy, fm, ...) performs graph-based feature 
+     extraction learning. It is to solve the following optimization.
+       
+       min/max  T'X M(G) X'T,    s.t. T'X M(Gc) X'T = I
+
+     The concrete formulation depends on the formulation type given in
+     fm = {fg, fc}. For fg, it has the following three types:
+       - 'minW':   do minimization with M(G) = W
+       - 'maxW':   do maximization with M(G) = W
+       - 'minL':   do minimization with M(G) = L = D - W
+       - 'maxL':   do maximization with M(G) = L = D - W
+     For fc, it has the following three types:
+       - 'O':      constraint T be orthogonal: T'*T = I (ignore Gc)
+       - 'I':      constraint T'* X * X' * T = I (ignore Gc)
+       - 'WC':     constraint with M(Gc) = W of Gc
+       - 'LC':     constraint with M(Gc) = L of Gc: D - W
+     In the aforementioned formulation, W is the adjacency matrix, while
+     L is the Laplacian matrix. When Gc is ignored (as in 'O' and 'I'),
+     you can just input Gc as [].
+
+     You can further specify the following properties to control the 
+     learning process:
+       - 'whparams':  The parameters for doing whitening of M(Gc), please
+                      refer to the function slwhiten_from_cov. The params 
+                      are given in a cell array as {method, ...}. 
+                      default = {}
+       - 'skip':      The number of components to be skipped. default = 0
+
+ $ Remarks $
+   - The implementation is based on slgembed.
+
+   - The function will not centralize the samples, if it is needed please
+     centralize them before invoking.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 17, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>	SLADJMAT Constructs the adjacency matrix representation of a graph</li><li><a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>	SLGRAPHINFO Extracts basic information of a given graph representation</li><li><a href="../../sltoolbox/manifold/slgembed.html" class="code" title="function [Y, spectrum] = slgembed(G, Gc, d, fm, varargin)">slgembed</a>	SLGEMBED Solves the general graph-based embedding</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function L = make_Lmat(W)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function T = slgbfe(X, G, Gc, dy, fm, varargin)</a>
+0002 <span class="comment">%SLGBFE Performs Graph-based Feature Extraction Learning</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - T = slgbfe(X, G, Gc, dy, fm, ...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - X:        The sample matrix</span>
+0009 <span class="comment">%   - G:        The graph to be optimized</span>
+0010 <span class="comment">%   - Gc:       The constraint graph</span>
+0011 <span class="comment">%   - dy:       The dimension of feature space</span>
+0012 <span class="comment">%   - fm:       The formulation type</span>
+0013 <span class="comment">%   - T:        The learned transform matrix (dx x dy)</span>
+0014 <span class="comment">%               the transform is done by y = T' * x</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - T = slgbfe(X, G, Gc, dy, fm, ...) performs graph-based feature</span>
+0018 <span class="comment">%     extraction learning. It is to solve the following optimization.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">%       min/max  T'X M(G) X'T,    s.t. T'X M(Gc) X'T = I</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">%     The concrete formulation depends on the formulation type given in</span>
+0023 <span class="comment">%     fm = {fg, fc}. For fg, it has the following three types:</span>
+0024 <span class="comment">%       - 'minW':   do minimization with M(G) = W</span>
+0025 <span class="comment">%       - 'maxW':   do maximization with M(G) = W</span>
+0026 <span class="comment">%       - 'minL':   do minimization with M(G) = L = D - W</span>
+0027 <span class="comment">%       - 'maxL':   do maximization with M(G) = L = D - W</span>
+0028 <span class="comment">%     For fc, it has the following three types:</span>
+0029 <span class="comment">%       - 'O':      constraint T be orthogonal: T'*T = I (ignore Gc)</span>
+0030 <span class="comment">%       - 'I':      constraint T'* X * X' * T = I (ignore Gc)</span>
+0031 <span class="comment">%       - 'WC':     constraint with M(Gc) = W of Gc</span>
+0032 <span class="comment">%       - 'LC':     constraint with M(Gc) = L of Gc: D - W</span>
+0033 <span class="comment">%     In the aforementioned formulation, W is the adjacency matrix, while</span>
+0034 <span class="comment">%     L is the Laplacian matrix. When Gc is ignored (as in 'O' and 'I'),</span>
+0035 <span class="comment">%     you can just input Gc as [].</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">%     You can further specify the following properties to control the</span>
+0038 <span class="comment">%     learning process:</span>
+0039 <span class="comment">%       - 'whparams':  The parameters for doing whitening of M(Gc), please</span>
+0040 <span class="comment">%                      refer to the function slwhiten_from_cov. The params</span>
+0041 <span class="comment">%                      are given in a cell array as {method, ...}.</span>
+0042 <span class="comment">%                      default = {}</span>
+0043 <span class="comment">%       - 'skip':      The number of components to be skipped. default = 0</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">% $ Remarks $</span>
+0046 <span class="comment">%   - The implementation is based on slgembed.</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">%   - The function will not centralize the samples, if it is needed please</span>
+0049 <span class="comment">%     centralize them before invoking.</span>
+0050 <span class="comment">%</span>
+0051 <span class="comment">% $ History $</span>
+0052 <span class="comment">%   - Created by Dahua Lin, on Sep 17, 2006</span>
+0053 <span class="comment">%</span>
+0054 
+0055 <span class="comment">%% parse and verify input arguments</span>
+0056 
+0057 <span class="keyword">if</span> nargin &lt; 5
+0058     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slgbfe'</span>, 5);
+0059 <span class="keyword">end</span>
+0060 
+0061 <span class="keyword">if</span> ~isnumeric(X) || ndims(X) ~= 2
+0062     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'X should be a 2D numeric matrix'</span>);
+0063 <span class="keyword">end</span>
+0064 n = size(X, 2);
+0065 
+0066 <span class="keyword">if</span> ~iscell(fm) || length(fm) ~= 2
+0067     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'fm should be a length-2 cell array'</span>);
+0068 <span class="keyword">end</span>
+0069 fg = fm{1};
+0070 fc = fm{2};
+0071 
+0072 gi = <a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>(G, {[n, n]});
+0073 W = <a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>(G, <span class="keyword">...</span>
+0074     <span class="string">'valtype'</span>, <span class="string">'numeric'</span>, <span class="keyword">...</span>
+0075     <span class="string">'sparse'</span>, strcmp(gi.form, <span class="string">'adjmat'</span>) &amp;&amp; issparse(G));
+0076 
+0077 <span class="keyword">if</span> strcmp(fc, <span class="string">'WC'</span>) || strcmp(fc, <span class="string">'LC'</span>)
+0078     <span class="keyword">if</span> isempty(Gc)
+0079         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0080             <span class="string">'When fc is WC or LC, Gc should not be empty'</span>);
+0081     <span class="keyword">end</span>
+0082     <a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>(Gc, {<span class="string">'adjmat'</span>, [n, n]});
+0083     <span class="keyword">if</span> isnumeric(Gc)
+0084         Wc = Gc;
+0085     <span class="keyword">else</span>
+0086         Wc = double(Gc);
+0087     <span class="keyword">end</span>
+0088 <span class="keyword">else</span>
+0089     Wc = [];
+0090 <span class="keyword">end</span>
+0091 
+0092 
+0093 opts.whparams = {};
+0094 opts.skip = 0;
+0095 opts = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(opts, varargin{:});
+0096 
+0097 
+0098 <span class="comment">%% Construct problem</span>
+0099 
+0100 <span class="comment">% enforce symmetry</span>
+0101 W = (W + W') * (1/2);
+0102 <span class="keyword">if</span> ~isempty(Wc)
+0103     Wc = (Wc + Wc') * (1/2);
+0104 <span class="keyword">end</span>
+0105 
+0106 <span class="comment">% construct re-formulated G: R</span>
+0107 <span class="keyword">switch</span> fg
+0108     <span class="keyword">case</span> <span class="string">'maxW'</span>
+0109         R = X * W * X';
+0110         rfg = <span class="string">'maxW'</span>;
+0111     <span class="keyword">case</span> <span class="string">'minW'</span>
+0112         R = X * W * X';
+0113         rfg = <span class="string">'minW'</span>;
+0114     <span class="keyword">case</span> <span class="string">'maxL'</span>
+0115         R = X * <a href="#_sub1" class="code" title="subfunction L = make_Lmat(W)">make_Lmat</a>(W) * X';
+0116         rfg = <span class="string">'maxW'</span>;
+0117     <span class="keyword">case</span> <span class="string">'minL'</span>
+0118         R = X * <a href="#_sub1" class="code" title="subfunction L = make_Lmat(W)">make_Lmat</a>(W) * X';
+0119         rfg = <span class="string">'minW'</span>;
+0120     <span class="keyword">otherwise</span>
+0121         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'Invalid fg name: %s'</span>, fg);
+0122 <span class="keyword">end</span>    
+0123 
+0124 <span class="comment">% construct re-formulated Gc: Rc</span>
+0125 <span class="keyword">switch</span> fc
+0126     <span class="keyword">case</span> <span class="string">'O'</span>
+0127         Rc = [];
+0128         rfc = <span class="string">'I'</span>;
+0129     <span class="keyword">case</span> <span class="string">'I'</span>
+0130         Rc = X * X';
+0131         rfc = <span class="string">'WC'</span>;
+0132     <span class="keyword">case</span> <span class="string">'WC'</span>
+0133         Rc = X * Wc * X';
+0134         rfc = <span class="string">'WC'</span>;
+0135     <span class="keyword">case</span> <span class="string">'LC'</span>
+0136         Rc = X * <a href="#_sub1" class="code" title="subfunction L = make_Lmat(W)">make_Lmat</a>(Wc) * X';
+0137         rfc = <span class="string">'WC'</span>;
+0138     <span class="keyword">otherwise</span>
+0139         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'Invalid fc name: %s'</span>, fc);
+0140 <span class="keyword">end</span>
+0141 
+0142 
+0143 <span class="comment">%% solve problem</span>
+0144 
+0145 Y = <a href="../../sltoolbox/manifold/slgembed.html" class="code" title="function [Y, spectrum] = slgembed(G, Gc, d, fm, varargin)">slgembed</a>(R, Rc, dy, {rfg, rfc}, <span class="keyword">...</span>
+0146     <span class="string">'inv'</span>, opts.whparams, <span class="keyword">...</span>
+0147     <span class="string">'skip'</span>, opts.skip);                 
+0148 T = Y';
+0149 
+0150 
+0151 <span class="comment">%% Computational routines</span>
+0152 
+0153 <a name="_sub1" href="#_subfunctions" class="code">function L = make_Lmat(W)</a>
+0154 
+0155 vD = sum(W, 1)';
+0156 <span class="keyword">if</span> issparse(vD)
+0157     vD = full(vD);
+0158 <span class="keyword">end</span>
+0159 
+0160 n = size(W, 1);
+0161 <span class="keyword">if</span> issparse(W)
+0162     D = sparse((1:n)', (1:n)', vD, n, n, n);
+0163     L = D - W;
+0164 <span class="keyword">else</span>
+0165     L = -W;
+0166     dinds = (1:n)'*(n+1)-n;
+0167     L(dinds) = L(dinds) + vD;
+0168 <span class="keyword">end</span>
+0169</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slgetinterpkernel</title>
+  <meta name="keywords" content="slgetinterpkernel">
+  <meta name="description" content="SLGETINTERPKERNEL Gets the interpolation kernel function">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">interp</a> &gt; slgetinterpkernel.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\interp&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slgetinterpkernel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLGETINTERPKERNEL Gets the interpolation kernel function</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [f, r] = slgetinterpkernel(kername) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLGETINTERPKERNEL Gets the interpolation kernel function
+
+ $ Syntax $
+   - [f, r] = slgetinterpkernel(kername)
+   
+ $ Arguments $
+   - kername:      The name of the interpolation kernel
+   - f:            The function handle to the kernel
+   - r:            The effective radius of the kernel
+
+ $ Description $
+   - [f, r] = slgetinterpkernel(kername) gets the function handle to 
+     an interpolation kernel and the corresponding effective radius. 
+     The supported kernel include:
+       - 'nearest':         The nearest neighbor interpolation
+       - 'linear':          The linear interpolation
+       - 'cubic':           The cubic interpolation
+     For generality, the kername can also be a cell array as
+     {f, r}. Then the function directly extracts them to output.
+     Here are the formulas for the kernels:
+       - 'nearest':        f(x) = 1, when |x| &lt;= 0.5
+                                  0, when |x| &gt; 0.5 
+       - 'linear':         f(x) = 1 - |x|, when |x| &lt;= 1
+                                  0,       when |x| &gt; 1
+       - 'cubic':          f(x) = 1 - 2|x|^2 + |x|^3,        when |x| &lt;= 1
+                                  4 - 8|x| + 5|x|^2 - |x|^3, when 1 &lt; |x| &lt;= 2
+                                  0,                         when |x| &gt; 2
+
+ $ Remarks $
+   - All the kernel functions are vectorized, so they all support
+     both scalar input and array input of any dimension.
+   - The kernel functions are legal only within the effective radius,
+     in the outside region, the produced values are undefined (not
+     necessary zero). Such a design is for efficiency, so it is the
+     invoker's responsibility to guarantee the input is in valid 
+     range.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 2nd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/imgproc/slimginterp.html" class="code" title="function V = slimginterp(A, I, J, interpker)">slimginterp</a>	SLIMGINTERP Performs image based interpolation</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function y = cubic_interpolant(x)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [f, r] = slgetinterpkernel(kername)</a>
+0002 <span class="comment">%SLGETINTERPKERNEL Gets the interpolation kernel function</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [f, r] = slgetinterpkernel(kername)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - kername:      The name of the interpolation kernel</span>
+0009 <span class="comment">%   - f:            The function handle to the kernel</span>
+0010 <span class="comment">%   - r:            The effective radius of the kernel</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ Description $</span>
+0013 <span class="comment">%   - [f, r] = slgetinterpkernel(kername) gets the function handle to</span>
+0014 <span class="comment">%     an interpolation kernel and the corresponding effective radius.</span>
+0015 <span class="comment">%     The supported kernel include:</span>
+0016 <span class="comment">%       - 'nearest':         The nearest neighbor interpolation</span>
+0017 <span class="comment">%       - 'linear':          The linear interpolation</span>
+0018 <span class="comment">%       - 'cubic':           The cubic interpolation</span>
+0019 <span class="comment">%     For generality, the kername can also be a cell array as</span>
+0020 <span class="comment">%     {f, r}. Then the function directly extracts them to output.</span>
+0021 <span class="comment">%     Here are the formulas for the kernels:</span>
+0022 <span class="comment">%       - 'nearest':        f(x) = 1, when |x| &lt;= 0.5</span>
+0023 <span class="comment">%                                  0, when |x| &gt; 0.5</span>
+0024 <span class="comment">%       - 'linear':         f(x) = 1 - |x|, when |x| &lt;= 1</span>
+0025 <span class="comment">%                                  0,       when |x| &gt; 1</span>
+0026 <span class="comment">%       - 'cubic':          f(x) = 1 - 2|x|^2 + |x|^3,        when |x| &lt;= 1</span>
+0027 <span class="comment">%                                  4 - 8|x| + 5|x|^2 - |x|^3, when 1 &lt; |x| &lt;= 2</span>
+0028 <span class="comment">%                                  0,                         when |x| &gt; 2</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% $ Remarks $</span>
+0031 <span class="comment">%   - All the kernel functions are vectorized, so they all support</span>
+0032 <span class="comment">%     both scalar input and array input of any dimension.</span>
+0033 <span class="comment">%   - The kernel functions are legal only within the effective radius,</span>
+0034 <span class="comment">%     in the outside region, the produced values are undefined (not</span>
+0035 <span class="comment">%     necessary zero). Such a design is for efficiency, so it is the</span>
+0036 <span class="comment">%     invoker's responsibility to guarantee the input is in valid</span>
+0037 <span class="comment">%     range.</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% $ History $</span>
+0040 <span class="comment">%   - Created by Dahua Lin, on Sep 2nd, 2006</span>
+0041 <span class="comment">%</span>
+0042 
+0043 <span class="comment">%% Main skeleton</span>
+0044 
+0045 <span class="keyword">if</span> ischar(kername)
+0046     <span class="keyword">switch</span> kername
+0047         <span class="keyword">case</span> <span class="string">'nearest'</span>
+0048             f = @(x) 1;
+0049             r = 0.5;
+0050         <span class="keyword">case</span> <span class="string">'linear'</span>
+0051             f = @(x) 1 - abs(x);
+0052             r = 1;
+0053         <span class="keyword">case</span> <span class="string">'cubic'</span>
+0054             f = @<a href="#_sub1" class="code" title="subfunction y = cubic_interpolant(x)">cubic_interpolant</a>;
+0055             r = 2;
+0056         <span class="keyword">otherwise</span>
+0057             error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0058                 <span class="string">'The interpolation kernel name is unsupported: %s'</span>, kername);
+0059     <span class="keyword">end</span>
+0060 <span class="keyword">elseif</span> iscell(kername)
+0061     f = kername{1};
+0062     r = kername{2};
+0063     <span class="keyword">if</span> ~isa(f, <span class="string">'funtion_handle'</span>)
+0064         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0065             <span class="string">'The interpolation kernel is invalid'</span>);
+0066     <span class="keyword">end</span>
+0067 <span class="keyword">else</span>
+0068     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0069             <span class="string">'The interpolation kernel is invalid'</span>);
+0070 <span class="keyword">end</span>
+0071         
+0072 
+0073 
+0074 <span class="comment">%% Core functions</span>
+0075 
+0076 <a name="_sub1" href="#_subfunctions" class="code">function y = cubic_interpolant(x)</a>
+0077 
+0078 x = abs(x);
+0079 p1 = 1 - x .* x .* (2 - x);
+0080 p2 = 4 + x .* (-8 + x .* (5 - x));
+0081 b1 = x &lt; 1;
+0082 b2 = true - b1;
+0083 y = p1 .* b1 + p2 .* b2;
+0084 
+0085 
+0086         
+0087         
+0088         
+0089         
+0090</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

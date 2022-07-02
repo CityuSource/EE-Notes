@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of edl_check_internalindices</title>
+  <meta name="keywords" content="edl_check_internalindices">
+  <meta name="description" content="EDL_CHECK_INTERNALINDICES Checks the consistency of internal indices">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">ExpDL</a> &gt; edl_check_internalindices.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\ExpDL&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>edl_check_internalindices
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>EDL_CHECK_INTERNALINDICES Checks the consistency of internal indices</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function cprops = edl_check_internalindices(props) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">EDL_CHECK_INTERNALINDICES Checks the consistency of internal indices
+ 
+ $ Syntax $
+   - cprops = edl_check_internalindices(props)
+
+ $ Arguments $
+   - props:        the struct array of property entries
+   - cprops:       the converted array with all indices coverted to
+                   numeric
+
+ $ History $
+   - Created by Dahua Lin, on Aug 14, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="edl_readctrlfile.html" class="code" title="function C = edl_readctrlfile(filename)">edl_readctrlfile</a>	EDL_READCTRLFILE Reads in a control file</li><li><a href="edl_readreport.html" class="code" title="function report = edl_readreport(filename)">edl_readreport</a>	EDL_READREPORT Reads in a EDL report</li><li><a href="edl_readscript.html" class="code" title="function script = edl_readscript(filename)">edl_readscript</a>	EDL_READSCRIPT Reads in a EDL script</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function cprops = edl_check_internalindices(props)</a>
+0002 <span class="comment">%EDL_CHECK_INTERNALINDICES Checks the consistency of internal indices</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - cprops = edl_check_internalindices(props)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - props:        the struct array of property entries</span>
+0009 <span class="comment">%   - cprops:       the converted array with all indices coverted to</span>
+0010 <span class="comment">%                   numeric</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $ History $</span>
+0013 <span class="comment">%   - Created by Dahua Lin, on Aug 14, 2006</span>
+0014 <span class="comment">%</span>
+0015 
+0016 
+0017 cprops = props;
+0018 
+0019 <span class="keyword">if</span> ~isempty(props)
+0020     
+0021     n = length(props);
+0022 
+0023     <span class="keyword">if</span> ~isfield(props, <span class="string">'internal_index'</span>)
+0024         error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0025             <span class="string">'The entries do not have the required field: internal_index'</span>);
+0026     <span class="keyword">end</span>
+0027 
+0028     <span class="keyword">for</span> i = 1 : n
+0029         curidx = str2double(props(i).internal_index);
+0030         <span class="keyword">if</span> curidx ~= i
+0031             error(<span class="string">'edl:parseerror'</span>, <span class="keyword">...</span>
+0032                 <span class="string">'Internal index inconsistency'</span>);
+0033         <span class="keyword">end</span>
+0034         cprops(i).internal_index = curidx;
+0035     <span class="keyword">end</span>
+0036 
+0037 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

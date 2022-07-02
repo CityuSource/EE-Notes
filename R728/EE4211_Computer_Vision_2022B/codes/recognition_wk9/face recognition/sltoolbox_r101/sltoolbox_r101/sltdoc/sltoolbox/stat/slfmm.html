@@ -1,0 +1,625 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slfmm</title>
+  <meta name="keywords" content="slfmm">
+  <meta name="description" content="SLFMM Learns a Finite Mixture Model (FMM)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">stat</a> &gt; slfmm.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\stat&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slfmm
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLFMM Learns a Finite Mixture Model (FMM)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [S, cw, pp, info] = slfmm(X, n, estfunctor, evalfunctor, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLFMM Learns a Finite Mixture Model (FMM)
+
+ $ Syntax $
+   - [S, cw] = slfmm(X, n, estfunctor, evalfunctor, ...)
+   - [S, cw, pp] = slfmm(X, n, estfunctor, evalfunctor, ...)
+   - [S, cw, pp, info] = slfmm(X, n, estfunctor, evalfunctor, ...)
+ 
+ $ Arguments $
+   - X:            the samples
+   - n:            the number of samples in X
+   - estfunctor:   the functor to estimate the model from weighted 
+                   samples, it should take the following form.
+                   The functor is a cell array, with the first element
+                   being a function, while the others are the extra
+                   parameters: {estfunc, ...}
+                   For different modes, the function should take different
+                   forms:
+                   - 'simple' mode:
+                       s = estfunc(s0, X, n, w, ...)
+                   - 'innermul' mode:
+                       S = estfunc(S0, X, n, W, selinds, ...)
+                   Here
+                   - s:    a single model
+                   - s0:   the previous single model (initially, it is [])
+                   - S:    a multi-model
+                   - S0:   the previous multi model (initially, it is [])
+                   - X:    the sample set
+                   - n:    the number of samples
+                   - w:    the 1 x n weight vector for a specific
+                           component
+                   - W:    the k x n weight matrix for all components
+                   - selinds:  the selected indices of models to be
+                               updated. If it is empty, all models need
+                               to be updated.
+   - evalfunctor:  the functor to evaluate component-conditional 
+                   likelihood
+                   condp = evalfunc(S, X, n, ...)
+                   for 'simple' mode, condp is a length-n vector
+                   for 'innermul', condp is k x n matrix.
+                   If condpmode is 'log', then the condp is logarithm of
+                   the probabilities.  
+   - S:        the struct of the learned finite mixtured model
+   - cw:       the component mixture weights
+   - pp:       the posteriori of each sample w.r.t mixture components
+
+ $ Description $
+   - [S, cw, pp] = slfmm(X, n, estfunc, evalfunc, ...) learns the finite 
+     mixture model from the samples in X, according to the properties.
+     \*
+     \t  Table 1. Properties of GMM Learning                 \\
+     \h    name      &amp;      description                      \\
+          'method'   &amp; The method using for GMM learning. Currently,
+                       there are only one method available: 'EM',
+                       default = 'EM'.
+          'update'   &amp; The way of updating (default = 'pass'):
+                        1. 'pass'     Pass-wise update;
+                        2. 'comp'     Component-wise update     \\
+          'cyclecn'  &amp; The ratio of components to be updated in each 
+                       cycle for 'comp' update scheme. default = 1.
+          'iter'     &amp; The iteration control properties for sliterproc
+                       default = {'maxiter', 100}
+          'tol'      &amp; The maximum tolerance of posteriori error when 
+                       the iteration terminates, (default = 1e-6) \\
+          'verbose'  &amp; whether to display information while iteration, 
+                       default = true                              \\
+          'initc'    &amp; The labels of initial clustering, if not specified, 
+                       we will use random clustering. If initc is specified,
+                       K will be forced to the the number of unique labels.
+                       default = []. \\
+          'initpp'   &amp; The initial posteriori of samples. (k0 x n)  
+                       default = []. \\
+          'annthres' &amp; The threshold of annealing in FJ algorithm, 
+                       default = 0 (unit = average mixture weight) \\
+          'weights'  &amp; The weights of the samples, default = [], 
+                       indicating non-weighted. Weights should be given
+                       by a 1 x n row vector. \\
+          'estmode'  &amp; The mode of estimation:
+                       'simple':    S is a struct array of models, each
+                                    element represents a model, there is
+                                    no internal representation of 
+                                    component weights. (default)
+                       'innermul':  S is a struct or an object maintaining
+                                    a set of models
+          'condpmode' &amp; The mode of evaluated likelihood
+                        'normal':  they are the likelihood values
+                        'log':     they are the logarithm of the
+                                   likelihood
+          'manifunc'  &amp; The function to manipulate the models
+                        (only for innermul mode)
+                        S = manifunc(S0, 'select', [k1, k2, ...])
+                           to retain the k1-th, k2-th, ... models
+     \*
+
+   - [S, cw, pp, info] = slfmm(X, n, estfunc, evalfunc, ...)
+     also outputs the information of learning process. The info is a 
+     struct with following fields
+       - numiters:     the number of iterations
+       - stopdiscrep:  the discrepance value on stop
+       - isconverged:  whether the process has been converged
+
+ $ Remarks $
+   - Note that there is no any restriction on the form of X. The
+     only condition is that the estfunc and evalfunc accept it.
+
+   - When annthres is larger than zero, the manifunc supporing
+     the operation 'discard' is required.
+
+   - For initialization, you should specify either of the initc or 
+     initpp. If both initc or initpp are given, only the initpp
+     will take effect.
+   
+ $ History $
+   - Created by Dahua Lin on Aug 17, 2006
+       - as a foundation of all finite mixture models, such as GMM
+       - it is based on the original slgmm function
+   - Modified by Dahua Lin on Aug 29, 2006
+       - based on the sliterproc to control iteration process.
+   - Modified by Dahua Lin on Sep 10, 2006
+       - replace slmul by slmulvec to increase efficiency</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sldiscrep.html" class="code" title="function d = sldiscrep(X1, X2, measure, r1)">sldiscrep</a>	SLDISCREP Evaluates the discrepancy of two arrays</li><li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/learn/slreevallearn.html" class="code" title="function [models, Q, info] = slreevallearn(models, Q, data, estfunctor, evalfunctor, cmpfunctor, varargin)">slreevallearn</a>	SLREEVALLEARN Performs an iterative learning based on re-evaluation</li><li><a href="slposteriori.html" class="code" title="function posteriori = slposteriori(condprops, priori, op)">slposteriori</a>	SLPOSTERIORI Computes the posterioris</li><li><a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>	SLEVALFUNCTOR Evaluates a functor</li><li><a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>	SLIGNOREVARS Ignores the input variables</li><li><a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>	SLPARSEPROPS Parses input parameters</li><li><a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>	SLSHAREDISP Displays message using a shared configuration</li><li><a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>	SLSHAREDISP_ATTACH Attachs to global display options</li><li><a href="../../sltoolbox/utils/slsharedisp_decindent.html" class="code" title="function slsharedisp_decindent(nsteps)">slsharedisp_decindent</a>	SLSHAREDISP_DECINDENT Decreases the indent of the displayer</li><li><a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>	SLSHAREDISP_DETACH Detachs current function from global display</li><li><a href="../../sltoolbox/utils/slsharedisp_incindent.html" class="code" title="function slsharedisp_incindent(nsteps)">slsharedisp_incindent</a>	SLSHAREDISP_INCINDENT Increases the indent of the displayer</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slgmm.html" class="code" title="function [GS, pp, info] = slgmm(X, varargin)">slgmm</a>	SLGMM Learns Gaussian Mixture model from samples</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function models = fmm_em_est(models, data, Q, props)</a></li><li><a href="#_sub2" class="code">function Q = fmm_em_eval(models, data, Q, props)</a></li><li><a href="#_sub3" class="code">function isconverged = fmm_em_cmp(models_prev, models, Q_prev, Q, props)</a></li><li><a href="#_sub4" class="code">function [S, cw] = init_models(X, W, props)</a></li><li><a href="#_sub5" class="code">function [pp, W] = update_weightmap(S, cw, X, n, props)</a></li><li><a href="#_sub6" class="code">function [S, W, cw] = update_models(S, X, W, selinds, props)</a></li><li><a href="#_sub7" class="code">function is_weak = select_weak_components(cw, thres)</a></li><li><a href="#_sub8" class="code">function [S, W, cw] = anneal_components(S, W, cw, props)</a></li><li><a href="#_sub9" class="code">function [S, W, cw] = update_compweights(S, W, props)</a></li><li><a href="#_sub10" class="code">function [pp, W] = labels2weights(labels, sweights)</a></li><li><a href="#_sub11" class="code">function W = weightmap(pp, weights)</a></li><li><a href="#_sub12" class="code">function checkvalid(name, val, range)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [S, cw, pp, info] = slfmm(X, n, estfunctor, evalfunctor, varargin)</a>
+0002 <span class="comment">%SLFMM Learns a Finite Mixture Model (FMM)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [S, cw] = slfmm(X, n, estfunctor, evalfunctor, ...)</span>
+0006 <span class="comment">%   - [S, cw, pp] = slfmm(X, n, estfunctor, evalfunctor, ...)</span>
+0007 <span class="comment">%   - [S, cw, pp, info] = slfmm(X, n, estfunctor, evalfunctor, ...)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $ Arguments $</span>
+0010 <span class="comment">%   - X:            the samples</span>
+0011 <span class="comment">%   - n:            the number of samples in X</span>
+0012 <span class="comment">%   - estfunctor:   the functor to estimate the model from weighted</span>
+0013 <span class="comment">%                   samples, it should take the following form.</span>
+0014 <span class="comment">%                   The functor is a cell array, with the first element</span>
+0015 <span class="comment">%                   being a function, while the others are the extra</span>
+0016 <span class="comment">%                   parameters: {estfunc, ...}</span>
+0017 <span class="comment">%                   For different modes, the function should take different</span>
+0018 <span class="comment">%                   forms:</span>
+0019 <span class="comment">%                   - 'simple' mode:</span>
+0020 <span class="comment">%                       s = estfunc(s0, X, n, w, ...)</span>
+0021 <span class="comment">%                   - 'innermul' mode:</span>
+0022 <span class="comment">%                       S = estfunc(S0, X, n, W, selinds, ...)</span>
+0023 <span class="comment">%                   Here</span>
+0024 <span class="comment">%                   - s:    a single model</span>
+0025 <span class="comment">%                   - s0:   the previous single model (initially, it is [])</span>
+0026 <span class="comment">%                   - S:    a multi-model</span>
+0027 <span class="comment">%                   - S0:   the previous multi model (initially, it is [])</span>
+0028 <span class="comment">%                   - X:    the sample set</span>
+0029 <span class="comment">%                   - n:    the number of samples</span>
+0030 <span class="comment">%                   - w:    the 1 x n weight vector for a specific</span>
+0031 <span class="comment">%                           component</span>
+0032 <span class="comment">%                   - W:    the k x n weight matrix for all components</span>
+0033 <span class="comment">%                   - selinds:  the selected indices of models to be</span>
+0034 <span class="comment">%                               updated. If it is empty, all models need</span>
+0035 <span class="comment">%                               to be updated.</span>
+0036 <span class="comment">%   - evalfunctor:  the functor to evaluate component-conditional</span>
+0037 <span class="comment">%                   likelihood</span>
+0038 <span class="comment">%                   condp = evalfunc(S, X, n, ...)</span>
+0039 <span class="comment">%                   for 'simple' mode, condp is a length-n vector</span>
+0040 <span class="comment">%                   for 'innermul', condp is k x n matrix.</span>
+0041 <span class="comment">%                   If condpmode is 'log', then the condp is logarithm of</span>
+0042 <span class="comment">%                   the probabilities.</span>
+0043 <span class="comment">%   - S:        the struct of the learned finite mixtured model</span>
+0044 <span class="comment">%   - cw:       the component mixture weights</span>
+0045 <span class="comment">%   - pp:       the posteriori of each sample w.r.t mixture components</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">% $ Description $</span>
+0048 <span class="comment">%   - [S, cw, pp] = slfmm(X, n, estfunc, evalfunc, ...) learns the finite</span>
+0049 <span class="comment">%     mixture model from the samples in X, according to the properties.</span>
+0050 <span class="comment">%     \*</span>
+0051 <span class="comment">%     \t  Table 1. Properties of GMM Learning                 \\</span>
+0052 <span class="comment">%     \h    name      &amp;      description                      \\</span>
+0053 <span class="comment">%          'method'   &amp; The method using for GMM learning. Currently,</span>
+0054 <span class="comment">%                       there are only one method available: 'EM',</span>
+0055 <span class="comment">%                       default = 'EM'.</span>
+0056 <span class="comment">%          'update'   &amp; The way of updating (default = 'pass'):</span>
+0057 <span class="comment">%                        1. 'pass'     Pass-wise update;</span>
+0058 <span class="comment">%                        2. 'comp'     Component-wise update     \\</span>
+0059 <span class="comment">%          'cyclecn'  &amp; The ratio of components to be updated in each</span>
+0060 <span class="comment">%                       cycle for 'comp' update scheme. default = 1.</span>
+0061 <span class="comment">%          'iter'     &amp; The iteration control properties for sliterproc</span>
+0062 <span class="comment">%                       default = {'maxiter', 100}</span>
+0063 <span class="comment">%          'tol'      &amp; The maximum tolerance of posteriori error when</span>
+0064 <span class="comment">%                       the iteration terminates, (default = 1e-6) \\</span>
+0065 <span class="comment">%          'verbose'  &amp; whether to display information while iteration,</span>
+0066 <span class="comment">%                       default = true                              \\</span>
+0067 <span class="comment">%          'initc'    &amp; The labels of initial clustering, if not specified,</span>
+0068 <span class="comment">%                       we will use random clustering. If initc is specified,</span>
+0069 <span class="comment">%                       K will be forced to the the number of unique labels.</span>
+0070 <span class="comment">%                       default = []. \\</span>
+0071 <span class="comment">%          'initpp'   &amp; The initial posteriori of samples. (k0 x n)</span>
+0072 <span class="comment">%                       default = []. \\</span>
+0073 <span class="comment">%          'annthres' &amp; The threshold of annealing in FJ algorithm,</span>
+0074 <span class="comment">%                       default = 0 (unit = average mixture weight) \\</span>
+0075 <span class="comment">%          'weights'  &amp; The weights of the samples, default = [],</span>
+0076 <span class="comment">%                       indicating non-weighted. Weights should be given</span>
+0077 <span class="comment">%                       by a 1 x n row vector. \\</span>
+0078 <span class="comment">%          'estmode'  &amp; The mode of estimation:</span>
+0079 <span class="comment">%                       'simple':    S is a struct array of models, each</span>
+0080 <span class="comment">%                                    element represents a model, there is</span>
+0081 <span class="comment">%                                    no internal representation of</span>
+0082 <span class="comment">%                                    component weights. (default)</span>
+0083 <span class="comment">%                       'innermul':  S is a struct or an object maintaining</span>
+0084 <span class="comment">%                                    a set of models</span>
+0085 <span class="comment">%          'condpmode' &amp; The mode of evaluated likelihood</span>
+0086 <span class="comment">%                        'normal':  they are the likelihood values</span>
+0087 <span class="comment">%                        'log':     they are the logarithm of the</span>
+0088 <span class="comment">%                                   likelihood</span>
+0089 <span class="comment">%          'manifunc'  &amp; The function to manipulate the models</span>
+0090 <span class="comment">%                        (only for innermul mode)</span>
+0091 <span class="comment">%                        S = manifunc(S0, 'select', [k1, k2, ...])</span>
+0092 <span class="comment">%                           to retain the k1-th, k2-th, ... models</span>
+0093 <span class="comment">%     \*</span>
+0094 <span class="comment">%</span>
+0095 <span class="comment">%   - [S, cw, pp, info] = slfmm(X, n, estfunc, evalfunc, ...)</span>
+0096 <span class="comment">%     also outputs the information of learning process. The info is a</span>
+0097 <span class="comment">%     struct with following fields</span>
+0098 <span class="comment">%       - numiters:     the number of iterations</span>
+0099 <span class="comment">%       - stopdiscrep:  the discrepance value on stop</span>
+0100 <span class="comment">%       - isconverged:  whether the process has been converged</span>
+0101 <span class="comment">%</span>
+0102 <span class="comment">% $ Remarks $</span>
+0103 <span class="comment">%   - Note that there is no any restriction on the form of X. The</span>
+0104 <span class="comment">%     only condition is that the estfunc and evalfunc accept it.</span>
+0105 <span class="comment">%</span>
+0106 <span class="comment">%   - When annthres is larger than zero, the manifunc supporing</span>
+0107 <span class="comment">%     the operation 'discard' is required.</span>
+0108 <span class="comment">%</span>
+0109 <span class="comment">%   - For initialization, you should specify either of the initc or</span>
+0110 <span class="comment">%     initpp. If both initc or initpp are given, only the initpp</span>
+0111 <span class="comment">%     will take effect.</span>
+0112 <span class="comment">%</span>
+0113 <span class="comment">% $ History $</span>
+0114 <span class="comment">%   - Created by Dahua Lin on Aug 17, 2006</span>
+0115 <span class="comment">%       - as a foundation of all finite mixture models, such as GMM</span>
+0116 <span class="comment">%       - it is based on the original slgmm function</span>
+0117 <span class="comment">%   - Modified by Dahua Lin on Aug 29, 2006</span>
+0118 <span class="comment">%       - based on the sliterproc to control iteration process.</span>
+0119 <span class="comment">%   - Modified by Dahua Lin on Sep 10, 2006</span>
+0120 <span class="comment">%       - replace slmul by slmulvec to increase efficiency</span>
+0121 <span class="comment">%</span>
+0122 
+0123 <span class="comment">%% parse and verify input arguments</span>
+0124 
+0125 props.method = <span class="string">'EM'</span>;
+0126 props.update = <span class="string">'pass'</span>;
+0127 props.cyclecn = 1;
+0128 props.iter = {<span class="string">'maxiter'</span>, 100};
+0129 props.tol = 1e-6;
+0130 props.verbose = true;
+0131 props.initc = [];
+0132 props.initpp = [];
+0133 props.annthres = 0;
+0134 props.weights = [];
+0135 props.estmode = <span class="string">'simple'</span>;
+0136 props.condpmode = <span class="string">'normal'</span>;
+0137 props.manifunc = [];
+0138 
+0139 props = <a href="../../sltoolbox/utils/slparseprops.html" class="code" title="function P = slparseprops(P0, varargin)">slparseprops</a>(props, varargin{:});
+0140 
+0141 <span class="comment">% add two properties</span>
+0142 props.estfunctor = estfunctor;
+0143 props.evalfunctor = evalfunctor;
+0144 
+0145 
+0146 <a href="#_sub12" class="code" title="subfunction checkvalid(name, val, range)">checkvalid</a>(<span class="string">'learning method'</span>, props.method, {<span class="string">'EM'</span>});
+0147 <a href="#_sub12" class="code" title="subfunction checkvalid(name, val, range)">checkvalid</a>(<span class="string">'updating scheme'</span>, props.update, {<span class="string">'pass'</span>, <span class="string">'comp'</span>});
+0148 <a href="#_sub12" class="code" title="subfunction checkvalid(name, val, range)">checkvalid</a>(<span class="string">'estimation mode'</span>, props.estmode, {<span class="string">'simple'</span>, <span class="string">'innermul'</span>});
+0149 <a href="#_sub12" class="code" title="subfunction checkvalid(name, val, range)">checkvalid</a>(<span class="string">'conditional probability form'</span>, props.condpmode, {<span class="string">'normal'</span>, <span class="string">'log'</span>});
+0150 
+0151 <span class="keyword">if</span> isempty(props.initc) &amp;&amp; isempty(props.initpp)
+0152     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0153         <span class="string">'Please specify either initc or initpp'</span>);
+0154 <span class="keyword">end</span>
+0155 
+0156 <span class="keyword">if</span> ~isempty(props.weights)
+0157     <span class="keyword">if</span> ~isequal(size(props.weights), [1, n])
+0158         error(<span class="string">'sltoolbox:sizmismatch'</span>, <span class="keyword">...</span>
+0159             <span class="string">'The weights should be a 1 x n row vector'</span>);
+0160     <span class="keyword">end</span>
+0161 <span class="keyword">end</span>
+0162 
+0163 <span class="keyword">if</span> props.annthres &gt; 0 
+0164     <span class="keyword">if</span> isempty(props.manifunc)
+0165         error(<span class="string">'sltoolbox:rterror'</span>, <span class="keyword">...</span>
+0166             <span class="string">'The manipulation function is required when component annealing is on'</span>);
+0167     <span class="keyword">end</span>
+0168 <span class="keyword">end</span>
+0169 
+0170 
+0171 <span class="comment">%% initialization</span>
+0172 
+0173 <a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>(<span class="string">'slfmm'</span>, <span class="string">'show'</span>, props.verbose);
+0174 
+0175 <span class="comment">% determine initial K value and initial clustering</span>
+0176 <span class="keyword">if</span> ~isempty(props.initpp)
+0177     
+0178     pp = props.initpp;
+0179     W = <a href="#_sub11" class="code" title="subfunction W = weightmap(pp, weights)">weightmap</a>(pp, props.weights);
+0180     
+0181 <span class="keyword">elseif</span> ~isempty(props.initc)
+0182     
+0183     [pp, W] = <a href="#_sub10" class="code" title="subfunction [pp, W] = labels2weights(labels, sweights)">labels2weights</a>(props.initc, props.weights);
+0184         
+0185 <span class="keyword">end</span>
+0186 
+0187 initK = size(W, 1);
+0188 
+0189 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'FMM Learning Parameters:'</span>);
+0190 <a href="../../sltoolbox/utils/slsharedisp_incindent.html" class="code" title="function slsharedisp_incindent(nsteps)">slsharedisp_incindent</a>;
+0191 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'method  = %s'</span>, props.method);
+0192 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'update  = %s'</span>, props.update);
+0193 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'estmode = %s'</span>, props.estmode);
+0194 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'init K  = %d'</span>, initK);
+0195 <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'anneal thres = %g'</span>, props.annthres);
+0196 <a href="../../sltoolbox/utils/slsharedisp_decindent.html" class="code" title="function slsharedisp_decindent(nsteps)">slsharedisp_decindent</a>;
+0197 
+0198 <span class="comment">%% updating</span>
+0199 
+0200 <span class="keyword">switch</span> props.method       
+0201     <span class="keyword">case</span> <span class="string">'EM'</span>
+0202         <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'Run Finite-Mixture Model Learning by EM'</span>);
+0203         
+0204         em_estfunctor = {@<a href="#_sub1" class="code" title="subfunction models = fmm_em_est(models, data, Q, props)">fmm_em_est</a>, props};
+0205         em_evalfunctor = {@<a href="#_sub2" class="code" title="subfunction Q = fmm_em_eval(models, data, Q, props)">fmm_em_eval</a>, props};
+0206         em_cmpfunctor = {@<a href="#_sub3" class="code" title="subfunction isconverged = fmm_em_cmp(models_prev, models, Q_prev, Q, props)">fmm_em_cmp</a>, props};
+0207         
+0208         models = {[], []};
+0209         data = {X, n};
+0210         Q = {pp, W};
+0211         
+0212         props.iter = {props.iter{:}, <span class="string">'titlebreak'</span>, false};
+0213         [models, Q, info] = <a href="../../sltoolbox/learn/slreevallearn.html" class="code" title="function [models, Q, info] = slreevallearn(models, Q, data, estfunctor, evalfunctor, cmpfunctor, varargin)">slreevallearn</a>(models, Q, data, <span class="keyword">...</span>
+0214             em_estfunctor, em_evalfunctor, em_cmpfunctor, <span class="keyword">...</span>
+0215             <span class="string">'iter'</span>, props.iter, <span class="string">'isrecorded'</span>, false);
+0216         
+0217         S = models{1};
+0218         cw = models{2};
+0219         pp = Q{1};
+0220     
+0221 <span class="keyword">end</span>
+0222 
+0223 <a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>;
+0224 
+0225 
+0226 <span class="comment">%% The Iteration functions for EM</span>
+0227 
+0228 <span class="comment">% data = {X, n}</span>
+0229 <span class="comment">% Q = {pp, W}</span>
+0230 <span class="comment">% models = {S, cw}</span>
+0231 
+0232 <a name="_sub1" href="#_subfunctions" class="code">function models = fmm_em_est(models, data, Q, props)</a>
+0233 
+0234 S = models{1};
+0235 X = data{1};  
+0236 <span class="comment">% n = data{2};</span>
+0237 W = Q{2};
+0238 
+0239 <span class="keyword">if</span> isempty(S)  <span class="comment">% initialize model</span>
+0240     [S, cw] = <a href="#_sub4" class="code" title="subfunction [S, cw] = init_models(X, W, props)">init_models</a>(X, W, props);
+0241     
+0242 <span class="keyword">else</span>           <span class="comment">% update model</span>
+0243     <span class="keyword">switch</span> props.update
+0244         <span class="keyword">case</span> <span class="string">'pass'</span>
+0245             [S, W, cw] = <a href="#_sub6" class="code" title="subfunction [S, W, cw] = update_models(S, X, W, selinds, props)">update_models</a>(S, X, W, [], props);
+0246             <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(W);
+0247 
+0248         <span class="keyword">case</span> <span class="string">'comp'</span>
+0249             cn = max(ceil(props.cyclecn * size(W, 1)), 1);
+0250             <span class="keyword">for</span> t = 1 : cn
+0251                 si = ceil(rand * size(W,1));
+0252                 si = min(max(si, 1), size(W, 1));
+0253                 [S, W, cw] = <a href="#_sub6" class="code" title="subfunction [S, W, cw] = update_models(S, X, W, selinds, props)">update_models</a>(S, X, W, si, props);
+0254             <span class="keyword">end</span>
+0255     <span class="keyword">end</span>
+0256 <span class="keyword">end</span>
+0257 
+0258 models = {S, cw};
+0259 
+0260 
+0261 <a name="_sub2" href="#_subfunctions" class="code">function Q = fmm_em_eval(models, data, Q, props)</a>
+0262 
+0263 S = models{1}; cw = models{2};
+0264 X = data{1}; n = data{2};
+0265 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(Q);
+0266 
+0267 [pp, W] = <a href="#_sub5" class="code" title="subfunction [pp, W] = update_weightmap(S, cw, X, n, props)">update_weightmap</a>(S, cw, X, n, props);
+0268 
+0269 Q = {pp, W};
+0270 
+0271 
+0272 <a name="_sub3" href="#_subfunctions" class="code">function isconverged = fmm_em_cmp(models_prev, models, Q_prev, Q, props)</a>
+0273 
+0274 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(models_prev, models);
+0275 
+0276 W_prev = Q_prev{2};
+0277 W = Q{2};
+0278 isconverged = false;
+0279 
+0280 <a href="../../sltoolbox/utils/slsharedisp_attach.html" class="code" title="function slsharedisp_attach(name, varargin)">slsharedisp_attach</a>(<span class="string">'fmm_em_cmp'</span>);
+0281 
+0282 <span class="keyword">if</span> isequal(size(W), size(W_prev))
+0283     wdiff = <a href="../../sltoolbox/core/sldiscrep.html" class="code" title="function d = sldiscrep(X1, X2, measure, r1)">sldiscrep</a>(W_prev, W, <span class="string">'maxdiffnrm'</span>, true);
+0284     <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'K = %d: wdiff = %g'</span>, size(W, 1), wdiff);
+0285     <span class="keyword">if</span> wdiff &lt; props.tol
+0286         isconverged = true;
+0287     <span class="keyword">end</span>
+0288 <span class="keyword">else</span>
+0289     <a href="../../sltoolbox/utils/slsharedisp.html" class="code" title="function slsharedisp(varargin)">slsharedisp</a>(<span class="string">'K = %d -&gt; %d'</span>, size(W_prev, 1), size(W, 1));
+0290 <span class="keyword">end</span>
+0291 
+0292 <a href="../../sltoolbox/utils/slsharedisp_detach.html" class="code" title="function slsharedisp_detach()">slsharedisp_detach</a>;
+0293 
+0294 
+0295 
+0296 
+0297 <span class="comment">%% Core routines</span>
+0298 
+0299 <span class="comment">% The function to initialize models</span>
+0300 <a name="_sub4" href="#_subfunctions" class="code">function [S, cw] = init_models(X, W, props)</a>
+0301 
+0302 [k, n] = size(W);
+0303 <span class="keyword">switch</span> props.estmode
+0304     <span class="keyword">case</span> <span class="string">'simple'</span>
+0305         <span class="keyword">for</span> i = 1 : k
+0306             S(i,1) = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(props.estfunctor, [], X, n, W(i, :)); 
+0307         <span class="keyword">end</span>        
+0308     <span class="keyword">case</span> <span class="string">'innermul'</span>
+0309         S =  <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(props.estfunctor, [], X, n, W, []);                      
+0310 <span class="keyword">end</span>
+0311 
+0312 cw = sum(W, 2);
+0313 cw = cw / sum(cw);
+0314 
+0315 
+0316 <span class="comment">% The function to update posteriori (E-step)</span>
+0317 <a name="_sub5" href="#_subfunctions" class="code">function [pp, W] = update_weightmap(S, cw, X, n, props)</a>
+0318 
+0319 <span class="comment">% compute conditional pdf</span>
+0320 k = length(cw);
+0321 <span class="keyword">switch</span> props.estmode
+0322     <span class="keyword">case</span> <span class="string">'simple'</span>
+0323         condp = zeros(k, n);
+0324         <span class="keyword">for</span> i = 1 : k
+0325             condp(i, :) = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(props.evalfunctor, S(i), X, n);
+0326         <span class="keyword">end</span>
+0327     <span class="keyword">case</span> <span class="string">'innermul'</span>
+0328         condp = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(props.evalfunctor, S, X, n);
+0329 <span class="keyword">end</span>
+0330 
+0331 <span class="comment">% compute posteriori</span>
+0332 <span class="keyword">switch</span> props.condpmode
+0333     <span class="keyword">case</span> <span class="string">'normal'</span>
+0334         pp = <a href="slposteriori.html" class="code" title="function posteriori = slposteriori(condprops, priori, op)">slposteriori</a>(condp, cw);
+0335     <span class="keyword">case</span> <span class="string">'log'</span>
+0336         pp = <a href="slposteriori.html" class="code" title="function posteriori = slposteriori(condprops, priori, op)">slposteriori</a>(condp, cw, <span class="string">'log'</span>);
+0337 <span class="keyword">end</span>
+0338 
+0339 <span class="comment">% compute weight map</span>
+0340 W = <a href="#_sub11" class="code" title="subfunction W = weightmap(pp, weights)">weightmap</a>(pp, props.weights);
+0341 
+0342 
+0343 <span class="comment">% The function to update models (M-step)</span>
+0344 <a name="_sub6" href="#_subfunctions" class="code">function [S, W, cw] = update_models(S, X, W, selinds, props) </a>
+0345 
+0346 <span class="comment">% update weights</span>
+0347 k0 = size(W, 1);
+0348 [S, W, cw] = <a href="#_sub9" class="code" title="subfunction [S, W, cw] = update_compweights(S, W, props)">update_compweights</a>(S, W, props);
+0349 k1 = size(W, 1);
+0350 <span class="keyword">if</span> k0 ~= k1
+0351     <span class="keyword">return</span>;
+0352 <span class="keyword">end</span>
+0353 
+0354 <span class="comment">% update model parameters</span>
+0355 [k, n] = size(W);
+0356 <span class="keyword">switch</span> props.estmode
+0357     <span class="keyword">case</span> <span class="string">'simple'</span>
+0358         <span class="keyword">if</span> isempty(selinds)
+0359             <span class="keyword">for</span> i = 1 : k
+0360                 S(i,1) = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(props.estfunctor, S(i), X, n, W(i,:));
+0361             <span class="keyword">end</span>
+0362         <span class="keyword">else</span>
+0363             ns = length(selinds);
+0364             <span class="keyword">for</span> ii = 1 : ns
+0365                 i = selinds(ii);
+0366                 S(i,1) = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(props.estfunctor, S(i), X, n, W(i,:));
+0367             <span class="keyword">end</span>
+0368         <span class="keyword">end</span>
+0369     <span class="keyword">case</span> <span class="string">'innermul'</span>        
+0370         S = <a href="../../sltoolbox/utils/slevalfunctor.html" class="code" title="function varargout = slevalfunctor(functor, varargin)">slevalfunctor</a>(props.estfunctor, S, X, n, W, selinds);
+0371 <span class="keyword">end</span>
+0372 
+0373 
+0374 
+0375 
+0376 <span class="comment">%% Auxiliary functions</span>
+0377 
+0378 <span class="comment">% The function to select weak components</span>
+0379 
+0380 <a name="_sub7" href="#_subfunctions" class="code">function is_weak = select_weak_components(cw, thres)</a>
+0381 
+0382 wthres = thres / length(cw);
+0383 is_weak = (cw &lt; wthres);
+0384 
+0385 <span class="comment">% The function anneal components</span>
+0386 
+0387 <a name="_sub8" href="#_subfunctions" class="code">function [S, W, cw] = anneal_components(S, W, cw, props)</a>
+0388 
+0389 is_weak = <a href="#_sub7" class="code" title="subfunction is_weak = select_weak_components(cw, thres)">select_weak_components</a>(cw, props.annthres);
+0390 <span class="keyword">if</span> all(is_weak)
+0391     [maxw, si] = max(cw);
+0392     <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(maxw);
+0393 <span class="keyword">elseif</span> any(is_weak)
+0394     si = find(~is_weak);
+0395 <span class="keyword">else</span>
+0396     <span class="keyword">return</span>;
+0397 <span class="keyword">end</span>
+0398        
+0399 <span class="keyword">switch</span> props.estmode
+0400     <span class="keyword">case</span> <span class="string">'simple'</span>
+0401         S = S(si);
+0402     <span class="keyword">case</span> <span class="string">'innermul'</span>
+0403         S = feval(props.manifunc, S, <span class="string">'select'</span>, si);
+0404 <span class="keyword">end</span>
+0405 
+0406 W = W(si, :);
+0407 
+0408 cw = cw(si);
+0409 cw = cw / sum(cw);
+0410     
+0411 <span class="comment">% The function to update weights (possibly anneal components)</span>
+0412 
+0413 <a name="_sub9" href="#_subfunctions" class="code">function [S, W, cw] = update_compweights(S, W, props)</a>
+0414 
+0415 cw = sum(W, 2);
+0416 cw = cw / sum(cw);
+0417 
+0418 <span class="keyword">if</span> props.annthres &gt; 0
+0419     [S, W, cw] = <a href="#_sub8" class="code" title="subfunction [S, W, cw] = anneal_components(S, W, cw, props)">anneal_components</a>(S, W, cw, props);
+0420 <span class="keyword">end</span>
+0421 
+0422 <span class="comment">% The function to compute weights from labels</span>
+0423 
+0424 <a name="_sub10" href="#_subfunctions" class="code">function [pp, W] = labels2weights(labels, sweights)</a>
+0425 
+0426 labelset = unique(labels);
+0427 [tf, inds] = ismember(labels, labelset);
+0428 <a href="../../sltoolbox/utils/slignorevars.html" class="code" title="function slignorevars(varargin)">slignorevars</a>(tf);
+0429 clear tf;
+0430 k = length(labelset);
+0431 n = length(labels);
+0432 
+0433 pp = zeros(k, n);
+0434 pp(((1:n) - 1) * k + inds) = 1;
+0435 W = <a href="#_sub11" class="code" title="subfunction W = weightmap(pp, weights)">weightmap</a>(pp, sweights);
+0436 
+0437 
+0438 <span class="comment">% The function to update posteriori to sample-component weights</span>
+0439 
+0440 <a name="_sub11" href="#_subfunctions" class="code">function W = weightmap(pp, weights)</a>
+0441 
+0442 <span class="keyword">if</span> isempty(weights)
+0443     W = pp;
+0444 <span class="keyword">else</span>
+0445     W = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(pp, weights, 2);
+0446 <span class="keyword">end</span>
+0447 
+0448 
+0449 <span class="comment">%% Simple Auxiliary Functions</span>
+0450 
+0451 <a name="_sub12" href="#_subfunctions" class="code">function checkvalid(name, val, range)</a>
+0452 
+0453 <span class="keyword">if</span> ~ismember(val, range)
+0454     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0455         <span class="string">'Invalid %s: %s'</span>, name, val);
+0456 <span class="keyword">end</span>
+0457 
+0458 
+0459</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

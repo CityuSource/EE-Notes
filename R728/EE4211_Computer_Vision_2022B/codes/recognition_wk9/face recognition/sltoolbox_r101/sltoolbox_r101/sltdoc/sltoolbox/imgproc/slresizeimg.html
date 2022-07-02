@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slresizeimg</title>
+  <meta name="keywords" content="slresizeimg">
+  <meta name="description" content="SLRESIZEIMG Resizes the images by interpolation">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">imgproc</a> &gt; slresizeimg.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\imgproc&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slresizeimg
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLRESIZEIMG Resizes the images by interpolation</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function rimgs = slresizeimg(imgs, newsiz, interpker) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLRESIZEIMG Resizes the images by interpolation
+
+ $ Syntax $
+   - rimgs = slresizeimg(imgs, newsiz, interpker)
+
+ $ Arguments $
+   - imgs:         The set of images
+   - newsiz:       The new image size to be resized to
+                   It can be in two forms:
+                   - [new_height, new_width]
+                   - ratio to the original size
+   - interpker:    The interpolation kernel (default = 'linear')
+   - rimgs:        The resized images
+
+ $ Description $
+   - rimgs = slresizeimg(imgs, newsiz, interpker) resizes the image
+     to new size by interpolation. 
+
+ $ Remarks $
+   - The implementation is based on slimginterp.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 3, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slimginterp.html" class="code" title="function V = slimginterp(A, I, J, interpker)">slimginterp</a>	SLIMGINTERP Performs image based interpolation</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li><li><a href="../../sltoolbox/utils/sltakeval.html" class="code" title="function varargout = sltakeval(A)">sltakeval</a>	SLTAKEVAL Extracts the values in an array/cell array to output</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function rimgs = slresizeimg(imgs, newsiz, interpker)</a>
+0002 <span class="comment">%SLRESIZEIMG Resizes the images by interpolation</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - rimgs = slresizeimg(imgs, newsiz, interpker)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $ Arguments $</span>
+0008 <span class="comment">%   - imgs:         The set of images</span>
+0009 <span class="comment">%   - newsiz:       The new image size to be resized to</span>
+0010 <span class="comment">%                   It can be in two forms:</span>
+0011 <span class="comment">%                   - [new_height, new_width]</span>
+0012 <span class="comment">%                   - ratio to the original size</span>
+0013 <span class="comment">%   - interpker:    The interpolation kernel (default = 'linear')</span>
+0014 <span class="comment">%   - rimgs:        The resized images</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $ Description $</span>
+0017 <span class="comment">%   - rimgs = slresizeimg(imgs, newsiz, interpker) resizes the image</span>
+0018 <span class="comment">%     to new size by interpolation.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $ Remarks $</span>
+0021 <span class="comment">%   - The implementation is based on slimginterp.</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% $ History $</span>
+0024 <span class="comment">%   - Created by Dahua Lin, on Sep 3, 2006</span>
+0025 <span class="comment">%</span>
+0026 
+0027 <span class="comment">%% parse and verify input</span>
+0028 
+0029 <span class="keyword">if</span> nargin &lt; 2
+0030     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slresizeimg'</span>, 2);
+0031 <span class="keyword">end</span>
+0032 h0 = size(imgs, 1);
+0033 w0 = size(imgs, 2);
+0034 
+0035 <span class="keyword">if</span> isnumeric(newsiz)
+0036     <span class="keyword">if</span> length(newsiz) == 1
+0037         h = newsiz * h0;
+0038         w = newsiz * w0;
+0039     <span class="keyword">elseif</span> length(newsiz) == 2
+0040         [h, w] = <a href="../../sltoolbox/utils/sltakeval.html" class="code" title="function varargout = sltakeval(A)">sltakeval</a>(newsiz);
+0041     <span class="keyword">else</span>
+0042         error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'The newsiz is invalid'</span>);
+0043     <span class="keyword">end</span>
+0044 <span class="keyword">else</span>
+0045     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'The newsiz is invalid'</span>);
+0046 <span class="keyword">end</span>
+0047 
+0048 <span class="keyword">if</span> nargin &lt; 3 || isempty(interpker)
+0049     interpker = <span class="string">'linear'</span>;
+0050 <span class="keyword">end</span>
+0051 
+0052 <span class="comment">%% generate coordinate map</span>
+0053 
+0054 I = linspace(1, h0, h)';
+0055 J = linspace(1, w0, w);
+0056 I = I(:, ones(1, w));
+0057 J = J(ones(h, 1), :);
+0058 
+0059 <span class="comment">%% Do interpolation</span>
+0060 
+0061 rimgs = <a href="slimginterp.html" class="code" title="function V = slimginterp(A, I, J, interpker)">slimginterp</a>(imgs, I, J, interpker);
+0062 
+0063 
+0064</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sllocaltanspace</title>
+  <meta name="keywords" content="sllocaltanspace">
+  <meta name="description" content="SLLOCALTANSPACE Solves the local tangent spaces">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">manifold</a> &gt; sllocaltanspace.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\manifold&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sllocaltanspace
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLLOCALTANSPACE Solves the local tangent spaces</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [LM, LP, LS] = sllocaltanspace(X0, G, dl) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLLOCALTANSPACE Solves the local tangent spaces
+
+ $ Syntax $
+   - [LM, LP] = sllocaltanspace(X0, G, dl)
+   - [LM, LP, LS] = sllocaltanspace(...)
+
+ $ Arguments $
+   - X0:       The referenced sample matrix (d0 x n0)
+   - G:        The neighborhood graph (n0 x n)
+   - dl:       The dimension of local tangent spaces
+               (should be strictly less than d0 and n0)
+   - LM:       The local means (d0 x n)
+   - LP:       The local tangent space basis (d0 x dl x n)
+   - LS:       The local spectrum (dl x n)
+
+ $ Description $
+   - [LM, LP] = sllocaltanspace(X0, G, dl) solves the local tangent
+     spaces based on the neighborhood graph G. Suppose G is n0 x n,
+     (n0 source points and n target points), then it solves the local
+     tangent spaces at n target points with the space constructed with
+     their neighbors in X0. If G is valued, the values in G are the 
+     weights of the samples in constructing local tangent space.
+
+   - [LM, LP, LS] = sllocaltanspace(...) additionally outputs the
+     eigen-spectrum of the local spaces. 
+
+ $ Remarks $
+   - The local dimensions are sorted in descending order of the 
+     corresponding eigenvalues. In the case of local rank &lt; dl,
+     for the last dl - rank dimensions, the eigenvalues are set to
+     zeros, and the eigenvectors are set to zero vectors.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 13rd, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>	SLADDVEC adds a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>	SLMULVEC multiplies a vector to columns or rows of a matrix</li><li><a href="../../sltoolbox/core/slnormalize.html" class="code" title="function An = slnormalize(A, p, d)">slnormalize</a>	SLNORMALIZE Normalize the sub-arrays</li><li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>	SLADJMAT Constructs the adjacency matrix representation of a graph</li><li><a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>	SLGRAPHINFO Extracts basic information of a given graph representation</li><li><a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>	SLMEAN Compute the mean vector of samples</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="slltsa.html" class="code" title="function [GC, spectrum, CTS] = slltsa(X, G, dl, dg)">slltsa</a>	SLLTSA Performs Local Tangent Space Alignment Learning</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [vmean, P, spectrum] = solvelocalspace(X, w, d0, dl)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [LM, LP, LS] = sllocaltanspace(X0, G, dl) </a>
+0002 <span class="comment">%SLLOCALTANSPACE Solves the local tangent spaces</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - [LM, LP] = sllocaltanspace(X0, G, dl)</span>
+0006 <span class="comment">%   - [LM, LP, LS] = sllocaltanspace(...)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - X0:       The referenced sample matrix (d0 x n0)</span>
+0010 <span class="comment">%   - G:        The neighborhood graph (n0 x n)</span>
+0011 <span class="comment">%   - dl:       The dimension of local tangent spaces</span>
+0012 <span class="comment">%               (should be strictly less than d0 and n0)</span>
+0013 <span class="comment">%   - LM:       The local means (d0 x n)</span>
+0014 <span class="comment">%   - LP:       The local tangent space basis (d0 x dl x n)</span>
+0015 <span class="comment">%   - LS:       The local spectrum (dl x n)</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $ Description $</span>
+0018 <span class="comment">%   - [LM, LP] = sllocaltanspace(X0, G, dl) solves the local tangent</span>
+0019 <span class="comment">%     spaces based on the neighborhood graph G. Suppose G is n0 x n,</span>
+0020 <span class="comment">%     (n0 source points and n target points), then it solves the local</span>
+0021 <span class="comment">%     tangent spaces at n target points with the space constructed with</span>
+0022 <span class="comment">%     their neighbors in X0. If G is valued, the values in G are the</span>
+0023 <span class="comment">%     weights of the samples in constructing local tangent space.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%   - [LM, LP, LS] = sllocaltanspace(...) additionally outputs the</span>
+0026 <span class="comment">%     eigen-spectrum of the local spaces.</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% $ Remarks $</span>
+0029 <span class="comment">%   - The local dimensions are sorted in descending order of the</span>
+0030 <span class="comment">%     corresponding eigenvalues. In the case of local rank &lt; dl,</span>
+0031 <span class="comment">%     for the last dl - rank dimensions, the eigenvalues are set to</span>
+0032 <span class="comment">%     zeros, and the eigenvectors are set to zero vectors.</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">% $ History $</span>
+0035 <span class="comment">%   - Created by Dahua Lin, on Sep 13rd, 2006</span>
+0036 <span class="comment">%</span>
+0037 
+0038 <span class="comment">%% parse and verify input arguments</span>
+0039 
+0040 <span class="keyword">if</span> ~isnumeric(X0) || ndims(X0) ~= 2
+0041     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0042         <span class="string">'The sample matrix X0 should be a 2D numeric matrix'</span>);
+0043 <span class="keyword">end</span>
+0044 [d0, n0] = size(X0);
+0045 
+0046 gi = <a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>(G);
+0047 <span class="keyword">if</span> gi.n ~= n0
+0048     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0049         <span class="string">'The graph is not consistent with the sample number'</span>);
+0050 <span class="keyword">end</span>
+0051 <span class="keyword">if</span> ~strcmp(gi.form, <span class="string">'adjmat'</span>)
+0052     G = <a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>(G, <span class="string">'sparse'</span>, true);
+0053 <span class="keyword">end</span>
+0054 n = gi.nt;
+0055 
+0056 <span class="keyword">if</span> dl &gt;= d0 || dl &gt;= n0
+0057     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="keyword">...</span>
+0058         <span class="string">'The local dimension dl should be strictly less than d0 and n0'</span>);
+0059 <span class="keyword">end</span>
+0060 
+0061 <span class="keyword">if</span> nargout &gt;= 3
+0062     want_sp = true;
+0063 <span class="keyword">else</span>
+0064     want_sp = false;
+0065 <span class="keyword">end</span>
+0066 
+0067 <span class="keyword">if</span> isnumeric(G)
+0068     use_weights = true;
+0069 <span class="keyword">else</span>
+0070     use_weights = false;
+0071 <span class="keyword">end</span>
+0072 
+0073 <span class="comment">%% main skeleton</span>
+0074 
+0075 <span class="comment">% prepare storage</span>
+0076 LM = zeros(d0, n);
+0077 LP = zeros(d0, dl, n);
+0078 <span class="keyword">if</span> want_sp
+0079     LS = zeros(dl, n);
+0080 <span class="keyword">end</span>
+0081 
+0082 <span class="comment">% do computation</span>
+0083 <span class="keyword">for</span> i = 1 : n    
+0084     localinds = find(G(:,i));
+0085     <span class="keyword">if</span> use_weights
+0086         localw = G(localinds, i)';
+0087     <span class="keyword">else</span>
+0088         localw = [];
+0089     <span class="keyword">end</span>
+0090     localX = X0(:, localinds);
+0091     
+0092     [cm, cp, csp] = <a href="#_sub1" class="code" title="subfunction [vmean, P, spectrum] = solvelocalspace(X, w, d0, dl)">solvelocalspace</a>(localX, localw, d0, dl);
+0093     
+0094     LM(:,i) = cm;
+0095     LP(:,:,i) = cp;
+0096     <span class="keyword">if</span> want_sp
+0097         LS(:,i) = csp;
+0098     <span class="keyword">end</span>
+0099 <span class="keyword">end</span>
+0100 
+0101 
+0102 <span class="comment">%% core routine to compute local tangent spaces</span>
+0103 
+0104 <a name="_sub1" href="#_subfunctions" class="code">function [vmean, P, spectrum] = solvelocalspace(X, w, d0, dl)</a>
+0105 
+0106 n = size(X, 2);
+0107 dm = min([dl, d0, n]);
+0108 
+0109 <span class="comment">% preprocess samples: centralize and weight</span>
+0110 vmean = <a href="../../sltoolbox/stat/slmean.html" class="code" title="function v = slmean(M, w, hasbeenchecked)">slmean</a>(X, w, true);
+0111 X = <a href="../../sltoolbox/core/sladdvec.html" class="code" title="function Y = sladdvec(X, v, d)">sladdvec</a>(X, -vmean, 1);
+0112 <span class="keyword">if</span> ~isempty(w)
+0113     X = <a href="../../sltoolbox/core/slmulvec.html" class="code" title="function Y = slmulvec(X, v, d)">slmulvec</a>(X, w, 2);
+0114 <span class="keyword">end</span>
+0115 
+0116 <span class="comment">% solve eigen-problem</span>
+0117 <span class="keyword">if</span> d0 &lt;= n / 2
+0118     C = X * X';
+0119     [spectrum, P] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(C, dm); 
+0120 <span class="keyword">else</span>
+0121     C = X' * X;
+0122     [spectrum, P] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(C, dm);
+0123     P = <a href="../../sltoolbox/core/slnormalize.html" class="code" title="function An = slnormalize(A, p, d)">slnormalize</a>(X * P);
+0124 <span class="keyword">end</span>
+0125 
+0126 <span class="comment">% truncate to rank</span>
+0127 rk = sum(spectrum &gt; n * eps(spectrum(1)));
+0128 <span class="keyword">if</span> rk &lt; dm
+0129     spectrum = spectrum(1:rk);
+0130     P = P(:, 1:rk);    
+0131 <span class="keyword">end</span>
+0132 spectrum = spectrum / n;
+0133 
+0134 <span class="comment">% complement to dl</span>
+0135 <span class="keyword">if</span> rk &lt; dl
+0136     spectrum = [spectrum; zeros(dl-rk, 1)];
+0137     P = [P, zeros(d0, dl-rk)];
+0138 <span class="keyword">end</span>
+0139</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

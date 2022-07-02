@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sllle_wg</title>
+  <meta name="keywords" content="sllle_wg">
+  <meta name="description" content="SLLLE_WG Solves the Locally Linear Embedding from weight graph">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">manifold</a> &gt; sllle_wg.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\manifold&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>sllle_wg
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLLLE_WG Solves the Locally Linear Embedding from weight graph</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Y, spectrum] = sllle_wg(G, d) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLLLE_WG Solves the Locally Linear Embedding from weight graph
+
+ $ Syntax $
+   - Y = sllle_wg(G, d)
+   - [Y, spectrum] = sllle_wg(G, d)
+
+ $ Arguments $
+   - G:        The weights graph
+   - d:        The dimension of the embedding
+   - Y:        The sample coordinates in the embedded space
+   - spectrum: The spectrum of the embeded space dimensions
+
+ $ Description $
+   - Y = sllle_wg(G, d) solves the locally linear embedding from
+     a given weight graph. G should be a graph of n nodes, where
+     the edge value from i-th node to j-th node, means the weights
+     on the i-th sample in constructing the j-th sample, (or the
+     construction of i-th sample to the j-th sample). 
+     Y is solved by taking the eigenvectors of (I - W)(I - W)^T, 
+     corresponding to the (d+1) smallest eigenvalues, and discarding 
+     the smallest one.  In our output, the dimension is sorted in the 
+     ascending order of eigenvalues.
+
+   - [Y, spectrum] = sllle_wg(G, d) also returns the spectrum of the
+     corresponding dimensions, a column vector of the corresponding
+     eigenvalues.
+
+ $ Remarks $
+   - The dimension d should be strictly less than n.
+
+ $ History $
+   - Created by Dahua Lin, on Sep 11st, 2006</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>	SLSYMEIG Compute the eigenvalues and eigenvectors for symmetric matrix</li><li><a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>	SLADJMAT Constructs the adjacency matrix representation of a graph</li><li><a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>	SLGRAPHINFO Extracts basic information of a given graph representation</li><li><a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="sllle.html" class="code" title="function [Y, spectrum, WG] = sllle(X, G, d, rwparams)">sllle</a>	SLLLE Performs Locally Linear Embedding</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Y, spectrum] = sllle_wg(G, d)</a>
+0002 <span class="comment">%SLLLE_WG Solves the Locally Linear Embedding from weight graph</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - Y = sllle_wg(G, d)</span>
+0006 <span class="comment">%   - [Y, spectrum] = sllle_wg(G, d)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $ Arguments $</span>
+0009 <span class="comment">%   - G:        The weights graph</span>
+0010 <span class="comment">%   - d:        The dimension of the embedding</span>
+0011 <span class="comment">%   - Y:        The sample coordinates in the embedded space</span>
+0012 <span class="comment">%   - spectrum: The spectrum of the embeded space dimensions</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $ Description $</span>
+0015 <span class="comment">%   - Y = sllle_wg(G, d) solves the locally linear embedding from</span>
+0016 <span class="comment">%     a given weight graph. G should be a graph of n nodes, where</span>
+0017 <span class="comment">%     the edge value from i-th node to j-th node, means the weights</span>
+0018 <span class="comment">%     on the i-th sample in constructing the j-th sample, (or the</span>
+0019 <span class="comment">%     construction of i-th sample to the j-th sample).</span>
+0020 <span class="comment">%     Y is solved by taking the eigenvectors of (I - W)(I - W)^T,</span>
+0021 <span class="comment">%     corresponding to the (d+1) smallest eigenvalues, and discarding</span>
+0022 <span class="comment">%     the smallest one.  In our output, the dimension is sorted in the</span>
+0023 <span class="comment">%     ascending order of eigenvalues.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%   - [Y, spectrum] = sllle_wg(G, d) also returns the spectrum of the</span>
+0026 <span class="comment">%     corresponding dimensions, a column vector of the corresponding</span>
+0027 <span class="comment">%     eigenvalues.</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% $ Remarks $</span>
+0030 <span class="comment">%   - The dimension d should be strictly less than n.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% $ History $</span>
+0033 <span class="comment">%   - Created by Dahua Lin, on Sep 11st, 2006</span>
+0034 <span class="comment">%</span>
+0035 
+0036 <span class="comment">%% parse and verify input</span>
+0037 
+0038 <span class="keyword">if</span> nargin &lt; 2
+0039     <a href="../../sltoolbox/utils/raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'sllle_wg'</span>, 2);
+0040 <span class="keyword">end</span>
+0041 
+0042 gi = <a href="../../sltoolbox/graph/slgraphinfo.html" class="code" title="function gi = slgraphinfo(G, conds)">slgraphinfo</a>(G, {<span class="string">'square'</span>});
+0043 <span class="keyword">if</span> ~gi.valued
+0044     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'The graph G should be a valued graph'</span>);
+0045 <span class="keyword">end</span>
+0046 <span class="keyword">if</span> isnumeric(G)
+0047     W = G;
+0048 <span class="keyword">else</span>
+0049     W = <a href="../../sltoolbox/graph/sladjmat.html" class="code" title="function A = sladjmat(G, varargin)">sladjmat</a>(G, <span class="string">'sparse'</span>, true);
+0050 <span class="keyword">end</span>
+0051 
+0052 n = gi.n;
+0053 <span class="keyword">if</span> d &gt;= n
+0054     error(<span class="string">'sltoolbox:invalidarg'</span>, <span class="string">'d should be strictly less than n'</span>);
+0055 <span class="keyword">end</span>
+0056 
+0057 <span class="comment">%% compute</span>
+0058 
+0059 <span class="keyword">if</span> issparse(W)
+0060     M = speye(n) - W;
+0061 <span class="keyword">else</span>
+0062     M = eye(n) - W;
+0063 <span class="keyword">end</span>
+0064 clear W;
+0065 M = M * M';
+0066 
+0067 [spectrum, Y] = <a href="../../sltoolbox/core/slsymeig.html" class="code" title="function [evals, evecs] = slsymeig(A, k, ord)">slsymeig</a>(M, d+1, <span class="string">'ascend'</span>);
+0068 clear M;
+0069 spectrum = spectrum(2:d+1);
+0070 Y = Y(:, 2:d+1);
+0071 Y = Y';
+0072 
+0073</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

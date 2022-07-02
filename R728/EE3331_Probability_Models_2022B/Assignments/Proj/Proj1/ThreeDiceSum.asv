@@ -1,0 +1,16 @@
+clear
+close all
+
+rollN = 1000;
+
+dices = randi(6,3,rollN);
+total = sum(dices);
+dicemean = mean(total);
+
+stepSize = 100;
+for totalNum = 10 : stepSize : rollN
+    avg(i) = 
+
+plot(avg)
+xlabel('number of experiments')
+ylabel('value of sum')

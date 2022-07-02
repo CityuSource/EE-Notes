@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of slpartition</title>
+  <meta name="keywords" content="slpartition">
+  <meta name="description" content="SLPARTITION Partition a range into blocks in a specified manner">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">sltoolbox</a> &gt; <a href="index.html">utils</a> &gt; slpartition.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for sltoolbox\utils&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>slpartition
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SLPARTITION Partition a range into blocks in a specified manner</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function PS = slpartition(whole_size, spec_item, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SLPARTITION Partition a range into blocks in a specified manner
+
+ $ Syntax $
+   - PS = slpartition(whole_size, 'numblks', nblks_dim1, nblks_dim2, ...);
+   - PS = slpartition(whole_size, 'numblks', [nblks_dim1, nblks_dim2, ...]);
+   - PS = slpartition(whole_size, 'maxblksize', mbs_dim1, mbs_dim2, ...);
+   - PS = slpartition(whole_size, 'maxblksize', [mbs_dim1, mbs_dim2, ...]);
+   - PS = slpartition(whole_size, 'blksizes', blksizes_dim1, blksizes_dim2, ...);
+   - PS = slpartition(whole_size, 'startinds', startinds_dim1, startinds_dim2, ...);
+   - PS = slpartition(whole_size, 'endinds', endinds_dim1, endinds_dim2, ...);
+
+ $ Description $
+   
+   - PS = slpartition(whole_size, 'numblks', nblks_dim1, nblks_dim2, ...) 
+     PS = slpartition(whole_size, 'numblks', [nblks_dim1, nblks_dim2, ...])
+     partitions the single-dimensional or multi-dimensional range with its
+     size specified in row vector whole_size, into multiple blocks, and
+     outputs the partition structure via PS. PS is a struct-array, with
+     d entries, where d is the dimension of the whole array. Each entry
+     of PS is a struct with two fields: sinds and einds, which are
+     row vectors respectively denoting the start indices and end indices
+     of sequential blocks along the dimension.
+     By this syntax, the user can specify the number of blocks along each
+     dimension by nblks_dim1, nblks_dim2, .... They are all integers.
+
+   - PS = slpartition(whole_size, 'maxblksize', mbs_dim1, mbs_dim2, ...)
+     PS = slpartition(whole_size, 'maxblksize', [mbs_dim1, mbs_dim2, ...])
+     By this syntax, the user can specify the maximum block sizes along
+     each dimension by mbs_dim1, mbs_dim2, .... They are all integers.
+
+   - PS = slpartition(whole_size, 'blksizes', blksizes_dim1, blksizes_dim2, ...)
+     By this syntax, the user can specify the block sizes of all individual
+     blocks in all dimensions. blksizes_dim1, blksizes_dim2, ...
+     are integer vectors, with each entry specifying the length of a block
+     in along some dimension.
+
+   - PS = slpartition(whole_size, 'startinds', startinds_dim1, startinds_dim2, ...);
+     PS = slpartition(whole_size, 'endinds', endinds_dim1, endinds_dim2, ...);
+     By this syntax, the user can specify the start indices or end indices
+     of the blocks in all dimensions. startinds_dim1, startinds_dim2, ...
+     are integer vectors, with entry specifying the start index of a block
+     along a certain dimension. Likewise, endinds_dim1, endinds_dim2, ...
+     are also integer vectors, with entry specifying the ending index of 
+     a block along a certain dimension.
+
+ $ Remarks $
+   - For the dimension, corresponding parameter is not given, the dimension
+     is considered to be partitioned into multiple unit blocks with
+     block length equaling 1 along that dimension.
+
+ $ History $
+   - Created by Dahua Lin on Dec 7th, 2005
+   - Modified by Dahua Lin on Sep 10, 2006
+       - make minor change to eliminate warnings</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>	RAISE_LACKINPUT Raises an error indicating lack of input argument</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../sltoolbox/fileio/slimgsetprep.html" class="code" title="function slimgsetprep(srcfolder, dstpath, matsize, maxsec)">slimgsetprep</a>	SLIMGSETPREP organizes the images in a MATLAB friendly way</li><li><a href="../../sltoolbox/graph/slfindnn.html" class="code" title="function [nnidx, dists] = slfindnn(X0, X, method, varargin)">slfindnn</a>	SLFINDNN Finds the nearest neighbors using specified strategy</li><li><a href="../../sltoolbox/stat/slcovlarge.html" class="code" title="function C = slcovlarge(X, w, vmean, cachesize)">slcovlarge</a>	SLCOVLARGE Computes large covariance matrix using memory-efficient way</li><li><a href="../../sltoolbox/stat/slgaussest.html" class="code" title="function GS = slgaussest(X, varargin)">slgaussest</a>	SLGAUSSEST Estimates the Gaussian models from samples</li><li><a href="../../sltoolbox/stat/slgaussrnd.html" class="code" title="function X = slgaussrnd(GS, nums)">slgaussrnd</a>	SLGAUSSRND Generates random samples from Gaussian models</li><li><a href="slequalpar2D.html" class="code" title="function ps = slequalpar2D(siz, maxblk)">slequalpar2D</a>	SLEQUALPAR Partition a 2D array with balances for width and height</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function check_validity(siz, s, e)</a></li><li><a href="#_sub2" class="code">function [s, e] = partition1d_full(siz)</a></li><li><a href="#_sub3" class="code">function [s, e] = partition1d_numblks(siz, nblks)</a></li><li><a href="#_sub4" class="code">function [s, e] = partition1d_maxblksize(siz, mbs)</a></li><li><a href="#_sub5" class="code">function [s, e] = partition1d_blksizes(siz, blksizes)</a></li><li><a href="#_sub6" class="code">function [s, e] = partition1d_startinds(siz, startinds)</a></li><li><a href="#_sub7" class="code">function [s, e] = partition1d_endinds(siz, endinds)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function PS = slpartition(whole_size, spec_item, varargin)</a>
+0002 <span class="comment">%SLPARTITION Partition a range into blocks in a specified manner</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $ Syntax $</span>
+0005 <span class="comment">%   - PS = slpartition(whole_size, 'numblks', nblks_dim1, nblks_dim2, ...);</span>
+0006 <span class="comment">%   - PS = slpartition(whole_size, 'numblks', [nblks_dim1, nblks_dim2, ...]);</span>
+0007 <span class="comment">%   - PS = slpartition(whole_size, 'maxblksize', mbs_dim1, mbs_dim2, ...);</span>
+0008 <span class="comment">%   - PS = slpartition(whole_size, 'maxblksize', [mbs_dim1, mbs_dim2, ...]);</span>
+0009 <span class="comment">%   - PS = slpartition(whole_size, 'blksizes', blksizes_dim1, blksizes_dim2, ...);</span>
+0010 <span class="comment">%   - PS = slpartition(whole_size, 'startinds', startinds_dim1, startinds_dim2, ...);</span>
+0011 <span class="comment">%   - PS = slpartition(whole_size, 'endinds', endinds_dim1, endinds_dim2, ...);</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $ Description $</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%   - PS = slpartition(whole_size, 'numblks', nblks_dim1, nblks_dim2, ...)</span>
+0016 <span class="comment">%     PS = slpartition(whole_size, 'numblks', [nblks_dim1, nblks_dim2, ...])</span>
+0017 <span class="comment">%     partitions the single-dimensional or multi-dimensional range with its</span>
+0018 <span class="comment">%     size specified in row vector whole_size, into multiple blocks, and</span>
+0019 <span class="comment">%     outputs the partition structure via PS. PS is a struct-array, with</span>
+0020 <span class="comment">%     d entries, where d is the dimension of the whole array. Each entry</span>
+0021 <span class="comment">%     of PS is a struct with two fields: sinds and einds, which are</span>
+0022 <span class="comment">%     row vectors respectively denoting the start indices and end indices</span>
+0023 <span class="comment">%     of sequential blocks along the dimension.</span>
+0024 <span class="comment">%     By this syntax, the user can specify the number of blocks along each</span>
+0025 <span class="comment">%     dimension by nblks_dim1, nblks_dim2, .... They are all integers.</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%   - PS = slpartition(whole_size, 'maxblksize', mbs_dim1, mbs_dim2, ...)</span>
+0028 <span class="comment">%     PS = slpartition(whole_size, 'maxblksize', [mbs_dim1, mbs_dim2, ...])</span>
+0029 <span class="comment">%     By this syntax, the user can specify the maximum block sizes along</span>
+0030 <span class="comment">%     each dimension by mbs_dim1, mbs_dim2, .... They are all integers.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%   - PS = slpartition(whole_size, 'blksizes', blksizes_dim1, blksizes_dim2, ...)</span>
+0033 <span class="comment">%     By this syntax, the user can specify the block sizes of all individual</span>
+0034 <span class="comment">%     blocks in all dimensions. blksizes_dim1, blksizes_dim2, ...</span>
+0035 <span class="comment">%     are integer vectors, with each entry specifying the length of a block</span>
+0036 <span class="comment">%     in along some dimension.</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">%   - PS = slpartition(whole_size, 'startinds', startinds_dim1, startinds_dim2, ...);</span>
+0039 <span class="comment">%     PS = slpartition(whole_size, 'endinds', endinds_dim1, endinds_dim2, ...);</span>
+0040 <span class="comment">%     By this syntax, the user can specify the start indices or end indices</span>
+0041 <span class="comment">%     of the blocks in all dimensions. startinds_dim1, startinds_dim2, ...</span>
+0042 <span class="comment">%     are integer vectors, with entry specifying the start index of a block</span>
+0043 <span class="comment">%     along a certain dimension. Likewise, endinds_dim1, endinds_dim2, ...</span>
+0044 <span class="comment">%     are also integer vectors, with entry specifying the ending index of</span>
+0045 <span class="comment">%     a block along a certain dimension.</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">% $ Remarks $</span>
+0048 <span class="comment">%   - For the dimension, corresponding parameter is not given, the dimension</span>
+0049 <span class="comment">%     is considered to be partitioned into multiple unit blocks with</span>
+0050 <span class="comment">%     block length equaling 1 along that dimension.</span>
+0051 <span class="comment">%</span>
+0052 <span class="comment">% $ History $</span>
+0053 <span class="comment">%   - Created by Dahua Lin on Dec 7th, 2005</span>
+0054 <span class="comment">%   - Modified by Dahua Lin on Sep 10, 2006</span>
+0055 <span class="comment">%       - make minor change to eliminate warnings</span>
+0056 <span class="comment">%</span>
+0057 
+0058 <span class="comment">%% parse and verify input arguments</span>
+0059 <span class="keyword">if</span> nargin &lt; 3
+0060     <a href="raise_lackinput.html" class="code" title="function raise_lackinput(funcname, nmin)">raise_lackinput</a>(<span class="string">'slpartition'</span>, 3);
+0061 <span class="keyword">end</span>
+0062 dim_whole = length(whole_size);
+0063 <span class="keyword">if</span> ~isequal(size(whole_size), [1, dim_whole])
+0064     error(<span class="string">'sltoolbox:notsizevec'</span>, <span class="keyword">...</span>
+0065         <span class="string">'The size vector whole_size should be a row vector'</span>);
+0066 <span class="keyword">end</span>
+0067 <span class="keyword">if</span> any(whole_size &lt;= 0)
+0068     error(<span class="string">'sltoolbox:emptyarray'</span>, <span class="keyword">...</span>
+0069         <span class="string">'The whole_size corresponds to an empty array'</span>);
+0070 <span class="keyword">end</span>
+0071 <span class="comment">% compute the actual dimension</span>
+0072 dim_whole = find(whole_size &gt; 1, 1, <span class="string">'last'</span>);
+0073 whole_size = whole_size(1:dim_whole);
+0074 
+0075 <span class="comment">%% Compute</span>
+0076 
+0077 <span class="comment">% initialize the struct</span>
+0078 PS = struct(<span class="string">'sinds'</span>, cell(dim_whole, 1), <span class="string">'einds'</span>, []);
+0079 
+0080 <span class="comment">% process</span>
+0081 <span class="keyword">switch</span> spec_item
+0082     <span class="keyword">case</span> <span class="string">'numblks'</span>
+0083         
+0084         <span class="keyword">if</span> numel(varargin{1}) &gt; 1
+0085             G = varargin{1};
+0086         <span class="keyword">else</span>
+0087             G = cell2mat(varargin);
+0088         <span class="keyword">end</span>
+0089         nG = length(G);
+0090         
+0091         <span class="keyword">for</span> d = 1 : dim_whole            
+0092             <span class="keyword">if</span> d &lt;= nG
+0093                 [PS(d).sinds, PS(d).einds] = <span class="keyword">...</span>
+0094                     <a href="#_sub3" class="code" title="subfunction [s, e] = partition1d_numblks(siz, nblks)">partition1d_numblks</a>(whole_size(d), G(d));
+0095             <span class="keyword">else</span>
+0096                 [PS(d).sinds, PS(d).einds] = <span class="keyword">...</span>
+0097                     <a href="#_sub2" class="code" title="subfunction [s, e] = partition1d_full(siz)">partition1d_full</a>(whole_size(d));
+0098             <span class="keyword">end</span>
+0099         <span class="keyword">end</span>        
+0100         
+0101     <span class="keyword">case</span> <span class="string">'maxblksize'</span>
+0102         
+0103         <span class="keyword">if</span> numel(varargin{1}) &gt; 1
+0104             G = varargin{1};
+0105         <span class="keyword">else</span>
+0106             G = cell2mat(varargin);
+0107         <span class="keyword">end</span>
+0108         nG = length(G);
+0109         
+0110         <span class="keyword">for</span> d = 1 : dim_whole            
+0111             <span class="keyword">if</span> d &lt;= nG
+0112                 [PS(d).sinds, PS(d).einds] = <span class="keyword">...</span>
+0113                     <a href="#_sub4" class="code" title="subfunction [s, e] = partition1d_maxblksize(siz, mbs)">partition1d_maxblksize</a>(whole_size(d), G(d));
+0114             <span class="keyword">else</span>
+0115                 [PS(d).sinds, PS(d).einds] = <span class="keyword">...</span>
+0116                     <a href="#_sub2" class="code" title="subfunction [s, e] = partition1d_full(siz)">partition1d_full</a>(whole_size(d));
+0117             <span class="keyword">end</span>
+0118         <span class="keyword">end</span>     
+0119         
+0120     <span class="keyword">case</span> <span class="string">'blksizes'</span>
+0121         
+0122         G = varargin;
+0123         nG = length(G);
+0124         
+0125         <span class="keyword">for</span> d = 1 : dim_whole            
+0126             <span class="keyword">if</span> d &lt;= nG
+0127                 [PS(d).sinds, PS(d).einds] = <span class="keyword">...</span>
+0128                     <a href="#_sub5" class="code" title="subfunction [s, e] = partition1d_blksizes(siz, blksizes)">partition1d_blksizes</a>(whole_size(d), G{d});
+0129             <span class="keyword">else</span>
+0130                 [PS(d).sinds, PS(d).einds] = <span class="keyword">...</span>
+0131                     <a href="#_sub2" class="code" title="subfunction [s, e] = partition1d_full(siz)">partition1d_full</a>(whole_size(d));
+0132             <span class="keyword">end</span>
+0133         <span class="keyword">end</span>             
+0134         
+0135     <span class="keyword">case</span> <span class="string">'startinds'</span>
+0136         
+0137         G = varargin;
+0138         nG = length(G);
+0139         
+0140         <span class="keyword">for</span> d = 1 : dim_whole            
+0141             <span class="keyword">if</span> d &lt;= nG
+0142                 [PS(d).sinds, PS(d).einds] = <span class="keyword">...</span>
+0143                     <a href="#_sub6" class="code" title="subfunction [s, e] = partition1d_startinds(siz, startinds)">partition1d_startinds</a>(whole_size(d), G{d});
+0144             <span class="keyword">else</span>
+0145                 [PS(d).sinds, PS(d).einds] = <span class="keyword">...</span>
+0146                     <a href="#_sub2" class="code" title="subfunction [s, e] = partition1d_full(siz)">partition1d_full</a>(whole_size(d));
+0147             <span class="keyword">end</span>
+0148         <span class="keyword">end</span>         
+0149         
+0150     <span class="keyword">case</span> <span class="string">'endinds'</span>
+0151         
+0152         G = varargin;
+0153         nG = length(G);
+0154         
+0155         <span class="keyword">for</span> d = 1 : dim_whole            
+0156             <span class="keyword">if</span> d &lt;= nG
+0157                 [PS(d).sinds, PS(d).einds] = <span class="keyword">...</span>
+0158                     <a href="#_sub7" class="code" title="subfunction [s, e] = partition1d_endinds(siz, endinds)">partition1d_endinds</a>(whole_size(d), G{d});
+0159             <span class="keyword">else</span>
+0160                 [PS(d).sinds, PS(d).einds] = <span class="keyword">...</span>
+0161                     <a href="#_sub2" class="code" title="subfunction [s, e] = partition1d_full(siz)">partition1d_full</a>(whole_size(d));
+0162             <span class="keyword">end</span>
+0163         <span class="keyword">end</span> 
+0164         
+0165     <span class="keyword">otherwise</span>
+0166         error(<span class="string">'sltoolbox:invalid_item'</span>, <span class="keyword">...</span>
+0167             <span class="string">'Invalid partition item name: %s'</span>, spec_item);
+0168 <span class="keyword">end</span>
+0169 
+0170 
+0171 <span class="comment">%% ============ single-dimension partition functions =============</span>
+0172 
+0173 <a name="_sub1" href="#_subfunctions" class="code">function check_validity(siz, s, e)</a>
+0174 
+0175 <span class="keyword">if</span> length(s) ~= length(e)
+0176     error(<span class="string">'sltoolbox:invalid_partition'</span>, <span class="keyword">...</span>
+0177         <span class="string">'The number of start indices and that of end indices do not consist'</span>);
+0178 <span class="keyword">end</span>
+0179 <span class="keyword">if</span> any(s &gt; e)
+0180     error(<span class="string">'sltoolbox:invalid_partition'</span>, <span class="keyword">...</span>
+0181         <span class="string">'Found some starting indices is larger than corresponding end indices'</span>);
+0182 <span class="keyword">end</span>
+0183 <span class="keyword">if</span> ~isequal(e(1:end-1)+1, s(2:end))
+0184     error(<span class="string">'sltoolbox:invalid_partition'</span>, <span class="keyword">...</span>
+0185         <span class="string">'The regions are not contingent'</span>);
+0186 <span class="keyword">end</span>
+0187 <span class="keyword">if</span> s(1) ~= 1
+0188     error(<span class="string">'sltoolbox:invalid_partition'</span>, <span class="keyword">...</span>
+0189         <span class="string">'The first starting index is not equal to 1'</span>);
+0190 <span class="keyword">end</span>
+0191 <span class="keyword">if</span> e(end) ~= siz
+0192     error(<span class="string">'sltoolbox:invalid_partition'</span>, <span class="keyword">...</span>
+0193         <span class="string">'The last end index is not equal to dimension'</span>);
+0194 <span class="keyword">end</span>
+0195 
+0196 
+0197 <a name="_sub2" href="#_subfunctions" class="code">function [s, e] = partition1d_full(siz)</a>
+0198 
+0199 s = 1:siz;
+0200 e = s;
+0201 <a href="#_sub1" class="code" title="subfunction check_validity(siz, s, e)">check_validity</a>(siz, s, e);
+0202 
+0203 
+0204 <a name="_sub3" href="#_subfunctions" class="code">function [s, e] = partition1d_numblks(siz, nblks)</a>
+0205 
+0206 <span class="keyword">if</span> nblks &gt; siz
+0207     error(<span class="string">'The number of blocks should not exceed the whole dimension'</span>);
+0208 <span class="keyword">end</span>
+0209 b = round(linspace(1, siz+1, nblks+1));
+0210 s = b(1:nblks);
+0211 e = b(2:nblks+1)-1;
+0212 <a href="#_sub1" class="code" title="subfunction check_validity(siz, s, e)">check_validity</a>(siz, s, e);
+0213 
+0214 
+0215 <a name="_sub4" href="#_subfunctions" class="code">function [s, e] = partition1d_maxblksize(siz, mbs)</a>
+0216 
+0217 nblks = ceil(siz / mbs);
+0218 <span class="keyword">if</span> nblks == 1
+0219     blksizes = siz;
+0220 <span class="keyword">else</span>
+0221     blksizes = [mbs * ones(1, nblks-1), siz - mbs * (nblks-1)];
+0222 <span class="keyword">end</span>
+0223 [s, e] = <a href="#_sub5" class="code" title="subfunction [s, e] = partition1d_blksizes(siz, blksizes)">partition1d_blksizes</a>(siz, blksizes);
+0224 
+0225 
+0226 <a name="_sub5" href="#_subfunctions" class="code">function [s, e] = partition1d_blksizes(siz, blksizes)</a>
+0227 
+0228 <span class="keyword">if</span> sum(blksizes) ~= siz
+0229     error(<span class="string">'The total block sizes is not equal to the whole size'</span>);
+0230 <span class="keyword">end</span>
+0231 <span class="keyword">if</span> any(blksizes &lt;= 0)
+0232     error(<span class="string">'Some block sizes are less than or equal to zero'</span>);
+0233 <span class="keyword">end</span>
+0234 e = cumsum(blksizes);
+0235 s = [1, e(1:end-1)+1];
+0236 <a href="#_sub1" class="code" title="subfunction check_validity(siz, s, e)">check_validity</a>(siz, s, e);
+0237 
+0238 
+0239 <a name="_sub6" href="#_subfunctions" class="code">function [s, e] = partition1d_startinds(siz, startinds)</a>
+0240 
+0241 <span class="keyword">if</span> startinds(1) ~= 1
+0242     error(<span class="string">'The first starting index should be equal to 1'</span>);
+0243 <span class="keyword">end</span>
+0244 <span class="keyword">if</span> startinds(end) &gt; siz
+0245     error(<span class="string">'The last starting index should not exceeds the whole size'</span>);
+0246 <span class="keyword">end</span>
+0247 <span class="keyword">if</span> any(diff(startinds) &lt;= 0)
+0248     error(<span class="string">'The order of starting indices is incorrect'</span>);
+0249 <span class="keyword">end</span>
+0250 
+0251 s = startinds;
+0252 e = [startinds(2:end)-1, siz];
+0253 <a href="#_sub1" class="code" title="subfunction check_validity(siz, s, e)">check_validity</a>(siz, s, e);
+0254 
+0255 
+0256 <a name="_sub7" href="#_subfunctions" class="code">function [s, e] = partition1d_endinds(siz, endinds)</a>
+0257 
+0258 <span class="keyword">if</span> endinds(1) &lt; 1
+0259     error(<span class="string">'The first ending index should be not less than 1'</span>);
+0260 <span class="keyword">end</span>
+0261 <span class="keyword">if</span> endinds(end) ~= siz
+0262     error(<span class="string">'The last ending index should be equal to the whole size'</span>);
+0263 <span class="keyword">end</span>
+0264 <span class="keyword">if</span> any(diff(endinds) &lt;= 0)
+0265     error(<span class="string">'The order of ending indices is incorrect'</span>);
+0266 <span class="keyword">end</span>
+0267 
+0268 e = endinds;
+0269 s = [1, e(1:end-1)+1];
+0270 <a href="#_sub1" class="code" title="subfunction check_validity(siz, s, e)">check_validity</a>(siz, s, e);
+0271     
+0272 
+0273 
+0274 
+0275 
+0276 
+0277 
+0278 
+0279 
+0280 
+0281 
+0282 
+0283 
+0284 
+0285 
+0286 
+0287</pre></div>
+<hr><address>Generated on Wed 20-Sep-2006 12:43:11 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>
