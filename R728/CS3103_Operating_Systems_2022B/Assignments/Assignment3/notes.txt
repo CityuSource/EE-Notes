@@ -1,5 +1,0 @@
-there's one minor problem,
-
-the last frame in the batch is not synching up properly for some reason.
-
-welp not like im gonna ever go back to this again.

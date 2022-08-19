@@ -1,6 +1,0 @@
-calculators
-- gaussian
-- geometric
-- symbolab
-- venn (maybe)
-- integral and diff calculator

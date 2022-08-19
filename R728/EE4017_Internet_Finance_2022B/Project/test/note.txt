@@ -1,7 +1,0 @@
-Some of the post functions return a value and they don't allow "GET" so added them to there's no errors
-
-whatever andy did in his zoom I tested and some of the works with the server.py
-- need to change node indicator from the port to something else
-- doing transactions right now in my modification just takes in a string of an address without checking if its a valid address
-- if you wanna get address, i added /getaddress which is basically just the wallet initialized in the beginning of the server 
-- the balances seem to be hardcoded to 0.0 (i hope im wrong)

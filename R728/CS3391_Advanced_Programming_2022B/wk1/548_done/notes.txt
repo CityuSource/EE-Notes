@@ -1,4 +1,0 @@
-use xor from the left of 0011 and 1011 then we find that the highest order is
-returns a 1, so the result is 1111.
-another ex is 100011 and 100110, we will get 2^2's bit so the result is 100 111
-and we use uint64_t cause BEEEEG numbers are used

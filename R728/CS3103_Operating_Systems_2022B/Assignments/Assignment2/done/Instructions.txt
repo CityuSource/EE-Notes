@@ -1,9 +1,0 @@
-1. Open the terminal to the current folder directory.
-2. Run "cmake .".
-3. Run "make".
-4. then the compiled binary will be in the newly created 'bin' folder.
-
-The main program "55724681.cpp" depends on the pthread library, generate_frame_vector.cpp,
-and cache.h in order to run.
-
-Just incase anything goes wrong, I've included the compiled binaries as well.

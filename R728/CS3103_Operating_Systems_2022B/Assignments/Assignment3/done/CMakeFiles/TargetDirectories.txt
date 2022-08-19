@@ -1,3 +1,0 @@
-/home/phonston/CS3103/Assignment3/CMakeFiles/edit_cache.dir
-/home/phonston/CS3103/Assignment3/CMakeFiles/rebuild_cache.dir
-/home/phonston/CS3103/Assignment3/CMakeFiles/quantization.dir
