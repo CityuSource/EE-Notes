@@ -1,0 +1,112 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+
+library(randomForest) 
+library(MASS) 
+attach(Boston)
+
+##prepare training and test data 
+set.seed(1) 
+train = sample(1:nrow(Boston), nrow(Boston)/2)
+boston.test=Boston[-train,"medv"]
+
+##bagging: randomforest with mtry=number of Predictors 
+set.seed(1)
+bag.boston=randomForest(medv~.,data=Boston,subset=train, mtry=13, ntree=100, importance=TRUE) 
+bag.boston
+
+##calculate test MSE 
+yhat.bag=predict(bag.boston,newdata=Boston[-train ,]) 
+mean((yhat.bag-boston.test)^2)
+
+
+##actual observations of test data and predictions 
+plot(yhat.bag,boston.test) 
+abline(0,1) #line with intercept 0 and slope 1
+
+##mtry=number of Predictors 
+set.seed(1) 
+rf.boston=randomForest(medv~.,data=Boston,subset=train, mtry=6,ntree=100,importance=TRUE)
+yhat.rf=predict(rf.boston,newdata=Boston[-train,]) 
+mean((yhat.rf-boston.test)^2)
+
+
+```
+
+```{r}
+
+library(gbm) 
+library(MASS) 
+set.seed(1) 
+boost.boston = gbm(medv~.,data=Boston[train,], distribution="gaussian",n.trees=5000, interaction.depth=4)
+ ##regression: distribution="gaussian" classification: distribution="bernoulli"
+summary(boost.boston)                ##relative influence plot
+par(mfrow=c(1,2)) 
+plot(boost.boston,i='rm')      ##partial dependence plot
+plot(boost.boston,i="lstat")
+
+yhat.boost = predict(boost.boston,newdata=Boston[-train,], n.trees=5000)
+mean((yhat.boost-boston.test)^2)
+
+
+```
+
+```{r}
+
+library(e1071)
+
+##Generate training data 
+set.seed(1) 
+number = 20
+x=matrix(rnorm(number*2),ncol=2) 
+y=c(rep(-1,number/2),rep(1,number/2)) 
+x[y==1,]=x[y==1,]+1 
+plot(x[,2],x[,1],col=(3-y))     ##color=2(red), 4(blue) red:1, blue:-1
+
+##Fit the support vector classifier 
+dat=data.frame(x=x,y=as.factor(y)) 
+dat 
+svmfit=svm(y~.,data=dat,kernel="linear",cost=10,scale=FALSE) 
+##"cost" is similar to tuning parameter C, but with opposite effects: small "cost", wide margin; large "cost", narrow margin
+
+plot(svmfit,dat) 
+summary(svmfit) 
+##Find support vectors 
+svmfit$index
+
+##Use a smaller value for cost
+svmfit=svm(y~.,data=dat,kernel="linear",cost=0.1,scale=FALSE) 
+plot(svmfit,dat)
+summary(svmfit) 
+
+
+```
+```{r}
+
+##Use cross validation to find best value for cost 
+set.seed(1) 
+tune.out=tune(svm,y~.,data=dat,kernel="linear", ranges=list(cost=c(0.001,0.01,0.1,1,5,10,100))) 
+summary(tune.out) 
+##Best model 
+bestmod = tune.out$best.model 
+summary(bestmod) 
+plot(bestmod ,dat)
+
+##Generate test data 
+xtest=matrix(rnorm(20*2),ncol=2) 
+ytest=sample(c(-1,1),20,rep=TRUE) 
+xtest[ytest==1,]=xtest[ytest==1,]+1 
+testdat=data.frame(x=xtest,y=as.factor(ytest))
+
+##Prediction 
+ypred=predict(bestmod,testdat) 
+table(predict=ypred,truth=testdat$y)
+
+```
+

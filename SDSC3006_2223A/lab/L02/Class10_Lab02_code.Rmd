@@ -1,0 +1,190 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+
+library(mlbench)
+data("BreastCancer")
+#Clean off rows with missing data
+BreastCancer = BreastCancer[which(complete.cases(BreastCancer)==TRUE),]
+head(BreastCancer)
+names(BreastCancer)
+
+```
+```{r}
+
+# First, we create the dependent variable, and also the feature set of independent variables.
+
+y = as.matrix(BreastCancer[,11])
+y[which(y=="benign")] = 0
+y[which(y=="malignant")] = 1
+y = as.numeric(y)
+x = as.numeric(as.matrix(BreastCancer[,2:10]))
+x = matrix(as.numeric(x),ncol=9)
+
+```
+
+Method 1: The deepnet package
+```{r}
+# We then use the function nn.train from the deepnet package to model the neural network. As can be seen in the program code below, we have 5 nodes in the single hidden layer.
+
+library(deepnet)
+nn <- nn.train(x, y, hidden = c(5))
+yy = nn.predict(nn, x)
+print(head(yy))
+
+```
+# We take the output of the network and convert it into classes, such that class ???0??? is benign and class ???1??? is malignant. We then construct the ???confusion matrix??? to see how well the model does in-sample. The table function here creates the confusion matrix, which is a tabulation of how many observations that were benign and malignant were correctly classified. This is a handy way of assessing how successful a machine learning model is at classification.
+
+```{r}
+
+yhat = matrix(0,length(yy),1)
+yhat[which(yy > mean(yy))] = 1
+yhat[which(yy <= mean(yy))] = 0
+cm = table(y,yhat)
+print(cm)
+print(sum(diag(cm))/sum(cm))
+
+```
+
+# Method 2
+# For comparison, we try the neuralnet package. The commands are mostly the same. The function in the package is also called neuralnet.
+```{r}
+
+library(neuralnet)
+df = data.frame(cbind(x,y))
+# we can adjust the number of hidden layer and compare.
+nn = neuralnet(y~V1+V2+V3+V4+V5+V6+V7+V8+V9,data=df,hidden = 5)
+
+yy = nn$net.result[[1]]
+yhat = matrix(0,length(y),1)
+yhat[which(yy > mean(yy))] = 1
+yhat[which(yy <= mean(yy))] = 0
+cm = table(y,yhat)
+print(cm)
+
+print(sum(diag(cm))/sum(cm))
+```
+
+# This package has an interesting function that allows plotting the neural network. Use the function plot() and pass the output object to it, in this case nn. This needs to be run interactively, but here is a sample outpt of the plot.
+```{r}
+
+plot(nn)
+
+```
+
+
+# Method 3: nnet
+
+```{r}
+# install.packages('faraway')
+# install.packages('nnet')
+library(nnet)
+data(ozone, package="faraway")
+head(ozone)
+
+```
+```{r}
+library(ggplot2)
+
+ggplot(ozone, aes(x=temp, y=O3)) + geom_point(size=1) + geom_smooth()
+
+
+ggplot(ozone, aes(x=ibh, y=O3)) + geom_point(size=1) + geom_smooth() + 
+  theme(axis.text.x = element_text(angle = 90))
+
+
+ggplot(ozone, aes(x=ibt, y=O3)) + geom_point(size=1) + geom_smooth()
+
+
+```
+
+
+```{r}
+
+set.seed(123)
+nnmdl <- nnet(O3 ~ temp + ibh + ibt, ozone, size=2, linout=T)
+
+```
+```{r}
+
+nnmdl$value
+
+```
+
+```{r}
+
+# compare to the naive RSS (numerator of the sd)
+sum((ozone$O3-mean(ozone$O3))^2)
+
+```
+
+###Rescaled data First, rescale the data to see some improvement. Then use 100 random starting points for the weights (100 epochs) and find the best fit among these.
+
+```{r}
+rescaled.ozone <- scale(ozone)
+
+set.seed(25373)
+best.rss=NULL
+for(i in 1:100){
+  nnmdl <- nnet(O3 ~ temp + ibh + ibt, 
+                data=rescaled.ozone, size=2, linout=T, trace=F)
+  best.rss[i]=nnmdl$value
+}
+min(best.rss)
+```
+
+```{r}
+plot(sort(best.rss)) 
+```
+
+# Note that another random seed gives a slightly better minimum RSS
+```{r}
+set.seed(25374)
+best.rss=NULL
+bestrss <- 10000
+for(i in 1:100){
+  nnmdl <- nnet(O3 ~ temp + ibh + ibt, 
+                data=rescaled.ozone, size=2, linout=T, trace=F)
+  best.rss[i]=nnmdl$value
+  if(nnmdl$value < bestrss){
+     bestnn <- nnmdl
+     bestrss <- nnmdl$value
+   }
+}
+min(best.rss)
+```
+
+
+# Now, let’s examine the best model that we found.
+```{r}
+summary(bestnn)
+```
+
+##Interpreting nnet output
+```{r}
+
+ozmeans <- colMeans(ozone)
+ozscales <- apply(ozone,2,sd)
+
+xx <- expand.grid(temp=seq(-3,3,0.1),ibh=0,ibt=0)
+plot(xx$temp*ozscales["temp"]+ozmeans["temp"],
+     predict(bestnn,new=xx)*ozscales["O3"]+ozmeans["O3"], 
+     xlab="Temp", ylab="O3", type="l")
+
+
+xx <- expand.grid(temp=0,ibh=seq(-3,3,0.1),ibt=0)
+plot(xx$ibh*ozscales["ibh"]+ozmeans["ibh"], 
+     predict(bestnn,new=xx)*ozscales["O3"]+ozmeans["O3"], 
+     xlab="IBH", ylab="O3", type="l")
+
+xx <- expand.grid(temp=0,ibh=0,ibt=seq(-3,3,0.1))
+plot(xx$ibt*ozscales["ibt"]+ozmeans["ibt"], 
+     predict(bestnn,new=xx)*ozscales["O3"]+ozmeans["O3"],
+     xlab="IBT",ylab="O3", type="l")
+
+
+```

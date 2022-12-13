@@ -1,0 +1,98 @@
+---
+title: "Class4_lab02"
+output: html_document
+---
+
+```{r}
+
+library(ISLR2)
+attach(Auto)
+set.seed(1) 
+l=length(mpg) 
+train = sample(l, l/2, replace = FALSE) # pick l/2 from l, without put back
+mpg.test = mpg[-train] # rest is validation is validation set
+
+#fit 3 models respectively using the training data 
+lm.fit1 = lm(mpg~horsepower,data=Auto,subset=train) 
+lm.fit2 = lm(mpg~poly(horsepower,2),data=Auto,subset=train) 
+lm.fit3 = lm(mpg~poly(horsepower,3),data=Auto,subset=train) 
+#make predictions for each model 
+lm.pred1 = predict(lm.fit1,Auto[-train,]) 
+lm.pred2 = predict(lm.fit2,Auto[-train,]) 
+lm.pred3 = predict(lm.fit3,Auto[-train,]) 
+#calculate MSE for each model 
+linear_MSE = mean((mpg.test-lm.pred1)^2) #linear 
+qua_MSE = mean((mpg.test-lm.pred2)^2) #quadratic 
+cub_MSE = mean((mpg.test-lm.pred3)^2) #cubic
+
+
+```
+
+```{r}
+
+library(ISLR) 
+attach(Auto) 
+library(boot) 
+glm.fit = glm(mpg~horsepower,data=Auto) 
+cv.err = cv.glm(Auto,glm.fit) 
+cv.err$delta #average MSE and adjusted MSE
+# Adjusted mean squares are calculated by dividing the adjusted sum of squares by the degrees of freedom. The adjusted sum of squares does not depend on the order the factors are entered into the model. 
+
+#Write loop statement to repeat LOOCV process for all models
+cv.error = rep(0,5) #initial value
+```
+
+
+
+```{r}
+#for polynomials from order 1 to 5 calculate average MSE 
+for (i in 1:5){ 
+  glm.fit = glm(mpg~poly(horsepower,i),data=Auto)
+  cv.error[i] = cv.glm(Auto,glm.fit)$delta[1]
+}     
+cv.error
+
+```
+
+```{r}
+# this code also could be done manually, instead of using cv.glm()
+
+model_predict = array(0, dim = c(nrow(Auto),5))
+
+for (i in 1:5) {
+  for (index in 1:nrow(Auto)) {
+    
+    train = c(1:nrow(Auto))[-index]
+    mpg.test = mpg[index] # rest is validation is validation set
+    lm.fit = lm(mpg~poly(horsepower,i),data=Auto,subset=train) 
+    lm.pred = predict(lm.fit,Auto[-train,]) 
+    model_predict[index,i] =  lm.pred
+  }
+}
+
+for (i in 1:5) {
+  
+  print(mean((model_predict[,i]-mpg)^2))
+  
+}
+
+```
+
+```{r}
+
+library(ISLR) 
+attach(Auto) 
+library(boot) 
+set.seed(1) #test polynomials from order 1 to 10 (loop) 
+
+cv.error.10 = rep(0,10)
+for (i in 1:10) { 
+  glm.fit = glm(mpg~poly(horsepower,i),data=Auto)
+  cv.error.10[i] = cv.glm(Auto,glm.fit, K=10)$delta[1]
+}
+
+cv.error.10
+
+
+```
+

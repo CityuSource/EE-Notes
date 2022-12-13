@@ -1,0 +1,206 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(ISLR) 
+names(Hitters) 
+dim(Hitters) 
+sum(is.na(Hitters$Salary)) 
+Hitters=na.omit(Hitters) 
+dim(Hitters) 
+sum(is.na(Hitters))
+
+```
+
+```{r}
+##the function glmnet() in the glmnet package install.packages("glmnet") 
+library(glmnet)
+
+#create dataset for fitting 
+x=model.matrix(Salary~.,Hitters)[,-1] #x: 19 predictors
+y=Hitters$Salary 
+#why remove the 1st column?
+##consider a vector of lambda values ranging from 10^10 to 10^-2 
+grid=10^seq(10,-2,length=100) #length: points of grid 
+ridge.mod=glmnet(x,y,alpha=0,lambda=grid) 
+#alpha=0:Ridge alpha=1: LASSO 
+dim(coef(ridge.mod))      #20*100
+
+```
+
+```{r}
+
+##the 50th value of lambda 
+ridge.mod$lambda[50] 
+coef(ridge.mod)[,50] 
+##Norm of the estimates 
+sqrt(sum(coef(ridge.mod)[-1,50]^2))
+
+##the 60th value of lambda 
+ridge.mod$lambda[60] 
+coef(ridge.mod)[,60] 
+sqrt(sum(coef(ridge.mod)[-1,60]^2))
+
+##For new value of lambda
+##for example, lambda=25
+predict(ridge.mod,s=25,type="coefficients")[1:20,]
+
+```
+
+```{r}
+
+##split the data into a training and a test set 
+set.seed(1) 
+train=sample(1:nrow(x), nrow(x)/2) 
+test=(-train) 
+y.test=y[test] 
+
+##fit ridge regression on training data 
+grid=10^seq(10,-2,length=100) 
+ridge.mod=glmnet(x[train,],y[train],alpha=0,lambda=grid) 
+
+##predict on test set using lamda=4, 1e10, 0 
+ridge.pred1=predict(ridge.mod, s=4,newx=x[test,]) 
+mean((ridge.pred1-y.test)^2) #test MSE 
+
+ridge.pred2=predict(ridge.mod,s=1e10,newx=x[test,]) 
+mean((ridge.pred2-y.test)^2) 
+
+ridge.pred3=predict(ridge.mod,s=0,newx=x[test,]) 
+mean((ridge.pred3-y.test)^2)
+
+```
+
+```{r}
+
+##cross validation to get the best lambda 
+set.seed(1) 
+cv.out=cv.glmnet(x[train,],y[train],alpha=0) #default is 10-folds CV
+plot(cv.out) 
+bestlam=cv.out$lambda.min 
+bestlam
+
+##now predict with the best lambda 
+
+ridge.pred=predict(ridge.mod,s=bestlam,newx=x[test,]) 
+mean((ridge.pred-y.test)^2)
+
+##refit ridge regression on the full dataset 
+out=glmnet(x,y,alpha=0)
+predict(out,type="coefficients",s=bestlam)[1:20,]
+
+```
+
+
+#  Lasso part
+```{r}
+
+x=model.matrix(Salary~.,Hitters)[,-1] #x: 19 predictors
+y=Hitters$Salary 
+
+```
+
+
+
+```{r}
+
+## for LASSO we use alpha=1 in glmnet
+## use penalty to give a multiplier before lambda
+grid=10^seq(5,-4,length=50)
+penalty = rep(1,ncol(x))
+
+lasso.mod=glmnet(x[train,],y[train],alpha=1,lambda=grid)
+plot(lasso.mod)
+
+```
+
+# For most of experiments, scaling is necessary.
+# We need to scale trainset of both x and y to 0 mean and 1 std.
+# Also, use the mean and std of train set to scale test set.
+
+# Before scaling, the magnitude of each predictor is different, which will cause the coefficient into different magnitude. 
+# After scaling, the coefficients can be compared.
+
+```{r}
+
+x_train = x[train,]
+y_train = y[train]
+
+for (i in 1:ncol(x_train)){
+  
+  mean_i = mean(x_train[,i])
+  std_i = sd(x_train[,i])
+  x_train[,i] =  (x_train[,i] - mean_i)/std_i
+ 
+}
+mean_y = mean(y_train)
+std_y = sd(y_train)
+y_train = (y_train - mean_y)/std_y
+
+lasso.mod=glmnet(x_train,y_train,alpha=1,lambda=grid)
+plot(lasso.mod)
+
+```
+
+```{r}
+
+lasso_coef = predict(lasso.mod, type = 'coefficients')
+
+```
+
+```{r}
+
+## plot which variables are choosed for each lambda
+
+number = length(grid)
+variables_all_weight = t(as.matrix(lasso_coef))
+variables_all_select = array(0,dim = c(number,ncol(x)+1))
+for(h in (1:(ncol(x)+1))){
+  variables_all_select[,h] = (abs(variables_all_weight[,h]) > 0.00000001)*h
+}
+coef_df = as.matrix(variables_all_select)
+coef_df = 22 - coef_df
+coef_df[which(coef_df==22)]=NaN
+coef_df = as.data.frame(coef_df)
+log_grid = as.data.frame(log(grid))
+df = cbind(log_grid,coef_df)
+variables_label = variables_all_weight
+g = ggplot(df,aes(x=log(grid)))+geom_point(aes(y = V2,colour = variables_label[,2]))+geom_point(aes(y = V2),shape = 1)+geom_point(aes(y = V3,colour = variables_label[,3]))+geom_point(aes(y = V3),shape = 1)+geom_point(aes(y = V4,colour = variables_label[,4]))+geom_point(aes(y = V4),shape = 1)+geom_point(aes(y = V5,colour = variables_label[,5]))+geom_point(aes(y = V5),shape = 1)+geom_point(aes(y = V6,colour = variables_label[,6]))+geom_point(aes(y = V6),shape = 1)+geom_point(aes(y = V7,colour = variables_label[,7]))+geom_point(aes(y = V7),shape = 1)+geom_point(aes(y = V8,colour = variables_label[,8]))+geom_point(aes(y = V8),shape = 1)+geom_point(aes(y = V9,colour = variables_label[,9]))+geom_point(aes(y = V9),shape = 1)+geom_point(aes(y = V10,colour = variables_label[,10]))+geom_point(aes(y = V10),shape = 1)+geom_point(aes(y = V11),shape = 1)+geom_point(aes(y = V12),shape = 1)+geom_point(aes(y = V13),shape = 1)+geom_point(aes(y = V14),shape = 1)+geom_point(aes(y = V15),shape = 1)+geom_point(aes(y = V16),shape = 1)+geom_point(aes(y = V17),shape = 1)+geom_point(aes(y = V18),shape = 1)+geom_point(aes(y = V19),shape = 1)+geom_point(aes(y = V20),shape = 1) + scale_colour_gradient2("Weight",high ="blue",low = "red",mid = "white",midpoint = 0,guide = "colourbar",space ="Lab")
+
+g = g + ylim(2,20)
+y_labels=colnames(x)
+g = g + scale_y_continuous(labels=y_labels, breaks=c(seq(20,2,-1)))
+g = g + ylab("Selected Variables for all training data")
+g = g + xlab(expression(paste("ln(",lambda,")"))) + theme_bw()
+plot(g)
+
+
+```
+
+```{r}
+
+##use CV to find the optimal lambda 
+set.seed(1) 
+cv.out=cv.glmnet(x[train,],y[train],alpha=1) 
+# we can set the range of lamba, or cv.glmnet will find suitable range.
+plot(cv.out) 
+bestlam=cv.out$lambda.min
+
+```
+
+```{r}
+
+##use best lambda for prediction
+lasso.pred=predict(lasso.mod,s=bestlam,newx=x[test,]) 
+mean((lasso.pred-y.test)^2) 
+out=glmnet(x,y,alpha=1,lambda=grid)
+lasso.coef=predict(out,type="coefficients",s=bestlam)[1:20,]
+
+##check the estimated coefficients and the ???0??? coefficients 
+lasso.coef 
+lasso.coef[lasso.coef!=0]
+
+```

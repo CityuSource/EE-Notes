@@ -1,0 +1,119 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(ISLR2) 
+library(tree) 
+attach(Carseats)
+##First create a binary response to do classification 
+High=factor(ifelse(Sales <=8,"No","Yes")) 
+##Add this column to the table 
+
+
+# remember use rm(list = ls()) if take a second run, or Carsearts will have several high column.
+Carseats=data.frame(Carseats,High)  
+head(Carseats)
+
+```
+
+```{r}
+
+# tree.carseats=tree(High~Sales,Carseats)
+tree.carseats=tree(High~.-Sales,Carseats)
+summary(tree.carseats)
+
+plot(tree.carseats) #display tree structure
+text(tree.carseats,pretty=0) #display node labels
+
+```
+
+```{r}
+
+##use cv.tree() to perform cross validation for tree pruning
+set.seed(3) 
+cv.carseats=cv.tree(tree.carseats,FUN = prune.misclass)
+## FUN=prune.misclass indicates that misclassification error
+## rate is used to guide cross validation 
+names(cv.carseats) 
+cv.carseats 
+
+##dev corresponds to the number of cross-validation errors 
+##visualize results
+plot(cv.carseats$size,cv.carseats$dev,type="b")
+
+```
+```{r}
+
+##prune.misclass() based on cv results
+prune.carseats=prune.misclass(tree.carseats,best = 5)
+plot(prune.carseats) 
+text(prune.carseats, pretty=0)
+
+##test the pruned tree
+tree.pred=predict(prune.carseats,Carseats,type="class")
+
+# draw the confusion matrix
+table(tree.pred,High)
+
+
+```
+
+```{r}
+
+set.seed(5) 
+attach(Boston) 
+##use one-third of the data to be training set 
+train = sample(1:nrow(Boston), nrow(Boston)/ 3) 
+tree.boston = tree(medv~., Boston, subset = train) 
+summary(tree.boston)
+
+plot(tree.boston) 
+text(tree.boston, pretty = 0)
+
+```
+
+
+
+```{r}
+
+##use cv.tree() to perform cross validation 
+cv.boston = cv.tree(tree.boston) 
+plot(cv.boston$size , cv.boston$dev, type = "b") 
+cv.boston
+
+prune.boston = prune.tree(tree.boston , best = 7) 
+plot(prune.boston) 
+text(prune.boston , pretty = 0)
+
+```
+```{r}
+
+## predict on the last 2/3 of the dataset
+train_pred = predict(prune.boston,newdata = Boston[train, -13])
+index = c(1:length(train_pred))
+
+plot(index, Boston[train, 13], type = 'l')
+lines(index, train_pred, col = c('red'))
+legend('topleft',c('real','predict'), col = c('black','red'), lty = c(1,1))
+
+mean((train_pred - Boston[train, 13])^2)
+
+```
+
+
+```{r}
+
+## predict on the last 2/3 of the dataset
+test_pred = predict(prune.boston,newdata = Boston[-train, -13])
+index = c(1:length(test_pred))
+
+plot(index, Boston[-train, 13], type = 'l')
+lines(index, test_pred, col = c('red'))
+legend('topleft',c('real','predict'), col = c('black','red'), lty = c(1,1))
+
+mean((test_pred - Boston[-train, 13])^2)
+
+```

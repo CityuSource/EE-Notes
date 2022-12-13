@@ -1,0 +1,190 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r}
+
+library(ISLR2) 
+names(Smarket)
+dim(Smarket)
+
+attach(Smarket)
+logistic.fit=glm(Direction~Lag1+Lag2+Lag3+Lag4+Lag5+Volume, data=Smarket, family=binomial)
+summary(logistic.fit)
+
+```
+# check the results
+
+```{r}
+
+logistic.probs=predict(logistic.fit,type = "response")
+logistic.probs[1:10]
+
+##check dummy variable
+contrasts (Direction)
+
+```
+# Convert the prob to class
+
+```{r}
+
+logistic.pred=rep("Down",1250) #create all ???down??? array
+logistic.pred[logistic.probs>0.5]="Up" #set threshold 0.5
+
+```
+
+# Cross Validation
+
+```{r}
+
+##Step 1: Split data (2001~2004 for training, 2005 for test)
+train=(Year<2005)
+Smarket.2005=Smarket[!train,] 
+Direction.2005=Direction[!train]
+
+##Step 2: Train model on training data
+logistic.fit=glm(Direction~Lag1+Lag2+Lag3+Lag4+Lag5+Volume, data=Smarket,family=binomial,subset=train)
+
+##Step 3: Make Prediction on test data
+logistic.probs=predict(logistic.fit,Smarket.2005,type="response")
+logistic.pred=rep("Down", 252)
+
+#length(Direction.2005)
+logistic.pred[logistic.probs>0.5] = "Up"
+
+##Step 4: Assess prediction accuracy 
+table(logistic.pred,Direction.2005) 
+mean(logistic.pred==Direction.2005)
+
+```
+
+## LDA and QDA
+
+```{r}
+
+## Step 1 - Obtain dataset and Split it
+library(ISLR2) 
+library(MASS) 
+attach(Smarket) 
+train=(Year<2005)
+Smarket.2005 = Smarket[!train,]
+Direction.2005 = Direction[!train]
+
+## Step 2 - Train model and predict
+lda.fit=lda(Direction~Lag1+Lag2, data=Smarket, subset=train) 
+lda.pred = predict(lda.fit,Smarket.2005) 
+names(lda.pred) 
+
+#see what prediction contains 
+##lda.pred$class 
+##lda.pred$posterior
+
+## Step 3 - Calculate prediction accuracy
+lda.class = lda.pred$class 
+table(lda.class,Direction.2005) 
+mean(lda.class==Direction.2005)
+
+## Step 4 - Change threshold (Extra)
+lda.class = rep("Down",length(Direction.2005))
+lda.class[lda.pred$posterior[,2]>0.49] = "Up"
+table(lda.class,Direction.2005) 
+mean(lda.class==Direction.2005)
+
+```
+
+## ROC curve of Logistic Regression
+
+```{r}
+
+library(ISLR2) 
+attach(Smarket) 
+##fit logistic regression to all data (2001~2005) 
+LR.fit = glm(Direction~Lag1+Lag2+Lag3,family=binomial,data=Smarket) ##predict probability of "UP" 
+LR.pred = predict(LR.fit,type="response")
+
+```
+```{r}
+
+## Calculate FPR and TPR under a given threshold
+roc.curve=function(s,print=FALSE){ 
+Ps=(LR.pred>s)*1 
+FP=sum((Ps==1)*(Direction=="Down"))/sum(Direction=="Down")
+TP=sum((Ps==1)*(Direction=="Up"))/sum(Direction=="Up") 
+if(print==TRUE){ 
+  print(table(Observed=Direction,Predicted=Ps))
+} 
+vect=c(FP,TP) 
+names(vect)=c("FPR","TPR") 
+return(vect) 
+} 
+
+threshold=0.5 
+roc.curve(threshold,print=TRUE) 
+## Plot ROC curve 
+ROC.curve=Vectorize(roc.curve) 
+M.ROC=ROC.curve(seq(0,1,by=0.01))
+plot(M.ROC[1,],M.ROC[2,],col="grey",lwd=2,type="l",xlab="False positive rate",ylab="True positive rate")
+
+```
+
+
+## ROC curve of LDA
+
+```{r}
+library(ISLR2) 
+attach(Smarket) 
+## fit model to all data 
+library(MASS) 
+LDA.fit = lda(Direction~Lag1+Lag2+Lag3,data=Smarket) 
+## predict probabilities of training data 
+LDA.pred0 = predict(LDA.fit,type="response") 
+LDA.pred = LDA.pred0$posterior[,2]
+
+## Calculate FPR and TPR under a given threshold
+
+roc.curve=function(s,print=FALSE){ 
+Ps=(LDA.pred>s)*1 
+FP=sum((Ps==1)*(Direction=="Down"))/sum(Direction=="Down")
+TP=sum((Ps==1)*(Direction=="Up"))/sum(Direction=="Up") 
+if(print==TRUE){ 
+print(table(Observed=Direction,Predicted=Ps)) 
+} 
+vect=c(FP,TP) 
+names(vect)=c("FPR","TPR") 
+return(vect) } 
+threshold=0.5 
+roc.curve(threshold,print=TRUE) 
+
+## Plot ROC Curve 
+ROC.curve=Vectorize(roc.curve) 
+M.ROC=ROC.curve(seq(0,1,by=0.01))
+plot(M.ROC[1,],M.ROC[2,],col="blue",lwd=2,type="l",xlab="False positive rate",ylab="True positive rate")
+
+
+```
+
+# KNN
+
+```{r}
+
+library(ISLR2) 
+library(class) 
+attach(Smarket) 
+train=(Year<2005) 
+train.X=cbind(Lag1,Lag2)[train,] #training data of observation
+test.X=cbind(Lag1,Lag2)[!train,] #test data of observation 
+train.Direction=Direction[train] #training data of response
+knn.pred1=knn(train.X,test.X,train.Direction,k=1) 
+table(knn.pred1,Direction.2005) 
+mean(knn.pred1==Direction.2005) 
+#predict accuracy 
+
+##change k to get different results 
+knn.pred2=knn(train.X, test.X, train.Direction, k=3) 
+table(knn.pred2,Direction.2005) 
+mean(knn.pred2==Direction.2005)
+
+```
+
+

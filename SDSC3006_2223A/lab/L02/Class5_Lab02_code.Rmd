@@ -1,0 +1,181 @@
+---
+title: "Class5_Lab02_code"
+output: word_document
+---
+
+
+```{r}
+
+library(ISLR2) 
+attach(Portfolio) 
+##create a function to calculate alpha 
+alpha.fn = function(data,index){ 
+X=data$X[index] 
+Y=data$Y[index]
+return(var(Y)-cov(X,Y))/(var(X)+var(Y)-2*cov(X,Y))
+ } 
+##estimate alpha using all 100 observations 
+alpha.fn(Portfolio,1:100) 
+#randomly select 100 observations from the dataset with replacement 
+
+set.seed(1) 
+alpha.fn(Portfolio,sample(100,100,replace=T))
+ #estimates based on 1000 bootstrap samples 
+
+```
+
+```{r}
+
+library(boot) 
+boot(Portfolio,alpha.fn,R=1000)
+
+```
+```{r}
+
+set.seed(1)
+a = sample(-5:5, 10, replace = T) 
+# the ground truth should be 0, as sample() has uniform distribution.
+print(paste0("Observation result: ",mean(a)))
+
+# mean(a)
+times = 100
+bootstrat_result = rep(NA, times)
+
+for (i in 1:times) {
+
+  ith_resample = sample(a,10,replace = T)
+  bootstrat_result[i] = mean(ith_resample)
+    
+}
+
+print(paste0("Bootstrap result: ",mean(bootstrat_result)))
+
+
+```
+
+
+
+# check missing values
+```{r}
+
+library(ISLR) 
+names(Hitters) 
+dim(Hitters) 
+sum(is.na(Hitters$Salary)) #total number of missing salary ("NA") 
+
+```
+
+
+# delete rows that have missing values
+```{r}
+
+Hitters=na.omit(Hitters) #remove rows with missing values in any variable
+dim(Hitters) 
+sum(is.na(Hitters))
+
+```
+
+```{r}
+
+library(leaps)
+regfit.full = regsubsets(Salary~.,Hitters)
+##print the best set of predictors for each model size; by default, only return results up to the best 8-predictor model
+summary(regfit.full)
+
+```
+
+```{r}
+##to return as many predictors as specified(Max=19)
+regfit.full = regsubsets(Salary~.,data=Hitters,nvmax=19)
+reg.summary = summary(regfit.full)
+names(reg.summary)
+# summary(regfit.full)
+
+```
+
+```{r}
+
+##create figure contains four subfigure(2*2)
+par(mfrow=c(2,2))
+#Figure 1
+plot(reg.summary$rss,xlab="Number of predictors",ylab="RSS",type="l")
+p=which.min(reg.summary$rss) 
+points(p,reg.summary$rss[p], col="red",cex=2,pch=20)
+#Figure 2
+plot(reg.summary$adjr2,xlab="Number of predictors",ylab="Adjusted RSq",type="l")
+a=which.max(reg.summary$adjr2) 
+#highlight maximizer 
+points(a,reg.summary$adjr2[a], col="red",cex=2,pch=20)
+
+#Figure 3
+plot(reg.summary$cp,xlab="Number of predictors",ylab="Cp",type='l')
+b=which.min(reg.summary$cp)
+points(b,reg.summary$cp[b],col="red",cex=2,pch=20)
+#Figure 4
+plot(reg.summary$bic,xlab="Number of predictors",ylab="BIC",type='l')
+c=which.min(reg.summary$bic)
+points(c,reg.summary$bic[c],col="red",cex=2,pch=20)
+##print the coefficient estimates of the best model by BIC coef(regfit.full,c)
+
+
+```
+
+
+# Stepwise Selection
+```{r}
+
+regfit.fwd=regsubsets(Salary~.,data=Hitters,nvmax=19,
+method="forward")
+summary(regfit.fwd) 
+#summary(regfit.fwd)$bic(or cp, adjr2) 
+
+regfit.bwd=regsubsets(Salary~.,data=Hitters,nvmax=19, method="backward")
+summary(regfit.bwd) 
+
+##print the coefficient estimates of the 7-predictor model 
+coef(regfit.full,7) 
+coef(regfit.fwd,7) 
+coef(regfit.bwd,7)
+
+```
+
+# CV for model selection
+```{r}
+
+##Randomly split data into a training set and a test
+set.seed(1) 
+train=sample(c(TRUE,FALSE), nrow(Hitters), rep=TRUE) 
+test=(!train) 
+##Perform best subset selection 
+regfit.best=regsubsets(Salary~.,data=Hitters[train,],nvmax=19) 
+##building an "X" matrix from test data 
+test.mat=model.matrix(Salary~.,data=Hitters[test,])
+
+##Compute test MSE of the 19 models(size from 1 to 19)
+val.errors=rep(NA,19) 
+for(i in 1:19){ 
+coefi=coef(regfit.best,id=i) 
+pred=test.mat[,names(coefi)]%*%coefi 
+#matrix product 
+val.errors[i]=mean((Hitters$Salary[test]-pred)^2) 
+} 
+val.errors
+
+```
+
+# Find best model from CV
+```{r}
+
+##Find the best model
+best_size=which.min(val.errors) 
+coef(regfit.best,best_size)
+
+##after finding the best model, we need to fit this model using the full data set to obtain more accurate coefficient estimates
+regfit.best=regsubsets(Salary~.,data=Hitters,nvmax=19)
+coef(regfit.best,best_size)
+
+```
+
+
+
+
