@@ -1,17 +1,45 @@
 # EE-Notes
 
-Rules:
- 1. Do not delete files that are not created by you.
- 2. Name folders with subjectCode_(yearStart-yearEnd)(semester (A/B/S)). e.g. EE2004_2021A
- 3. Organise the folder before push.
+## Avaliable Course List
 
-How to download the the repo:
-1. Fork the repo to one of your users
-2. Go to repo settings
-3. Find "Include Git LFS objects in archives" under the Archives section and check it
-4. Go to the Danger Zone section,  select "Archive this repository"
-5. Confirm and authorize.
-6. Return to the archived repository.
-7. Download as .zip
-8. Download will pause for a minute or so before it starts downloading lfs objects. Wait and it should continue.
-Source: https://github.com/nabla-c0d3/nassl/issues/17#issuecomment-804149931
+### CS
+
+1. CS1102
+2. CS3103
+3. CS3402
+4. CS4335
+
+### EE
+
+1. EE2004
+2. EE2005
+3. EE2302
+4. EE2331
+5. EE3001
+6. EE3009
+7. EE3070
+8. EE3206
+9. EE3210
+10. EE3211
+11. EE3200
+12. EE3315
+13. EE4090
+14. EE4146
+15. EE4208
+16. EE4211
+
+### GE
+
+1. GE2262
+2. GE2410
+
+### MA
+
+1. MA1200
+2. MA1201
+3. MA2001
+
+### SDSC
+
+1. SDSC 2102
+2. SDSC 3002
